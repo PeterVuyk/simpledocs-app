@@ -3,7 +3,7 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import Animated from 'react-native-reanimated';
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 import Header from '../header/Header';
-import { setProgressListener } from '../drawer/onProgressListener';
+import { setDrawerProgressListener } from '../drawer/onDrawerProgressListener';
 
 const Tab = createMaterialBottomTabNavigator();
 
@@ -19,15 +19,11 @@ const TabNavigation: React.FC = () => {
   });
   const animatedStyle = { borderRadius, transform: [{ scale }] };
 
-  // mount/unmount mechanisme zorgt ervoor dat het niet elke keer wordt ingeladen.
-
-  // TODO: autocomplete intellij
-
   React.useEffect(() => {
-    setProgressListener((p: any) => setProgress(p));
-    // TODO: update any return type
-    // return () => {}  <- als je dit doet, dan is dit de unmount functie.
-  }, []); // dit gebeurd on mount waanneeer het als 1e keer in de dom wordt gerenderd.
+    setDrawerProgressListener((updatedProgress: Animated.Value<0>) =>
+      setProgress(updatedProgress),
+    );
+  }, []);
 
   return (
     <Animated.View style={[{ flex: 1, overflow: 'hidden' }, animatedStyle]}>

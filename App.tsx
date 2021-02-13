@@ -1,8 +1,8 @@
 import React from 'react';
-import DrawerContainer from './navigation/drawer/DrawerContainer';
+import Drawer from './navigation/drawer/Drawer';
 
 const App: React.FC = () => {
-  return <DrawerContainer />;
+  return <Drawer />;
 };
 
 export default App;

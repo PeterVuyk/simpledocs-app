@@ -14,11 +14,8 @@ const SearchScreen: React.FC = () => {
     <View style={styles.container}>
       <Text>SearchResult</Text>
       <Image
-        source={{
-          uri:
-            'https://www.ambulancezorg.nl/static/upload/banner/e4e60758-0ce5-4d8e-ab4f-4b4378796f6c/_MG_6220.jpg',
-        }}
-        // TODO: Require from assets: source={require('../../assets/background.png')}
+        /* eslint-disable-next-line global-require */
+        source={require('../assets/background.png')}
         style={{ position: 'absolute', resizeMode: 'contain', opacity: 0.4 }}
         blurRadius={4}
       />

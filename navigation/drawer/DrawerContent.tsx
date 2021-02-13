@@ -5,7 +5,7 @@ import { Block, Text } from 'expo-ui-kit';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { DrawerNavigationHelpers } from '@react-navigation/drawer/lib/typescript/src/types';
 import Animated from 'react-native-reanimated';
-import { getProgressListener } from './onProgressListener';
+import { getDrawerProgressListener } from './onDrawerProgressListener';
 
 interface Props {
   progress: Animated.Node<number>;
@@ -160,21 +160,17 @@ const DrawerContent: React.FC<Props> = ({ progress, navigation }) => {
   ]);
 
   React.useEffect(() => {
-    if (getProgressListener()) {
-      getProgressListener()(progress);
+    if (getDrawerProgressListener()) {
+      getDrawerProgressListener()(progress);
     }
-    // getProgressListener() && getProgressListener()(progress);
-  }, [progress]); // Als progress changed, voer dan deze functie (1e argument) uit. noemen ze een side-effect.
+  }, [progress]);
 
   return (
     <Block>
       <Block flex={0.4} margin={20} marginBottom={0} bottom>
         <Image
-          source={{
-            uri:
-              'https://www.ambulancezorg.nl/public/images/ambulancezorg-nederland-logo.svg',
-          }}
-          // TODO: Require from assets: source={require('../../assets/azn.png')}
+          /* eslint-disable-next-line global-require */
+          source={require('../../assets/azn.png')}
           style={{
             height: 40,
             resizeMode: 'contain',
@@ -243,5 +239,3 @@ const DrawerContent: React.FC<Props> = ({ progress, navigation }) => {
 };
 
 export default DrawerContent;
-
-// TODO: Remove added propTypes library
