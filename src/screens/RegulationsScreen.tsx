@@ -9,13 +9,13 @@ const styles = StyleSheet.create({
   },
 });
 
-const InfoScreen: React.FC = () => {
+const RegulationsScreen: React.FC = () => {
   return (
     <View style={styles.container}>
-      <Text>InfoScreen</Text>
+      <Text>RegulationsScreen</Text>
       <Image
         /* eslint-disable-next-line global-require */
-        source={require('../assets/background.png')}
+        source={require('../../assets/images/background.png')}
         style={{ position: 'absolute', resizeMode: 'contain', opacity: 0.4 }}
         blurRadius={4}
       />
@@ -23,4 +23,4 @@ const InfoScreen: React.FC = () => {
   );
 };
 
-export default InfoScreen;
+export default RegulationsScreen;

@@ -6,7 +6,7 @@ const LogoHeader: React.FC = () => {
     <Image
       style={{ width: 200, resizeMode: 'contain' }}
       /* eslint-disable-next-line global-require */
-      source={require('../../assets/azn.png')}
+      source={require('../../../assets/images/azn.png')}
     />
   );
 };

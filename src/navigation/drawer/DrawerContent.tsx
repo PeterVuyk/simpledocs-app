@@ -170,7 +170,7 @@ const DrawerContent: React.FC<Props> = ({ progress, navigation }) => {
       <Block flex={0.4} margin={20} marginBottom={0} bottom>
         <Image
           /* eslint-disable-next-line global-require */
-          source={require('../../assets/azn.png')}
+          source={require('../../../assets/images/azn.png')}
           style={{
             height: 40,
             resizeMode: 'contain',

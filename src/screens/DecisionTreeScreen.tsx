@@ -9,18 +9,18 @@ const styles = StyleSheet.create({
   },
 });
 
-const SearchScreen: React.FC = () => {
+const DecisionTreeScreen: React.FC = () => {
   return (
     <View style={styles.container}>
-      <Text>SearchResult</Text>
       <Image
         /* eslint-disable-next-line global-require */
-        source={require('../assets/background.png')}
+        source={require('../../assets/images/background.png')}
         style={{ position: 'absolute', resizeMode: 'contain', opacity: 0.4 }}
         blurRadius={4}
       />
+      <Text>DecisionTreeScreen</Text>
     </View>
   );
 };
 
-export default SearchScreen;
+export default DecisionTreeScreen;

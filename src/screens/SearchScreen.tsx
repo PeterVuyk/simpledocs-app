@@ -9,13 +9,13 @@ const styles = StyleSheet.create({
   },
 });
 
-const RegulationsScreen: React.FC = () => {
+const SearchScreen: React.FC = () => {
   return (
     <View style={styles.container}>
-      <Text>RegulationsScreen</Text>
+      <Text>SearchResult</Text>
       <Image
         /* eslint-disable-next-line global-require */
-        source={require('../assets/background.png')}
+        source={require('../../assets/images/background.png')}
         style={{ position: 'absolute', resizeMode: 'contain', opacity: 0.4 }}
         blurRadius={4}
       />
@@ -23,4 +23,4 @@ const RegulationsScreen: React.FC = () => {
   );
 };
 
-export default RegulationsScreen;
+export default SearchScreen;
