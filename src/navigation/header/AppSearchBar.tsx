@@ -3,36 +3,31 @@ import React from 'react';
 import { Platform, View } from 'react-native';
 
 interface Props {
-  handleSearchIsTypingChange: (isTyping: boolean) => void;
+  handleSearchTextChange: (searchText: string) => void;
   handleSearchIsActiveChange: (isActive: boolean) => void;
+  searchText: string;
 }
 
 const AppSearchBar: React.FC<Props> = ({
-  handleSearchIsTypingChange,
+  handleSearchTextChange,
   handleSearchIsActiveChange,
+  searchText,
 }) => {
-  const [search, setSearch] = React.useState('');
-
-  const setSearchIsTyping = (text: string) => {
-    if (text === '') {
-      handleSearchIsTypingChange(false);
-    } else {
-      handleSearchIsTypingChange(true);
-    }
-  };
+  const setSearchIsTyping = (text: string) => handleSearchTextChange(text);
 
   return (
     <View style={{ backgroundColor: '#fff' }}>
       <SearchBar
+        ref={search => search?.focus()}
         containerStyle={{ backgroundColor: '#fff', marginTop: 55, padding: 5 }}
         inputContainerStyle={{ backgroundColor: '#fff' }}
         platform={Platform.OS === 'ios' ? 'ios' : 'android'}
         placeholder="Zoek op titel of trefwoord..."
-        onChangeText={text => {
-          setSearch(text);
-          setSearchIsTyping(text);
+        onChangeText={typedText => {
+          handleSearchTextChange(typedText);
+          setSearchIsTyping(typedText);
         }}
-        value={search}
+        value={searchText}
         onCancel={() => {
           handleSearchIsActiveChange(false);
         }}

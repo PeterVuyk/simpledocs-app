@@ -9,6 +9,7 @@ import SearchScreen from '../../screens/SearchScreen';
 import InfoScreen from '../../screens/InfoScreen';
 import DecisionTreeScreen from '../../screens/DecisionTreeScreen';
 import AppSearchBar from './AppSearchBar';
+import DismissKeyboard from '../../DismissKeyboard';
 
 const Stack = createStackNavigator();
 
@@ -18,7 +19,7 @@ interface Props {
 }
 interface State {
   searchIsActive: boolean;
-  searchIsTyping: boolean;
+  searchText: string;
 }
 
 export default class Header extends Component<Props, State> {
@@ -27,30 +28,29 @@ export default class Header extends Component<Props, State> {
 
     this.state = {
       searchIsActive: false,
-      searchIsTyping: false,
+      searchText: '',
     };
     this.getScreen = this.getScreen.bind(this);
-    this.handleSearchIsTypingChange = this.handleSearchIsTypingChange.bind(
-      this,
-    );
+    this.handleSearchTextChange = this.handleSearchTextChange.bind(this);
     this.handleSearchIsActiveChange = this.handleSearchIsActiveChange.bind(
       this,
     );
     this.searchButton = this.searchButton.bind(this);
   }
 
-  handleSearchIsTypingChange = (isTyping: boolean) =>
-    this.setState({ searchIsTyping: isTyping });
+  handleSearchTextChange = (searchedText: string) => {
+    this.setState({ searchText: searchedText });
+  };
 
   handleSearchIsActiveChange = (isActive: boolean) =>
     this.setState({ searchIsActive: isActive });
 
   getScreen(): ReactElement {
-    const { searchIsTyping } = this.state;
+    const { searchText, searchIsActive } = this.state;
     const { route } = this.props;
 
-    if (searchIsTyping) {
-      return <SearchScreen />;
+    if (searchIsActive && searchText !== '') {
+      return <SearchScreen searchText={searchText} />;
     }
 
     switch (route.params.screenName) {
@@ -61,7 +61,7 @@ export default class Header extends Component<Props, State> {
       case 'DecisionTree':
         return <DecisionTreeScreen />;
       default:
-        return <SearchScreen />;
+        return <SearchScreen searchText={searchText} />;
     }
   }
 
@@ -80,7 +80,7 @@ export default class Header extends Component<Props, State> {
   }
 
   render() {
-    const { searchIsActive } = this.state;
+    const { searchIsActive, searchText } = this.state;
     const { navigation } = this.props;
 
     return (
@@ -111,19 +111,18 @@ export default class Header extends Component<Props, State> {
               ? {
                   header: () => (
                     <AppSearchBar
-                      handleSearchIsTypingChange={
-                        this.handleSearchIsTypingChange
-                      }
+                      handleSearchTextChange={this.handleSearchTextChange}
                       handleSearchIsActiveChange={
                         this.handleSearchIsActiveChange
                       }
+                      searchText={searchText}
                     />
                   ),
                 }
               : { headerTitle: () => <LogoHeader /> }
           }
         >
-          {() => this.getScreen()}
+          {() => <DismissKeyboard>{this.getScreen()}</DismissKeyboard>}
         </Stack.Screen>
       </Stack.Navigator>
     );

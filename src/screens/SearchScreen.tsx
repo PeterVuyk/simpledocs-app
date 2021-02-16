@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, Image } from 'react-native';
+import {StyleSheet, Text, View, Image, Keyboard} from 'react-native';
 
 const styles = StyleSheet.create({
   container: {
@@ -9,10 +9,15 @@ const styles = StyleSheet.create({
   },
 });
 
-const SearchScreen: React.FC = () => {
+interface Props {
+  searchText: string;
+}
+
+const SearchScreen: React.FC<Props> = ({ searchText }) => {
   return (
-    <View style={styles.container}>
+    <View style={styles.container} onTouchStart={Keyboard.dismiss}>
       <Text>SearchResult</Text>
+      <Text>value: {searchText}</Text>
       <Image
         /* eslint-disable-next-line global-require */
         source={require('../../assets/images/background.png')}
