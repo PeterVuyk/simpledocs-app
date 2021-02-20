@@ -1,7 +1,6 @@
 import * as React from 'react';
-import {Keyboard, View} from 'react-native';
+import { Keyboard, View } from 'react-native';
 import { ReactElement } from 'react';
-import {Block} from "expo-ui-kit";
 
 interface Props {
   children: ReactElement;

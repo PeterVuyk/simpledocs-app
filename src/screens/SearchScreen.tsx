@@ -1,5 +1,13 @@
 import React from 'react';
-import {StyleSheet, Text, View, Image, Keyboard} from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  View,
+  Image,
+  Keyboard,
+  FlatList,
+} from 'react-native';
+import RegulationsRepository from '../database/RegulationsRepository';
 
 const styles = StyleSheet.create({
   container: {
@@ -14,10 +22,26 @@ interface Props {
 }
 
 const SearchScreen: React.FC<Props> = ({ searchText }) => {
+  const [regulations, setRegulations] = React.useState([]);
+
+  React.useEffect(() => {
+    RegulationsRepository.searchRegulations(searchText, setRegulations);
+  }, [searchText]);
+
   return (
     <View style={styles.container} onTouchStart={Keyboard.dismiss}>
       <Text>SearchResult</Text>
       <Text>value: {searchText}</Text>
+      {regulations && (
+        <FlatList
+          data={regulations}
+          renderItem={({ item }) => (
+            <View>
+              <Text>{item.title}</Text>
+            </View>
+          )}
+        />
+      )}
       <Image
         /* eslint-disable-next-line global-require */
         source={require('../../assets/images/background.png')}
