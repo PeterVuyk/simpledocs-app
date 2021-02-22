@@ -1,24 +1,21 @@
 import React, { ReactElement } from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import { RouteProp, useIsFocused } from '@react-navigation/native';
+import { useIsFocused } from '@react-navigation/native';
 import { DrawerNavigationHelpers } from '@react-navigation/drawer/lib/typescript/src/types';
-import RegulationsScreen from '../../screens/RegulationsScreen';
+import { View } from 'react-native';
 import LogoHeader from './LogoHeader';
 import SearchScreen from '../../screens/SearchScreen';
-import InfoScreen from '../../screens/InfoScreen';
-import DecisionTreeScreen from '../../screens/DecisionTreeScreen';
 import AppSearchBar from './AppSearchBar';
-import DismissKeyboard from '../../components/DismissKeyboard';
 
 const Stack = createStackNavigator();
 
 interface Props {
   navigation: DrawerNavigationHelpers;
-  route: RouteProp<{ params: { screenName: string } }, 'params'>;
+  children: ReactElement;
 }
 
-const Header: React.FC<Props> = ({ navigation, route }) => {
+const Header: React.FC<Props> = ({ navigation, children }) => {
   const [searchIsActive, setSearchIsActive] = React.useState(false);
   const [searchText, setSearchText] = React.useState('');
   const isFocused = useIsFocused();
@@ -34,21 +31,13 @@ const Header: React.FC<Props> = ({ navigation, route }) => {
   const handleSearchIsActiveChange = (isActive: boolean): void =>
     setSearchIsActive(isActive);
 
+  const showSearchInHeader = (): boolean => searchIsActive || searchText !== '';
+
   const getScreen = (): ReactElement => {
     if (searchIsActive || searchText !== '') {
       return <SearchScreen searchText={searchText} />;
     }
-
-    switch (route.params.screenName) {
-      case 'Regulations':
-        return <RegulationsScreen />;
-      case 'Info':
-        return <InfoScreen />;
-      case 'DecisionTree':
-        return <DecisionTreeScreen />;
-      default:
-        return <SearchScreen searchText={searchText} />;
-    }
+    return children;
   };
 
   const getSearchButton = (): ReactElement => {
@@ -69,7 +58,7 @@ const Header: React.FC<Props> = ({ navigation, route }) => {
         headerTitleStyle: null,
         headerStyle: { backgroundColor: '#fff', height: 120 },
         headerLeft: () =>
-          searchIsActive ? (
+          showSearchInHeader() ? (
             () => null
           ) : (
             <MaterialCommunityIcons
@@ -80,13 +69,14 @@ const Header: React.FC<Props> = ({ navigation, route }) => {
               onPress={() => navigation.openDrawer()}
             />
           ),
-        headerRight: () => (searchIsActive ? () => null : getSearchButton()),
+        headerRight: () =>
+          showSearchInHeader() ? () => null : getSearchButton(),
       }}
     >
       <Stack.Screen
         name="Ambulancezorg Nederland"
         options={() =>
-          searchIsActive
+          showSearchInHeader()
             ? {
                 header: () => (
                   <AppSearchBar
@@ -99,7 +89,7 @@ const Header: React.FC<Props> = ({ navigation, route }) => {
             : { headerTitle: () => <LogoHeader /> }
         }
       >
-        {() => <DismissKeyboard>{getScreen()}</DismissKeyboard>}
+        {() => <View style={{ flex: 1 }}>{getScreen()}</View>}
       </Stack.Screen>
     </Stack.Navigator>
   );

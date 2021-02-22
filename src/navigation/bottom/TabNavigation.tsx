@@ -2,8 +2,10 @@ import React from 'react';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Animated from 'react-native-reanimated';
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
-import Header from '../header/Header';
 import { setDrawerProgressListener } from '../drawer/onDrawerProgressListener';
+import InfoScreen from '../../screens/InfoScreen';
+import DecisionTreeScreen from '../../screens/DecisionTreeScreen';
+import RegulationsScreen from '../../screens/RegulationsScreen';
 
 const Tab = createMaterialBottomTabNavigator();
 
@@ -35,8 +37,7 @@ const TabNavigation: React.FC = () => {
       >
         <Tab.Screen
           name="DecisionTree"
-          component={Header}
-          initialParams={{ screenName: 'DecisionTree' }}
+          component={DecisionTreeScreen}
           options={{
             tabBarLabel: 'Beslisboom',
             tabBarIcon: ({ color }) => (
@@ -50,8 +51,7 @@ const TabNavigation: React.FC = () => {
         />
         <Tab.Screen
           name="Regulations"
-          component={Header}
-          initialParams={{ screenName: 'Regulations' }}
+          component={RegulationsScreen}
           options={{
             tabBarLabel: 'Regelgeving',
             tabBarIcon: ({ color }) => (
@@ -65,8 +65,7 @@ const TabNavigation: React.FC = () => {
         />
         <Tab.Screen
           name="Info"
-          component={Header}
-          initialParams={{ screenName: 'Info' }}
+          component={InfoScreen}
           options={{
             tabBarLabel: 'Info',
             tabBarIcon: ({ color }) => (

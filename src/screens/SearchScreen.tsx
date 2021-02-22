@@ -1,53 +1,83 @@
 import React from 'react';
-import {
-  StyleSheet,
-  Text,
-  View,
-  Image,
-  Keyboard,
-  FlatList,
-} from 'react-native';
+import { View, Keyboard, FlatList } from 'react-native';
+import { ListItem, Avatar } from 'react-native-elements';
+import { Asset } from 'expo-asset';
 import RegulationsRepository from '../database/RegulationsRepository';
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-});
+import HighlightWords from '../components/HighlightWords';
+import getChapterIcon from '../helper/getChapterIcon';
 
 interface Props {
   searchText: string;
 }
 
+interface RegulationsContent {
+  id: number;
+  index: number;
+  chapter: string;
+  // eslint-disable-next-line camelcase
+  icon_path: string;
+  title: string;
+  body: string;
+  // eslint-disable-next-line camelcase
+  search_text: string;
+}
+
 const SearchScreen: React.FC<Props> = ({ searchText }) => {
-  const [regulations, setRegulations] = React.useState([]);
+  const [regulations, setRegulations] = React.useState<RegulationsContent[]>(
+    [],
+  );
 
   React.useEffect(() => {
     RegulationsRepository.searchRegulations(searchText, setRegulations);
   }, [searchText]);
 
+  const getShortenedBody = (fullBody: string): string => {
+    const firstOccurrence: number = fullBody.indexOf(searchText);
+    if (firstOccurrence < 50 && fullBody.length > 100) {
+      return `${fullBody.substr(0, 100)}...`;
+    }
+    if (fullBody.length > 100) {
+      return `...${fullBody.substr(
+        firstOccurrence - 50,
+        firstOccurrence + 50,
+      )}...`;
+    }
+    return fullBody;
+  };
+
+  const renderItem = (item: RegulationsContent) => (
+    <ListItem bottomDivider>
+      <Avatar
+        source={{
+          uri: Asset.fromModule(getChapterIcon(item.chapter)).uri,
+        }}
+      />
+      <ListItem.Content>
+        <ListItem.Title>
+          <HighlightWords
+            searchText={searchText}
+            textToHighlight={item.title}
+          />
+        </ListItem.Title>
+        <ListItem.Subtitle>
+          <HighlightWords
+            searchText={searchText}
+            textToHighlight={getShortenedBody(item.search_text)}
+          />
+        </ListItem.Subtitle>
+      </ListItem.Content>
+      <ListItem.Chevron />
+    </ListItem>
+  );
+
   return (
-    <View style={styles.container} onTouchStart={Keyboard.dismiss}>
-      <Text>SearchResult</Text>
-      <Text>value: {searchText}</Text>
+    <View style={{ flex: 1 }} onTouchStart={Keyboard.dismiss}>
       {regulations && (
-        <FlatList
+        <FlatList<RegulationsContent>
           data={regulations}
-          renderItem={({ item }) => (
-            <View>
-              <Text>{item.title}</Text>
-            </View>
-          )}
+          renderItem={({ item }) => renderItem(item)}
         />
       )}
-      <Image
-        /* eslint-disable-next-line global-require */
-        source={require('../../assets/images/background.png')}
-        style={{ position: 'absolute', resizeMode: 'contain', opacity: 0.4 }}
-        blurRadius={4}
-      />
     </View>
   );
 };

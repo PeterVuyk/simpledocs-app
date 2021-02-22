@@ -13,12 +13,20 @@ const AppSearchBar: React.FC<Props> = ({
   handleSearchIsActiveChange,
   searchText,
 }) => {
+  let searchRef: null | SearchBar = null;
+
   const setSearchIsTyping = (text: string) => handleSearchTextChange(text);
+
+  React.useEffect(() => {
+    searchRef?.focus();
+  }, [searchRef]);
 
   return (
     <View style={{ backgroundColor: '#fff' }}>
       <SearchBar
-        ref={search => search?.focus()}
+        ref={search => {
+          searchRef = search;
+        }}
         containerStyle={{ backgroundColor: '#fff', marginTop: 55, padding: 5 }}
         inputContainerStyle={{ backgroundColor: '#fff' }}
         platform={Platform.OS === 'ios' ? 'ios' : 'android'}
