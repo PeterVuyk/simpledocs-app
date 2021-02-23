@@ -17,7 +17,7 @@ interface Props {
 
 const DecisionTreeScreen: React.FC<Props> = ({ navigation }) => {
   return (
-    <Header navigation={navigation}>
+    <Header navigationDrawer={navigation}>
       <View style={styles.container}>
         <Image
           /* eslint-disable-next-line global-require */

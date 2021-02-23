@@ -7,15 +7,16 @@ import { View } from 'react-native';
 import LogoHeader from './LogoHeader';
 import SearchScreen from '../../screens/SearchScreen';
 import AppSearchBar from './AppSearchBar';
+import DocumentationViewScreen from '../../screens/DocumentationViewScreen';
 
 const Stack = createStackNavigator();
 
 interface Props {
-  navigation: DrawerNavigationHelpers;
+  navigationDrawer: DrawerNavigationHelpers;
   children: ReactElement;
 }
 
-const Header: React.FC<Props> = ({ navigation, children }) => {
+const Header: React.FC<Props> = ({ navigationDrawer, children }) => {
   const [searchIsActive, setSearchIsActive] = React.useState(false);
   const [searchText, setSearchText] = React.useState('');
   const isFocused = useIsFocused();
@@ -66,7 +67,7 @@ const Header: React.FC<Props> = ({ navigation, children }) => {
               name="menu"
               color="#154594"
               size={26}
-              onPress={() => navigation.openDrawer()}
+              onPress={() => navigationDrawer.openDrawer()}
             />
           ),
         headerRight: () =>
@@ -91,6 +92,10 @@ const Header: React.FC<Props> = ({ navigation, children }) => {
       >
         {() => <View style={{ flex: 1 }}>{getScreen()}</View>}
       </Stack.Screen>
+      <Stack.Screen
+        name="DocumentationView"
+        component={DocumentationViewScreen}
+      />
     </Stack.Navigator>
   );
 };

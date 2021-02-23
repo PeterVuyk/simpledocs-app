@@ -6,6 +6,7 @@ import { setDrawerProgressListener } from '../drawer/onDrawerProgressListener';
 import InfoScreen from '../../screens/InfoScreen';
 import DecisionTreeScreen from '../../screens/DecisionTreeScreen';
 import RegulationsScreen from '../../screens/RegulationsScreen';
+import DocumentationViewScreen from "../../screens/DocumentationViewScreen";
 
 const Tab = createMaterialBottomTabNavigator();
 

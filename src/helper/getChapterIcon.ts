@@ -3,7 +3,6 @@ import React from "react";
 import * as module from "module";
 
 const getChapterIcon = (icon: string) => {
-  console.log(icon);
   switch (icon) {
     case '1':
       return require('./../../assets/images/chapters/2.1.1.png');

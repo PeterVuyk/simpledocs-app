@@ -2,6 +2,7 @@ import React from 'react';
 import { View, Keyboard, FlatList } from 'react-native';
 import { ListItem, Avatar } from 'react-native-elements';
 import { Asset } from 'expo-asset';
+import { useNavigation } from '@react-navigation/native';
 import RegulationsRepository from '../database/RegulationsRepository';
 import HighlightWords from '../components/HighlightWords';
 import getChapterIcon from '../helper/getChapterIcon';
@@ -31,6 +32,8 @@ const SearchScreen: React.FC<Props> = ({ searchText }) => {
     RegulationsRepository.searchRegulations(searchText, setRegulations);
   }, [searchText]);
 
+  const navigation = useNavigation();
+
   const getShortenedBody = (fullBody: string): string => {
     const firstOccurrence: number = fullBody.indexOf(searchText);
     if (firstOccurrence < 50 && fullBody.length > 100) {
@@ -46,7 +49,14 @@ const SearchScreen: React.FC<Props> = ({ searchText }) => {
   };
 
   const renderItem = (item: RegulationsContent) => (
-    <ListItem bottomDivider>
+    <ListItem
+      bottomDivider
+      onPress={event =>
+        navigation.navigate('DocumentationView', {
+          regulationsContent: item,
+        })
+      }
+    >
       <Avatar
         source={{
           uri: Asset.fromModule(getChapterIcon(item.chapter)).uri,

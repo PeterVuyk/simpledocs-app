@@ -17,7 +17,7 @@ interface Props {
 
 const InfoScreen: React.FC<Props> = ({ navigation }) => {
   return (
-    <Header navigation={navigation}>
+    <Header navigationDrawer={navigation}>
       <View style={styles.container}>
         <Text>InfoScreen</Text>
         <Image
