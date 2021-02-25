@@ -4,18 +4,14 @@ import { Platform, View } from 'react-native';
 
 interface Props {
   handleSearchTextChange: (searchText: string) => void;
-  handleSearchIsActiveChange: (isActive: boolean) => void;
   searchText: string;
 }
 
 const AppSearchBar: React.FC<Props> = ({
   handleSearchTextChange,
-  handleSearchIsActiveChange,
   searchText,
 }) => {
   let searchRef: null | SearchBar = null;
-
-  const setSearchIsTyping = (text: string) => handleSearchTextChange(text);
 
   React.useEffect(() => {
     searchRef?.focus();
@@ -31,14 +27,8 @@ const AppSearchBar: React.FC<Props> = ({
         inputContainerStyle={{ backgroundColor: '#fff' }}
         platform={Platform.OS === 'ios' ? 'ios' : 'android'}
         placeholder="Zoek op titel of trefwoord..."
-        onChangeText={typedText => {
-          handleSearchTextChange(typedText);
-          setSearchIsTyping(typedText);
-        }}
+        onChangeText={typedText => handleSearchTextChange(typedText)}
         value={searchText}
-        onCancel={() => {
-          handleSearchIsActiveChange(false);
-        }}
       />
     </View>
   );

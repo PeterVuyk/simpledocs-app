@@ -3,10 +3,9 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import Animated from 'react-native-reanimated';
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 import { setDrawerProgressListener } from '../drawer/onDrawerProgressListener';
-import InfoScreen from '../../screens/InfoScreen';
-import DecisionTreeScreen from '../../screens/DecisionTreeScreen';
-import RegulationsScreen from '../../screens/RegulationsScreen';
-import DocumentationViewScreen from "../../screens/DocumentationViewScreen";
+import DecisionTreeStackNavigator from '../StackNavigator/DecisionTreeStackNavigator';
+import InfoStackNavigator from '../StackNavigator/InfoStackNavigator';
+import RegulationStackNavigator from '../StackNavigator/RegulationsStackNavigator';
 
 const Tab = createMaterialBottomTabNavigator();
 
@@ -31,14 +30,14 @@ const TabNavigation: React.FC = () => {
   return (
     <Animated.View style={[{ flex: 1, overflow: 'hidden' }, animatedStyle]}>
       <Tab.Navigator
-        initialRouteName="Regulations"
+        initialRouteName="RegulationsScreen"
         activeColor="#ffffff"
         inactiveColor="#247dc0"
         barStyle={{ backgroundColor: '#154594' }}
       >
         <Tab.Screen
-          name="DecisionTree"
-          component={DecisionTreeScreen}
+          name="DecisionTreeScreen"
+          component={DecisionTreeStackNavigator}
           options={{
             tabBarLabel: 'Beslisboom',
             tabBarIcon: ({ color }) => (
@@ -51,8 +50,8 @@ const TabNavigation: React.FC = () => {
           }}
         />
         <Tab.Screen
-          name="Regulations"
-          component={RegulationsScreen}
+          name="RegulationsScreen"
+          component={RegulationStackNavigator}
           options={{
             tabBarLabel: 'Regelgeving',
             tabBarIcon: ({ color }) => (
@@ -65,8 +64,8 @@ const TabNavigation: React.FC = () => {
           }}
         />
         <Tab.Screen
-          name="Info"
-          component={InfoScreen}
+          name="InfoScreen"
+          component={InfoStackNavigator}
           options={{
             tabBarLabel: 'Info',
             tabBarIcon: ({ color }) => (

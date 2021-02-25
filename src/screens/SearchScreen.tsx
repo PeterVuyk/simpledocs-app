@@ -3,9 +3,9 @@ import { View, Keyboard, FlatList } from 'react-native';
 import { ListItem, Avatar } from 'react-native-elements';
 import { Asset } from 'expo-asset';
 import { useNavigation } from '@react-navigation/native';
-import RegulationsRepository from '../database/RegulationsRepository';
 import HighlightWords from '../components/HighlightWords';
 import getChapterIcon from '../helper/getChapterIcon';
+import RegulationsRepository from '../database/RegulationsRepository';
 
 interface Props {
   searchText: string;

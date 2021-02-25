@@ -10,7 +10,6 @@ const Drawer: React.FC = () => {
   return (
     <NavigationContainer>
       <DrawerNavigator.Navigator
-        // style={{ width: 1100 }}
         drawerType="slide"
         drawerStyle={{ backgroundColor: 'white' }}
         overlayColor="transparant"

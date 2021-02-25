@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Image } from 'react-native';
 
-const LogoHeader: React.FC = () => {
+const HeaderLogo: React.FC = () => {
   return (
     <Image
       style={{ width: 200, resizeMode: 'contain' }}
@@ -11,4 +11,4 @@ const LogoHeader: React.FC = () => {
   );
 };
 
-export default LogoHeader;
+export default HeaderLogo;
