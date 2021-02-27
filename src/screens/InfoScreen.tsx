@@ -12,13 +12,16 @@ const styles = StyleSheet.create({
 const InfoScreen: React.FC = () => {
   return (
     <View style={styles.container}>
-      <Text>InfoScreen</Text>
-      <Image
-        /* eslint-disable-next-line global-require */
-        source={require('../../assets/images/background.png')}
-        style={{ position: 'absolute', resizeMode: 'contain', opacity: 0.4 }}
-        blurRadius={4}
-      />
+      <Text style={{ fontWeight: "bold" }}>Ambulancezorg Nederland</Text>
+      <Text style={{ fontWeight: "bold", marginTop: 20 }}>Bezoekadres</Text>
+      <Text>Postbus 489</Text>
+      <Text>8000 AL Zwolle</Text>
+      <Text style={{ fontWeight: "bold", marginTop: 20 }}>Postadres</Text>
+      <Text>Veerallee 68</Text>
+      <Text>8019 AE Zwolle</Text>
+      <Text style={{ fontWeight: "bold", marginTop: 20 }}>Contact</Text>
+      <Text>088 38 38 200</Text>
+      <Text>info@ambulancezorg.nl</Text>
     </View>
   );
 };

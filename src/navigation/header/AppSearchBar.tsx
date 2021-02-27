@@ -23,7 +23,7 @@ const AppSearchBar: React.FC<Props> = ({
         ref={search => {
           searchRef = search;
         }}
-        containerStyle={{ backgroundColor: '#fff', marginTop: 55, padding: 5 }}
+        containerStyle={{ backgroundColor: '#fff' }}
         inputContainerStyle={{ backgroundColor: '#fff' }}
         platform={Platform.OS === 'ios' ? 'ios' : 'android'}
         placeholder="Zoek op titel of trefwoord..."

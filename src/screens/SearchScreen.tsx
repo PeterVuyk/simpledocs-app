@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Keyboard, FlatList } from 'react-native';
+import { View, Keyboard, FlatList, ImageBackground } from 'react-native';
 import { ListItem, Avatar } from 'react-native-elements';
 import { Asset } from 'expo-asset';
 import { useNavigation } from '@react-navigation/native';
@@ -29,6 +29,10 @@ const SearchScreen: React.FC<Props> = ({ searchText }) => {
   );
 
   React.useEffect(() => {
+    if (searchText === '') {
+      setRegulations([]);
+      return;
+    }
     RegulationsRepository.searchRegulations(searchText, setRegulations);
   }, [searchText]);
 
@@ -52,8 +56,8 @@ const SearchScreen: React.FC<Props> = ({ searchText }) => {
     <ListItem
       bottomDivider
       onPress={event =>
-        navigation.navigate('DocumentationView', {
-          regulationsContent: item,
+        navigation.navigate('DocumentationViewScreen', {
+          regulationsContentId: item.id,
         })
       }
     >
@@ -82,6 +86,18 @@ const SearchScreen: React.FC<Props> = ({ searchText }) => {
 
   return (
     <View style={{ flex: 1 }} onTouchStart={Keyboard.dismiss}>
+      {regulations.length === 0 && (
+        <ImageBackground
+          style={{
+            flex: 1,
+            marginTop: 120,
+            height: 120,
+          }}
+          /* eslint-disable-next-line global-require */
+          source={require('../../assets/images/find.png')}
+          resizeMode="center"
+        />
+      )}
       {regulations && (
         <FlatList<RegulationsContent>
           data={regulations}

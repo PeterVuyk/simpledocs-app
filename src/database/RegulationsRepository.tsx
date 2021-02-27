@@ -7,9 +7,11 @@ function getRegulationsById(id: number, setRegulations: any): void {
     connection.transaction(tx => {
       tx.executeSql(
         `SELECT * FROM regulations_content WHERE id = ?;`,
-        [1],
+        [id],
         (_, { rows: { _array } }) => {
-          setRegulations(_array);
+          if (_array.length === 1) {
+            setRegulations(_array[0]);
+          }
         },
       );
     });

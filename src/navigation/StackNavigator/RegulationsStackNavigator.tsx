@@ -25,7 +25,7 @@ const RegulationStackNavigator: React.FC<Props> = ({ navigation }) => {
     <Stack.Navigator
       screenOptions={{
         headerTitleStyle: null,
-        headerStyle: { backgroundColor: '#fff', height: 120 },
+        headerStyle: { backgroundColor: '#fff', height: 125 },
         headerLeft: () => <DrawerButton navigation={navigation} />,
         headerRight: () => <SearchButton navigation={navigation} />,
         headerTitle: () => <HeaderLogo />,
@@ -33,7 +33,7 @@ const RegulationStackNavigator: React.FC<Props> = ({ navigation }) => {
     >
       <Stack.Screen name="RegulationScreen" component={RegulationsScreen} />
       <Stack.Screen
-        name="DocumentationView"
+        name="DocumentationViewScreen"
         component={DocumentationViewScreen}
       />
       <Stack.Screen

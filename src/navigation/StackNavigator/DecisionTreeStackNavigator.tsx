@@ -17,7 +17,7 @@ const DecisionTreeStackNavigator: React.FC<Props> = ({ navigation }) => {
     <Stack.Navigator
       screenOptions={{
         headerTitleStyle: null,
-        headerStyle: { backgroundColor: '#fff', height: 120 },
+        headerStyle: { backgroundColor: '#fff', height: 125 },
         headerLeft: () => <DrawerButton navigation={navigation} />,
         headerRight: () => <SearchButton navigation={navigation} />,
         headerTitle: () => <HeaderLogo />,

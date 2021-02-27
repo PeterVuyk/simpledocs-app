@@ -1,5 +1,8 @@
 import React from 'react';
-import { StyleSheet, Text, View, Image } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
+import { Button } from 'react-native-elements';
+import { useNavigation } from '@react-navigation/native';
+import DocumentationViewScreen from './DocumentationViewScreen';
 
 const styles = StyleSheet.create({
   container: {
@@ -10,14 +13,19 @@ const styles = StyleSheet.create({
 });
 
 const RegulationsScreen: React.FC = () => {
+  const navigation = useNavigation();
+
   return (
     <View style={styles.container}>
       <Text>RegulationsScreen</Text>
-      <Image
-        /* eslint-disable-next-line global-require */
-        source={require('../../assets/images/background.png')}
-        style={{ position: 'absolute', resizeMode: 'contain', opacity: 0.4 }}
-        blurRadius={4}
+      <Button
+        onPress={event =>
+          navigation.navigate('DocumentationViewScreen', {
+            regulationsContentId: 4,
+          })
+        }
+        title="test open article"
+        accessibilityLabel="click me"
       />
     </View>
   );

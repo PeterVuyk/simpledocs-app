@@ -1,6 +1,7 @@
 import React from 'react';
-import { RouteProp } from '@react-navigation/native';
+import { RouteProp, useNavigation } from '@react-navigation/native';
 import WebView from 'react-native-webview';
+import RegulationsRepository from '../database/RegulationsRepository';
 
 interface RegulationsContent {
   id: number;
@@ -15,19 +16,32 @@ interface RegulationsContent {
 }
 
 interface Props {
-  route: RouteProp<
-    { params: { regulationsContent: RegulationsContent } },
-    'params'
-  >;
+  route: RouteProp<{ params: { regulationsContentId: number } }, 'params'>;
 }
 
 const DocumentationViewScreen: React.FC<Props> = route => {
-  const { regulationsContent } = route.route.params;
+  const [
+    regulationContent,
+    setRegulationContent,
+  ] = React.useState<RegulationsContent>();
+
+  const navigation = useNavigation();
+  const { regulationsContentId } = route.route.params;
+
+  React.useEffect(() => {
+    RegulationsRepository.getRegulationsById(
+      regulationsContentId,
+      setRegulationContent,
+    );
+    if (regulationContent === null) {
+      navigation.navigate('RegulationsScreen');
+    }
+  }, [regulationsContentId]);
 
   return (
     <WebView
       originWhitelist={['*']}
-      source={{ html: regulationsContent.body }}
+      source={{ html: regulationContent?.body ?? '' }}
     />
   );
 };
