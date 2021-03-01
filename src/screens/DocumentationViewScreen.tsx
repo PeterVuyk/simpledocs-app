@@ -2,6 +2,7 @@ import React from 'react';
 import { RouteProp, useNavigation } from '@react-navigation/native';
 import WebView from 'react-native-webview';
 import RegulationsRepository from '../database/RegulationsRepository';
+import highlightWordsInHTMLFile from '../helper/highlightWordsInHTMLFile';
 
 interface RegulationsContent {
   id: number;
@@ -16,7 +17,10 @@ interface RegulationsContent {
 }
 
 interface Props {
-  route: RouteProp<{ params: { regulationsContentId: number } }, 'params'>;
+  route: RouteProp<
+    { params: { regulationsContentId: number; searchText?: string } },
+    'params'
+  >;
 }
 
 const DocumentationViewScreen: React.FC<Props> = route => {
@@ -38,10 +42,20 @@ const DocumentationViewScreen: React.FC<Props> = route => {
     }
   }, [regulationsContentId]);
 
+  const getDocumentation = (): string => {
+    const { searchText } = route.route.params;
+    if (searchText === undefined || regulationContent === undefined) {
+      return regulationContent?.body ?? '';
+    }
+    return highlightWordsInHTMLFile(regulationContent.body, searchText);
+  };
+
   return (
     <WebView
+      startInLoadingState
       originWhitelist={['*']}
-      source={{ html: regulationContent?.body ?? '' }}
+      scalesPageToFit={false}
+      source={{ html: getDocumentation() }}
     />
   );
 };

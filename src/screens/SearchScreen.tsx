@@ -55,10 +55,13 @@ const SearchScreen: React.FC<Props> = ({ searchText }) => {
   const renderItem = (item: RegulationsContent) => (
     <ListItem
       bottomDivider
-      onPress={event =>
+      onPress={event => {
+        console.log("The caller: ", searchText);
         navigation.navigate('DocumentationViewScreen', {
           regulationsContentId: item.id,
+          searchText,
         })
+      }
       }
     >
       <Avatar

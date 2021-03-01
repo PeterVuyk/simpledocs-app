@@ -21,7 +21,8 @@ const RegulationsScreen: React.FC = () => {
       <Button
         onPress={event =>
           navigation.navigate('DocumentationViewScreen', {
-            regulationsContentId: 4,
+            regulationsContentId: 6,
+            searchText: "article",
           })
         }
         title="test open article"
