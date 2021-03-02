@@ -18,14 +18,13 @@ const filterIndexFromTagsAfterMatch = (
 ): number[] => {
   const filteredIndexes: number[] = [];
   indexes.forEach(matchIndex => {
-    const textBeforeMatch = text.substr(matchIndex, text.length);
-    const firstClosingTag: number = textBeforeMatch.indexOf('>');
-    const firstOpeningTag: number = textBeforeMatch.indexOf('<');
+    const textAfterMatch = text.substr(matchIndex, text.length);
+    const firstClosingTag: number = textAfterMatch.indexOf('>');
+    const firstOpeningTag: number = textAfterMatch.indexOf('<');
     if (firstClosingTag > firstOpeningTag) {
       filteredIndexes.push(matchIndex);
     }
   });
-  // haal substr voor na match, kijk wat de laatste letter match is.
   return filteredIndexes;
 };
 
@@ -67,7 +66,7 @@ const highlightSearchWords = (
 };
 
 /**
- * This is an ugly ugly way to highlight words in html files by adding markup e.g. '<mark>word</mark>'.
+ * This is an ugly way to highlight words in html files by adding markup e.g. '<mark>word</mark>'.
  * For MVP usage it's acceptable because the HTML files is managed by ourself, two rules:
  * - It start searching after <article>
  * - It is not allowed to use characters '<' or '>' in the html text.

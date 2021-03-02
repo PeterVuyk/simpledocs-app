@@ -4,7 +4,7 @@ import { ListItem, Avatar } from 'react-native-elements';
 import { Asset } from 'expo-asset';
 import { useNavigation } from '@react-navigation/native';
 import HighlightWords from '../components/HighlightWords';
-import getChapterIcon from '../helper/getChapterIcon';
+import getHeadingIcon from '../helper/getHeadingIcon';
 import RegulationsRepository from '../database/RegulationsRepository';
 
 interface Props {
@@ -14,10 +14,11 @@ interface Props {
 interface RegulationsContent {
   id: number;
   index: number;
-  chapter: string;
-  // eslint-disable-next-line camelcase
-  icon_path: string;
+  heading: string;
+  level: string;
   title: string;
+  // eslint-disable-next-line camelcase
+  sub_title: string;
   body: string;
   // eslint-disable-next-line camelcase
   search_text: string;
@@ -55,18 +56,16 @@ const SearchScreen: React.FC<Props> = ({ searchText }) => {
   const renderItem = (item: RegulationsContent) => (
     <ListItem
       bottomDivider
-      onPress={event => {
-        console.log("The caller: ", searchText);
+      onPress={event =>
         navigation.navigate('DocumentationViewScreen', {
           regulationsContentId: item.id,
           searchText,
         })
       }
-      }
     >
       <Avatar
         source={{
-          uri: Asset.fromModule(getChapterIcon(item.chapter)).uri,
+          uri: Asset.fromModule(getHeadingIcon(item.heading)).uri,
         }}
       />
       <ListItem.Content>

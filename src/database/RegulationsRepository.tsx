@@ -32,9 +32,24 @@ function searchRegulations(text: string, setRegulations: any): void {
   });
 }
 
+function getHeading(setRegulations: any): void {
+  openDatabase.then(connection => {
+    connection.transaction(tx => {
+      tx.executeSql(
+        `SELECT * FROM regulations_content WHERE level = 'section';`,
+        [],
+        (_, { rows: { _array } }) => {
+          setRegulations(_array);
+        },
+      );
+    });
+  });
+}
+
 const RegulationsRepository = {
   getRegulationsById,
   searchRegulations,
+  getHeading,
 };
 
 export default RegulationsRepository;

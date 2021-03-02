@@ -1,5 +1,7 @@
 import React from 'react';
-import { StyleSheet, Text, View, Image } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
+import { Button } from 'react-native-elements';
+import { useNavigation } from '@react-navigation/native';
 
 const styles = StyleSheet.create({
   container: {
@@ -10,15 +12,20 @@ const styles = StyleSheet.create({
 });
 
 const DecisionTreeScreen: React.FC = () => {
+  const navigation = useNavigation();
+
   return (
     <View style={styles.container}>
-      <Image
-        /* eslint-disable-next-line global-require */
-        source={require('../../assets/images/background.png')}
-        style={{ position: 'absolute', resizeMode: 'contain', opacity: 0.4 }}
-        blurRadius={4}
-      />
       <Text>DecisionTreeScreen</Text>
+      <Button
+        onPress={event =>
+          navigation.navigate('DocumentationViewScreen', {
+            regulationsContentId: 6,
+          })
+        }
+        title="test open article"
+        accessibilityLabel="click me"
+      />
     </View>
   );
 };

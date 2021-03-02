@@ -1,16 +1,19 @@
 import React from 'react';
 import { RouteProp, useNavigation } from '@react-navigation/native';
 import WebView from 'react-native-webview';
+import { View } from 'react-native';
+import { Button } from 'react-native-elements';
 import RegulationsRepository from '../database/RegulationsRepository';
 import highlightWordsInHTMLFile from '../helper/highlightWordsInHTMLFile';
 
 interface RegulationsContent {
   id: number;
   index: number;
-  chapter: string;
-  // eslint-disable-next-line camelcase
-  icon_path: string;
+  heading: string;
+  level: string;
   title: string;
+  // eslint-disable-next-line camelcase
+  sub_title: string;
   body: string;
   // eslint-disable-next-line camelcase
   search_text: string;
@@ -28,9 +31,14 @@ const DocumentationViewScreen: React.FC<Props> = route => {
     regulationContent,
     setRegulationContent,
   ] = React.useState<RegulationsContent>();
+  const [highlightText, setHighlightedText] = React.useState<string>('');
 
+  const { regulationsContentId, searchText } = route.route.params;
   const navigation = useNavigation();
-  const { regulationsContentId } = route.route.params;
+
+  React.useEffect(() => {
+    setHighlightedText(searchText ?? '');
+  }, [searchText]);
 
   React.useEffect(() => {
     RegulationsRepository.getRegulationsById(
@@ -43,20 +51,39 @@ const DocumentationViewScreen: React.FC<Props> = route => {
   }, [regulationsContentId]);
 
   const getDocumentation = (): string => {
-    const { searchText } = route.route.params;
-    if (searchText === undefined || regulationContent === undefined) {
-      return regulationContent?.body ?? '';
+    if (regulationContent === undefined) {
+      return '';
     }
-    return highlightWordsInHTMLFile(regulationContent.body, searchText);
+    if (highlightText === '') {
+      return regulationContent.body;
+    }
+    return highlightWordsInHTMLFile(regulationContent.body, highlightText);
   };
 
   return (
-    <WebView
-      startInLoadingState
-      originWhitelist={['*']}
-      scalesPageToFit={false}
-      source={{ html: getDocumentation() }}
-    />
+    <View style={{ flex: 1 }}>
+      <WebView
+        startInLoadingState
+        originWhitelist={['*']}
+        scalesPageToFit={false}
+        source={{ html: getDocumentation() }}
+      />
+      {highlightText !== '' && (
+        <View
+          style={{
+            margin: 5,
+            position: 'absolute',
+            bottom: 0,
+            right: 0,
+          }}
+        >
+          <Button
+            title="Verwijder markering"
+            onPress={event => setHighlightedText('')}
+          />
+        </View>
+      )}
+    </View>
   );
 };
 

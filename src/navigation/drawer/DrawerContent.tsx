@@ -16,7 +16,7 @@ const DrawerContent: React.FC<Props> = ({ progress, navigation }) => {
   const [titles, setTitle] = React.useState([
     {
       id: 1,
-      chapter: 1,
+      heading: 1,
       title: 'Verkeerskennis',
       paragraphs: {
         '1.1': { title: 'Snelheid, stopafstand en inhalen', subParagraphs: {} },
@@ -29,7 +29,7 @@ const DrawerContent: React.FC<Props> = ({ progress, navigation }) => {
     },
     {
       id: 2,
-      chapter: 2,
+      heading: 2,
       title: 'Beroepsspecifieke verkeerskennis',
       paragraphs: {
         '2.1': {
@@ -53,7 +53,7 @@ const DrawerContent: React.FC<Props> = ({ progress, navigation }) => {
     },
     {
       id: 3,
-      chapter: 3,
+      heading: 3,
       title:
         'Brancherichtlijn Optische en Geluidsignalen Spoedeisende medische hulpverlening',
       paragraphs: {
@@ -94,7 +94,7 @@ const DrawerContent: React.FC<Props> = ({ progress, navigation }) => {
     },
     {
       id: 4,
-      chapter: 4,
+      heading: 4,
       title: 'Bewust autorijden',
       paragraphs: {
         '4.1': { title: 'Verkeersinzicht', subParagraphs: {} },
@@ -116,7 +116,7 @@ const DrawerContent: React.FC<Props> = ({ progress, navigation }) => {
     },
     {
       id: 5,
-      chapter: 5,
+      heading: 5,
       title: 'Veiligheid',
       paragraphs: {
         '5.1': { title: 'Incidentmanagement', subParagraphs: {} },
@@ -132,7 +132,7 @@ const DrawerContent: React.FC<Props> = ({ progress, navigation }) => {
     },
     {
       id: 6,
-      chapter: 6,
+      heading: 6,
       title: 'Bijlagen',
       paragraphs: {
         '6.1': {
@@ -193,7 +193,7 @@ const DrawerContent: React.FC<Props> = ({ progress, navigation }) => {
                   <Text
                     style={{ color: '#4c4c4c', fontSize: 14, marginRight: 24 }}
                   >
-                    §{item.chapter && `${item.chapter}. `}
+                    §{item.heading && `${item.heading}. `}
                   </Text>
                   <Text style={{ color: '#4c4c4c', fontSize: 14 }}>
                     {item.title}
