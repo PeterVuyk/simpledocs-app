@@ -2,12 +2,12 @@ import React from 'react';
 import openDatabase from './openDatabase';
 
 // eslint-disable-next-line @typescript-eslint/ban-types
-function getRegulationsById(id: number, setRegulations: any): void {
+function getRegulationsByChapter(chapter: string, setRegulations: any): void {
   openDatabase.then(connection => {
     connection.transaction(tx => {
       tx.executeSql(
-        `SELECT * FROM regulations_content WHERE id = ?;`,
-        [id],
+        `SELECT * FROM regulations_content WHERE chapter = ?;`,
+        [chapter],
         (_, { rows: { _array } }) => {
           if (_array.length === 1) {
             setRegulations(_array[0]);
@@ -32,7 +32,7 @@ function searchRegulations(text: string, setRegulations: any): void {
   });
 }
 
-function getHeading(setRegulations: any): void {
+function getChapterSection(setRegulations: any): void {
   openDatabase.then(connection => {
     connection.transaction(tx => {
       tx.executeSql(
@@ -47,9 +47,9 @@ function getHeading(setRegulations: any): void {
 }
 
 const RegulationsRepository = {
-  getRegulationsById,
+  getRegulationsByChapter,
   searchRegulations,
-  getHeading,
+  getChapterSection,
 };
 
 export default RegulationsRepository;

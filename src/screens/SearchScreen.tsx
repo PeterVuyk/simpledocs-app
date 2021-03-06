@@ -4,7 +4,7 @@ import { ListItem, Avatar } from 'react-native-elements';
 import { Asset } from 'expo-asset';
 import { useNavigation } from '@react-navigation/native';
 import HighlightWords from '../components/HighlightWords';
-import getHeadingIcon from '../helper/getHeadingIcon';
+import getChapterIcon from '../helper/getChapterIcon';
 import RegulationsRepository from '../database/RegulationsRepository';
 
 interface Props {
@@ -14,7 +14,7 @@ interface Props {
 interface RegulationsContent {
   id: number;
   index: number;
-  heading: string;
+  chapter: string;
   level: string;
   title: string;
   // eslint-disable-next-line camelcase
@@ -58,14 +58,14 @@ const SearchScreen: React.FC<Props> = ({ searchText }) => {
       bottomDivider
       onPress={event =>
         navigation.navigate('DocumentationViewScreen', {
-          regulationsContentId: item.id,
+          regulationsContentChapter: item.chapter,
           searchText,
         })
       }
     >
       <Avatar
         source={{
-          uri: Asset.fromModule(getHeadingIcon(item.heading)).uri,
+          uri: Asset.fromModule(getChapterIcon(item.chapter)).uri,
         }}
       />
       <ListItem.Content>

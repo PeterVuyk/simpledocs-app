@@ -20,7 +20,7 @@ const DecisionTreeScreen: React.FC = () => {
       <Button
         onPress={event =>
           navigation.navigate('DocumentationViewScreen', {
-            regulationsContentId: 6,
+            regulationsContentChapter: 6,
           })
         }
         title="test open article"

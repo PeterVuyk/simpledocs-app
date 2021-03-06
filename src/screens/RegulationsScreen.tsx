@@ -1,24 +1,15 @@
 import React from 'react';
-import {
-  FlatList,
-  ImageBackground,
-  Keyboard,
-  StyleSheet,
-  Text,
-  View,
-} from 'react-native';
+import { FlatList, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import {Avatar, Button, ListItem} from 'react-native-elements';
+import { Avatar, ListItem } from 'react-native-elements';
 import { Asset } from 'expo-asset';
 import DocumentationViewScreen from './DocumentationViewScreen';
-import getHeadingIcon from '../helper/getHeadingIcon';
-import HighlightWords from '../components/HighlightWords';
-import RegulationsRepository from "../database/RegulationsRepository";
+import getChapterIcon from '../helper/getChapterIcon';
+import RegulationsRepository from '../database/RegulationsRepository';
 
 interface RegulationsContent {
-  id: number;
   index: number;
-  heading: string;
+  chapter: string;
   level: string;
   title: string;
   // eslint-disable-next-line camelcase
@@ -29,13 +20,12 @@ interface RegulationsContent {
 }
 
 const RegulationsScreen: React.FC = () => {
-  const isMounted = React.useRef(false);
   const [regulations, setRegulations] = React.useState<RegulationsContent[]>(
     [],
   );
 
   React.useEffect(() => {
-    RegulationsRepository.getHeading(setRegulations);
+    RegulationsRepository.getChapterSection(setRegulations);
     setRegulations(regulations);
   }, [RegulationsRepository]);
 
@@ -46,13 +36,13 @@ const RegulationsScreen: React.FC = () => {
       bottomDivider
       onPress={event =>
         navigation.navigate('DocumentationViewScreen', {
-          regulationsContentId: item.id,
+          regulationsContentChapter: item.chapter,
         })
       }
     >
       <Avatar
         source={{
-          uri: Asset.fromModule(getHeadingIcon(item.heading)).uri,
+          uri: Asset.fromModule(getChapterIcon(item.chapter)).uri,
         }}
       />
       <ListItem.Content>

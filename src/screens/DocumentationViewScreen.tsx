@@ -1,15 +1,15 @@
 import React from 'react';
 import { RouteProp, useNavigation } from '@react-navigation/native';
 import WebView from 'react-native-webview';
-import { View } from 'react-native';
+import { View, Linking } from 'react-native';
 import { Button } from 'react-native-elements';
+import { ShouldStartLoadRequest } from 'react-native-webview/lib/WebViewTypes';
 import RegulationsRepository from '../database/RegulationsRepository';
 import highlightWordsInHTMLFile from '../helper/highlightWordsInHTMLFile';
 
 interface RegulationsContent {
-  id: number;
   index: number;
-  heading: string;
+  chapter: string;
   level: string;
   title: string;
   // eslint-disable-next-line camelcase
@@ -21,7 +21,7 @@ interface RegulationsContent {
 
 interface Props {
   route: RouteProp<
-    { params: { regulationsContentId: number; searchText?: string } },
+    { params: { regulationsContentChapter: string; searchText?: string } },
     'params'
   >;
 }
@@ -33,7 +33,7 @@ const DocumentationViewScreen: React.FC<Props> = route => {
   ] = React.useState<RegulationsContent>();
   const [highlightText, setHighlightedText] = React.useState<string>('');
 
-  const { regulationsContentId, searchText } = route.route.params;
+  const { regulationsContentChapter, searchText } = route.route.params;
   const navigation = useNavigation();
 
   React.useEffect(() => {
@@ -41,14 +41,14 @@ const DocumentationViewScreen: React.FC<Props> = route => {
   }, [searchText]);
 
   React.useEffect(() => {
-    RegulationsRepository.getRegulationsById(
-      regulationsContentId,
+    RegulationsRepository.getRegulationsByChapter(
+      regulationsContentChapter,
       setRegulationContent,
     );
     if (regulationContent === null) {
       navigation.navigate('RegulationsScreen');
     }
-  }, [regulationsContentId]);
+  }, [regulationsContentChapter]);
 
   const getDocumentation = (): string => {
     if (regulationContent === undefined) {
@@ -60,12 +60,28 @@ const DocumentationViewScreen: React.FC<Props> = route => {
     return highlightWordsInHTMLFile(regulationContent.body, highlightText);
   };
 
+  const openExternalLink = (request: ShouldStartLoadRequest) => {
+    const isHTTPS = request.url.search('https://') !== -1;
+
+    if (isHTTPS) {
+      Linking.openURL(request.url);
+      return false;
+    }
+    if (request.url.startsWith('regulations://')) {
+      navigation.navigate('DocumentationViewScreen', {
+        regulationsContentChapter: request.url.split('regulations://')[1],
+      });
+    }
+    return false;
+  };
+
   return (
     <View style={{ flex: 1 }}>
       <WebView
         startInLoadingState
         originWhitelist={['*']}
         scalesPageToFit={false}
+        onShouldStartLoadWithRequest={openExternalLink}
         source={{ html: getDocumentation() }}
       />
       {highlightText !== '' && (
