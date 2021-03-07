@@ -16,32 +16,24 @@ const filterIndexFromTagsAfterMatch = (
   text: string,
   indexes: number[],
 ): number[] => {
-  const filteredIndexes: number[] = [];
-  indexes.forEach(matchIndex => {
+  return indexes.filter(matchIndex => {
     const textAfterMatch = text.substr(matchIndex, text.length);
     const firstClosingTag: number = textAfterMatch.indexOf('>');
     const firstOpeningTag: number = textAfterMatch.indexOf('<');
-    if (firstClosingTag > firstOpeningTag) {
-      filteredIndexes.push(matchIndex);
-    }
+    return firstClosingTag > firstOpeningTag;
   });
-  return filteredIndexes;
 };
 
 const filterIndexFromTagsBeforeMatch = (
   text: string,
   indexes: number[],
 ): number[] => {
-  const filteredIndexes: number[] = [];
-  indexes.forEach(matchIndex => {
+  return indexes.filter(matchIndex => {
     const textBeforeMatch = text.substr(0, matchIndex);
     const lastClosingTag: number = textBeforeMatch.lastIndexOf('>');
     const lastOpeningTag: number = textBeforeMatch.lastIndexOf('<');
-    if (lastClosingTag > lastOpeningTag) {
-      filteredIndexes.push(matchIndex);
-    }
+    return lastClosingTag > lastOpeningTag;
   });
-  return filteredIndexes;
 };
 
 const highlightSearchWords = (

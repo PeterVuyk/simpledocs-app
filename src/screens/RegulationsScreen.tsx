@@ -3,40 +3,26 @@ import { FlatList, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { Avatar, ListItem } from 'react-native-elements';
 import { Asset } from 'expo-asset';
-import DocumentationViewScreen from './DocumentationViewScreen';
 import getChapterIcon from '../helper/getChapterIcon';
-import RegulationsRepository from '../database/RegulationsRepository';
-
-interface RegulationsContent {
-  index: number;
-  chapter: string;
-  level: string;
-  title: string;
-  // eslint-disable-next-line camelcase
-  sub_title: string;
-  body: string;
-  // eslint-disable-next-line camelcase
-  search_text: string;
-}
+import RegulationRepository, {
+  Regulation,
+} from '../database/regulationRepository';
 
 const RegulationsScreen: React.FC = () => {
-  const [regulations, setRegulations] = React.useState<RegulationsContent[]>(
-    [],
-  );
+  const [regulations, setRegulations] = React.useState<Regulation[]>([]);
 
   React.useEffect(() => {
-    RegulationsRepository.getChapterSection(setRegulations);
-    setRegulations(regulations);
-  }, [RegulationsRepository]);
+    RegulationRepository.getChaptersSection(setRegulations);
+  }, []);
 
   const navigation = useNavigation();
 
-  const renderItem = (item: RegulationsContent) => (
+  const renderItem = (item: Regulation) => (
     <ListItem
       bottomDivider
-      onPress={event =>
-        navigation.navigate('DocumentationViewScreen', {
-          regulationsContentChapter: item.chapter,
+      onPress={() =>
+        navigation.navigate('RegulationDetailsScreen', {
+          regulationChapter: item.chapter,
         })
       }
     >
@@ -56,7 +42,8 @@ const RegulationsScreen: React.FC = () => {
   return (
     <View style={{ flex: 1 }}>
       {regulations && (
-        <FlatList<RegulationsContent>
+        <FlatList<Regulation>
+          keyExtractor={item => item.chapter.toString()}
           data={regulations}
           renderItem={({ item }) => renderItem(item)}
         />

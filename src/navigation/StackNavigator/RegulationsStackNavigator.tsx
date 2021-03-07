@@ -3,7 +3,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { DrawerNavigationHelpers } from '@react-navigation/drawer/lib/typescript/src/types';
 import HeaderLogo from '../header/HeaderLogo';
 import RegulationsScreen from '../../screens/RegulationsScreen';
-import DocumentationViewScreen from '../../screens/DocumentationViewScreen';
+import RegulationDetailScreen from '../../screens/RegulationDetailScreen';
 import DrawerButton from '../header/DrawerButton';
 import SearchButton from '../header/SearchButton';
 import SearchScreen from '../../screens/SearchScreen';
@@ -33,8 +33,8 @@ const RegulationStackNavigator: React.FC<Props> = ({ navigation }) => {
     >
       <Stack.Screen name="RegulationScreen" component={RegulationsScreen} />
       <Stack.Screen
-        name="DocumentationViewScreen"
-        component={DocumentationViewScreen}
+        name="RegulationDetailsScreen"
+        component={RegulationDetailScreen}
       />
       <Stack.Screen
         options={{

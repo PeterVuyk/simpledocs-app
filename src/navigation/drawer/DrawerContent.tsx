@@ -15,7 +15,6 @@ interface Props {
 const DrawerContent: React.FC<Props> = ({ progress, navigation }) => {
   const [titles, setTitle] = React.useState([
     {
-      id: 1,
       chapter: 1,
       title: 'Verkeerskennis',
       paragraphs: {
@@ -28,7 +27,6 @@ const DrawerContent: React.FC<Props> = ({ progress, navigation }) => {
       },
     },
     {
-      id: 2,
       chapter: 2,
       title: 'Beroepsspecifieke verkeerskennis',
       paragraphs: {
@@ -52,7 +50,6 @@ const DrawerContent: React.FC<Props> = ({ progress, navigation }) => {
       },
     },
     {
-      id: 3,
       chapter: 3,
       title:
         'Brancherichtlijn Optische en Geluidsignalen Spoedeisende medische hulpverlening',
@@ -93,7 +90,6 @@ const DrawerContent: React.FC<Props> = ({ progress, navigation }) => {
       },
     },
     {
-      id: 4,
       chapter: 4,
       title: 'Bewust autorijden',
       paragraphs: {
@@ -115,7 +111,6 @@ const DrawerContent: React.FC<Props> = ({ progress, navigation }) => {
       },
     },
     {
-      id: 5,
       chapter: 5,
       title: 'Veiligheid',
       paragraphs: {
@@ -131,7 +126,6 @@ const DrawerContent: React.FC<Props> = ({ progress, navigation }) => {
       },
     },
     {
-      id: 6,
       chapter: 6,
       title: 'Bijlagen',
       paragraphs: {
@@ -169,7 +163,6 @@ const DrawerContent: React.FC<Props> = ({ progress, navigation }) => {
     <Block>
       <Block flex={0.4} margin={20} marginBottom={0} bottom>
         <Image
-          /* eslint-disable-next-line global-require */
           source={require('../../../assets/images/azn.png')}
           style={{
             height: 40,
@@ -185,6 +178,7 @@ const DrawerContent: React.FC<Props> = ({ progress, navigation }) => {
       <Block>
         <FlatList
           data={titles}
+          keyExtractor={item => item.chapter.toString()}
           renderItem={({ item }) => (
             <DrawerItem
               style={{ marginBottom: -5 }}

@@ -5,7 +5,6 @@ const HeaderLogo: React.FC = () => {
   return (
     <Image
       style={{ width: 200, resizeMode: 'contain' }}
-      /* eslint-disable-next-line global-require */
       source={require('../../../assets/images/azn.png')}
     />
   );

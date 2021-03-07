@@ -18,9 +18,9 @@ const DecisionTreeScreen: React.FC = () => {
     <View style={styles.container}>
       <Text>DecisionTreeScreen</Text>
       <Button
-        onPress={event =>
-          navigation.navigate('DocumentationViewScreen', {
-            regulationsContentChapter: 6,
+        onPress={() =>
+          navigation.navigate('RegulationDetailsScreen', {
+            regulationChapter: 6,
           })
         }
         title="test open article"

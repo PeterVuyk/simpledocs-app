@@ -5,36 +5,23 @@ import { Asset } from 'expo-asset';
 import { useNavigation } from '@react-navigation/native';
 import HighlightWords from '../components/HighlightWords';
 import getChapterIcon from '../helper/getChapterIcon';
-import RegulationsRepository from '../database/RegulationsRepository';
+import regulationRepository, {
+  Regulation,
+} from '../database/regulationRepository';
 
 interface Props {
   searchText: string;
 }
 
-interface RegulationsContent {
-  id: number;
-  index: number;
-  chapter: string;
-  level: string;
-  title: string;
-  // eslint-disable-next-line camelcase
-  sub_title: string;
-  body: string;
-  // eslint-disable-next-line camelcase
-  search_text: string;
-}
-
 const SearchScreen: React.FC<Props> = ({ searchText }) => {
-  const [regulations, setRegulations] = React.useState<RegulationsContent[]>(
-    [],
-  );
+  const [regulations, setRegulations] = React.useState<Regulation[]>([]);
 
   React.useEffect(() => {
     if (searchText === '') {
       setRegulations([]);
       return;
     }
-    RegulationsRepository.searchRegulations(searchText, setRegulations);
+    regulationRepository.searchRegulations(searchText, setRegulations);
   }, [searchText]);
 
   const navigation = useNavigation();
@@ -53,12 +40,12 @@ const SearchScreen: React.FC<Props> = ({ searchText }) => {
     return fullBody;
   };
 
-  const renderItem = (item: RegulationsContent) => (
+  const renderItem = (item: Regulation) => (
     <ListItem
       bottomDivider
-      onPress={event =>
-        navigation.navigate('DocumentationViewScreen', {
-          regulationsContentChapter: item.chapter,
+      onPress={() =>
+        navigation.navigate('RegulationDetailsScreen', {
+          regulationChapter: item.chapter,
           searchText,
         })
       }
@@ -95,14 +82,14 @@ const SearchScreen: React.FC<Props> = ({ searchText }) => {
             marginTop: 120,
             height: 120,
           }}
-          /* eslint-disable-next-line global-require */
           source={require('../../assets/images/find.png')}
           resizeMode="center"
         />
       )}
       {regulations && (
-        <FlatList<RegulationsContent>
+        <FlatList<Regulation>
           data={regulations}
+          keyExtractor={item => item.chapter.toString()}
           renderItem={({ item }) => renderItem(item)}
         />
       )}
