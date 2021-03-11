@@ -1,7 +1,8 @@
-import openDatabase from './openDatabase';
+import openDatabase from './../openDatabase';
 
 export interface Regulation {
-  index: number;
+  // eslint-disable-next-line camelcase
+  page_index: number;
   chapter: string;
   level: string;
   title: string;
@@ -10,6 +11,7 @@ export interface Regulation {
   body: string;
   // eslint-disable-next-line camelcase
   search_text: string;
+  icon: string;
 }
 
 type setRegulationCallback = (
@@ -77,10 +79,54 @@ function getChaptersSection(setRegulations: setRegulationsCallback): void {
   });
 }
 
+function addRegulation(regulation: Regulation): void {
+  openDatabase.then(connection => {
+    connection.transaction(tx => {
+      tx.executeSql(
+        'INSERT INTO regulation (chapter, page_index, title, sub_title, body, search_text, level, icon) VALUES (?, ?, ?, ?, ?, ?, ?, ?)',
+        [
+          regulation.chapter,
+          regulation.page_index,
+          regulation.title,
+          regulation.sub_title,
+          regulation.body,
+          regulation.search_text,
+          regulation.level,
+          regulation.icon,
+        ],
+        (txCallback, results) => {
+          if (results.rowsAffected !== 0) {
+            console.log(
+              'database insertion for regulation has failed:',
+              regulation.chapter,
+            );
+          }
+        },
+      );
+    });
+  });
+}
+
+function addRegulations(regulations: Regulation[]): void {
+  regulations.forEach(value => addRegulation(value));
+}
+
+function removeAllRegulations(): void {
+  openDatabase.then(connection => {
+    connection.transaction(tx => {
+      tx.executeSql(`DELETE FROM regulation`, [], (txCallback, results) => {
+        console.log('TODO: Hier een console .log toevoegen als t fout gaat');
+      });
+    });
+  });
+}
+
 const regulationRepository = {
   getRegulationByChapter,
   searchRegulations,
   getChaptersSection,
+  addRegulations,
+  removeAllRegulations,
 };
 
 export default regulationRepository;

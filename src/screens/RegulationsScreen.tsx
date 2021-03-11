@@ -2,11 +2,9 @@ import React from 'react';
 import { FlatList, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { Avatar, ListItem } from 'react-native-elements';
-import { Asset } from 'expo-asset';
-import getChapterIcon from '../helper/getChapterIcon';
 import RegulationRepository, {
   Regulation,
-} from '../database/regulationRepository';
+} from '../database/repository/regulationRepository';
 
 const RegulationsScreen: React.FC = () => {
   const [regulations, setRegulations] = React.useState<Regulation[]>([]);
@@ -28,14 +26,13 @@ const RegulationsScreen: React.FC = () => {
     >
       <Avatar
         source={{
-          uri: Asset.fromModule(getChapterIcon(item.chapter)).uri,
+          uri: `data:image/png;base64,${item.icon}`,
         }}
       />
       <ListItem.Content>
         <ListItem.Title>{item.title}</ListItem.Title>
         <ListItem.Subtitle>{item.sub_title}</ListItem.Subtitle>
       </ListItem.Content>
-      <ListItem.Chevron />
     </ListItem>
   );
 

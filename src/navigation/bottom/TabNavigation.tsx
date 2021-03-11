@@ -5,7 +5,7 @@ import { createMaterialBottomTabNavigator } from '@react-navigation/material-bot
 import { setDrawerProgressListener } from '../drawer/onDrawerProgressListener';
 import DecisionTreeStackNavigator from '../StackNavigator/DecisionTreeStackNavigator';
 import InfoStackNavigator from '../StackNavigator/InfoStackNavigator';
-import RegulationStackNavigator from '../StackNavigator/RegulationsStackNavigator';
+import RegulationStackNavigator from '../StackNavigator/RegulationStackNavigator';
 
 const Tab = createMaterialBottomTabNavigator();
 

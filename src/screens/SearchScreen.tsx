@@ -7,7 +7,7 @@ import HighlightWords from '../components/HighlightWords';
 import getChapterIcon from '../helper/getChapterIcon';
 import regulationRepository, {
   Regulation,
-} from '../database/regulationRepository';
+} from '../database/repository/regulationRepository';
 
 interface Props {
   searchText: string;
@@ -69,7 +69,6 @@ const SearchScreen: React.FC<Props> = ({ searchText }) => {
           />
         </ListItem.Subtitle>
       </ListItem.Content>
-      <ListItem.Chevron />
     </ListItem>
   );
 

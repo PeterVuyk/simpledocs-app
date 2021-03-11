@@ -6,7 +6,7 @@ import { Button } from 'react-native-elements';
 import { ShouldStartLoadRequest } from 'react-native-webview/lib/WebViewTypes';
 import RegulationRepository, {
   Regulation,
-} from '../database/regulationRepository';
+} from '../database/repository/regulationRepository';
 import highlightWordsInHTMLFile from '../helper/highlightWordsInHTMLFile';
 
 interface Props {
@@ -46,34 +46,20 @@ const RegulationDetailScreen: React.FC<Props> = route => {
   };
 
   const openExternalLink = (request: ShouldStartLoadRequest) => {
-    const isHTTPS = request.url.search('https://') !== -1;
+    webview?.current?.stopLoading();
+    // TODO: check if this also works for IOS as well, or should we use 'goBack'?
 
-    if (isHTTPS) {
+    if (request.url.search('https://') !== -1) {
       Linking.openURL(request.url);
       return false;
     }
-    if (request.url.startsWith('http://')) {
+    if (request.url.search('http://') !== -1) {
       navigation.navigate('RegulationDetailsScreen', {
         regulationChapter: request.url.split('http://127.0.0.1/')[1] ?? '1',
       });
     }
     return false;
   };
-
-  // const stopPageLoad = (): void => {
-  //   return Platform.OS === 'ios'
-  //     ? webview?.current?.stopLoading()
-  //     : webview?.current?.goBack();
-  // };
-
-  // onShouldStartLoadWithRequest(navigator) {
-  //   if (navigator.url.indexOf(INTERCEPT_URL) === -1) {
-  //     return true;
-  //   } else {
-  //     this.refs[WEBVIEW_REF].stopLoading(); //Some reference to your WebView to make it stop loading that URL
-  //     return false;
-  //   }
-  // }
 
   return (
     <View style={{ flex: 1 }}>
@@ -83,9 +69,6 @@ const RegulationDetailScreen: React.FC<Props> = route => {
         originWhitelist={['http://*', 'https://*']}
         scalesPageToFit={false}
         onShouldStartLoadWithRequest={openExternalLink}
-        onNavigationStateChange={() => {
-          webview?.current?.stopLoading();
-        }}
         source={{ html: getDocumentation() }}
       />
       {highlightText !== '' && (
