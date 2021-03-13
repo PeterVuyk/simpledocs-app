@@ -15,7 +15,7 @@ function initialize(): void {
         'CREATE UNIQUE INDEX IF NOT EXISTS versioning_aggregate_uindex ON versioning (aggregate);',
       );
       sqlTransaction.executeSql(
-        "INSERT OR IGNORE INTO versioning (aggregate, version) VALUES ('regulations', '2021.1.0');",
+        "INSERT OR IGNORE INTO versioning (aggregate, version) VALUES ('regulations', 'initial');",
       );
     },
     error =>

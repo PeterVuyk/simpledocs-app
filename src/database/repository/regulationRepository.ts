@@ -29,50 +29,65 @@ function getRegulationByChapter(
   chapter: string,
   setRegulations: setRegulationCallback,
 ): void {
-  db.transaction(sqlTransaction => {
-    sqlTransaction.executeSql(
-      `SELECT * FROM regulation WHERE chapter = ?;`,
-      [chapter],
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
-      (_, { rows: { _array } }) => {
-        if (_array.length === 1) {
-          setRegulations(_array[0]);
-        }
-      },
-    );
-  });
+  db.transaction(
+    sqlTransaction => {
+      sqlTransaction.executeSql(
+        `SELECT * FROM regulation WHERE chapter = ?;`,
+        [chapter],
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        (_, { rows: { _array } }) => {
+          if (_array.length === 1) {
+            setRegulations(_array[0]);
+          }
+        },
+      );
+    },
+    error => console.error('getRegulationByChapter failed: ', error),
+  );
 }
 
 function searchRegulations(
   text: string,
   setRegulations: setRegulationsCallback,
 ): void {
-  db.transaction(sqlTransaction => {
-    sqlTransaction.executeSql(
-      `SELECT * FROM regulation WHERE title LIKE ? or search_text LIKE ?;`,
-      [`%${text}%`, `%${text}%`],
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
-      (_, { rows: { _array } }) => {
-        setRegulations(_array);
-      },
-    );
-  });
+  db.transaction(
+    sqlTransaction => {
+      sqlTransaction.executeSql(
+        `SELECT *
+            ,(CASE WHEN title LIKE ? THEN 1 ELSE 0 END) AS [priority]
+            ,(CASE WHEN search_text like ? THEN 1 ELSE 0 END)
+       FROM (SELECT * From regulation ORDER BY page_index)
+       WHERE title LIKE ?
+          OR search_text LIKE ?
+       ORDER BY [priority] DESC;`,
+        [`%${text}%`, `%${text}%`, `%${text}%`, `%${text}%`],
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        (_, { rows: { _array } }) => {
+          setRegulations(_array);
+        },
+      );
+    },
+    error => console.error('searchRegulations failed: ', error),
+  );
 }
 
 function getChaptersSection(setRegulations: setRegulationsCallback): void {
-  db.transaction(sqlTransaction => {
-    sqlTransaction.executeSql(
-      `SELECT * FROM regulation WHERE level = 'section';`,
-      [],
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
-      (_, { rows: { _array } }) => {
-        setRegulations(_array);
-      },
-    );
-  });
+  db.transaction(
+    sqlTransaction => {
+      sqlTransaction.executeSql(
+        `SELECT * FROM regulation WHERE level = 'section' ORDER BY page_index;`,
+        [],
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        (_, { rows: { _array } }) => {
+          setRegulations(_array);
+        },
+      );
+    },
+    error => console.error('getChaptersSection failed: ', error),
+  );
 }
 
 const regulationRepository = {

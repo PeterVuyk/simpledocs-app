@@ -42,7 +42,7 @@ const SearchScreen: React.FC<Props> = ({ searchText }) => {
     <ListItem
       bottomDivider
       onPress={() =>
-        navigation.navigate('RegulationDetailsScreen', {
+        navigation.push('RegulationDetailsScreen', {
           regulationChapter: item.chapter,
           searchText,
         })
