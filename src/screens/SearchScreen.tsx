@@ -1,10 +1,8 @@
 import React from 'react';
 import { View, Keyboard, FlatList, ImageBackground } from 'react-native';
 import { ListItem, Avatar } from 'react-native-elements';
-import { Asset } from 'expo-asset';
 import { useNavigation } from '@react-navigation/native';
 import HighlightWords from '../components/HighlightWords';
-import getChapterIcon from '../helper/getChapterIcon';
 import regulationRepository, {
   Regulation,
 } from '../database/repository/regulationRepository';
@@ -52,7 +50,7 @@ const SearchScreen: React.FC<Props> = ({ searchText }) => {
     >
       <Avatar
         source={{
-          uri: Asset.fromModule(getChapterIcon(item.chapter)).uri,
+          uri: `data:image/png;base64,${item.icon}`,
         }}
       />
       <ListItem.Content>
