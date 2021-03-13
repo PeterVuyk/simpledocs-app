@@ -1,46 +1,29 @@
-import openDatabase from './../openDatabase';
+import * as SQLite from 'expo-sqlite';
+
+const db = SQLite.openDatabase('db.db');
 
 export interface Versioning {
   aggregate: string;
   version: string;
 }
 
-type setVersioningCallback = (
-  versioning: React.SetStateAction<Versioning | null | undefined>,
-) => void;
-
 // eslint-disable-next-line @typescript-eslint/ban-types
-function getVersioning(
-  aggregate: string,
-  setVersioning: setVersioningCallback,
-): void {
-  openDatabase.then(connection => {
-    connection.transaction(tx => {
-      tx.executeSql(
-        `SELECT * FROM versioning WHERE aggregate = ? LIMIT 1;`,
-        [aggregate],
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
-        (_, { rows: { _array } }) => {
-          setVersioning(_array);
-        },
-      );
-    });
+function getVersioning(aggregate: string): Versioning | null {
+  db.transaction(sqlTransaction => {
+    sqlTransaction.executeSql(
+      `SELECT * FROM versioning WHERE aggregate = ? LIMIT 1;`,
+      [aggregate],
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      (_, { rows: { _array } }) => {
+        if (_array.length === 1) {
+          return _array[0];
+        }
+        return null;
+      },
+    );
   });
-}
-
-function updateVersioning(aggregate: string, version: string): void {
-  openDatabase.then(connection => {
-    connection.transaction(tx => {
-      tx.executeSql(
-        `UPDATE versioning SET version = ? WHERE aggregate = ?`,
-        [aggregate, version],
-        (txCallback, results) => {
-          console.log('TODO: Hier een console .log toevoegen als t fout gaat');
-        },
-      );
-    });
-  });
+  return null;
 }
 
 const versioningRepository = {

@@ -1,10 +1,8 @@
-import React, { useEffect } from 'react';
-import { View } from 'react-native';
-import Drawer from './src/navigation/drawer/Drawer';
-import { Spinner } from 'native-base';
+import React from 'react';
+import AppSplashScreen from './src/screens/AppSplashScreen';
 
 const App: React.FC = () => {
-  return <Drawer />;
+  return <AppSplashScreen />;
 };
 
 export default App;
