@@ -2,6 +2,7 @@ import React from 'react';
 import { View, Keyboard, FlatList, ImageBackground } from 'react-native';
 import { ListItem, Avatar } from 'react-native-elements';
 import { useNavigation } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
 import HighlightWords from '../components/HighlightWords';
 import regulationRepository, {
   Regulation,
@@ -22,7 +23,7 @@ const SearchScreen: React.FC<Props> = ({ searchText }) => {
     regulationRepository.searchRegulations(searchText, setRegulations);
   }, [searchText]);
 
-  const navigation = useNavigation();
+  const navigation = useNavigation<StackNavigationProp<any>>();
 
   const getShortenedBody = (fullBody: string): string => {
     const firstOccurrence: number = fullBody.indexOf(searchText);

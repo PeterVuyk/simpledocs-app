@@ -2,6 +2,7 @@ import React from 'react';
 import { FlatList, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { Avatar, ListItem } from 'react-native-elements';
+import { StackNavigationProp } from '@react-navigation/stack';
 import RegulationRepository, {
   Regulation,
 } from '../database/repository/regulationRepository';
@@ -13,7 +14,7 @@ const RegulationsScreen: React.FC = () => {
     RegulationRepository.getChaptersSection(setRegulations);
   }, []);
 
-  const navigation = useNavigation();
+  const navigation = useNavigation<StackNavigationProp<any>>();
 
   const renderItem = (item: Regulation) => (
     <ListItem
