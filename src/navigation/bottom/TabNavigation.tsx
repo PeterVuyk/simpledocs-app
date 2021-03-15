@@ -33,7 +33,7 @@ const TabNavigation: React.FC = () => {
         initialRouteName="RegulationsScreen"
         activeColor="#ffffff"
         inactiveColor="#247dc0"
-        barStyle={{ backgroundColor: '#154594' }}
+        barStyle={{ backgroundColor: '#154594', height: 60 }}
       >
         <Tab.Screen
           name="DecisionTreeScreen"

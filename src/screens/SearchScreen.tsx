@@ -45,7 +45,7 @@ const SearchScreen: React.FC<Props> = ({ searchText }) => {
       onPress={() =>
         navigation.push('RegulationDetailsScreen', {
           regulationChapter: item.chapter,
-          searchText,
+          searchText: { chapter: item.chapter, searchText },
         })
       }
     >

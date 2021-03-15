@@ -24,6 +24,8 @@ type setRegulationsCallback = (
   regulations: React.SetStateAction<Regulation[]>,
 ) => void;
 
+type setChaptersCallback = (chapters: React.SetStateAction<string[]>) => void;
+
 // eslint-disable-next-line @typescript-eslint/ban-types
 function getRegulationByChapter(
   chapter: string,
@@ -90,10 +92,30 @@ function getChaptersSection(setRegulations: setRegulationsCallback): void {
   );
 }
 
+function getChapters(setChapters: setChaptersCallback): void {
+  db.transaction(
+    sqlTransaction => {
+      sqlTransaction.executeSql(
+        `SELECT chapter FROM regulation ORDER BY page_index;`,
+        [],
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        (_, { rows: { _array } }) => {
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          // @ts-ignore
+          setChapters(_array.map(chapter => chapter.chapter));
+        },
+      );
+    },
+    error => console.error('getChaptersSection failed: ', error),
+  );
+}
+
 const regulationRepository = {
   getRegulationByChapter,
   searchRegulations,
   getChaptersSection,
+  getChapters,
 };
 
 export default regulationRepository;

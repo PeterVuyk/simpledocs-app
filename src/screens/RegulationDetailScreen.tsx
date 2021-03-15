@@ -1,26 +1,21 @@
 import React from 'react';
-import {
-  RouteProp,
-  useIsFocused,
-  useNavigation,
-} from '@react-navigation/native';
-import WebView from 'react-native-webview';
-import { View, Linking } from 'react-native';
-import { Button } from 'react-native-elements';
-import { ShouldStartLoadRequest } from 'react-native-webview/lib/WebViewTypes';
-import { StackNavigationProp } from '@react-navigation/stack';
-import RegulationRepository, {
-  Regulation,
-} from '../database/repository/regulationRepository';
-import highlightWordsInHTMLFile from '../helper/highlightWordsInHTMLFile';
+import { RouteProp } from '@react-navigation/native';
+import { View, FlatList, Dimensions } from 'react-native';
+import { useHeaderHeight } from '@react-navigation/stack';
+import RegulationDetails from '../components/RegulationDetails';
+import regulationRepository from '../database/repository/regulationRepository';
+
+interface SearchText {
+  chapter: string;
+  searchText: string;
+}
 
 interface Props {
   route: RouteProp<
     {
       params: {
         regulationChapter: string;
-        forwardedTo: string;
-        searchText?: string;
+        searchText?: SearchText;
       };
     },
     'params'
@@ -28,96 +23,57 @@ interface Props {
 }
 
 const RegulationDetailScreen: React.FC<Props> = route => {
-  const [loading, setLoading] = React.useState<boolean>(false);
-  const [regulation, setRegulation] = React.useState<Regulation | null>();
-  const [highlightText, setHighlightedText] = React.useState<string>('');
+  const [chapters, setChapters] = React.useState<string[]>([]);
 
-  const webview = React.createRef<WebView>();
-
-  const navigation = useNavigation<StackNavigationProp<any>>();
-  const isFocused = useIsFocused();
   const { regulationChapter, searchText } = route.route.params;
+  const headerHeight = useHeaderHeight();
+  const { width, height } = Dimensions.get('window');
 
   React.useEffect(() => {
-    if (loading && !isFocused) {
-      setLoading(false);
-    }
-  }, [loading, isFocused]);
+    regulationRepository.getChapters(setChapters);
+  }, []);
 
-  React.useEffect(() => {
-    setHighlightedText(searchText ?? '');
-  }, [searchText]);
-
-  React.useEffect(() => {
-    RegulationRepository.getRegulationByChapter(
-      regulationChapter,
-      setRegulation,
-    );
-  }, [regulationChapter]);
-
-  const getDocumentation = (): string => {
-    if (regulation === undefined || regulation === null) {
-      return '';
-    }
-    if (highlightText === '') {
-      return regulation.body;
-    }
-    return highlightWordsInHTMLFile(regulation.body, highlightText);
+  const getHeight = () => {
+    return height - headerHeight;
   };
 
-  /**
-   * This function always returns false to tell webview that links should not be loaded inside the app. Only https request will be
-   * opened in the default browser. We want to use the html links to switch between screens. Even though we tell Webview to stop
-   * loading the page from the links href, once a while it will attempt to load the page anyway. So in addition:
-   * - We hide the webview component while switching to the next screen.
-   * - We use http:// instead of app:// to avoid UNKNOWN_URL_SCHEME (Webview doesn't work well with 'unofficial' URI schemes
-   * - We use example.com instead of a local url to avoid ERR_CONNECTION_REFUSED (e.g. <a href="http://example.com/1.1">1.1</a> navigate to chapter 1.1)
-   *
-   * If the user returns to this page the useEffect hook will enable the webview component whereupon the html file is loaded again.
-   */
-  const openExternalLink = (request: ShouldStartLoadRequest) => {
-    webview?.current?.stopLoading();
-
-    if (request.url.search('https://') !== -1) {
-      Linking.openURL(request.url);
-      return false;
-    }
-    if (request.url.search('http://example.com/') !== -1) {
-      setLoading(true);
-      navigation.push('RegulationDetailsScreen', {
-        regulationChapter: request.url.split('http://example.com/')[1] ?? '1',
-      });
-    }
-    return false;
+  const getPageIndex = () => {
+    const pageIndex = chapters.indexOf(regulationChapter);
+    return pageIndex === -1 ? 0 : pageIndex;
   };
 
   return (
-    <View style={{ flex: 1 }}>
-      {!loading && (
-        <WebView
-          ref={webview}
-          startInLoadingState
-          originWhitelist={['http://*', 'https://*']}
-          scalesPageToFit={false}
-          onShouldStartLoadWithRequest={openExternalLink}
-          source={{ html: getDocumentation() }}
-        />
-      )}
-      {highlightText !== '' && (
-        <View
-          style={{
-            margin: 5,
-            position: 'absolute',
-            bottom: 0,
-            right: 0,
-          }}
-        >
-          <Button
-            title="Verwijder markering"
-            onPress={() => setHighlightedText('')}
-          />
-        </View>
-      )}
+    <View
+      style={{
+        flex: 1,
+      }}
+    >
+      <FlatList
+        horizontal
+        pagingEnabled
+        bounces={false}
+        showsHorizontalScrollIndicator={false}
+        maxToRenderPerBatch={1}
+        initialNumToRender={1}
+        windowSize={1}
+        removeClippedSubviews
+        data={chapters}
+        initialScrollIndex={getPageIndex()}
+        getItemLayout={(data, index) => ({
+          length: width,
+          offset: width * index,
+          index,
+        })}
+        keyExtractor={item => item.toString()}
+        renderItem={({ item }) => (
+          <View style={{ width, height: getHeight() }}>
+            <RegulationDetails
+              regulationChapter={item}
+              searchText={searchText}
+            />
+          </View>
+        )}
+      />
     </View>
   );
 };
