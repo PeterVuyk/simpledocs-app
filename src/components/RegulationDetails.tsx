@@ -111,7 +111,6 @@ const RegulationDetails: React.FC<Props> = ({
           height: webViewHeight ?? 0,
         }}
       >
-        {console.log('chapter: ', regulation?.chapter)}
         {!loading && (
           <WebView
             ref={webview}

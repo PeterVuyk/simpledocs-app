@@ -1,7 +1,6 @@
 import React from 'react';
 import { RouteProp } from '@react-navigation/native';
 import { View, FlatList, Dimensions } from 'react-native';
-import { useHeaderHeight } from '@react-navigation/stack';
 import RegulationDetails from '../components/RegulationDetails';
 import regulationRepository from '../database/repository/regulationRepository';
 
@@ -26,16 +25,11 @@ const RegulationDetailScreen: React.FC<Props> = route => {
   const [chapters, setChapters] = React.useState<string[]>([]);
 
   const { regulationChapter, searchText } = route.route.params;
-  const headerHeight = useHeaderHeight();
-  const { width, height } = Dimensions.get('window');
+  const { width } = Dimensions.get('window');
 
   React.useEffect(() => {
     regulationRepository.getChapters(setChapters);
   }, []);
-
-  const getHeight = () => {
-    return height - headerHeight;
-  };
 
   const getPageIndex = () => {
     const pageIndex = chapters.indexOf(regulationChapter);
@@ -66,7 +60,7 @@ const RegulationDetailScreen: React.FC<Props> = route => {
         })}
         keyExtractor={item => item.toString()}
         renderItem={({ item }) => (
-          <View style={{ width, height: getHeight() }}>
+          <View style={{ width, flex: 1 }}>
             <RegulationDetails
               regulationChapter={item}
               searchText={searchText}
