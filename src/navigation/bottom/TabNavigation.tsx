@@ -1,13 +1,12 @@
-import React from 'react';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import * as React from 'react';
 import Animated from 'react-native-reanimated';
-import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
-import { setDrawerProgressListener } from '../drawer/onDrawerProgressListener';
-import DecisionTreeStackNavigator from '../StackNavigator/DecisionTreeStackNavigator';
-import InfoStackNavigator from '../StackNavigator/InfoStackNavigator';
 import RegulationStackNavigator from '../StackNavigator/RegulationStackNavigator';
+import InfoStackNavigator from '../StackNavigator/InfoStackNavigator';
+import DecisionTreeStackNavigator from '../StackNavigator/DecisionTreeStackNavigator';
+import { setDrawerProgressListener } from '../drawer/onDrawerProgressListener';
+import TabNavigator from './TabNavigator';
 
-const Tab = createMaterialBottomTabNavigator();
+const Tab = TabNavigator();
 
 const TabNavigation: React.FC = () => {
   const [progress, setProgress] = React.useState(new Animated.Value(0));
@@ -30,51 +29,39 @@ const TabNavigation: React.FC = () => {
   return (
     <Animated.View style={[{ flex: 1, overflow: 'hidden' }, animatedStyle]}>
       <Tab.Navigator
+        tabBarStyle={{
+          paddingBottom: 5,
+          paddingTop: 5,
+          height: 50,
+          backgroundColor: '#154594',
+        }}
+        contentStyle={{
+          height: 60,
+        }}
         initialRouteName="RegulationsScreen"
-        activeColor="#ffffff"
-        inactiveColor="#247dc0"
-        barStyle={{ backgroundColor: '#154594', height: 60 }}
       >
         <Tab.Screen
           name="DecisionTreeScreen"
           component={DecisionTreeStackNavigator}
           options={{
-            tabBarLabel: 'Beslisboom',
-            tabBarIcon: ({ color }) => (
-              <MaterialCommunityIcons
-                name="tree-outline"
-                color={color}
-                size={26}
-              />
-            ),
+            title: 'Beslisboom',
+            icon: 'tree-outline',
           }}
         />
         <Tab.Screen
           name="RegulationsScreen"
           component={RegulationStackNavigator}
           options={{
-            tabBarLabel: 'Regelgeving',
-            tabBarIcon: ({ color }) => (
-              <MaterialCommunityIcons
-                name="book-open-outline"
-                color={color}
-                size={26}
-              />
-            ),
+            title: 'Regelgeving',
+            icon: 'book-open-outline',
           }}
         />
         <Tab.Screen
           name="InfoScreen"
           component={InfoStackNavigator}
           options={{
-            tabBarLabel: 'Info',
-            tabBarIcon: ({ color }) => (
-              <MaterialCommunityIcons
-                name="information-outline"
-                color={color}
-                size={26}
-              />
-            ),
+            title: 'Info',
+            icon: 'information-outline',
           }}
         />
       </Tab.Navigator>
