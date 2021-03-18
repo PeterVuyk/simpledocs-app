@@ -18,6 +18,7 @@ import {
   ParamListBase,
 } from '@react-navigation/native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import HideWithKeyboard from "../../components/HideWithKeyboard>";
 
 // Props accepted by the view
 type TabNavigationConfig = {
@@ -71,54 +72,56 @@ function TabNavigator({
       <View style={[{ flex: 1 }, contentStyle]}>
         {descriptors[state.routes[state.index].key].render()}
       </View>
-      <View style={{ flexDirection: 'row', justifyContent: 'space-around' }}>
-        {state.routes.map((route, index) => (
-          <View key={route.key} style={[{ flex: 1 }, tabBarStyle]}>
-            <TouchableOpacity
-              disabled={state.index === index}
-              onPress={() => {
-                const event = navigation.emit({
-                  type: 'tabPress',
-                  target: route.key,
-                  data: {
-                    isAlreadyFocused:
-                      route.key === state.routes[state.index].key,
-                  },
-                  canPreventDefault: true,
-                });
-
-                if (!event.defaultPrevented) {
-                  navigation.dispatch({
-                    ...TabActions.jumpTo(route.name),
-                    target: state.key,
+      <HideWithKeyboard>
+        <View style={{ flexDirection: 'row', justifyContent: 'space-around' }}>
+          {state.routes.map((route, index) => (
+            <View key={route.key} style={[{ flex: 1 }, tabBarStyle]}>
+              <TouchableOpacity
+                disabled={state.index === index}
+                onPress={() => {
+                  const event = navigation.emit({
+                    type: 'tabPress',
+                    target: route.key,
+                    data: {
+                      isAlreadyFocused:
+                        route.key === state.routes[state.index].key,
+                    },
+                    canPreventDefault: true,
                   });
-                }
-              }}
-              style={{
-                flex: 1,
-              }}
-            >
-              <MaterialCommunityIcons
-                style={{
-                  textAlign: 'center',
-                  marginBottom: -3,
+
+                  if (!event.defaultPrevented) {
+                    navigation.dispatch({
+                      ...TabActions.jumpTo(route.name),
+                      target: state.key,
+                    });
+                  }
                 }}
-                name={descriptors[route.key].options.icon}
-                color={state.index === index ? '#ffffff' : '#0091EA'}
-                size={26}
-              />
-              <Text
                 style={{
-                  textAlign: 'center',
-                  color: state.index === index ? '#ffffff' : '#0091EA',
+                  flex: 1,
                 }}
               >
-                {descriptors[route.key].options.title}
-              </Text>
-            </TouchableOpacity>
-          </View>
-        ))}
-      </View>
+                <MaterialCommunityIcons
+                  style={{
+                    textAlign: 'center',
+                    marginBottom: -3,
+                  }}
+                  name={descriptors[route.key].options.icon}
+                  color={state.index === index ? '#ffffff' : '#0091EA'}
+                  size={26}
+                />
+                <Text
+                  style={{
+                    textAlign: 'center',
+                    color: state.index === index ? '#ffffff' : '#0091EA',
+                  }}
+                >
+                  {descriptors[route.key].options.title}
+                </Text>
+              </TouchableOpacity>
+            </View>
+          ))}
+        </View>
+      </HideWithKeyboard>
     </>
   );
 }
