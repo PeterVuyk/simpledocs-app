@@ -5,10 +5,12 @@ import { View, Linking, ScrollView } from 'react-native';
 import { Button } from 'react-native-elements';
 import { ShouldStartLoadRequest } from 'react-native-webview/lib/WebViewTypes';
 import { StackNavigationProp } from '@react-navigation/stack';
+import { connect } from 'react-redux';
 import RegulationRepository, {
   Regulation,
 } from '../database/repository/regulationRepository';
 import highlightWordsInHTMLFile from '../helper/highlightWordsInHTMLFile';
+import scrolling from '../redux/actions/scrolling';
 
 interface SearchText {
   chapter: string;
@@ -18,11 +20,15 @@ interface SearchText {
 interface Props {
   regulationChapter: string;
   searchText?: SearchText;
+  scrollDirection: string;
+  setScrollDirection: (scrollDirection: string) => void;
 }
 
 const RegulationDetails: React.FC<Props> = ({
   regulationChapter,
   searchText,
+  scrollDirection,
+  setScrollDirection,
 }) => {
   const [loading, setLoading] = React.useState<boolean>(false);
   const [regulation, setRegulation] = React.useState<Regulation | null>();
@@ -103,9 +109,22 @@ const RegulationDetails: React.FC<Props> = ({
     return false;
   };
 
+  const [oldOffset, setOldOffset] = React.useState(0);
+  const handleScroll = (currentOffset: number) => {
+    setOldOffset(currentOffset);
+    if (currentOffset >= 0 && currentOffset !== 0) {
+      if (currentOffset < oldOffset) {
+        setScrollDirection('up');
+      } else {
+        setScrollDirection('down');
+      }
+    }
+  };
+
   return (
     <View style={{ flex: 1 }}>
       <ScrollView
+        onScroll={event => handleScroll(event.nativeEvent.contentOffset.y)}
         contentContainerStyle={{
           flexGrow: 1,
           height: webViewHeight ?? 0,
@@ -147,4 +166,16 @@ const RegulationDetails: React.FC<Props> = ({
   );
 };
 
-export default RegulationDetails;
+const mapStateToProps = (state) => { // maps the state van redux naar de props voor component.
+  return {
+    scrollDirection: state.scrolling.scrollDirection,
+  };
+};
+
+const mapDispatchToProps = (dispatch) => { // maps the actions naar de props
+  return {
+    setScrollDirection: (key) => dispatch(scrolling.setScrollDirection(key)),
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(RegulationDetails);

@@ -1,8 +1,7 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { Button } from 'react-native-elements';
-import { useNavigation } from '@react-navigation/native';
-import { StackNavigationProp } from '@react-navigation/stack';
+import { DrawerNavigationHelpers } from '@react-navigation/drawer/lib/typescript/src/types';
 
 const styles = StyleSheet.create({
   container: {
@@ -12,9 +11,11 @@ const styles = StyleSheet.create({
   },
 });
 
-const DecisionTreeScreen: React.FC = () => {
-  const navigation = useNavigation<StackNavigationProp<any>>();
+interface Props {
+  navigation: DrawerNavigationHelpers;
+}
 
+const DecisionTreeScreen: React.FC<Props> = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <Text>DecisionTreeScreen</Text>
