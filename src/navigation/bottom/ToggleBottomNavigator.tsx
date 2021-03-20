@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect} from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { Animated, View } from 'react-native';
 import { connect } from 'react-redux';
 
@@ -7,7 +7,10 @@ interface Props {
   scrollDirection: string;
 }
 
-const HideOnScrollDown: React.FC<Props> = ({ children, scrollDirection }) => {
+const ToggleBottomNavigator: React.FC<Props> = ({
+  children,
+  scrollDirection,
+}) => {
   const yValue = React.useRef(new Animated.Value(0)).current;
 
   const hideElement = useCallback(() => {
@@ -22,7 +25,7 @@ const HideOnScrollDown: React.FC<Props> = ({ children, scrollDirection }) => {
     Animated.timing(yValue, {
       useNativeDriver: false,
       toValue: 0,
-      duration: 1000,
+      duration: 300,
     }).start();
   }, [yValue]);
 
@@ -36,16 +39,26 @@ const HideOnScrollDown: React.FC<Props> = ({ children, scrollDirection }) => {
   }, [hideElement, showElement, scrollDirection]);
 
   return (
-    <View>
-      <Animated.View style={{ bottom: yValue }}>{children}</Animated.View>
-    </View>
+    <Animated.View style={{ bottom: yValue }}>
+      <View
+        style={{
+          flexDirection: 'row',
+          justifyContent: 'space-around',
+          position: 'absolute',
+          bottom: 0,
+        }}
+      >
+        {children}
+      </View>
+    </Animated.View>
   );
 };
 
 const mapStateToProps = (state) => {
   return {
+    enableScrollDirection: state.scrolling.enableScrollDirection,
     scrollDirection: state.scrolling.scrollDirection,
   };
 };
 
-export default connect(mapStateToProps)(HideOnScrollDown);
+export default connect(mapStateToProps)(ToggleBottomNavigator);

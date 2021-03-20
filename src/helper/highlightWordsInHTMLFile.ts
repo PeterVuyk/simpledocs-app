@@ -75,10 +75,17 @@ const highlightWordsInHTMLFile = (
     return text;
   }
 
-  let indexOfAllMatches: number[] = allIndexOf(text, textToHighlight);
+  let indexOfAllMatches: number[] = allIndexOf(
+    text,
+    textToHighlight.toLowerCase(),
+  );
   indexOfAllMatches = filterIndexFromTagsBeforeMatch(text, indexOfAllMatches);
   indexOfAllMatches = filterIndexFromTagsAfterMatch(text, indexOfAllMatches);
-  return highlightSearchWords(text, textToHighlight, indexOfAllMatches);
+  return highlightSearchWords(
+    text,
+    textToHighlight.toLowerCase(),
+    indexOfAllMatches,
+  );
 };
 
 export default highlightWordsInHTMLFile;

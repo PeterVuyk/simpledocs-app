@@ -38,7 +38,7 @@ const RegulationsScreen: React.FC = () => {
   );
 
   return (
-    <View style={{ flex: 1 }}>
+    <View style={{ flex: 1, marginBottom: 50 }}>
       {regulations && (
         <FlatList<Regulation>
           keyExtractor={item => item.chapter.toString()}

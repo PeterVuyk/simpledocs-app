@@ -1,16 +1,15 @@
 import React from 'react';
 import { useIsFocused, useNavigation } from '@react-navigation/native';
 import WebView, { WebViewMessageEvent } from 'react-native-webview';
-import { View, Linking, ScrollView } from 'react-native';
+import { View, Linking } from 'react-native';
 import { Button } from 'react-native-elements';
 import { ShouldStartLoadRequest } from 'react-native-webview/lib/WebViewTypes';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { connect } from 'react-redux';
 import RegulationRepository, {
   Regulation,
 } from '../database/repository/regulationRepository';
 import highlightWordsInHTMLFile from '../helper/highlightWordsInHTMLFile';
-import scrolling from '../redux/actions/scrolling';
+import ScrollViewToggleBottomBar from './ScrollViewToggleBottomBar';
 
 interface SearchText {
   chapter: string;
@@ -20,15 +19,11 @@ interface SearchText {
 interface Props {
   regulationChapter: string;
   searchText?: SearchText;
-  scrollDirection: string;
-  setScrollDirection: (scrollDirection: string) => void;
 }
 
 const RegulationDetails: React.FC<Props> = ({
   regulationChapter,
   searchText,
-  scrollDirection,
-  setScrollDirection,
 }) => {
   const [loading, setLoading] = React.useState<boolean>(false);
   const [regulation, setRegulation] = React.useState<Regulation | null>();
@@ -65,9 +60,11 @@ const RegulationDetails: React.FC<Props> = ({
    * scroll height from the html template and provide that height to the ScrollView
    */
   const injectedJavaScript = `
-  window.ReactNativeWebView.postMessage(
-    Math.max(document.body.offsetHeight, document.body.scrollHeight)
-  );`;
+    window.addEventListener('load', function () {
+      window.ReactNativeWebView.postMessage(
+        Math.max(document.body.offsetHeight, document.body.scrollHeight)
+      );
+    });`;
 
   const onMessage = (event: WebViewMessageEvent) => {
     setWebViewHeight(Number(event.nativeEvent.data));
@@ -109,28 +106,10 @@ const RegulationDetails: React.FC<Props> = ({
     return false;
   };
 
-  const [oldOffset, setOldOffset] = React.useState(0);
-  const handleScroll = (currentOffset: number) => {
-    setOldOffset(currentOffset);
-    if (currentOffset >= 0 && currentOffset !== 0) {
-      if (currentOffset < oldOffset) {
-        setScrollDirection('up');
-      } else {
-        setScrollDirection('down');
-      }
-    }
-  };
-
   return (
     <View style={{ flex: 1 }}>
-      <ScrollView
-        onScroll={event => handleScroll(event.nativeEvent.contentOffset.y)}
-        contentContainerStyle={{
-          flexGrow: 1,
-          height: webViewHeight ?? 0,
-        }}
-      >
-        {!loading && (
+      {!loading && (
+        <ScrollViewToggleBottomBar pageHeight={webViewHeight ?? 0}>
           <WebView
             ref={webview}
             startInLoadingState
@@ -138,11 +117,13 @@ const RegulationDetails: React.FC<Props> = ({
             scalesPageToFit={false}
             onShouldStartLoadWithRequest={openExternalLink}
             onMessage={onMessage}
+            javaScriptEnabled
+            domStorageEnabled
             injectedJavaScript={injectedJavaScript}
             source={{ html: getDocumentation() }}
           />
-        )}
-      </ScrollView>
+        </ScrollViewToggleBottomBar>
+      )}
       {highlightText !== '' && (
         <View
           style={{
@@ -166,16 +147,4 @@ const RegulationDetails: React.FC<Props> = ({
   );
 };
 
-const mapStateToProps = (state) => { // maps the state van redux naar de props voor component.
-  return {
-    scrollDirection: state.scrolling.scrollDirection,
-  };
-};
-
-const mapDispatchToProps = (dispatch) => { // maps the actions naar de props
-  return {
-    setScrollDirection: (key) => dispatch(scrolling.setScrollDirection(key)),
-  };
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(RegulationDetails);
+export default RegulationDetails;
