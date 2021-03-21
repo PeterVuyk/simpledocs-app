@@ -9,7 +9,7 @@ interface Props {
   setScrollDirection: (scrollDirection: string) => void;
 }
 
-const RegulationDetails: React.FC<Props> = ({
+const ScrollViewToggleBottomBar: React.FC<Props> = ({
   children,
   pageHeight,
   setScrollDirection,
@@ -58,4 +58,7 @@ const mapDispatchToProps = (dispatch) => { // maps the actions naar de props
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(RegulationDetails);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(ScrollViewToggleBottomBar);

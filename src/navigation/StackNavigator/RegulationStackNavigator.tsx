@@ -3,7 +3,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { DrawerNavigationHelpers } from '@react-navigation/drawer/lib/typescript/src/types';
 import HeaderLogo from '../header/HeaderLogo';
 import RegulationsScreen from '../../screens/RegulationsScreen';
-import RegulationDetailScreen from '../../screens/RegulationDetailScreen';
+import RegulationDetailScreen from '../../screens/RegulationDetailsScreen/RegulationDetailScreen';
 import DrawerButton from '../header/DrawerButton';
 import SearchButton from '../header/SearchButton';
 import SearchScreen from '../../screens/SearchScreen';

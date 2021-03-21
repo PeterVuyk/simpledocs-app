@@ -7,9 +7,10 @@ import { ShouldStartLoadRequest } from 'react-native-webview/lib/WebViewTypes';
 import { StackNavigationProp } from '@react-navigation/stack';
 import RegulationRepository, {
   Regulation,
-} from '../database/repository/regulationRepository';
-import highlightWordsInHTMLFile from '../helper/highlightWordsInHTMLFile';
-import ScrollViewToggleBottomBar from './ScrollViewToggleBottomBar';
+} from '../../database/repository/regulationRepository';
+import highlightWordsInHTMLFile from '../../helper/highlightWordsInHTMLFile';
+import ScrollViewToggleBottomBar from '../../components/ScrollViewToggleBottomBar';
+import ScrollAwareBottomButton from '../../components/ScrollAwareBottomButton';
 
 interface SearchText {
   chapter: string;
@@ -21,7 +22,7 @@ interface Props {
   searchText?: SearchText;
 }
 
-const RegulationDetails: React.FC<Props> = ({
+const RegulationDetailItem: React.FC<Props> = ({
   regulationChapter,
   searchText,
 }) => {
@@ -125,26 +126,14 @@ const RegulationDetails: React.FC<Props> = ({
         </ScrollViewToggleBottomBar>
       )}
       {highlightText !== '' && (
-        <View
-          style={{
-            margin: 5,
-            position: 'absolute',
-            bottom: 0,
-            right: 0,
-          }}
-        >
-          <Button
-            title="Verwijder markering"
-            onPress={() =>
-              navigation.push('RegulationDetailsScreen', {
-                regulationChapter: regulation?.chapter,
-              })
-            }
-          />
-        </View>
+        <ScrollAwareBottomButton
+          title="Verwijder markering"
+          targetScreenName="RegulationDetailsScreen"
+          targetParameters={{ regulationChapter: regulation?.chapter }}
+        />
       )}
     </View>
   );
 };
 
-export default RegulationDetails;
+export default RegulationDetailItem;

@@ -56,7 +56,6 @@ const ToggleBottomNavigator: React.FC<Props> = ({
 
 const mapStateToProps = (state) => {
   return {
-    enableScrollDirection: state.scrolling.enableScrollDirection,
     scrollDirection: state.scrolling.scrollDirection,
   };
 };

@@ -1,8 +1,8 @@
 import React from 'react';
 import { RouteProp } from '@react-navigation/native';
 import { View, FlatList, Dimensions } from 'react-native';
-import RegulationDetails from '../components/RegulationDetails';
-import regulationRepository from '../database/repository/regulationRepository';
+import RegulationDetailItem from './RegulationDetailItem';
+import regulationRepository from '../../database/repository/regulationRepository';
 
 interface SearchText {
   chapter: string;
@@ -61,7 +61,7 @@ const RegulationDetailScreen: React.FC<Props> = route => {
         keyExtractor={item => item.toString()}
         renderItem={({ item }) => (
           <View style={{ width, flex: 1 }}>
-            <RegulationDetails
+            <RegulationDetailItem
               regulationChapter={item}
               searchText={searchText}
             />
