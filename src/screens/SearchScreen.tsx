@@ -7,13 +7,11 @@ import HighlightWords from '../components/HighlightWords';
 import regulationRepository, {
   Regulation,
 } from '../database/repository/regulationRepository';
+import SearchHeader from '../navigation/header/SearchHeader';
 
-interface Props {
-  searchText: string;
-}
-
-const SearchScreen: React.FC<Props> = ({ searchText }) => {
+const SearchScreen: React.FC = () => {
   const [regulations, setRegulations] = React.useState<Regulation[]>([]);
+  const [searchText, setSearchText] = React.useState<string>('');
 
   React.useEffect(() => {
     if (searchText === '') {
@@ -22,6 +20,9 @@ const SearchScreen: React.FC<Props> = ({ searchText }) => {
     }
     regulationRepository.searchRegulations(searchText, setRegulations);
   }, [searchText]);
+
+  const handleSearchTextChange = (searchedText: string): void =>
+    setSearchText(searchedText);
 
   const navigation = useNavigation<StackNavigationProp<any>>();
 
@@ -72,26 +73,31 @@ const SearchScreen: React.FC<Props> = ({ searchText }) => {
   );
 
   return (
-    <View style={{ flex: 1 }} onTouchStart={Keyboard.dismiss}>
-      {regulations.length === 0 && (
-        <ImageBackground
-          style={{
-            flex: 1,
-            marginTop: 120,
-            height: 120,
-          }}
-          source={require('../../assets/images/find.png')}
-          resizeMode="center"
-        />
-      )}
-      {regulations && (
-        <FlatList<Regulation>
-          data={regulations}
-          keyExtractor={item => item.chapter.toString()}
-          renderItem={({ item }) => renderItem(item)}
-        />
-      )}
-    </View>
+    <SearchHeader
+      handleSearchTextChange={handleSearchTextChange}
+      searchText={searchText}
+    >
+      <View style={{ flex: 1 }} onTouchStart={Keyboard.dismiss}>
+        {regulations.length === 0 && (
+          <ImageBackground
+            style={{
+              flex: 1,
+              marginTop: 120,
+              height: 120,
+            }}
+            source={require('../../assets/images/find.png')}
+            resizeMode="center"
+          />
+        )}
+        {regulations && (
+          <FlatList<Regulation>
+            data={regulations}
+            keyExtractor={item => item.chapter.toString()}
+            renderItem={({ item }) => renderItem(item)}
+          />
+        )}
+      </View>
+    </SearchHeader>
   );
 };
 

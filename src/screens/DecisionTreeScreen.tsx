@@ -1,7 +1,8 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { Button } from 'react-native-elements';
-import { DrawerNavigationHelpers } from '@react-navigation/drawer/lib/typescript/src/types';
+import { DrawerNavigationProp } from '@react-navigation/drawer/lib/typescript/src/types';
+import Header from '../navigation/header/Header';
 
 const styles = StyleSheet.create({
   container: {
@@ -12,23 +13,25 @@ const styles = StyleSheet.create({
 });
 
 interface Props {
-  navigation: DrawerNavigationHelpers;
+  navigation: DrawerNavigationProp<any>;
 }
 
 const DecisionTreeScreen: React.FC<Props> = ({ navigation }) => {
   return (
-    <View style={styles.container}>
-      <Text>DecisionTreeScreen</Text>
-      <Button
-        onPress={() =>
-          navigation.navigate('RegulationDetailsScreen', {
-            regulationChapter: '1',
-          })
-        }
-        title="test open article"
-        accessibilityLabel="click me"
-      />
-    </View>
+    <Header navigation={navigation}>
+      <View style={styles.container}>
+        <Text>DecisionTreeScreen</Text>
+        <Button
+          onPress={() =>
+            navigation.navigate('RegulationDetailsScreen', {
+              regulationChapter: '1',
+            })
+          }
+          title="test open article"
+          accessibilityLabel="click me"
+        />
+      </View>
+    </Header>
   );
 };
 

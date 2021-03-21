@@ -1,20 +1,22 @@
 import React from 'react';
 import { FlatList, View } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
 import { Avatar, ListItem } from 'react-native-elements';
-import { StackNavigationProp } from '@react-navigation/stack';
+import { DrawerNavigationProp } from '@react-navigation/drawer/lib/typescript/src/types';
 import RegulationRepository, {
   Regulation,
 } from '../database/repository/regulationRepository';
+import Header from '../navigation/header/Header';
 
-const RegulationsScreen: React.FC = () => {
+interface Props {
+  navigation: DrawerNavigationProp<any>;
+}
+
+const RegulationsScreen: React.FC<Props> = ({ navigation }) => {
   const [regulations, setRegulations] = React.useState<Regulation[]>([]);
 
   React.useEffect(() => {
     RegulationRepository.getChaptersSection(setRegulations);
   }, []);
-
-  const navigation = useNavigation<StackNavigationProp<any>>();
 
   const renderItem = (item: Regulation) => (
     <ListItem
@@ -38,15 +40,17 @@ const RegulationsScreen: React.FC = () => {
   );
 
   return (
-    <View style={{ flex: 1, marginBottom: 50 }}>
-      {regulations && (
-        <FlatList<Regulation>
-          keyExtractor={item => item.chapter.toString()}
-          data={regulations}
-          renderItem={({ item }) => renderItem(item)}
-        />
-      )}
-    </View>
+    <Header navigation={navigation}>
+      <View style={{ flex: 1, marginBottom: 50 }}>
+        {regulations && (
+          <FlatList<Regulation>
+            keyExtractor={item => item.chapter.toString()}
+            data={regulations}
+            renderItem={({ item }) => renderItem(item)}
+          />
+        )}
+      </View>
+    </Header>
   );
 };
 

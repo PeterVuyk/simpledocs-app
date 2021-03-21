@@ -2,7 +2,6 @@ import React from 'react';
 import { useIsFocused, useNavigation } from '@react-navigation/native';
 import WebView, { WebViewMessageEvent } from 'react-native-webview';
 import { View, Linking } from 'react-native';
-import { Button } from 'react-native-elements';
 import { ShouldStartLoadRequest } from 'react-native-webview/lib/WebViewTypes';
 import { StackNavigationProp } from '@react-navigation/stack';
 import RegulationRepository, {

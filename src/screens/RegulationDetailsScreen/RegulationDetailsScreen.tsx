@@ -1,0 +1,81 @@
+import React from 'react';
+import { RouteProp, useNavigation } from '@react-navigation/native';
+import { View, FlatList, Dimensions } from 'react-native';
+import { DrawerNavigationProp } from '@react-navigation/drawer/lib/typescript/src/types';
+import RegulationDetailItem from './RegulationDetailItem';
+import regulationRepository from '../../database/repository/regulationRepository';
+import Header from '../../navigation/header/Header';
+
+interface SearchText {
+  chapter: string;
+  searchText: string;
+}
+
+interface Props {
+  route: RouteProp<
+    {
+      params: {
+        regulationChapter: string;
+        searchText?: SearchText;
+      };
+    },
+    'params'
+  >;
+}
+
+const RegulationDetailsScreen: React.FC<Props> = route => {
+  const [chapters, setChapters] = React.useState<string[]>([]);
+
+  const { regulationChapter, searchText } = route.route.params;
+  const { width } = Dimensions.get('window');
+
+  React.useEffect(() => {
+    regulationRepository.getChapters(setChapters);
+  }, []);
+
+  const getPageIndex = () => {
+    const pageIndex = chapters.indexOf(regulationChapter);
+    return pageIndex === -1 ? 0 : pageIndex;
+  };
+
+  const navigation = useNavigation<DrawerNavigationProp<any>>();
+
+  return (
+    <Header navigation={navigation}>
+      <View
+        style={{
+          flex: 1,
+        }}
+      >
+        <FlatList
+          horizontal
+          pagingEnabled
+          bounces={false}
+          showsHorizontalScrollIndicator={false}
+          maxToRenderPerBatch={1}
+          initialNumToRender={1}
+          windowSize={1}
+          removeClippedSubviews
+          data={chapters}
+          initialScrollIndex={getPageIndex()}
+          getItemLayout={(data, index) => ({
+            length: width,
+            offset: width * index,
+            index,
+          })}
+          keyExtractor={item => item.toString()}
+          renderItem={({ item }) => (
+            <View style={{ width, flex: 1 }}>
+              <RegulationDetailItem
+                regulationChapter={item}
+                searchText={searchText}
+              />
+            </View>
+          )}
+        />
+      </View>
+    </Header>
+  );
+};
+
+export default RegulationDetailsScreen;

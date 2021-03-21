@@ -1,15 +1,17 @@
 import React from 'react';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import { DrawerNavigationHelpers } from '@react-navigation/drawer/lib/typescript/src/types';
+import { DrawerNavigationProp } from '@react-navigation/drawer/lib/typescript/src/types';
+import { StyleProp, ViewStyle } from 'react-native';
 
 interface Props {
-  navigation: DrawerNavigationHelpers;
+  navigation: DrawerNavigationProp<any>;
+  drawerStyle: StyleProp<ViewStyle>;
 }
 
-const DrawerButton: React.FC<Props> = ({ navigation }) => {
+const DrawerButton: React.FC<Props> = ({ drawerStyle, navigation }) => {
   return (
     <MaterialCommunityIcons
-      style={{ marginLeft: 10, marginTop: 10 }}
+      style={drawerStyle}
       name="menu"
       color="#154594"
       size={26}

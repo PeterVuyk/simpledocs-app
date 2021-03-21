@@ -4,7 +4,7 @@ import { Animated } from 'react-native';
 import { Button } from 'react-native-elements';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { connect } from 'react-redux';
-import HideWithKeyboard from "./HideWithKeyboard";
+import HideWithKeyboard from './HideWithKeyboard';
 
 interface Props {
   title: string;

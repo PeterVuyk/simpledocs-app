@@ -1,15 +1,17 @@
 import React from 'react';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import { DrawerNavigationHelpers } from '@react-navigation/drawer/lib/typescript/src/types';
+import { DrawerNavigationProp } from '@react-navigation/drawer/lib/typescript/src/types';
+import { StyleProp, ViewStyle } from 'react-native';
 
 interface Props {
-  navigation: DrawerNavigationHelpers;
+  navigation: DrawerNavigationProp<any>;
+  searchButtonStyle: StyleProp<ViewStyle>;
 }
 
-const SearchButton: React.FC<Props> = ({ navigation }) => {
+const SearchButton: React.FC<Props> = ({ navigation, searchButtonStyle }) => {
   return (
     <MaterialCommunityIcons
-      style={{ marginRight: 10, marginTop: 10 }}
+      style={searchButtonStyle}
       name="magnify"
       color="#154594"
       size={26}
