@@ -23,8 +23,9 @@ const DecisionTreeScreen: React.FC<Props> = ({ navigation }) => {
         <Text>DecisionTreeScreen</Text>
         <Button
           onPress={() =>
-            navigation.navigate('RegulationDetailsScreen', {
-              regulationChapter: '1',
+            navigation.navigate('RegulationsScreenStack', {
+              screen: 'RegulationDetailsScreen',
+              params: { regulationChapter: '1' },
             })
           }
           title="test open article"

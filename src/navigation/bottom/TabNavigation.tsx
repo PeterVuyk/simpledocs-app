@@ -5,6 +5,7 @@ import InfoStackNavigator from '../StackNavigator/InfoStackNavigator';
 import DecisionTreeStackNavigator from '../StackNavigator/DecisionTreeStackNavigator';
 import { setDrawerProgressListener } from '../drawer/onDrawerProgressListener';
 import TabNavigator from './TabNavigator';
+import {StackActions} from "react-navigation";
 
 const Tab = TabNavigator();
 
@@ -41,7 +42,7 @@ const TabNavigation: React.FC = () => {
         initialRouteName="RegulationsScreen"
       >
         <Tab.Screen
-          name="DecisionTreeScreen"
+          name="DecisionTreeScreenStack"
           component={DecisionTreeStackNavigator}
           options={{
             title: 'Beslisboom',
@@ -49,7 +50,7 @@ const TabNavigation: React.FC = () => {
           }}
         />
         <Tab.Screen
-          name="RegulationsScreen"
+          name="RegulationsScreenStack"
           component={RegulationStackNavigator}
           options={{
             title: 'Regelgeving',
@@ -57,7 +58,7 @@ const TabNavigation: React.FC = () => {
           }}
         />
         <Tab.Screen
-          name="InfoScreen"
+          name="InfoScreenStack"
           component={InfoStackNavigator}
           options={{
             title: 'Info',

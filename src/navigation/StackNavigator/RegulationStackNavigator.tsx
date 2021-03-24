@@ -14,7 +14,7 @@ interface Props {
 const RegulationStackNavigator: React.FC<Props> = ({ navigation }) => {
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }} headerMode="screen">
-      <Stack.Screen name="RegulationScreen" component={RegulationsScreen} />
+      <Stack.Screen name="RegulationsScreen" component={RegulationsScreen} />
       <Stack.Screen
         name="RegulationDetailsScreen"
         component={RegulationDetailsScreen}

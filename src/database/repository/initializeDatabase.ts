@@ -9,7 +9,7 @@ function initialize(): void {
         'create table if not exists versioning (aggregate varchar not null, version varchar not null);',
       );
       sqlTransaction.executeSql(
-        'create table if not exists regulation (chapter varchar not null constraint regulation_pk primary key, page_index int not null, title varchar not null, sub_title varchar, body text not null, search_text text not null, level varchar not null, icon varchar);',
+        'create table if not exists regulation (chapter varchar not null constraint regulation_pk primary key, page_index integer not null, title varchar not null, sub_title varchar, body text not null, search_text text not null, level varchar not null, icon text);',
       );
       sqlTransaction.executeSql(
         'CREATE UNIQUE INDEX IF NOT EXISTS versioning_aggregate_uindex ON versioning (aggregate);',

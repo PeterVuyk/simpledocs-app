@@ -15,7 +15,11 @@ const SearchButton: React.FC<Props> = ({ navigation, searchButtonStyle }) => {
       name="magnify"
       color="#154594"
       size={26}
-      onPress={() => navigation.navigate('SearchScreen')}
+      onPress={() => {
+        navigation.navigate('RegulationsScreenStack', {
+          screen: 'SearchScreen',
+        });
+      }}
     />
   );
 };

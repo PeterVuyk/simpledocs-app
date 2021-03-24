@@ -3,7 +3,9 @@ import { RouteProp, useNavigation } from '@react-navigation/native';
 import { View, FlatList, Dimensions } from 'react-native';
 import { DrawerNavigationProp } from '@react-navigation/drawer/lib/typescript/src/types';
 import RegulationDetailItem from './RegulationDetailItem';
-import regulationRepository from '../../database/repository/regulationRepository';
+import regulationRepository, {
+  Chapter,
+} from '../../database/repository/regulationRepository';
 import Header from '../../navigation/header/Header';
 
 interface SearchText {
@@ -24,30 +26,60 @@ interface Props {
 }
 
 const RegulationDetailsScreen: React.FC<Props> = route => {
-  const [chapters, setChapters] = React.useState<string[]>([]);
+  const [chapters, setChapters] = React.useState<Chapter[]>([]);
+  const [currentChapter, setCurrentChapter] = React.useState<string>('1');
+  const flatListRef = React.createRef<FlatList<Chapter[]>>();
 
-  const { regulationChapter, searchText } = route.route.params;
+  const navigation = useNavigation<DrawerNavigationProp<any>>();
+  const { searchText } = route.route.params;
   const { width } = Dimensions.get('window');
 
   React.useEffect(() => {
     regulationRepository.getChapters(setChapters);
   }, []);
 
-  const getPageIndex = () => {
-    const pageIndex = chapters.indexOf(regulationChapter);
-    return pageIndex === -1 ? 0 : pageIndex;
+  React.useEffect(() => {
+    const { regulationChapter } = route.route.params;
+    setCurrentChapter(regulationChapter);
+  }, [route.route.params]);
+
+  const scrollToChapter = (chapter: string) => {
+    const index = chapters.map(result => result.chapter).indexOf(chapter);
+    flatListRef.current.scrollToIndex({ animated: false, index });
   };
 
-  const navigation = useNavigation<DrawerNavigationProp<any>>();
+  const getPageIndex = () => {
+    const index = chapters
+      .map(chapter => chapter.chapter)
+      .indexOf(currentChapter);
+    return index === -1 ? 0 : index;
+  };
+
+  const onViewableItemsChanged = React.useRef(({ viewableItems, changed }) => {
+    if (changed === undefined || changed.chapter === undefined) {
+      return;
+    }
+    setCurrentChapter(changed.chapter);
+  });
+
+  const getCurrentChapter = () => {
+    return currentChapter;
+  };
 
   return (
-    <Header navigation={navigation}>
+    <Header
+      chapters={chapters}
+      scrollToChapter={scrollToChapter}
+      navigation={navigation}
+      getCurrentChapter={getCurrentChapter}
+    >
       <View
         style={{
           flex: 1,
         }}
       >
         <FlatList
+          ref={flatListRef}
           horizontal
           pagingEnabled
           bounces={false}
@@ -63,11 +95,15 @@ const RegulationDetailsScreen: React.FC<Props> = route => {
             offset: width * index,
             index,
           })}
-          keyExtractor={item => item.toString()}
-          renderItem={({ item }) => (
-            <View style={{ width, flex: 1 }}>
+          onViewableItemsChanged={onViewableItemsChanged.current}
+          viewabilityConfig={{
+            itemVisiblePercentThreshold: 50,
+          }}
+          keyExtractor={item => item.chapter.toString()}
+          renderItem={({item}) => (
+            <View style={{width, flex: 1}}>
               <RegulationDetailItem
-                regulationChapter={item}
+                regulationChapter={item.chapter}
                 searchText={searchText}
               />
             </View>

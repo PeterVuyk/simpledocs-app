@@ -22,7 +22,7 @@ const RegulationsScreen: React.FC<Props> = ({ navigation }) => {
     <ListItem
       bottomDivider
       onPress={() =>
-        navigation.push('RegulationDetailsScreen', {
+        navigation.navigate('RegulationDetailsScreen', {
           regulationChapter: item.chapter,
         })
       }

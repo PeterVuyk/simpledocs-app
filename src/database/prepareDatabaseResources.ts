@@ -17,7 +17,7 @@ const updateRegulations = async () => {
 };
 
 const prepareDatabaseResources = async () => {
-  initializeDatabase.initialize();
+  await initializeDatabase.initialize();
   if (await hasLatestVersion()) {
     return;
   }

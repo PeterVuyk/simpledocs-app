@@ -68,6 +68,24 @@ function TabNavigator({
     initialRouteName,
   });
 
+  const onTabPress = (route) => {
+    const event = navigation.emit({
+      type: 'tabPress',
+      target: route.key,
+      data: {
+        isAlreadyFocused: route.key === state.routes[state.index].key,
+      },
+      canPreventDefault: true,
+    });
+
+    if (!event.defaultPrevented) {
+      navigation.dispatch({
+        ...TabActions.jumpTo(route.name),
+        target: state.key,
+      });
+    }
+  };
+
   return (
     <>
       <View style={[{ flex: 1 }, contentStyle]}>
@@ -78,24 +96,7 @@ function TabNavigator({
           {state.routes.map((route, index) => (
             <View key={route.key} style={[{ flex: 1 }, tabBarStyle]}>
               <TouchableOpacity
-                onPress={() => {
-                  const event = navigation.emit({
-                    type: 'tabPress',
-                    target: route.key,
-                    data: {
-                      isAlreadyFocused:
-                        route.key === state.routes[state.index].key,
-                    },
-                    canPreventDefault: true,
-                  });
-
-                  if (!event.defaultPrevented) {
-                    navigation.dispatch({
-                      ...TabActions.jumpTo(route.name),
-                      target: state.key,
-                    });
-                  }
-                }}
+                onPress={() => onTabPress(route)}
                 style={{
                   flex: 1,
                 }}

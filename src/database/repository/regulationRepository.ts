@@ -16,6 +16,12 @@ export interface Regulation {
   icon: string;
 }
 
+export interface Chapter {
+  title: string;
+  chapter: string;
+  icon: string;
+}
+
 type setRegulationCallback = (
   regulations: React.SetStateAction<Regulation | null | undefined>,
 ) => void;
@@ -24,7 +30,7 @@ type setRegulationsCallback = (
   regulations: React.SetStateAction<Regulation[]>,
 ) => void;
 
-type setChaptersCallback = (chapters: React.SetStateAction<string[]>) => void;
+type setChaptersCallback = (chapters: React.SetStateAction<Chapter[]>) => void;
 
 // eslint-disable-next-line @typescript-eslint/ban-types
 function getRegulationByChapter(
@@ -96,18 +102,16 @@ function getChapters(setChapters: setChaptersCallback): void {
   db.transaction(
     sqlTransaction => {
       sqlTransaction.executeSql(
-        `SELECT chapter FROM regulation ORDER BY page_index;`,
-        [],
+        `SELECT chapter, icon, title FROM regulation ORDER BY page_index;`,
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
+        [],
         (_, { rows: { _array } }) => {
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-ignore
-          setChapters(_array.map(chapter => chapter.chapter));
+          setChapters(_array);
         },
       );
     },
-    error => console.error('getChaptersSection failed: ', error),
+    error => console.error('getChapters failed: ', error),
   );
 }
 
