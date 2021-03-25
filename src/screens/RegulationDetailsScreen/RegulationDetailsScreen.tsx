@@ -2,11 +2,13 @@ import React from 'react';
 import { RouteProp, useNavigation } from '@react-navigation/native';
 import { View, FlatList, Dimensions } from 'react-native';
 import { DrawerNavigationProp } from '@react-navigation/drawer/lib/typescript/src/types';
+import { connect } from 'react-redux';
 import RegulationDetailItem from './RegulationDetailItem';
 import regulationRepository, {
   Chapter,
 } from '../../database/repository/regulationRepository';
 import Header from '../../navigation/header/Header';
+import regulations from '../../redux/actions/regulations';
 
 interface SearchText {
   chapter: string;
@@ -23,15 +25,20 @@ interface Props {
     },
     'params'
   >;
+  currentRegulationsChapter: string;
+  setCurrentRegulationsChapter: (currentRegulationsChapter: string) => void;
 }
 
-const RegulationDetailsScreen: React.FC<Props> = route => {
+const RegulationDetailsScreen: React.FC<Props> = ({
+  route,
+  currentRegulationsChapter,
+  setCurrentRegulationsChapter,
+}) => {
   const [chapters, setChapters] = React.useState<Chapter[]>([]);
-  const [currentChapter, setCurrentChapter] = React.useState<string>('1');
   const flatListRef = React.createRef<FlatList<Chapter[]>>();
 
+  const { regulationChapter } = route.params;
   const navigation = useNavigation<DrawerNavigationProp<any>>();
-  const { searchText } = route.route.params;
   const { width } = Dimensions.get('window');
 
   React.useEffect(() => {
@@ -39,40 +46,40 @@ const RegulationDetailsScreen: React.FC<Props> = route => {
   }, []);
 
   React.useEffect(() => {
-    const { regulationChapter } = route.route.params;
-    setCurrentChapter(regulationChapter);
-  }, [route.route.params]);
+    return () => {
+      setCurrentRegulationsChapter('');
+    };
+  }, [setCurrentRegulationsChapter]);
 
-  const scrollToChapter = (chapter: string) => {
-    const index = chapters.map(result => result.chapter).indexOf(chapter);
-    flatListRef.current.scrollToIndex({ animated: false, index });
-  };
+  React.useEffect(() => {
+    if (chapters.length === 0 || currentRegulationsChapter === '') {
+      return;
+    }
+    const index = chapters
+      .map(result => result.chapter)
+      .indexOf(currentRegulationsChapter);
+    flatListRef?.current?.scrollToIndex({ animated: false, index });
+  }, [chapters, currentRegulationsChapter, flatListRef]);
 
-  const getPageIndex = () => {
+  const getInitialPageIndex = () => {
     const index = chapters
       .map(chapter => chapter.chapter)
-      .indexOf(currentChapter);
-    return index === -1 ? 0 : index;
+      .indexOf(regulationChapter);
+    return index === -1 ? -1 : index;
   };
 
   const onViewableItemsChanged = React.useRef(({ viewableItems, changed }) => {
-    if (changed === undefined || changed.chapter === undefined) {
+    if (
+      changed === undefined ||
+      changed.filter(changed => changed.isViewable).length === 0
+    ) {
       return;
     }
-    setCurrentChapter(changed.chapter);
+    setCurrentRegulationsChapter(changed.filter(result => result.isViewable)[0].item.chapter);
   });
 
-  const getCurrentChapter = () => {
-    return currentChapter;
-  };
-
   return (
-    <Header
-      chapters={chapters}
-      scrollToChapter={scrollToChapter}
-      navigation={navigation}
-      getCurrentChapter={getCurrentChapter}
-    >
+    <Header chapters={chapters} navigation={navigation}>
       <View
         style={{
           flex: 1,
@@ -89,7 +96,7 @@ const RegulationDetailsScreen: React.FC<Props> = route => {
           windowSize={1}
           removeClippedSubviews
           data={chapters}
-          initialScrollIndex={getPageIndex()}
+          initialScrollIndex={getInitialPageIndex()}
           getItemLayout={(data, index) => ({
             length: width,
             offset: width * index,
@@ -100,11 +107,11 @@ const RegulationDetailsScreen: React.FC<Props> = route => {
             itemVisiblePercentThreshold: 50,
           }}
           keyExtractor={item => item.chapter.toString()}
-          renderItem={({item}) => (
-            <View style={{width, flex: 1}}>
+          renderItem={({ item }) => (
+            <View style={{ width, flex: 1 }}>
               <RegulationDetailItem
                 regulationChapter={item.chapter}
-                searchText={searchText}
+                searchText={route.params.searchText}
               />
             </View>
           )}
@@ -114,4 +121,21 @@ const RegulationDetailsScreen: React.FC<Props> = route => {
   );
 };
 
-export default RegulationDetailsScreen;
+const mapStateToProps = state => {
+  return {
+    currentRegulationsChapter:
+      state.currentRegulationsChapter.currentRegulationsChapter,
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    setCurrentRegulationsChapter: key =>
+      dispatch(regulations.setCurrentRegulationsChapter(key)),
+  };
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(RegulationDetailsScreen);

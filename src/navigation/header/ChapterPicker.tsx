@@ -1,37 +1,55 @@
 import * as React from 'react';
-import { FlatList, View } from 'react-native';
+import { View } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
+import { connect } from 'react-redux';
 import { Chapter } from '../../database/repository/regulationRepository';
+import regulations from '../../redux/actions/regulations';
 
 interface Props {
   chapters: Chapter[];
-  scrollToChapter: (chapter: string) => void;
-  getCurrentChapter: () => string;
+  currentRegulationsChapter: string;
+  setCurrentRegulationsChapter: (currentRegulationsChapter: string) => void;
 }
 
 const ChapterPicker: React.FC<Props> = ({
   chapters,
-  scrollToChapter,
-  getCurrentChapter,
+  currentRegulationsChapter,
+  setCurrentRegulationsChapter,
 }) => {
   return (
     <View style={{ flex: 1 }}>
-      <Picker
-        selectedValue={getCurrentChapter()}
-        onValueChange={(itemValue, itemIndex) =>
-          scrollToChapter(itemValue.toString())
-        }
-      >
-        {chapters.map(value => (
-          <Picker.Item
-            label={value.title}
-            value={value.chapter}
-            key={value.chapter.toString()}
-          />
-        ))}
-      </Picker>
+      {currentRegulationsChapter !== '' && (
+        <Picker
+          selectedValue={currentRegulationsChapter}
+          onValueChange={(itemValue, itemIndex) =>
+            setCurrentRegulationsChapter(itemValue.toString())
+          }
+        >
+          {chapters.map(value => (
+            <Picker.Item
+              label={value.title}
+              value={value.chapter}
+              key={value.chapter.toString()}
+            />
+          ))}
+        </Picker>
+      )}
     </View>
   );
 };
 
-export default ChapterPicker;
+const mapStateToProps = state => {
+  return {
+    currentRegulationsChapter:
+      state.currentRegulationsChapter.currentRegulationsChapter,
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    setCurrentRegulationsChapter: key =>
+      dispatch(regulations.setCurrentRegulationsChapter(key)),
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(ChapterPicker);

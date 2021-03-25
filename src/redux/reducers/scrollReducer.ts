@@ -2,7 +2,6 @@ import reduxTypes from '../actions/reduxTypes';
 
 const initialState = {
   scrollDirection: 'up',
-  enableScrollDirection: false,
 };
 
 interface Action {
@@ -19,7 +18,6 @@ const scrollReducer = (state = initialState, action: Action) => {
       return {
         ...state,
         scrollDirection: action.data,
-        enableScrollDirection: true,
       };
     default:
       return state;
