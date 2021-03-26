@@ -1,13 +1,11 @@
 import React from 'react';
-import { RouteProp, useNavigation } from '@react-navigation/native';
+import { RouteProp } from '@react-navigation/native';
 import { View, FlatList, Dimensions } from 'react-native';
-import { DrawerNavigationProp } from '@react-navigation/drawer/lib/typescript/src/types';
 import { connect } from 'react-redux';
 import RegulationDetailItem from './RegulationDetailItem';
 import regulationRepository, {
   Chapter,
 } from '../../database/repository/regulationRepository';
-import Header from '../../navigation/header/Header';
 import regulations from '../../redux/actions/regulations';
 
 interface SearchText {
@@ -38,7 +36,6 @@ const RegulationDetailsScreen: React.FC<Props> = ({
   const flatListRef = React.createRef<FlatList<Chapter[]>>();
 
   const { regulationChapter } = route.params;
-  const navigation = useNavigation<DrawerNavigationProp<any>>();
   const { width } = Dimensions.get('window');
 
   React.useEffect(() => {
@@ -79,45 +76,43 @@ const RegulationDetailsScreen: React.FC<Props> = ({
   });
 
   return (
-    <Header chapters={chapters} navigation={navigation}>
-      <View
-        style={{
-          flex: 1,
+    <View
+      style={{
+        flex: 1,
+      }}
+    >
+      <FlatList
+        ref={flatListRef}
+        horizontal
+        pagingEnabled
+        bounces={false}
+        showsHorizontalScrollIndicator={false}
+        maxToRenderPerBatch={1}
+        initialNumToRender={1}
+        windowSize={1}
+        removeClippedSubviews
+        data={chapters}
+        initialScrollIndex={getInitialPageIndex()}
+        getItemLayout={(data, index) => ({
+          length: width,
+          offset: width * index,
+          index,
+        })}
+        onViewableItemsChanged={onViewableItemsChanged.current}
+        viewabilityConfig={{
+          itemVisiblePercentThreshold: 50,
         }}
-      >
-        <FlatList
-          ref={flatListRef}
-          horizontal
-          pagingEnabled
-          bounces={false}
-          showsHorizontalScrollIndicator={false}
-          maxToRenderPerBatch={1}
-          initialNumToRender={1}
-          windowSize={1}
-          removeClippedSubviews
-          data={chapters}
-          initialScrollIndex={getInitialPageIndex()}
-          getItemLayout={(data, index) => ({
-            length: width,
-            offset: width * index,
-            index,
-          })}
-          onViewableItemsChanged={onViewableItemsChanged.current}
-          viewabilityConfig={{
-            itemVisiblePercentThreshold: 50,
-          }}
-          keyExtractor={item => item.chapter.toString()}
-          renderItem={({ item }) => (
-            <View style={{ width, flex: 1 }}>
-              <RegulationDetailItem
-                regulationChapter={item.chapter}
-                searchText={route.params.searchText}
-              />
-            </View>
-          )}
-        />
-      </View>
-    </Header>
+        keyExtractor={item => item.chapter.toString()}
+        renderItem={({ item }) => (
+          <View style={{ width, flex: 1 }}>
+            <RegulationDetailItem
+              regulationChapter={item.chapter}
+              searchText={route.params.searchText}
+            />
+          </View>
+        )}
+      />
+    </View>
   );
 };
 

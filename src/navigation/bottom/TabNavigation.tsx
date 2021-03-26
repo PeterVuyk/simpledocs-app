@@ -5,7 +5,6 @@ import InfoStackNavigator from '../StackNavigator/InfoStackNavigator';
 import DecisionTreeStackNavigator from '../StackNavigator/DecisionTreeStackNavigator';
 import { setDrawerProgressListener } from '../drawer/onDrawerProgressListener';
 import TabNavigator from './TabNavigator';
-import {StackActions} from "react-navigation";
 
 const Tab = TabNavigator();
 

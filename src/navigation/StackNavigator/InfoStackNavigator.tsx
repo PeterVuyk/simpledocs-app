@@ -2,16 +2,29 @@ import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 import { DrawerNavigationHelpers } from '@react-navigation/drawer/lib/typescript/src/types';
 import InfoScreen from '../../screens/InfoScreen';
+import Header from '../header/Header';
+import HeaderLogo from '../header/HeaderLogo';
 
 const Stack = createStackNavigator();
 
 interface Props {
   navigation: DrawerNavigationHelpers;
 }
+
 const InfoStackNavigator: React.FC<Props> = ({ navigation }) => {
   return (
-    <Stack.Navigator screenOptions={{ headerShown: false }}>
-      <Stack.Screen name="InfoScreen" component={InfoScreen} />
+    <Stack.Navigator>
+      <Stack.Screen
+        name="InfoScreen"
+        component={InfoScreen}
+        options={{
+          header: () => (
+            <Header navigation={navigation}>
+              <HeaderLogo />
+            </Header>
+          ),
+        }}
+      />
     </Stack.Navigator>
   );
 };

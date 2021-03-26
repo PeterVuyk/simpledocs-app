@@ -5,7 +5,6 @@ import { DrawerNavigationProp } from '@react-navigation/drawer/lib/typescript/sr
 import RegulationRepository, {
   Regulation,
 } from '../database/repository/regulationRepository';
-import Header from '../navigation/header/Header';
 
 interface Props {
   navigation: DrawerNavigationProp<any>;
@@ -40,17 +39,15 @@ const RegulationsScreen: React.FC<Props> = ({ navigation }) => {
   );
 
   return (
-    <Header navigation={navigation}>
-      <View style={{ flex: 1, marginBottom: 50 }}>
-        {regulations && (
-          <FlatList<Regulation>
-            keyExtractor={item => item.chapter.toString()}
-            data={regulations}
-            renderItem={({ item }) => renderItem(item)}
-          />
-        )}
-      </View>
-    </Header>
+    <View style={{ flex: 1, marginBottom: 50 }}>
+      {regulations && (
+        <FlatList<Regulation>
+          keyExtractor={item => item.chapter.toString()}
+          data={regulations}
+          renderItem={({ item }) => renderItem(item)}
+        />
+      )}
+    </View>
   );
 };
 
