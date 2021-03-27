@@ -20,6 +20,7 @@ import {
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import HideWithKeyboard from '../../components/HideWithKeyboard';
 import ToggleBottomNavigator from '../../navigation/bottom/ToggleBottomNavigator';
+import {StackActions} from "react-navigation";
 
 // Props accepted by the view
 type TabNavigationConfig = {
@@ -69,6 +70,14 @@ function TabNavigator({
   });
 
   const onTabPress = (route) => {
+    if (route.name === 'RegulationsScreenStack') {
+      navigation.setParams({ params: null, screen: null });
+      navigation.navigate('RegulationsScreenStack', {
+        screen: 'RegulationsScreen',
+      });
+      return;
+    }
+
     const event = navigation.emit({
       type: 'tabPress',
       target: route.key,

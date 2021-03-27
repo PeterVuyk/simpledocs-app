@@ -1,7 +1,6 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { Button } from 'react-native-elements';
-import { DrawerNavigationProp } from '@react-navigation/drawer/lib/typescript/src/types';
 
 const styles = StyleSheet.create({
   container: {
@@ -12,7 +11,7 @@ const styles = StyleSheet.create({
 });
 
 interface Props {
-  navigation: DrawerNavigationProp<any>;
+  navigation: any;
 }
 
 const DecisionTreeScreen: React.FC<Props> = ({ navigation }) => {
