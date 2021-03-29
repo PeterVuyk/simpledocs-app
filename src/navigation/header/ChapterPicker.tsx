@@ -1,22 +1,16 @@
 import * as React from 'react';
 import { View } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
-import { connect } from 'react-redux';
+import { useNavigation } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
 import regulationRepository, {
   Chapter,
 } from '../../database/repository/regulationRepository';
-import regulations from '../../redux/actions/regulations';
 
-interface Props {
-  currentRegulationsChapter: string;
-  setCurrentRegulationsChapter: (currentRegulationsChapter: string) => void;
-}
-
-const ChapterPicker: React.FC<Props> = ({
-  currentRegulationsChapter,
-  setCurrentRegulationsChapter,
-}) => {
+const ChapterPicker: React.FC = () => {
   const [chapters, setChapters] = React.useState<Chapter[]>([]);
+
+  const navigation = useNavigation<StackNavigationProp<any>>();
 
   React.useEffect(() => {
     regulationRepository.getChapters(setChapters);
@@ -24,38 +18,26 @@ const ChapterPicker: React.FC<Props> = ({
 
   return (
     <View style={{ flex: 1 }}>
-      {currentRegulationsChapter !== '' && (
-        <Picker
-          selectedValue={currentRegulationsChapter}
-          onValueChange={(itemValue, itemIndex) =>
-            setCurrentRegulationsChapter(itemValue.toString())
+      <Picker
+        onValueChange={(itemValue, itemIndex) => {
+          if (itemValue !== '-1') {
+            navigation.push('RegulationDetailsScreen', {
+              regulationChapter: itemValue.toString(),
+            });
           }
-        >
-          {chapters.map(value => (
-            <Picker.Item
-              label={`${value.chapter}: ${value.title}`}
-              value={value.chapter}
-              key={value.chapter.toString()}
-            />
-          ))}
-        </Picker>
-      )}
+        }}
+      >
+        <Picker.Item label="empty" value="-1" key="-1" />
+        {chapters.map(value => (
+          <Picker.Item
+            label={`${value.chapter}: ${value.title}`}
+            value={value.chapter}
+            key={value.chapter.toString()}
+          />
+        ))}
+      </Picker>
     </View>
   );
 };
 
-const mapStateToProps = state => {
-  return {
-    currentRegulationsChapter:
-      state.currentRegulationsChapter.currentRegulationsChapter,
-  };
-};
-
-const mapDispatchToProps = dispatch => {
-  return {
-    setCurrentRegulationsChapter: key =>
-      dispatch(regulations.setCurrentRegulationsChapter(key)),
-  };
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(ChapterPicker);
+export default ChapterPicker;
