@@ -4,26 +4,25 @@ import WebView, { WebViewMessageEvent } from 'react-native-webview';
 import { View, Linking } from 'react-native';
 import { ShouldStartLoadRequest } from 'react-native-webview/lib/WebViewTypes';
 import { StackNavigationProp } from '@react-navigation/stack';
+import { connect } from 'react-redux';
 import RegulationRepository, {
   Regulation,
 } from '../../database/repository/regulationRepository';
 import highlightWordsInHTMLFile from '../../helper/highlightWordsInHTMLFile';
 import ScrollViewToggleBottomBar from '../../components/ScrollViewToggleBottomBar';
 import ScrollAwareBottomButton from '../../components/ScrollAwareBottomButton';
-
-interface SearchText {
-  chapter: string;
-  searchText: string;
-}
+import searching, { SearchText } from '../../redux/actions/searching';
 
 interface Props {
   regulationChapter: string;
-  searchText?: SearchText;
+  chapterSearchText: SearchText;
+  setChapterSearchText: (searchText: SearchText) => void;
 }
 
 const RegulationDetailItem: React.FC<Props> = ({
   regulationChapter,
-  searchText,
+  chapterSearchText,
+  setChapterSearchText,
 }) => {
   const [loading, setLoading] = React.useState<boolean>(false);
   const [regulation, setRegulation] = React.useState<Regulation | null>();
@@ -42,10 +41,10 @@ const RegulationDetailItem: React.FC<Props> = ({
   }, [loading, isFocused]);
 
   React.useEffect(() => {
-    if (searchText?.chapter === regulation?.chapter) {
-      setHighlightedText(searchText?.searchText ?? '');
+    if (chapterSearchText.chapter === regulation?.chapter) {
+      setHighlightedText(chapterSearchText.searchText ?? '');
     }
-  }, [regulation, searchText]);
+  }, [regulation, chapterSearchText]);
 
   React.useEffect(() => {
     RegulationRepository.getRegulationByChapter(
@@ -106,6 +105,11 @@ const RegulationDetailItem: React.FC<Props> = ({
     return false;
   };
 
+  const stopHighlightText = () => {
+    setChapterSearchText({ chapter: '', searchText: '' });
+    setHighlightedText('');
+  };
+
   return (
     <View style={{ flex: 1 }}>
       {!loading && (
@@ -127,12 +131,27 @@ const RegulationDetailItem: React.FC<Props> = ({
       {highlightText !== '' && (
         <ScrollAwareBottomButton
           title="Verwijder markering"
-          targetScreenName="RegulationDetailsScreen"
-          targetParameters={{ regulationChapter: regulation?.chapter }}
+          onPress={stopHighlightText}
         />
       )}
     </View>
   );
 };
 
-export default RegulationDetailItem;
+const mapStateToProps = state => {
+  return {
+    chapterSearchText: state.searching.chapterSearchText,
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    setChapterSearchText: (searchText: SearchText) =>
+      dispatch(searching.setChapterSearchText(searchText)),
+  };
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(RegulationDetailItem);

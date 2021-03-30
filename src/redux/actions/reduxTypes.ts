@@ -1,7 +1,9 @@
 const SCROLL_DIRECTION = 'SCROLL_DIRECTION';
+const SEARCH_CHAPTER_TEXT = 'SEARCH_CHAPTER_TEXT';
 
 const reduxTypes = {
   SCROLL_DIRECTION,
+  SEARCH_CHAPTER_TEXT,
 };
 
 export default reduxTypes;

@@ -8,6 +8,7 @@ import regulationRepository, {
 } from '../../database/repository/regulationRepository';
 import regulations from '../../redux/actions/regulations';
 import {DrawerNavigationProp} from "@react-navigation/drawer/lib/typescript/src/types";
+import searching from "../../redux/actions/searching";
 
 interface SearchText {
   chapter: string;
@@ -19,7 +20,6 @@ interface Props {
     {
       params: {
         regulationChapter: string;
-        searchText?: SearchText;
       };
     },
     'params'
@@ -69,7 +69,6 @@ const RegulationDetailsScreen: React.FC<Props> = ({ route }) => {
           <View style={{ width, flex: 1 }}>
             <RegulationDetailItem
               regulationChapter={item.chapter}
-              searchText={route.params.searchText}
             />
           </View>
         )}

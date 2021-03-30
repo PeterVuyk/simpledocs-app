@@ -1,28 +1,21 @@
 import React, { useCallback, useEffect } from 'react';
-import { useNavigation } from '@react-navigation/native';
 import { Animated } from 'react-native';
 import { Button } from 'react-native-elements';
-import { StackNavigationProp } from '@react-navigation/stack';
 import { connect } from 'react-redux';
 import HideWithKeyboard from './HideWithKeyboard';
 
 interface Props {
   title: string;
-  targetScreenName: string;
-  // eslint-disable-next-line @typescript-eslint/ban-types
-  targetParameters: object;
   scrollDirection: string;
+  onPress: () => void;
 }
 
 const ScrollAwareBottomButton: React.FC<Props> = ({
   title,
-  targetScreenName,
-  targetParameters,
   scrollDirection,
+  onPress,
 }) => {
   const yValue = React.useRef(new Animated.Value(0)).current;
-
-  const navigation = useNavigation<StackNavigationProp<any>>();
 
   const hideElement = useCallback(() => {
     Animated.timing(yValue, {
@@ -59,14 +52,7 @@ const ScrollAwareBottomButton: React.FC<Props> = ({
           right: 0,
         }}
       >
-        <Button
-          title={title}
-          onPress={() =>
-            navigation.push(targetScreenName, {
-              targetParameters,
-            })
-          }
-        />
+        <Button title={title} onPress={onPress} />
       </Animated.View>
     </HideWithKeyboard>
   );
