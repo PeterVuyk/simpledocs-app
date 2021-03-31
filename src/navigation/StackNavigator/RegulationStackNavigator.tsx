@@ -5,8 +5,6 @@ import RegulationsScreen from '../../screens/RegulationsScreen';
 import SearchScreen from '../../screens/SearchScreen';
 import RegulationDetailsScreen from '../../screens/RegulationDetailsScreen/RegulationDetailsScreen';
 import Header from '../header/Header';
-import HeaderLogo from '../header/HeaderLogo';
-import ChapterPicker from '../header/ChapterPicker';
 
 const Stack = createStackNavigator();
 
@@ -21,11 +19,7 @@ const RegulationStackNavigator: React.FC<Props> = ({ navigation }) => {
         name="RegulationsScreen"
         component={RegulationsScreen}
         options={{
-          header: () => (
-            <Header navigation={navigation}>
-              <HeaderLogo />
-            </Header>
-          ),
+          header: () => <Header navigation={navigation} />,
         }}
       />
       <Stack.Screen
@@ -33,9 +27,7 @@ const RegulationStackNavigator: React.FC<Props> = ({ navigation }) => {
         component={RegulationDetailsScreen}
         options={{
           header: () => (
-            <Header navigation={navigation}>
-              <ChapterPicker />
-            </Header>
+            <Header navigation={navigation} showRegulationsListButton />
           ),
         }}
       />

@@ -3,13 +3,15 @@ import { View } from 'react-native';
 import { DrawerNavigationHelpers } from '@react-navigation/drawer/lib/typescript/src/types';
 import DrawerButton from './DrawerButton';
 import SearchButton from './SearchButton';
+import RegulationsListButton from './RegulationsListButton';
+import HeaderLogo from './HeaderLogo';
 
 interface Props {
-  children: React.ReactNode;
   navigation: DrawerNavigationHelpers;
+  showRegulationsListButton?: boolean;
 }
 
-const Header: React.FC<Props> = ({ navigation, children }) => {
+const Header: React.FC<Props> = ({ navigation, showRegulationsListButton }) => {
   return (
     <View
       style={{
@@ -28,15 +30,26 @@ const Header: React.FC<Props> = ({ navigation, children }) => {
         drawerStyle={{ marginLeft: 10, marginTop: 40 }}
         navigation={navigation}
       />
-      {children}
-      <SearchButton
-        searchButtonStyle={{
+      <HeaderLogo />
+      <View
+        style={{
           alignSelf: 'flex-end',
-          marginRight: 10,
+          flexDirection: 'row-reverse',
+          width: 70,
+          marginLeft: 10,
+          marginRight: 20,
           marginBottom: 10,
         }}
-        navigation={navigation}
-      />
+      >
+        <SearchButton navigation={navigation} />
+        {showRegulationsListButton && (
+          <RegulationsListButton
+            regulationsButtonStyle={{
+              marginRight: 20,
+            }}
+          />
+        )}
+      </View>
     </View>
   );
 };

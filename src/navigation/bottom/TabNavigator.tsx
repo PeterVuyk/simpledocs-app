@@ -20,7 +20,6 @@ import {
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import HideWithKeyboard from '../../components/HideWithKeyboard';
 import ToggleBottomNavigator from '../../navigation/bottom/ToggleBottomNavigator';
-import {StackActions} from "react-navigation";
 
 // Props accepted by the view
 type TabNavigationConfig = {
@@ -122,7 +121,7 @@ function TabNavigator({
                 <Text
                   style={{
                     textAlign: 'center',
-                    color: state.index === index ? '#ffffff' : '#0091EA',
+                    color: state.index === index ? '#ffffff' : '#0091ea',
                   }}
                 >
                   {descriptors[route.key].options.title}

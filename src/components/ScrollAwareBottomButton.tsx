@@ -52,7 +52,11 @@ const ScrollAwareBottomButton: React.FC<Props> = ({
           right: 0,
         }}
       >
-        <Button title={title} onPress={onPress} />
+        <Button
+          title={title}
+          onPress={onPress}
+          buttonStyle={{ backgroundColor: '#154594', borderRadius: 5 }}
+        />
       </Animated.View>
     </HideWithKeyboard>
   );

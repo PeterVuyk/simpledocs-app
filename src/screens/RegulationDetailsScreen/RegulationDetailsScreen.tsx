@@ -1,19 +1,10 @@
 import React from 'react';
 import { RouteProp } from '@react-navigation/native';
 import { View, FlatList, Dimensions } from 'react-native';
-import { connect } from 'react-redux';
 import RegulationDetailItem from './RegulationDetailItem';
 import regulationRepository, {
   Chapter,
 } from '../../database/repository/regulationRepository';
-import regulations from '../../redux/actions/regulations';
-import {DrawerNavigationProp} from "@react-navigation/drawer/lib/typescript/src/types";
-import searching from "../../redux/actions/searching";
-
-interface SearchText {
-  chapter: string;
-  searchText: string;
-}
 
 interface Props {
   route: RouteProp<

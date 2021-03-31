@@ -19,6 +19,7 @@ export interface Regulation {
 export interface Chapter {
   title: string;
   chapter: string;
+  icon: string;
 }
 
 type setRegulationCallback = (
@@ -101,7 +102,7 @@ function getChapters(setChapters: setChaptersCallback): void {
   db.transaction(
     sqlTransaction => {
       sqlTransaction.executeSql(
-        `SELECT chapter, title FROM regulation ORDER BY page_index;`,
+        `SELECT chapter, title, icon FROM regulation ORDER BY page_index;`,
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
         [],
