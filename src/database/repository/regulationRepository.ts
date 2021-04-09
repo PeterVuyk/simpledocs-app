@@ -3,23 +3,20 @@ import * as SQLite from 'expo-sqlite';
 const db = SQLite.openDatabase('db.db');
 
 export interface Regulation {
-  // eslint-disable-next-line camelcase
-  page_index: number;
+  pageIndex: number;
   chapter: string;
   level: string;
   title: string;
-  // eslint-disable-next-line camelcase
-  sub_title: string;
-  body: string;
-  // eslint-disable-next-line camelcase
-  search_text: string;
-  icon: string;
+  subTitle: string;
+  htmlFile: string;
+  searchText: string;
+  iconFile: string;
 }
 
 export interface Chapter {
   title: string;
   chapter: string;
-  icon: string;
+  iconFile: string;
 }
 
 type setRegulationCallback = (
@@ -64,10 +61,10 @@ function searchRegulations(
       sqlTransaction.executeSql(
         `SELECT *
             ,(CASE WHEN title LIKE ? THEN 1 ELSE 0 END) AS [priority]
-            ,(CASE WHEN search_text like ? THEN 1 ELSE 0 END)
-       FROM (SELECT * From regulation ORDER BY page_index)
+            ,(CASE WHEN searchText like ? THEN 1 ELSE 0 END)
+       FROM (SELECT * From regulation ORDER BY pageIndex)
        WHERE title LIKE ?
-          OR search_text LIKE ?
+          OR searchText LIKE ?
        ORDER BY [priority] DESC;`,
         [`%${text}%`, `%${text}%`, `%${text}%`, `%${text}%`],
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -81,11 +78,11 @@ function searchRegulations(
   );
 }
 
-function getChaptersSection(setRegulations: setRegulationsCallback): void {
+function getChaptersByLevelChapter(setRegulations: setRegulationsCallback): void {
   db.transaction(
     sqlTransaction => {
       sqlTransaction.executeSql(
-        `SELECT * FROM regulation WHERE level = 'section' ORDER BY page_index;`,
+        `SELECT * FROM regulation WHERE level = 'chapter' ORDER BY pageIndex;`,
         [],
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
@@ -94,7 +91,7 @@ function getChaptersSection(setRegulations: setRegulationsCallback): void {
         },
       );
     },
-    error => console.error('getChaptersSection failed: ', error),
+    error => console.error('getChaptersByLevelChapter failed: ', error),
   );
 }
 
@@ -102,7 +99,7 @@ function getChapters(setChapters: setChaptersCallback): void {
   db.transaction(
     sqlTransaction => {
       sqlTransaction.executeSql(
-        `SELECT chapter, title, icon FROM regulation ORDER BY page_index;`,
+        `SELECT chapter, title, iconFile FROM regulation ORDER BY pageIndex;`,
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
         [],
@@ -118,7 +115,7 @@ function getChapters(setChapters: setChaptersCallback): void {
 const regulationRepository = {
   getRegulationByChapter,
   searchRegulations,
-  getChaptersSection,
+  getChaptersByLevelChapter,
   getChapters,
 };
 

@@ -1,10 +1,5 @@
 import React from 'react';
-import {
-  Avatar,
-  Button,
-  ListItem,
-  Overlay,
-} from 'react-native-elements';
+import { Avatar, Button, ListItem, Overlay } from 'react-native-elements';
 import { View, FlatList, Dimensions } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
@@ -41,7 +36,7 @@ const RegulationListOverlay: React.FC<Props> = ({ visible, toggleOverlay }) => {
       <Avatar
         size={30}
         source={{
-          uri: `data:image/png;base64,${item.icon}`,
+          uri: item.iconFile,
         }}
       />
       <ListItem.Content>

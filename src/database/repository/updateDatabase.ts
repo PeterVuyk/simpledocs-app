@@ -1,4 +1,5 @@
 import * as SQLite from 'expo-sqlite';
+import { Buffer } from 'buffer';
 import { Regulation } from './regulationRepository';
 
 const db = SQLite.openDatabase('db.db');
@@ -14,21 +15,26 @@ function updateVersioning(
   );
 }
 
+function getHTMLBodyFromBase64(base64HTML: string): string {
+  const base64String = base64HTML.split('data:text/html;base64,')[1];
+  return Buffer.from(base64String, 'base64').toString('utf-8');
+}
+
 function addRegulation(
   sqlTransaction: SQLite.SQLTransaction,
   regulation: Regulation,
 ): void {
   sqlTransaction.executeSql(
-    'INSERT INTO regulation (chapter, page_index, title, sub_title, body, search_text, level, icon) VALUES (?, ?, ?, ?, ?, ?, ?, ?)',
+    'INSERT INTO regulation (chapter, pageIndex, title, subTitle, htmlFile, searchText, level, iconFile) VALUES (?, ?, ?, ?, ?, ?, ?, ?)',
     [
       regulation.chapter,
-      regulation.page_index,
+      regulation.pageIndex,
       regulation.title,
-      regulation.sub_title,
-      regulation.body,
-      regulation.search_text,
+      regulation.subTitle,
+      getHTMLBodyFromBase64(regulation.htmlFile),
+      regulation.searchText,
       regulation.level,
-      regulation.icon,
+      regulation.iconFile,
     ],
   );
 }
@@ -41,13 +47,20 @@ function addRegulations(
 }
 
 function removeAllRegulations(sqlTransaction: SQLite.SQLTransaction): void {
-  sqlTransaction.executeSql(`DELETE FROM regulation`, []);
+  sqlTransaction.executeSql(`DROP TABLE regulation`, []);
+}
+
+function createRegulationTable(sqlTransaction: SQLite.SQLTransaction): void {
+  sqlTransaction.executeSql(
+    'create table if not exists regulation (chapter varchar not null constraint regulation_pk primary key, pageIndex integer not null, title varchar not null, subTitle varchar, htmlFile text not null, searchText text not null, level varchar not null, iconFile text);',
+  );
 }
 
 function updateRegulations(regulations: Regulation[], version: string): void {
   db.transaction(
     sqlTransaction => {
       removeAllRegulations(sqlTransaction);
+      createRegulationTable(sqlTransaction);
       updateVersioning(sqlTransaction, 'regulations', version);
       addRegulations(sqlTransaction, regulations);
     },

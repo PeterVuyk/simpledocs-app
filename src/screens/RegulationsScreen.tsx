@@ -14,7 +14,7 @@ const RegulationsScreen: React.FC<Props> = ({ navigation }) => {
   const [regulations, setRegulations] = React.useState<Regulation[]>([]);
 
   React.useEffect(() => {
-    RegulationRepository.getChaptersSection(setRegulations);
+    RegulationRepository.getChaptersByLevelChapter(setRegulations);
   }, []);
 
   const renderItem = (item: Regulation) => (
@@ -28,12 +28,12 @@ const RegulationsScreen: React.FC<Props> = ({ navigation }) => {
     >
       <Avatar
         source={{
-          uri: `data:image/png;base64,${item.icon}`,
+          uri: item.iconFile,
         }}
       />
       <ListItem.Content>
         <ListItem.Title>{item.title}</ListItem.Title>
-        <ListItem.Subtitle>{item.sub_title}</ListItem.Subtitle>
+        <ListItem.Subtitle>{item.subTitle}</ListItem.Subtitle>
       </ListItem.Content>
     </ListItem>
   );

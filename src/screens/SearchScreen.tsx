@@ -58,7 +58,7 @@ const SearchScreen: React.FC<Props> = ({ setChapterSearchText }) => {
     <ListItem bottomDivider onPress={() => submitSearch(item)}>
       <Avatar
         source={{
-          uri: `data:image/png;base64,${item.icon}`,
+          uri: item.iconFile,
         }}
       />
       <ListItem.Content>
@@ -71,7 +71,7 @@ const SearchScreen: React.FC<Props> = ({ setChapterSearchText }) => {
         <ListItem.Subtitle>
           <HighlightWords
             searchText={searchText}
-            textToHighlight={getShortenedBody(item.search_text)}
+            textToHighlight={getShortenedBody(item.searchText)}
           />
         </ListItem.Subtitle>
       </ListItem.Content>

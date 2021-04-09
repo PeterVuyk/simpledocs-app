@@ -74,9 +74,9 @@ const RegulationDetailItem: React.FC<Props> = ({
       return '';
     }
     if (highlightText === '') {
-      return regulation.body;
+      return regulation.htmlFile;
     }
-    return highlightWordsInHTMLFile(regulation.body, highlightText);
+    return highlightWordsInHTMLFile(regulation.htmlFile, highlightText);
   };
 
   /**
