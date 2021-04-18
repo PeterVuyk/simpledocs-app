@@ -1,10 +1,11 @@
 import React from 'react';
 import { FlatList, View } from 'react-native';
-import { Avatar, ListItem } from 'react-native-elements';
+import { ListItem } from 'react-native-elements';
 import { DrawerNavigationProp } from '@react-navigation/drawer/lib/typescript/src/types';
 import RegulationRepository, {
   Regulation,
 } from '../database/repository/regulationRepository';
+import ChapterIcon from '../components/ChapterIcon';
 
 interface Props {
   navigation: DrawerNavigationProp<any>;
@@ -26,11 +27,7 @@ const RegulationsScreen: React.FC<Props> = ({ navigation }) => {
         })
       }
     >
-      <Avatar
-        source={{
-          uri: item.iconFile,
-        }}
-      />
+      <ChapterIcon iconBlob={item.iconFile} />
       <ListItem.Content>
         <ListItem.Title>{item.title}</ListItem.Title>
         <ListItem.Subtitle>{item.subTitle}</ListItem.Subtitle>

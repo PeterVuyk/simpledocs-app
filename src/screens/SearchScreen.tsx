@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Keyboard, FlatList, ImageBackground } from 'react-native';
-import { ListItem, Avatar } from 'react-native-elements';
+import { ListItem } from 'react-native-elements';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { connect } from 'react-redux';
@@ -10,6 +10,7 @@ import regulationRepository, {
 } from '../database/repository/regulationRepository';
 import SearchHeader from '../navigation/header/SearchHeader';
 import searching, { SearchText } from '../redux/actions/searching';
+import ChapterIcon from '../components/ChapterIcon';
 
 interface Props {
   setChapterSearchText: (searchText: SearchText) => void;
@@ -56,11 +57,7 @@ const SearchScreen: React.FC<Props> = ({ setChapterSearchText }) => {
 
   const renderItem = (item: Regulation) => (
     <ListItem bottomDivider onPress={() => submitSearch(item)}>
-      <Avatar
-        source={{
-          uri: item.iconFile,
-        }}
-      />
+      <ChapterIcon iconBlob={item.iconFile} />
       <ListItem.Content>
         <ListItem.Title>
           <HighlightWords

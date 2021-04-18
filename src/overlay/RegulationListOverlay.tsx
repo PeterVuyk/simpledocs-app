@@ -1,11 +1,12 @@
 import React from 'react';
-import { Avatar, Button, ListItem, Overlay } from 'react-native-elements';
+import { Button, ListItem, Overlay } from 'react-native-elements';
 import { View, FlatList, Dimensions } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import regulationRepository, {
   Chapter,
 } from '../database/repository/regulationRepository';
+import ChapterIcon from '../components/ChapterIcon';
 
 interface Props {
   visible: boolean;
@@ -33,12 +34,7 @@ const RegulationListOverlay: React.FC<Props> = ({ visible, toggleOverlay }) => {
         });
       }}
     >
-      <Avatar
-        size={30}
-        source={{
-          uri: item.iconFile,
-        }}
-      />
+      <ChapterIcon iconBlob={item.iconFile} />
       <ListItem.Content>
         <ListItem.Title>{item.title}</ListItem.Title>
       </ListItem.Content>
