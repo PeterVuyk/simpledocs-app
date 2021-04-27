@@ -10,18 +10,8 @@ async function getRegulations(): Promise<Regulation[]> {
   return querySnapshot.docs.map(doc => doc.data() as Regulation);
 }
 
-async function getRegulationVersioning() {
-  const versioning = await database()
-    .collection('versioning')
-    .doc('aggregate')
-    .get();
-
-  return versioning.data() as Versioning;
-}
-
 const collectRegulations = {
   getRegulations,
-  getRegulationVersioning,
 };
 
 export default collectRegulations;

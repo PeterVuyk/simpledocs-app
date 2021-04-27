@@ -7,6 +7,17 @@ export interface Versioning {
   version: string;
 }
 
+function updateVersioning(
+  sqlTransaction: SQLite.SQLTransaction,
+  aggregate: string,
+  version: string,
+): void {
+  sqlTransaction.executeSql(
+    `UPDATE versioning SET version = ? WHERE aggregate = ?`,
+    [version, aggregate],
+  );
+}
+
 // eslint-disable-next-line @typescript-eslint/ban-types
 function getVersioning(aggregate: string): Versioning | null {
   db.transaction(
@@ -31,6 +42,7 @@ function getVersioning(aggregate: string): Versioning | null {
 
 const versioningRepository = {
   getVersioning,
+  updateVersioning,
 };
 
 export default versioningRepository;

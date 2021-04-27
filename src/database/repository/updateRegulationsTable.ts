@@ -1,19 +1,9 @@
 import * as SQLite from 'expo-sqlite';
 import { Buffer } from 'buffer';
 import { Regulation } from './regulationRepository';
+import versioningRepository from './versioningRepository';
 
 const db = SQLite.openDatabase('db.db');
-
-function updateVersioning(
-  sqlTransaction: SQLite.SQLTransaction,
-  aggregate: string,
-  version: string,
-): void {
-  sqlTransaction.executeSql(
-    `UPDATE versioning SET version = ? WHERE aggregate = ?`,
-    [version, aggregate],
-  );
-}
 
 function getHTMLBodyFromBase64(base64HTML: string): string {
   const base64String = base64HTML.split('data:text/html;base64,')[1];
@@ -61,7 +51,11 @@ function updateRegulations(regulations: Regulation[], version: string): void {
     sqlTransaction => {
       removeAllRegulations(sqlTransaction);
       createRegulationTable(sqlTransaction);
-      updateVersioning(sqlTransaction, 'regulations', version);
+      versioningRepository.updateVersioning(
+        sqlTransaction,
+        'decisionTree',
+        version,
+      );
       addRegulations(sqlTransaction, regulations);
     },
     error =>
@@ -69,8 +63,8 @@ function updateRegulations(regulations: Regulation[], version: string): void {
   );
 }
 
-const updateDatabase = {
+const updateRegulationsTable = {
   updateRegulations,
 };
 
-export default updateDatabase;
+export default updateRegulationsTable;
