@@ -2,9 +2,10 @@ import database from './database';
 
 export interface Versioning {
   regulations: string;
+  decisionTree: string;
 }
 
-async function getRegulationVersioning() {
+async function getVersioning() {
   const versioning = await database()
     .collection('versioning')
     .doc('aggregate')
@@ -14,7 +15,7 @@ async function getRegulationVersioning() {
 }
 
 const collectRegulations = {
-  getRegulationVersioning,
+  getVersioning,
 };
 
 export default collectRegulations;

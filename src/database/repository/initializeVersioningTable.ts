@@ -23,8 +23,8 @@ function initialize(): void {
   );
 }
 
-const initializeDatabase = {
+const initializeVersioningTable = {
   initialize,
 };
 
-export default initializeDatabase;
+export default initializeVersioningTable;
