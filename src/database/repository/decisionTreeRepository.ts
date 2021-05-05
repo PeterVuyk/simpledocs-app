@@ -22,12 +22,11 @@ function getDecisionTreeSteps(
     sqlTransaction => {
       sqlTransaction.executeSql(
         `SELECT * FROM decisionTree;`,
+        [],
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
         (_, { rows: { _array } }) => {
-          if (_array.length === 1) {
-            setDecisionTreeSteps(_array[0]);
-          }
+          setDecisionTreeSteps(_array);
         },
       );
     },

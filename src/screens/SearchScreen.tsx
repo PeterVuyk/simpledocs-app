@@ -80,7 +80,10 @@ const SearchScreen: React.FC<Props> = ({ setChapterSearchText }) => {
       handleSearchTextChange={handleSearchTextChange}
       searchText={searchText}
     >
-      <View style={{ flex: 1 }} onTouchStart={Keyboard.dismiss}>
+      <View
+        style={{ flex: 1, paddingBottom: 50 }}
+        onTouchStart={Keyboard.dismiss}
+      >
         {regulations.length === 0 && (
           <ImageBackground
             style={{

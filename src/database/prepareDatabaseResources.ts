@@ -8,41 +8,41 @@ import updateDecisionTreeTable from './repository/updateDecisionTreeTable';
 import { DecisionTreeStep } from './repository/decisionTreeRepository';
 import collectDecisionTreeSteps from './firebase/collectDecisionTreeSteps';
 
-const hasLatestRegulationsVersion = async () => {
-  const versionOnTheApp = versioningRepository.getVersioning('regulations');
-  const versionOnFirebase = await collectVersions.getVersioning();
-  return versionOnTheApp?.version === versionOnFirebase.regulations;
-};
-
-const hasLatestDecisionTreeVersion = async () => {
-  const versionOnTheApp = versioningRepository.getVersioning('decisionTree');
-  const versionOnFirebase = await collectVersions.getVersioning();
-  return versionOnTheApp?.version === versionOnFirebase.decisionTree;
-};
-
-const updateRegulations = async () => {
+const updateRegulations = async (newVersion: string) => {
   const regulations: Regulation[] = await collectRegulations.getRegulations();
-  const versioning = await collectVersions.getVersioning();
-  updateRegulationsTable.updateRegulations(regulations, versioning.regulations);
+  updateRegulationsTable.updateRegulations(regulations, newVersion);
 };
 
-const updateDecisionTree = async () => {
+const updateRegulationsIfNewVersion = async () => {
+  const versionOnFirebase = await collectVersions.getVersioning();
+  versioningRepository.getVersioning('regulations', versionOnTheApp => {
+    if (versionOnTheApp?.version !== versionOnFirebase.regulations) {
+      updateRegulations(versionOnFirebase.regulations);
+    }
+  });
+};
+
+const updateDecisionTree = async (newVersion: string) => {
   const decisionTreeSteps: DecisionTreeStep[] = await collectDecisionTreeSteps.getDecisionTreeSteps();
-  const versioning = await collectVersions.getVersioning();
   updateDecisionTreeTable.updateDecisionTreeSteps(
     decisionTreeSteps,
-    versioning.decisionTree,
+    newVersion,
   );
+};
+
+const updateDecisionTreeIfNewVersion = async () => {
+  const versionOnFirebase = await collectVersions.getVersioning();
+  versioningRepository.getVersioning('decisionTree', versionOnTheApp => {
+    if (versionOnTheApp?.version !== versionOnFirebase.decisionTree) {
+      updateDecisionTree(versionOnFirebase.decisionTree);
+    }
+  });
 };
 
 const prepareDatabaseResources = async () => {
   await initializeVersioningTable.initialize();
-  if (!(await hasLatestRegulationsVersion())) {
-    await updateRegulations();
-  }
-  if (!(await hasLatestDecisionTreeVersion())) {
-    await updateDecisionTree();
-  }
+  await updateRegulationsIfNewVersion();
+  await updateDecisionTreeIfNewVersion();
 };
 
 export default prepareDatabaseResources;

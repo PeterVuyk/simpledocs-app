@@ -28,7 +28,7 @@ function addDecisionTreeSteps(
 }
 
 function removeAllDecisionTree(sqlTransaction: SQLite.SQLTransaction): void {
-  sqlTransaction.executeSql(`DROP TABLE decisionTree`, []);
+  sqlTransaction.executeSql(`DROP TABLE IF EXISTS decisionTree`, []);
 }
 
 function createDecisionTreeTable(sqlTransaction: SQLite.SQLTransaction): void {
@@ -47,7 +47,7 @@ function updateDecisionTreeSteps(
       createDecisionTreeTable(sqlTransaction);
       versioningRepository.updateVersioning(
         sqlTransaction,
-        'regulations',
+        'decisionTree',
         version,
       );
       addDecisionTreeSteps(sqlTransaction, decisionTreeSteps);

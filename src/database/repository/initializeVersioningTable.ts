@@ -14,6 +14,9 @@ function initialize(): void {
       sqlTransaction.executeSql(
         "INSERT OR IGNORE INTO versioning (aggregate, version) VALUES ('regulations', 'initial');",
       );
+      sqlTransaction.executeSql(
+        "INSERT OR IGNORE INTO versioning (aggregate, version) VALUES ('decisionTree', 'initial');",
+      );
     },
     error =>
       console.error(

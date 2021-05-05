@@ -37,7 +37,7 @@ function addRegulations(
 }
 
 function removeAllRegulations(sqlTransaction: SQLite.SQLTransaction): void {
-  sqlTransaction.executeSql(`DROP TABLE regulation`, []);
+  sqlTransaction.executeSql(`DROP TABLE IF EXISTS regulation`, []);
 }
 
 function createRegulationTable(sqlTransaction: SQLite.SQLTransaction): void {
@@ -53,7 +53,7 @@ function updateRegulations(regulations: Regulation[], version: string): void {
       createRegulationTable(sqlTransaction);
       versioningRepository.updateVersioning(
         sqlTransaction,
-        'decisionTree',
+        'regulations',
         version,
       );
       addRegulations(sqlTransaction, regulations);

@@ -2,7 +2,7 @@ import React from 'react';
 import { FlatList, View } from 'react-native';
 import { ListItem } from 'react-native-elements';
 import { DrawerNavigationProp } from '@react-navigation/drawer/lib/typescript/src/types';
-import RegulationRepository, {
+import regulationRepository, {
   Regulation,
 } from '../database/repository/regulationRepository';
 import ChapterIcon from '../components/ChapterIcon';
@@ -15,7 +15,7 @@ const RegulationsScreen: React.FC<Props> = ({ navigation }) => {
   const [regulations, setRegulations] = React.useState<Regulation[]>([]);
 
   React.useEffect(() => {
-    RegulationRepository.getChaptersByLevelChapter(setRegulations);
+    regulationRepository.getChaptersByLevelChapter(setRegulations);
   }, []);
 
   const renderItem = (item: Regulation) => (

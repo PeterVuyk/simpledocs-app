@@ -1,6 +1,9 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { Button } from 'react-native-elements';
+import decisionTreeRepository, {
+  DecisionTreeStep,
+} from '../database/repository/decisionTreeRepository';
 
 const styles = StyleSheet.create({
   container: {
@@ -15,6 +18,14 @@ interface Props {
 }
 
 const DecisionTreeScreen: React.FC<Props> = ({ navigation }) => {
+  const [decisionTreeSteps, setDecisionTreeSteps] = React.useState<
+    DecisionTreeStep[]
+  >([]);
+
+  React.useEffect(() => {
+    decisionTreeRepository.getDecisionTreeSteps(setDecisionTreeSteps);
+  }, []);
+
   return (
     <View style={styles.container}>
       <Text>DecisionTreeScreen</Text>

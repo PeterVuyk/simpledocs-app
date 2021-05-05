@@ -19,25 +19,29 @@ function updateVersioning(
 }
 
 // eslint-disable-next-line @typescript-eslint/ban-types
-function getVersioning(aggregate: string): Versioning | null {
+async function getVersioning(
+  aggregate: string,
+  callback: (versioning: Versioning) => void,
+): Promise<void> {
   db.transaction(
     sqlTransaction => {
       sqlTransaction.executeSql(
-        `SELECT * FROM versioning WHERE aggregate = ? LIMIT 1;`,
+        `SELECT *
+         FROM versioning
+         WHERE aggregate = ?
+         LIMIT 1;`,
         [aggregate],
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
         (_, { rows: { _array } }) => {
           if (_array.length === 1) {
-            return _array[0];
+            callback(_array[0] as Versioning);
           }
-          return null;
         },
       );
     },
     error => console.error('getVersioning failed: ', error),
   );
-  return null;
 }
 
 const versioningRepository = {
