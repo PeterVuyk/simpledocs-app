@@ -21,7 +21,7 @@ function getDecisionTreeSteps(
   db.transaction(
     sqlTransaction => {
       sqlTransaction.executeSql(
-        `SELECT * FROM decisionTree;`,
+        `SELECT * FROM decisionTree ORDER BY id ASC;`,
         [],
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore

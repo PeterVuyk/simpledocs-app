@@ -121,7 +121,7 @@ function TabNavigator({
                 <Text
                   style={{
                     textAlign: 'center',
-                    color: state.index === index ? '#ffffff' : '#0091ea',
+                    color: state.index === index ? '#ffffff' : '#0091EA',
                   }}
                 >
                   {descriptors[route.key].options.title}
