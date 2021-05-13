@@ -1,22 +1,41 @@
 import React from 'react';
-import { StyleSheet, View } from 'react-native';
-import { Text, Button, Icon } from 'react-native-elements';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import { Dimensions, StyleSheet, View } from 'react-native';
+import { Text, Button, Icon, Content, H3 } from 'native-base';
 import decisionTreeRepository, {
   DecisionTreeStep,
 } from '../database/repository/decisionTreeRepository';
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-});
-
 interface Props {
   navigation: any;
 }
+
+const styles = StyleSheet.create({
+  buttonText: {
+    textAlign: 'center',
+    flex: 1,
+  },
+  question: {
+    textAlign: 'center',
+    fontWeight: 'bold',
+    color: '#154594',
+  },
+  buttonContainer: {
+    flexDirection: 'row',
+    flex: 1,
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    justifyContent: 'space-between',
+    padding: 15,
+  },
+  contentContainerStyle: {
+    flex: 1,
+    justifyContent: 'center',
+    paddingLeft: 20,
+    paddingRight: 30,
+    paddingBottom: 200,
+  },
+});
 
 const DecisionTreeScreen: React.FC<Props> = ({ navigation }) => {
   const [currentStep, setCurrentStep] = React.useState<
@@ -31,6 +50,7 @@ const DecisionTreeScreen: React.FC<Props> = ({ navigation }) => {
   const [decisionTreeSteps, setDecisionTreeSteps] = React.useState<
     DecisionTreeStep[]
   >([]);
+  const { width } = Dimensions.get('window');
 
   React.useEffect(() => {
     decisionTreeRepository.getDecisionTreeSteps(setDecisionTreeSteps);
@@ -54,44 +74,70 @@ const DecisionTreeScreen: React.FC<Props> = ({ navigation }) => {
 
   const isRootQuestion = (): boolean => currentStep?.parentId === null;
 
+  const getPreviousQuestion = (): DecisionTreeStep | undefined => {
+    return decisionTreeSteps.find(step => step.id === currentStep?.parentId);
+  };
+
   return (
-    <View style={styles.container}>
+    <View style={{ backgroundColor: 'white', flex: 1 }}>
       {decisionTreeSteps.length !== 0 && (
-        <View>
-          <Text h4>{currentStep?.label}</Text>
-          <View style={{ flex: 1 }}>
-            {leftStep !== undefined && (
-              <Button onPress={() => setCurrentStep(leftStep)} title="Nee" />
-            )}
-            {!isRootQuestion() && (
-              <Icon
-                onPress={() => setCurrentStep(undefined)}
-                reverse
-                name="restore"
-                type="material-community"
-                color="#0091EA"
-              />
-            )}
-            {rightStep !== undefined && (
-              <Button onPress={() => setCurrentStep(rightStep)} title="Ja" />
-            )}
-            {currentStep !== undefined &&
-              currentStep.regulationChapter !== null && (
-                <Button
-                  onPress={() =>
-                    navigation.navigate('RegulationsScreenStack', {
-                      screen: 'RegulationDetailsScreen',
-                      params: {
-                        regulationChapter: currentStep.regulationChapter,
-                      },
-                    })
-                  }
-                  title="test open article"
-                  accessibilityLabel="click me"
-                />
-              )}
+        <Content contentContainerStyle={styles.contentContainerStyle}>
+          <H3 style={styles.question}>{currentStep?.label}</H3>
+          <View style={[{ bottom: 115 }, styles.buttonContainer]}>
+            <Button
+              disabled={isRootQuestion()}
+              onPress={() => setCurrentStep(getPreviousQuestion())}
+            >
+              <Icon name="keyboard-backspace" type="MaterialCommunityIcons" />
+            </Button>
+            <Button
+              disabled={isRootQuestion()}
+              onPress={() => setCurrentStep(undefined)}
+            >
+              <Icon name="restore" type="MaterialCommunityIcons" />
+            </Button>
           </View>
-        </View>
+          {currentStep !== undefined && currentStep.regulationChapter !== null && (
+            <View style={[{ bottom: 50 }, styles.buttonContainer]}>
+              <Button
+                style={{ width: width - 30 }}
+                iconRight
+                onPress={() =>
+                  navigation.navigate('RegulationsScreenStack', {
+                    screen: 'RegulationDetailsScreen',
+                    params: {
+                      regulationChapter: currentStep.regulationChapter,
+                    },
+                  })
+                }
+              >
+                <Text uppercase={false} style={styles.buttonText}>
+                  Open regelgeving
+                </Text>
+              </Button>
+            </View>
+          )}
+          {leftStep !== undefined && rightStep !== undefined && (
+            <View style={[{ bottom: 50 }, styles.buttonContainer]}>
+              <Button
+                style={{ backgroundColor: 'red', width: 125 }}
+                onPress={() => setCurrentStep(leftStep)}
+              >
+                <Text uppercase={false} style={styles.buttonText}>
+                  Nee
+                </Text>
+              </Button>
+              <Button
+                style={{ backgroundColor: 'green', width: 125 }}
+                onPress={() => setCurrentStep(rightStep)}
+              >
+                <Text uppercase={false} style={styles.buttonText}>
+                  Ja
+                </Text>
+              </Button>
+            </View>
+          )}
+        </Content>
       )}
     </View>
   );
