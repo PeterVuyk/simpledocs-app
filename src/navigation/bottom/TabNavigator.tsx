@@ -115,13 +115,13 @@ function TabNavigator({
                     marginBottom: -3,
                   }}
                   name={descriptors[route.key].options.icon}
-                  color={state.index === index ? '#ffffff' : '#0091EA'}
+                  color={state.index === index ? '#fff' : '#0091EA'}
                   size={26}
                 />
                 <Text
                   style={{
                     textAlign: 'center',
-                    color: state.index === index ? '#ffffff' : '#0091EA',
+                    color: state.index === index ? '#fff' : '#0091EA',
                   }}
                 >
                   {descriptors[route.key].options.title}

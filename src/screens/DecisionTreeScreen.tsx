@@ -65,12 +65,12 @@ const DecisionTreeScreen: React.FC<Props> = ({ navigation }) => {
     setLeftStep(
       decisionTreeSteps
         .filter(value => value.parentId === currentStep?.id)
-        .find(value => value.lineLabel === 'Nee'),
+        .find(value => value.lineLabel.toLowerCase() === 'nee'),
     );
     setRightStep(
       decisionTreeSteps
         .filter(value => value.parentId === currentStep?.id)
-        .find(value => value.lineLabel === 'Ja'),
+        .find(value => value.lineLabel.toLowerCase() === 'ja'),
     );
     setRootQuestion(currentStep?.parentId === null);
   }, [currentStep, decisionTreeSteps]);

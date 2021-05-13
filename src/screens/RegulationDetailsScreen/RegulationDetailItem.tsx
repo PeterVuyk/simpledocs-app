@@ -96,10 +96,11 @@ const RegulationDetailItem: React.FC<Props> = ({
       Linking.openURL(request.url);
       return false;
     }
-    if (request.url.search('http://example.com/') !== -1) {
+    if (request.url.search('http://page-blank.firebaseapp.com/') !== -1) {
       setLoading(true);
       navigation.push('RegulationDetailsScreen', {
-        regulationChapter: request.url.split('http://example.com/')[1] ?? '1',
+        regulationChapter:
+          request.url.split('http://page-blank.firebaseapp.com/')[1] ?? '1',
       });
     }
     return false;
