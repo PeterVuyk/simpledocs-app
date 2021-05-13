@@ -38,7 +38,7 @@ const TabNavigation: React.FC = () => {
         contentStyle={{
           height: 60,
         }}
-        initialRouteName="RegulationsScreen"
+        initialRouteName="RegulationsScreenStack"
       >
         <Tab.Screen
           name="DecisionTreeScreenStack"

@@ -28,6 +28,10 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     padding: 15,
   },
+  container: {
+    backgroundColor: '#fff',
+    flex: 1,
+  },
   contentContainerStyle: {
     flex: 1,
     justifyContent: 'center',
@@ -38,15 +42,13 @@ const styles = StyleSheet.create({
 });
 
 const DecisionTreeScreen: React.FC<Props> = ({ navigation }) => {
-  const [currentStep, setCurrentStep] = React.useState<
-    DecisionTreeStep | undefined
-  >();
-  const [leftStep, setLeftStep] = React.useState<
-    DecisionTreeStep | undefined
-  >();
-  const [rightStep, setRightStep] = React.useState<
-    DecisionTreeStep | undefined
-  >();
+  const [isRootQuestion, setRootQuestion] = React.useState<boolean>(true);
+  const [currentStep, setCurrentStep] =
+    React.useState<DecisionTreeStep | undefined>();
+  const [leftStep, setLeftStep] =
+    React.useState<DecisionTreeStep | undefined>();
+  const [rightStep, setRightStep] =
+    React.useState<DecisionTreeStep | undefined>();
   const [decisionTreeSteps, setDecisionTreeSteps] = React.useState<
     DecisionTreeStep[]
   >([]);
@@ -70,28 +72,27 @@ const DecisionTreeScreen: React.FC<Props> = ({ navigation }) => {
         .filter(value => value.parentId === currentStep?.id)
         .find(value => value.lineLabel === 'Ja'),
     );
+    setRootQuestion(currentStep?.parentId === null);
   }, [currentStep, decisionTreeSteps]);
-
-  const isRootQuestion = (): boolean => currentStep?.parentId === null;
 
   const getPreviousQuestion = (): DecisionTreeStep | undefined => {
     return decisionTreeSteps.find(step => step.id === currentStep?.parentId);
   };
 
   return (
-    <View style={{ backgroundColor: 'white', flex: 1 }}>
+    <View style={styles.container}>
       {decisionTreeSteps.length !== 0 && (
         <Content contentContainerStyle={styles.contentContainerStyle}>
           <H3 style={styles.question}>{currentStep?.label}</H3>
           <View style={[{ bottom: 115 }, styles.buttonContainer]}>
             <Button
-              disabled={isRootQuestion()}
+              disabled={isRootQuestion}
               onPress={() => setCurrentStep(getPreviousQuestion())}
             >
               <Icon name="keyboard-backspace" type="MaterialCommunityIcons" />
             </Button>
             <Button
-              disabled={isRootQuestion()}
+              disabled={isRootQuestion}
               onPress={() => setCurrentStep(undefined)}
             >
               <Icon name="restore" type="MaterialCommunityIcons" />

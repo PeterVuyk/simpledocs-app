@@ -11,12 +11,12 @@ const Drawer: React.FC = () => {
     <NavigationContainer>
       <DrawerNavigator.Navigator
         drawerType="slide"
-        drawerStyle={{ backgroundColor: 'white' }}
+        drawerStyle={{ backgroundColor: '#fff' }}
         overlayColor="transparant"
         drawerContentOptions={{
-          activeBackgroundColor: 'white',
+          activeBackgroundColor: '#fff',
         }}
-        sceneContainerStyle={{ backgroundColor: 'white' }}
+        sceneContainerStyle={{ backgroundColor: '#fff' }}
         drawerContent={props => {
           return (
             <DrawerContent
