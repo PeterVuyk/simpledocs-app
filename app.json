@@ -25,5 +25,18 @@
         "backgroundColor": "#FFFFFF"
       }
     },
+    "extra": {
+      "bugsnag": {
+        "apiKey": "f497cc85f47c5f022b288a650c793c7b"
+      }
+    },
+    "hooks": {
+      "postPublish": [
+        {
+          "file": "@bugsnag/expo/hooks/post-publish.js",
+          "config": {}
+        }
+      ]
+    }
   }
 }

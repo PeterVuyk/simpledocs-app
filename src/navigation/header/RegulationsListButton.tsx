@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { StyleProp, View, ViewStyle } from 'react-native';
+import { Icon } from 'native-base';
 import RegulationListOverlay from '../../overlay/RegulationListOverlay';
 
 interface Props {
@@ -16,11 +16,11 @@ const RegulationsListButton: React.FC<Props> = ({ regulationsButtonStyle }) => {
 
   return (
     <View>
-      <MaterialCommunityIcons
-        style={regulationsButtonStyle}
+      <Icon
+        style={[{ color: '#154594' }, regulationsButtonStyle]}
         name="book-open-variant"
-        color="#154594"
-        size={26}
+        type="MaterialCommunityIcons"
+        fontSize={26}
         onPress={toggleOverlay}
       />
       <RegulationListOverlay visible={visible} toggleOverlay={toggleOverlay} />

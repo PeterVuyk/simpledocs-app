@@ -2,6 +2,7 @@ import * as SQLite from 'expo-sqlite';
 import { Buffer } from 'buffer';
 import { Regulation } from './regulationRepository';
 import versioningRepository from './versioningRepository';
+import logger from '../../helper/logger';
 
 const db = SQLite.openDatabase('db.db');
 
@@ -59,7 +60,7 @@ function updateRegulations(regulations: Regulation[], version: string): void {
       addRegulations(sqlTransaction, regulations);
     },
     error =>
-      console.error('Updating regulations failed, rolled back, error: ', error),
+      logger.error('Updating regulations failed, rolled back', error.message),
   );
 }
 

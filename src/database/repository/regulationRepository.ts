@@ -1,4 +1,5 @@
 import * as SQLite from 'expo-sqlite';
+import logger from '../../helper/logger';
 
 const db = SQLite.openDatabase('db.db');
 
@@ -48,7 +49,11 @@ function getRegulationByChapter(
         },
       );
     },
-    error => console.error('getRegulationByChapter failed: ', error),
+    error =>
+      logger.error(
+        'regulationRepository.getRegulationByChapter failed',
+        error.message,
+      ),
   );
 }
 
@@ -74,7 +79,11 @@ function searchRegulations(
         },
       );
     },
-    error => console.error('searchRegulations failed: ', error),
+    error =>
+      logger.error(
+        'regulationRepository.searchRegulations failed',
+        error.message,
+      ),
   );
 }
 
@@ -91,7 +100,11 @@ function getChaptersByLevelChapter(setRegulations: setRegulationsCallback): void
         },
       );
     },
-    error => console.error('getChaptersByLevelChapter failed: ', error),
+    error =>
+      logger.error(
+        'regulationRepository.getChaptersByLevelChapter failed',
+        error.message,
+      ),
   );
 }
 
@@ -100,15 +113,16 @@ function getChapters(setChapters: setChaptersCallback): void {
     sqlTransaction => {
       sqlTransaction.executeSql(
         `SELECT chapter, title, iconFile FROM regulation ORDER BY pageIndex;`,
+        [],
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
-        [],
         (_, { rows: { _array } }) => {
           setChapters(_array);
         },
       );
     },
-    error => console.error('getChapters failed: ', error),
+    error =>
+      logger.error('regulationRepository.getChapters failed', error.message),
   );
 }
 

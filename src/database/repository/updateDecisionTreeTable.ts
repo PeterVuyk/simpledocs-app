@@ -1,6 +1,7 @@
 import * as SQLite from 'expo-sqlite';
 import { DecisionTreeStep } from './decisionTreeRepository';
 import versioningRepository from './versioningRepository';
+import logger from '../../helper/logger';
 
 const db = SQLite.openDatabase('db.db');
 
@@ -53,10 +54,7 @@ function updateDecisionTreeSteps(
       addDecisionTreeSteps(sqlTransaction, decisionTreeSteps);
     },
     error =>
-      console.error(
-        'Updating decisionTree failed, rolled back, error: ',
-        error,
-      ),
+      logger.error('Updating decisionTree failed, rolled back', error.message),
   );
 }
 

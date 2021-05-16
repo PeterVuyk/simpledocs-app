@@ -17,7 +17,7 @@ import {
   createNavigatorFactory,
   ParamListBase,
 } from '@react-navigation/native';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import { Icon } from 'native-base';
 import HideWithKeyboard from '../../components/HideWithKeyboard';
 import ToggleBottomNavigator from '../../navigation/bottom/ToggleBottomNavigator';
 
@@ -109,14 +109,14 @@ function TabNavigator({
                   flex: 1,
                 }}
               >
-                <MaterialCommunityIcons
+                <Icon
                   style={{
                     textAlign: 'center',
-                    marginBottom: -3,
+                    color: state.index === index ? '#fff' : '#0091EA',
                   }}
                   name={descriptors[route.key].options.icon}
-                  color={state.index === index ? '#fff' : '#0091EA'}
-                  size={26}
+                  type="MaterialCommunityIcons"
+                  fontSize={26}
                 />
                 <Text
                   style={{

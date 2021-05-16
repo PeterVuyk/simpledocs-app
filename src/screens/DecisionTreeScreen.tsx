@@ -84,20 +84,16 @@ const DecisionTreeScreen: React.FC<Props> = ({ navigation }) => {
       {decisionTreeSteps.length !== 0 && (
         <Content contentContainerStyle={styles.contentContainerStyle}>
           <H3 style={styles.question}>{currentStep?.label}</H3>
-          <View style={[{ bottom: 115 }, styles.buttonContainer]}>
-            <Button
-              disabled={isRootQuestion}
-              onPress={() => setCurrentStep(getPreviousQuestion())}
-            >
-              <Icon name="keyboard-backspace" type="MaterialCommunityIcons" />
-            </Button>
-            <Button
-              disabled={isRootQuestion}
-              onPress={() => setCurrentStep(undefined)}
-            >
-              <Icon name="restore" type="MaterialCommunityIcons" />
-            </Button>
-          </View>
+          {!isRootQuestion && (
+            <View style={[{ bottom: 115 }, styles.buttonContainer]}>
+              <Button onPress={() => setCurrentStep(getPreviousQuestion())}>
+                <Icon name="keyboard-backspace" type="MaterialCommunityIcons" />
+              </Button>
+              <Button onPress={() => setCurrentStep(undefined)}>
+                <Icon name="restore" type="MaterialCommunityIcons" />
+              </Button>
+            </View>
+          )}
           {currentStep !== undefined && currentStep.regulationChapter !== null && (
             <View style={[{ bottom: 50 }, styles.buttonContainer]}>
               <Button

@@ -1,19 +1,19 @@
 import React from 'react';
 import { View } from 'react-native';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { DrawerNavigationHelpers } from '@react-navigation/drawer/lib/typescript/src/types';
+import { Icon } from 'native-base';
 
 interface Props {
   navigation: DrawerNavigationHelpers;
 }
-
 const SearchButton: React.FC<Props> = ({ navigation }) => {
   return (
     <View>
-      <MaterialCommunityIcons
+      <Icon
         name="magnify"
-        color="#154594"
-        size={26}
+        fontSize={26}
+        style={{ color: '#154594' }}
+        type="MaterialCommunityIcons"
         onPress={() => {
           navigation.navigate('RegulationsScreenStack', {
             screen: 'SearchScreen',
@@ -25,3 +25,5 @@ const SearchButton: React.FC<Props> = ({ navigation }) => {
 };
 
 export default SearchButton;
+
+// TODO: media-queries gebruiken voor posities. css maak je dan afhankelijk

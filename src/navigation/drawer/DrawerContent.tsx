@@ -2,9 +2,9 @@ import React from 'react';
 import { Linking, Image, View, FlatList, BackHandler } from 'react-native';
 import { DrawerItem } from '@react-navigation/drawer';
 import { Block, Text } from 'expo-ui-kit';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { DrawerNavigationHelpers } from '@react-navigation/drawer/lib/typescript/src/types';
 import Animated from 'react-native-reanimated';
+import { Icon } from 'native-base';
 import { getDrawerProgressListener } from './onDrawerProgressListener';
 
 interface Props {
@@ -210,7 +210,12 @@ const DrawerContent: React.FC<Props> = ({ progress, navigation }) => {
         label="Help"
         onPress={() => Linking.openURL('https://www.ambulancezorg.nl/contact')}
         icon={({ color }) => (
-          <MaterialCommunityIcons name="help" color={color} size={20} />
+          <Icon
+            name="help"
+            style={{ color }}
+            type="MaterialCommunityIcons"
+            fontSize={20}
+          />
         )}
       />
       <DrawerItem
@@ -220,11 +225,11 @@ const DrawerContent: React.FC<Props> = ({ progress, navigation }) => {
           BackHandler.exitApp();
         }}
         icon={({ color }) => (
-          <MaterialCommunityIcons
+          <Icon
             name="exit-to-app"
-            color={color}
-            size={20}
-            style={{ transform: [{ rotateY: '180deg' }] }}
+            style={{ color, transform: [{ rotateY: '180deg' }] }}
+            type="MaterialCommunityIcons"
+            fontSize={20}
           />
         )}
       />

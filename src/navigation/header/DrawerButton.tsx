@@ -1,5 +1,5 @@
 import React from 'react';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import { Icon } from 'native-base';
 import { DrawerNavigationHelpers } from '@react-navigation/drawer/lib/typescript/src/types';
 import { StyleProp, ViewStyle } from 'react-native';
 
@@ -10,11 +10,11 @@ interface Props {
 
 const DrawerButton: React.FC<Props> = ({ drawerStyle, navigation }) => {
   return (
-    <MaterialCommunityIcons
-      style={drawerStyle}
+    <Icon
+      style={[{ color: '#154594' }, drawerStyle]}
       name="menu"
-      color="#154594"
-      size={26}
+      type="MaterialCommunityIcons"
+      fontSize={26}
       onPress={() => navigation.openDrawer()}
     />
   );

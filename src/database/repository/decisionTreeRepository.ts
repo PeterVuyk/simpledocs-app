@@ -1,4 +1,5 @@
 import * as SQLite from 'expo-sqlite';
+import logger from '../../helper/logger';
 
 const db = SQLite.openDatabase('db.db');
 
@@ -30,7 +31,11 @@ function getDecisionTreeSteps(
         },
       );
     },
-    error => console.error('getDecisionTreeSteps failed: ', error),
+    error =>
+      logger.error(
+        'regulationRepository.getDecisionTreeSteps failed',
+        error.message,
+      ),
   );
 }
 
