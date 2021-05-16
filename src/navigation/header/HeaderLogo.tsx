@@ -1,17 +1,27 @@
 import * as React from 'react';
-import { Image } from 'react-native';
+import { Image, Linking, TouchableOpacity, View } from 'react-native';
 
 const HeaderLogo: React.FC = () => {
   return (
-    <Image
+    <View
       style={{
         marginTop: 10,
-        width: 200,
-        resizeMode: 'contain',
         alignItems: 'center',
       }}
-      source={require('../../../assets/images/azn.png')}
-    />
+    >
+      <TouchableOpacity
+        onPress={() => Linking.openURL('https://www.ambulancezorg.nl/')}
+        style={{ flex: 1 }}
+      >
+        <Image
+          style={{
+            width: 200,
+            resizeMode: 'contain',
+          }}
+          source={require('../../../assets/images/azn.png')}
+        />
+      </TouchableOpacity>
+    </View>
   );
 };
 

@@ -32,7 +32,7 @@ const TabNavigation: React.FC = () => {
         tabBarStyle={{
           paddingBottom: 5,
           paddingTop: 5,
-          height: 50,
+          height: 60,
           backgroundColor: '#154594',
         }}
         contentStyle={{

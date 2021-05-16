@@ -26,7 +26,7 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     justifyContent: 'space-between',
-    padding: 15,
+    padding: 10,
   },
   container: {
     backgroundColor: '#fff',
@@ -38,6 +38,19 @@ const styles = StyleSheet.create({
     paddingLeft: 20,
     paddingRight: 30,
     paddingBottom: 200,
+  },
+  buttonStyle: {
+    borderRadius: 5,
+  },
+  leftButtonStyle: {
+    backgroundColor: 'red',
+    flex: 1,
+    marginRight: 5,
+  },
+  rightButtonStyle: {
+    backgroundColor: 'green',
+    flex: 1,
+    marginLeft: 5,
   },
 });
 
@@ -86,18 +99,24 @@ const DecisionTreeScreen: React.FC<Props> = ({ navigation }) => {
           <H3 style={styles.question}>{currentStep?.label}</H3>
           {!isRootQuestion && (
             <View style={[{ bottom: 115 }, styles.buttonContainer]}>
-              <Button onPress={() => setCurrentStep(getPreviousQuestion())}>
+              <Button
+                style={styles.buttonStyle}
+                onPress={() => setCurrentStep(getPreviousQuestion())}
+              >
                 <Icon name="keyboard-backspace" type="MaterialCommunityIcons" />
               </Button>
-              <Button onPress={() => setCurrentStep(undefined)}>
+              <Button
+                style={styles.buttonStyle}
+                onPress={() => setCurrentStep(undefined)}
+              >
                 <Icon name="restore" type="MaterialCommunityIcons" />
               </Button>
             </View>
           )}
           {currentStep !== undefined && currentStep.regulationChapter !== null && (
-            <View style={[{ bottom: 50 }, styles.buttonContainer]}>
+            <View style={[{ bottom: 60 }, styles.buttonContainer]}>
               <Button
-                style={{ width: width - 30 }}
+                style={[{ width: width - 20 }, styles.buttonStyle]}
                 iconRight
                 onPress={() =>
                   navigation.navigate('RegulationsScreenStack', {
@@ -115,9 +134,9 @@ const DecisionTreeScreen: React.FC<Props> = ({ navigation }) => {
             </View>
           )}
           {leftStep !== undefined && rightStep !== undefined && (
-            <View style={[{ bottom: 50 }, styles.buttonContainer]}>
+            <View style={[{ bottom: 60 }, styles.buttonContainer]}>
               <Button
-                style={{ backgroundColor: 'red', width: 125 }}
+                style={[styles.buttonStyle, styles.leftButtonStyle]}
                 onPress={() => setCurrentStep(leftStep)}
               >
                 <Text uppercase={false} style={styles.buttonText}>
@@ -125,7 +144,7 @@ const DecisionTreeScreen: React.FC<Props> = ({ navigation }) => {
                 </Text>
               </Button>
               <Button
-                style={{ backgroundColor: 'green', width: 125 }}
+                style={[styles.buttonStyle, styles.rightButtonStyle]}
                 onPress={() => setCurrentStep(rightStep)}
               >
                 <Text uppercase={false} style={styles.buttonText}>

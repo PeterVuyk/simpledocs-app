@@ -28,7 +28,7 @@ const ScrollAwareBottomButton: React.FC<Props> = ({
   const showElement = useCallback(() => {
     Animated.timing(yValue, {
       useNativeDriver: false,
-      toValue: 55,
+      toValue: 60,
       duration: 300,
     }).start();
   }, [yValue]);
@@ -46,7 +46,7 @@ const ScrollAwareBottomButton: React.FC<Props> = ({
     <HideWithKeyboard>
       <Animated.View
         style={{
-          margin: 5,
+          margin: 10,
           position: 'absolute',
           bottom: yValue,
           right: 0,

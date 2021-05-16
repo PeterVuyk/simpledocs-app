@@ -36,7 +36,7 @@ const RegulationsScreen: React.FC<Props> = ({ navigation }) => {
   );
 
   return (
-    <View style={{ flex: 1, paddingBottom: 50, backgroundColor: '#fff' }}>
+    <View style={{ flex: 1, paddingBottom: 60, backgroundColor: '#fff' }}>
       {regulations && (
         <FlatList<Regulation>
           keyExtractor={item => item.chapter.toString()}

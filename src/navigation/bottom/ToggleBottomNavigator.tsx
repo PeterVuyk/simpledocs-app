@@ -16,7 +16,7 @@ const ToggleBottomNavigator: React.FC<Props> = ({
   const hideElement = useCallback(() => {
     Animated.timing(yValue, {
       useNativeDriver: false,
-      toValue: -55,
+      toValue: -60,
       duration: 1000,
     }).start();
   }, [yValue]);
