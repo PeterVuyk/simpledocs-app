@@ -42,15 +42,19 @@ const styles = StyleSheet.create({
   buttonStyle: {
     borderRadius: 5,
   },
+  regulationsButtonsStyle: {
+    flexGrow: 1,
+    flex: 1,
+  },
   leftButtonStyle: {
     backgroundColor: 'red',
-    flex: 1,
     marginRight: 5,
+    flex: 1,
   },
   rightButtonStyle: {
     backgroundColor: 'green',
-    flex: 1,
     marginLeft: 5,
+    flex: 1,
   },
 });
 
@@ -116,7 +120,7 @@ const DecisionTreeScreen: React.FC<Props> = ({ navigation }) => {
           {currentStep !== undefined && currentStep.regulationChapter !== null && (
             <View style={[{ bottom: 60 }, styles.buttonContainer]}>
               <Button
-                style={[{ width: width - 20 }, styles.buttonStyle]}
+                style={[styles.buttonStyle, styles.regulationsButtonsStyle]}
                 iconRight
                 onPress={() =>
                   navigation.navigate('RegulationsScreenStack', {

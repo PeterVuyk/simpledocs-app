@@ -58,9 +58,7 @@ const RegulationDetailsScreen: React.FC<Props> = ({ route }) => {
         keyExtractor={item => item.chapter.toString()}
         renderItem={({ item }) => (
           <View style={{ width, flex: 1 }}>
-            <RegulationDetailItem
-              regulationChapter={item.chapter}
-            />
+            <RegulationDetailItem regulationChapter={item.chapter} />
           </View>
         )}
       />
