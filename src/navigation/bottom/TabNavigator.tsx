@@ -77,6 +77,14 @@ function TabNavigator({
       return;
     }
 
+    if (route.name === 'DecisionTreeScreenStack') {
+      navigation.setParams({ params: null, screen: null });
+      navigation.navigate('DecisionTreeScreenStack', {
+        screen: 'DecisionTreeListScreen',
+      });
+      return;
+    }
+
     const event = navigation.emit({
       type: 'tabPress',
       target: route.key,

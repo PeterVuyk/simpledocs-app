@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Dimensions, StyleSheet, View } from 'react-native';
 import { Text, Button, Icon, Content, H3 } from 'native-base';
 import decisionTreeRepository, {
@@ -59,17 +59,14 @@ const styles = StyleSheet.create({
 });
 
 const DecisionTreeScreen: React.FC<Props> = ({ navigation }) => {
-  const [isRootQuestion, setRootQuestion] = React.useState<boolean>(true);
+  const [isRootQuestion, setRootQuestion] = useState<boolean>(true);
   const [currentStep, setCurrentStep] =
-    React.useState<DecisionTreeStep | undefined>();
-  const [leftStep, setLeftStep] =
-    React.useState<DecisionTreeStep | undefined>();
-  const [rightStep, setRightStep] =
-    React.useState<DecisionTreeStep | undefined>();
-  const [decisionTreeSteps, setDecisionTreeSteps] = React.useState<
+    useState<DecisionTreeStep | undefined>();
+  const [leftStep, setLeftStep] = useState<DecisionTreeStep | undefined>();
+  const [rightStep, setRightStep] = useState<DecisionTreeStep | undefined>();
+  const [decisionTreeSteps, setDecisionTreeSteps] = useState<
     DecisionTreeStep[]
   >([]);
-  const { width } = Dimensions.get('window');
 
   React.useEffect(() => {
     decisionTreeRepository.getDecisionTreeSteps(setDecisionTreeSteps);
