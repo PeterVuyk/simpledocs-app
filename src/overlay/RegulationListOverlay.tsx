@@ -1,6 +1,6 @@
 import React from 'react';
 import { Button, ListItem, Overlay } from 'react-native-elements';
-import { View, FlatList, Dimensions } from 'react-native';
+import { View, FlatList } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import regulationRepository, {
@@ -9,16 +9,13 @@ import regulationRepository, {
 import ChapterIcon from '../components/ChapterIcon';
 
 interface Props {
-  visible: boolean;
   toggleOverlay: () => void;
 }
 
-const RegulationListOverlay: React.FC<Props> = ({ visible, toggleOverlay }) => {
+const RegulationListOverlay: React.FC<Props> = ({ toggleOverlay }) => {
   const [chapters, setChapters] = React.useState<Chapter[]>([]);
 
   const navigation = useNavigation<StackNavigationProp<any>>();
-
-  const { width, height } = Dimensions.get('window');
 
   React.useEffect(() => {
     regulationRepository.getChapters(setChapters);
@@ -46,11 +43,9 @@ const RegulationListOverlay: React.FC<Props> = ({ visible, toggleOverlay }) => {
       style={{
         position: 'absolute',
         flex: 1,
-        width,
-        height,
       }}
     >
-      <Overlay fullScreen isVisible={visible} onBackdropPress={toggleOverlay}>
+      <Overlay fullScreen isVisible onBackdropPress={toggleOverlay}>
         <FlatList
           keyExtractor={item => item.chapter.toString()}
           data={chapters}

@@ -1,7 +1,7 @@
 import React from 'react';
 import { useIsFocused, useNavigation } from '@react-navigation/native';
 import WebView, { WebViewMessageEvent } from 'react-native-webview';
-import { View, Linking } from 'react-native';
+import { View, Linking, Platform } from 'react-native';
 import { ShouldStartLoadRequest } from 'react-native-webview/lib/WebViewTypes';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { connect } from 'react-redux';
@@ -90,6 +90,12 @@ const RegulationDetailItem: React.FC<Props> = ({
    * If the user returns to this page the useEffect hook will enable the webview component whereupon the html file is loaded again.
    */
   const openExternalLink = (request: ShouldStartLoadRequest) => {
+    const isExternalLink =
+      Platform.OS === 'ios' ? request.navigationType === 'click' : true;
+    if (!isExternalLink) {
+      return true;
+    }
+
     webview?.current?.stopLoading();
 
     if (request.url.search('https://') !== -1) {

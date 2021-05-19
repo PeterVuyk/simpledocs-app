@@ -23,7 +23,7 @@ const RegulationsListButton: React.FC<Props> = ({ regulationsButtonStyle }) => {
         fontSize={26}
         onPress={toggleOverlay}
       />
-      <RegulationListOverlay visible={visible} toggleOverlay={toggleOverlay} />
+      {visible && <RegulationListOverlay toggleOverlay={toggleOverlay} />}
     </View>
   );
 };

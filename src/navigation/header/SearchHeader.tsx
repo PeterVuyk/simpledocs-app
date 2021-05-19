@@ -25,13 +25,14 @@ const SearchHeader: React.FC<Props> = ({
         style={{
           flexDirection: 'row',
           justifyContent: 'space-between',
-          paddingTop: 50,
-          height: 125,
+          paddingTop: 40,
+          height: 110,
           shadowOffset: { width: 1, height: 2 },
           shadowOpacity: 0.1,
           shadowRadius: 3,
           elevation: 2,
           backgroundColor: '#fff',
+          alignItems: 'center',
         }}
       >
         <View style={{ flex: 1, backgroundColor: '#fff' }}>
@@ -44,7 +45,6 @@ const SearchHeader: React.FC<Props> = ({
             platform={Platform.OS === 'ios' ? 'ios' : 'android'}
             placeholder="Zoek op titel of trefwoord..."
             onChangeText={typedText => handleSearchTextChange(typedText)}
-            showCancel
             value={searchText}
           />
         </View>

@@ -68,7 +68,7 @@ function TabNavigator({
     initialRouteName,
   });
 
-  const onTabPress = (route) => {
+  const onTabPress = route => {
     if (route.name === 'RegulationsScreenStack') {
       navigation.setParams({ params: null, screen: null });
       navigation.navigate('RegulationsScreenStack', {
@@ -112,7 +112,7 @@ function TabNavigator({
                 <Icon
                   style={{
                     textAlign: 'center',
-                    color: state.index === index ? '#fff' : '#0091EA',
+                    color: state.index === index ? '#fff' : '#4bb1fc',
                   }}
                   name={descriptors[route.key].options.icon}
                   type="MaterialCommunityIcons"
@@ -121,7 +121,7 @@ function TabNavigator({
                 <Text
                   style={{
                     textAlign: 'center',
-                    color: state.index === index ? '#fff' : '#0091EA',
+                    color: state.index === index ? '#fff' : '#4bb1fc',
                   }}
                 >
                   {descriptors[route.key].options.title}
