@@ -6,7 +6,7 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import regulationRepository, {
   Chapter,
 } from '../database/repository/regulationRepository';
-import ChapterIcon from '../components/ChapterIcon';
+import SVGIcon from '../components/SVGIcon';
 
 interface Props {
   toggleOverlay: () => void;
@@ -31,7 +31,7 @@ const RegulationListOverlay: React.FC<Props> = ({ toggleOverlay }) => {
         });
       }}
     >
-      <ChapterIcon iconBlob={item.iconFile} />
+      <SVGIcon iconBlob={item.iconFile} />
       <ListItem.Content>
         <ListItem.Title>{item.title}</ListItem.Title>
       </ListItem.Content>

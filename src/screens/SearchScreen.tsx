@@ -10,7 +10,7 @@ import regulationRepository, {
 } from '../database/repository/regulationRepository';
 import SearchHeader from '../navigation/header/SearchHeader';
 import searching, { SearchText } from '../redux/actions/searching';
-import ChapterIcon from '../components/ChapterIcon';
+import SVGIcon from '../components/SVGIcon';
 
 interface Props {
   setChapterSearchText: (searchText: SearchText) => void;
@@ -57,7 +57,7 @@ const SearchScreen: React.FC<Props> = ({ setChapterSearchText }) => {
 
   const renderItem = (item: Regulation) => (
     <ListItem bottomDivider onPress={() => submitSearch(item)}>
-      <ChapterIcon iconBlob={item.iconFile} />
+      <SVGIcon iconBlob={item.iconFile} />
       <ListItem.Content>
         <ListItem.Title>
           <HighlightWords

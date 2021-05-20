@@ -7,16 +7,17 @@ export interface DecisionTreeStep {
   title: string;
   id: number;
   label: string;
-  lineLabel: string;
-  parentId: number;
-  regulationChapter: string;
+  lineLabel?: string;
+  parentId?: number;
+  regulationChapter?: string;
+  iconFile?: string;
 }
 
 type setDecisionTreeStepsCallback = (
   decisionTreeSteps: React.SetStateAction<DecisionTreeStep[]>,
 ) => void;
 
-type setTitlesCallback = (titles: React.SetStateAction<string[]>) => void;
+type setTitlesCallback = (titles: React.SetStateAction<Title[]>) => void;
 
 // eslint-disable-next-line @typescript-eslint/ban-types
 function getDecisionTreeSteps(
@@ -42,8 +43,9 @@ function getDecisionTreeSteps(
   );
 }
 
-interface Title {
+export interface Title {
   title: string;
+  iconFile: string;
 }
 
 // eslint-disable-next-line @typescript-eslint/ban-types
@@ -51,13 +53,13 @@ function getDecisionTreeTitles(setTitles: setTitlesCallback): void {
   db.transaction(
     sqlTransaction => {
       sqlTransaction.executeSql(
-        `SELECT DISTINCT title FROM decisionTree;`,
+        `SELECT title, iconFile FROM decisionTree WHERE iconFile IS NOT NULL;`,
         [],
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
         (_, { rows: { _array } }) => {
           if (_array.length !== 0) {
-            setTitles(_array.map((result: Title) => result.title));
+            setTitles(_array);
           }
         },
       );

@@ -5,7 +5,7 @@ import { DrawerNavigationProp } from '@react-navigation/drawer/lib/typescript/sr
 import regulationRepository, {
   Regulation,
 } from '../database/repository/regulationRepository';
-import ChapterIcon from '../components/ChapterIcon';
+import SVGIcon from '../components/SVGIcon';
 
 interface Props {
   navigation: DrawerNavigationProp<any>;
@@ -27,7 +27,7 @@ const RegulationsScreen: React.FC<Props> = ({ navigation }) => {
         })
       }
     >
-      <ChapterIcon iconBlob={item.iconFile} />
+      <SVGIcon iconBlob={item.iconFile} />
       <ListItem.Content>
         <ListItem.Title>{item.title}</ListItem.Title>
         <ListItem.Subtitle>{item.subTitle}</ListItem.Subtitle>

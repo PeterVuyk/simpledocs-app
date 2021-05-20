@@ -1,14 +1,17 @@
 import React, { useState } from 'react';
 import { FlatList, View, Text } from 'react-native';
-import { ListItem, Avatar } from 'react-native-elements';
-import decisionTreeRepository from '../database/repository/decisionTreeRepository';
+import { ListItem } from 'react-native-elements';
+import decisionTreeRepository, {
+  Title,
+} from '../database/repository/decisionTreeRepository';
+import SVGIcon from '../components/SVGIcon';
 
 interface Props {
   navigation: any;
 }
 
 const DecisionTreeScreen: React.FC<Props> = ({ navigation }) => {
-  const [titles, setTitles] = useState<string[]>([]);
+  const [titles, setTitles] = useState<Title[]>([]);
 
   React.useEffect(() => {
     decisionTreeRepository.getDecisionTreeTitles(setTitles);
@@ -51,22 +54,17 @@ const DecisionTreeScreen: React.FC<Props> = ({ navigation }) => {
     );
   };
 
-  const renderItem = (item: string) => (
+  const renderItem = (item: Title) => (
     <ListItem
       bottomDivider
       style={{
         marginBottom: 10,
       }}
-      onPress={() => navigateDecisionTree(item)}
+      onPress={() => navigateDecisionTree(item.title)}
     >
-      <Avatar
-        rounded
-        source={{
-          uri: 'https://www.ilovepdf.com/img/ilovepdf/social/en-US/imagepdf.png',
-        }}
-      />
+      <SVGIcon iconBlob={item.iconFile} />
       <ListItem.Content>
-        <ListItem.Title>{item}</ListItem.Title>
+        <ListItem.Title>{item.title}</ListItem.Title>
         <ListItem.Subtitle>Beslisboom</ListItem.Subtitle>
       </ListItem.Content>
       <ListItem.Chevron />
@@ -75,9 +73,9 @@ const DecisionTreeScreen: React.FC<Props> = ({ navigation }) => {
 
   return (
     <View style={{ flex: 1, paddingBottom: 60, backgroundColor: '#fff' }}>
-      {titles && (
+      {titles.length !== 0 && (
         <FlatList
-          keyExtractor={item => item}
+          keyExtractor={item => item.title}
           data={titles}
           ListHeaderComponent={flatListHeader}
           renderItem={({ item }) => renderItem(item)}
