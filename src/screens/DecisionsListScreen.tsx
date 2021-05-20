@@ -15,7 +15,7 @@ const DecisionTreeScreen: React.FC<Props> = ({ navigation }) => {
   }, []);
 
   const navigateDecisionTree = (title: string) => {
-    navigation.navigate('DecisionTreeScreenStack', {
+    navigation.navigate('DecisionsScreenStack', {
       screen: 'DecisionTreeScreen',
       params: { title },
     });
@@ -27,7 +27,7 @@ const DecisionTreeScreen: React.FC<Props> = ({ navigation }) => {
         style={{
           elevation: 1,
           width: '100%',
-          padding: 15,
+          padding: 20,
           marginBottom: 5,
           backgroundColor: '#fff',
         }}

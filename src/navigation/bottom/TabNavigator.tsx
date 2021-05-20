@@ -77,10 +77,10 @@ function TabNavigator({
       return;
     }
 
-    if (route.name === 'DecisionTreeScreenStack') {
+    if (route.name === 'DecisionsScreenStack') {
       navigation.setParams({ params: null, screen: null });
-      navigation.navigate('DecisionTreeScreenStack', {
-        screen: 'DecisionTreeListScreen',
+      navigation.navigate('DecisionsScreenStack', {
+        screen: 'DecisionsListScreen',
       });
       return;
     }

@@ -2,9 +2,9 @@ import * as React from 'react';
 import Animated from 'react-native-reanimated';
 import RegulationStackNavigator from '../StackNavigator/RegulationStackNavigator';
 import InfoStackNavigator from '../StackNavigator/InfoStackNavigator';
-import DecisionTreeStackNavigator from '../StackNavigator/DecisionTreeStackNavigator';
 import { setDrawerProgressListener } from '../drawer/onDrawerProgressListener';
 import TabNavigator from './TabNavigator';
+import DecisionsStackNavigator from '../StackNavigator/DecisionsStackNavigator';
 
 const Tab = TabNavigator();
 
@@ -41,11 +41,11 @@ const TabNavigation: React.FC = () => {
         initialRouteName="RegulationsScreenStack"
       >
         <Tab.Screen
-          name="DecisionTreeScreenStack"
-          component={DecisionTreeStackNavigator}
+          name="DecisionsScreenStack"
+          component={DecisionsStackNavigator}
           options={{
-            title: 'Beslisboom',
-            icon: 'tree-outline',
+            title: 'Afwegingen',
+            icon: 'arrow-decision',
           }}
         />
         <Tab.Screen

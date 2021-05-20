@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Dimensions, StyleSheet, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { Text, Button, Icon, Content, H3 } from 'native-base';
 import decisionTreeRepository, {
   DecisionTreeStep,
@@ -36,7 +36,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     paddingLeft: 20,
-    paddingRight: 30,
+    paddingRight: 20,
     paddingBottom: 200,
   },
   buttonStyle: {
