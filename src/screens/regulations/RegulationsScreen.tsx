@@ -4,8 +4,8 @@ import { ListItem } from 'react-native-elements';
 import { DrawerNavigationProp } from '@react-navigation/drawer/lib/typescript/src/types';
 import regulationRepository, {
   Regulation,
-} from '../database/repository/regulationRepository';
-import SVGIcon from '../components/SVGIcon';
+} from '../../database/repository/regulationRepository';
+import SVGIcon from '../../components/SVGIcon';
 
 interface Props {
   navigation: DrawerNavigationProp<any>;

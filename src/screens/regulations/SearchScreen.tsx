@@ -4,13 +4,13 @@ import { ListItem } from 'react-native-elements';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { connect } from 'react-redux';
-import HighlightWords from '../components/HighlightWords';
+import HighlightWords from '../../components/HighlightWords';
 import regulationRepository, {
   Regulation,
-} from '../database/repository/regulationRepository';
-import SearchHeader from '../navigation/header/SearchHeader';
-import searching, { SearchText } from '../redux/actions/searching';
-import SVGIcon from '../components/SVGIcon';
+} from '../../database/repository/regulationRepository';
+import SearchHeader from '../../navigation/header/SearchHeader';
+import searching, { SearchText } from '../../redux/actions/searching';
+import SVGIcon from '../../components/SVGIcon';
 
 interface Props {
   setChapterSearchText: (searchText: SearchText) => void;
@@ -91,7 +91,7 @@ const SearchScreen: React.FC<Props> = ({ setChapterSearchText }) => {
               marginTop: 120,
               height: 120,
             }}
-            source={require('../../assets/images/find.png')}
+            source={require('../../../assets/images/find.png')}
             resizeMode="center"
           />
         )}

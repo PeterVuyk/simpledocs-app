@@ -3,7 +3,7 @@ import { StyleSheet, View } from 'react-native';
 import { Text, Button, Icon, Content, H3 } from 'native-base';
 import decisionTreeRepository, {
   DecisionTreeStep,
-} from '../database/repository/decisionTreeRepository';
+} from '../../database/repository/decisionTreeRepository';
 
 interface Props {
   navigation: any;
@@ -79,12 +79,12 @@ const DecisionTreeScreen: React.FC<Props> = ({ navigation }) => {
     setLeftStep(
       decisionTreeSteps
         .filter(value => value.parentId === currentStep?.id)
-        .find(value => value.lineLabel.toLowerCase() === 'nee'),
+        .find(value => value.lineLabel?.toLowerCase() === 'nee'),
     );
     setRightStep(
       decisionTreeSteps
         .filter(value => value.parentId === currentStep?.id)
-        .find(value => value.lineLabel.toLowerCase() === 'ja'),
+        .find(value => value.lineLabel?.toLowerCase() === 'ja'),
     );
     setRootQuestion(currentStep?.parentId === null);
   }, [currentStep, decisionTreeSteps]);

@@ -1,7 +1,7 @@
 import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 import { DrawerNavigationHelpers } from '@react-navigation/drawer/lib/typescript/src/types';
-import InfoScreen from '../../screens/InfoScreen';
+import InfoScreen from '../../screens/info/InfoScreen';
 import Header from '../header/Header';
 
 const Stack = createStackNavigator();

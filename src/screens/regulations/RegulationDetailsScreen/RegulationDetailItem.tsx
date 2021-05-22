@@ -7,11 +7,11 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import { connect } from 'react-redux';
 import RegulationRepository, {
   Regulation,
-} from '../../database/repository/regulationRepository';
-import highlightWordsInHTMLFile from '../../helper/highlightWordsInHTMLFile';
-import ScrollViewToggleBottomBar from '../../components/ScrollViewToggleBottomBar';
-import ScrollAwareBottomButton from '../../components/ScrollAwareBottomButton';
-import searching, { SearchText } from '../../redux/actions/searching';
+} from '../../../database/repository/regulationRepository';
+import highlightWordsInHTMLFile from '../../../helper/highlightWordsInHTMLFile';
+import ScrollViewToggleBottomBar from '../../../components/ScrollViewToggleBottomBar';
+import ScrollAwareBottomButton from '../../../components/ScrollAwareBottomButton';
+import searching, { SearchText } from '../../../redux/actions/searching';
 
 interface Props {
   regulationChapter: string;

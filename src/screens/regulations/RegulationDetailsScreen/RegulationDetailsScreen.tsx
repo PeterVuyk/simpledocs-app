@@ -4,7 +4,7 @@ import { View, FlatList, Dimensions } from 'react-native';
 import RegulationDetailItem from './RegulationDetailItem';
 import regulationRepository, {
   Chapter,
-} from '../../database/repository/regulationRepository';
+} from '../../../database/repository/regulationRepository';
 
 interface Props {
   route: RouteProp<
