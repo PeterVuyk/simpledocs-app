@@ -1,6 +1,6 @@
 import * as SQLite from 'expo-sqlite';
-import { DecisionTreeStep } from './decisionTreeRepository';
-import versioningRepository from './versioningRepository';
+import { DecisionTreeStep } from '../repository/decisionTreeRepository';
+import versioningRepository from '../repository/versioningRepository';
 import logger from '../../helper/logger';
 
 const db = SQLite.openDatabase('db.db');
@@ -36,7 +36,7 @@ function removeAllDecisionTree(sqlTransaction: SQLite.SQLTransaction): void {
 
 function createDecisionTreeTable(sqlTransaction: SQLite.SQLTransaction): void {
   sqlTransaction.executeSql(
-    'create table if not exists decisionTree (id int not null, title varchar, label varchar not null, lineLabel varchar, parentId int, regulationChapter varchar, iconFile text);',
+    'create table if not exists decisionTree (id int not null, title text, label text not null, lineLabel varchar, parentId int, regulationChapter varchar, iconFile text);',
   );
 }
 

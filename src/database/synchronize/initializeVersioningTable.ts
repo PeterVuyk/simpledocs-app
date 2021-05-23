@@ -19,10 +19,13 @@ function initialize(): Promise<any> {
         sqlTransaction.executeSql(
           "INSERT OR IGNORE INTO versioning (aggregate, version) VALUES ('decisionTree', 'initial');",
         );
+        sqlTransaction.executeSql(
+          "INSERT OR IGNORE INTO versioning (aggregate, version) VALUES ('breakingDistance', 'initial');",
+        );
       },
       error => {
         logger.error(
-          'initialization database has failed, rolled back',
+          'initialization database with versions table has failed, rolled back',
           error.message,
         );
         reject();

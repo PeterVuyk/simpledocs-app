@@ -1,7 +1,7 @@
 import * as SQLite from 'expo-sqlite';
 import { Buffer } from 'buffer';
-import { Regulation } from './regulationRepository';
-import versioningRepository from './versioningRepository';
+import { Regulation } from '../repository/regulationRepository';
+import versioningRepository from '../repository/versioningRepository';
 import logger from '../../helper/logger';
 
 const db = SQLite.openDatabase('db.db');
@@ -43,7 +43,7 @@ function removeAllRegulations(sqlTransaction: SQLite.SQLTransaction): void {
 
 function createRegulationTable(sqlTransaction: SQLite.SQLTransaction): void {
   sqlTransaction.executeSql(
-    'create table if not exists regulation (chapter varchar not null constraint regulation_pk primary key, pageIndex integer not null, title varchar not null, subTitle varchar, htmlFile text not null, searchText text not null, level varchar not null, iconFile text);',
+    'create table if not exists regulation (chapter varchar not null constraint regulation_pk primary key, pageIndex integer not null, title text not null, subTitle text, htmlFile text not null, searchText text not null, level varchar not null, iconFile text);',
   );
 }
 
