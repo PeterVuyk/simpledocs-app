@@ -8,7 +8,7 @@ export interface BreakingDistanceInfo {
   explanation: string;
   regulationChapter: string;
   breakingDistanceImage: string;
-  iconFile?: string;
+  iconFile: string;
 }
 
 type setBreakingDistanceCallback = (

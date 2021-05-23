@@ -102,8 +102,8 @@ const updateBreakingDistanceIfNewVersion = async () => {
   await versioningRepository.getVersioning(
     'breakingDistance',
     versionOnTheApp => {
-      if (versionOnTheApp?.version !== versionOnFirebase.decisionTree) {
-        updateBreakingDistance(versionOnFirebase.decisionTree);
+      if (versionOnTheApp?.version !== versionOnFirebase.breakingDistance) {
+        updateBreakingDistance(versionOnFirebase.breakingDistance);
       }
     },
   );
