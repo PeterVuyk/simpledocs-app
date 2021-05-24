@@ -4,8 +4,8 @@ import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import breakingDistanceRepository, {
   BreakingDistanceInfo,
-} from '../../database/repository/breakingDistanceRepository';
-import ListItem from '../../components/ListItem';
+} from '../../../database/repository/breakingDistanceRepository';
+import ListItem from '../../../components/ListItem';
 
 const styles = StyleSheet.create({
   container: {
@@ -54,14 +54,6 @@ const BreakingDistanceCalculatorScreen: React.FC = () => {
 
   const navigation = useNavigation<StackNavigationProp<any>>();
 
-  const navigateToRegulationHandle = () => {
-    const chapter = breakingDistanceInfo?.regulationChapter;
-    navigation.navigate('RegulationsScreenStack', {
-      screen: 'RegulationDetailsScreen',
-      params: { chapter },
-    });
-  };
-
   React.useEffect(() => {
     breakingDistanceRepository.getBreakingDistanceInfo(setBreakingDistanceInfo);
   }, []);
@@ -85,10 +77,13 @@ const BreakingDistanceCalculatorScreen: React.FC = () => {
             />
           </View>
           <ListItem
-            onSubmit={navigateToRegulationHandle}
+            onSubmit={() =>
+              navigation.navigate('BreakingDistanceDocumentationScreen', {
+                htmlFile: breakingDistanceInfo.htmlFile,
+              })
+            }
             iconFile={breakingDistanceInfo.iconFile}
-            title="Bekijk regelgevingen"
-            subTitle="TODO subtitle"
+            title={breakingDistanceInfo.regulationButtonText}
           />
           <View />
           <View style={styles.imageContainer}>

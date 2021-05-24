@@ -4,7 +4,8 @@ import { DrawerNavigationHelpers } from '@react-navigation/drawer/lib/typescript
 import DecisionTreeScreen from '../../screens/decisions/DecisionTreeScreen';
 import Header from '../header/Header';
 import DecisionsScreen from '../../screens/decisions/DecisionsScreen';
-import BreakingDistanceCalculatorScreen from '../../screens/decisions/BreakingDistanceCalculatorScreen';
+import BreakingDistanceCalculatorScreen from '../../screens/decisions/breakingDistance/BreakingDistanceCalculatorScreen';
+import BreakingDistanceDocumentationScreen from '../../screens/decisions/breakingDistance/BreakingDistanceDocumentationScreen';
 
 const Stack = createStackNavigator();
 
@@ -25,6 +26,13 @@ const DecisionsStackNavigator: React.FC<Props> = ({ navigation }) => {
       <Stack.Screen
         name="BreakingDistanceCalculatorScreen"
         component={BreakingDistanceCalculatorScreen}
+        options={{
+          header: () => <Header navigation={navigation} />,
+        }}
+      />
+      <Stack.Screen
+        name="BreakingDistanceDocumentationScreen"
+        component={BreakingDistanceDocumentationScreen}
         options={{
           header: () => <Header navigation={navigation} />,
         }}

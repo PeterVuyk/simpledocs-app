@@ -2,6 +2,7 @@ import * as SQLite from 'expo-sqlite';
 import versioningRepository from '../repository/versioningRepository';
 import logger from '../../helper/logger';
 import { BreakingDistanceInfo } from '../repository/breakingDistanceRepository';
+import htmlHelper from '../../helper/htmlHelper';
 
 const db = SQLite.openDatabase('db.db');
 
@@ -10,12 +11,13 @@ function addBreakingDistanceInfo(
   breakingDistanceInfo: BreakingDistanceInfo,
 ): void {
   sqlTransaction.executeSql(
-    'INSERT INTO breakingDistance (title, explanation, regulationChapter, breakingDistanceImage, iconFile) VALUES (?, ?, ?, ?, ?)',
+    'INSERT INTO breakingDistance (title, explanation, regulationButtonText, breakingDistanceImage, htmlFile, iconFile) VALUES (?, ?, ?, ?, ?, ?)',
     [
       breakingDistanceInfo.title,
       breakingDistanceInfo.explanation,
-      breakingDistanceInfo.regulationChapter,
+      breakingDistanceInfo.regulationButtonText,
       breakingDistanceInfo.breakingDistanceImage,
+      htmlHelper.getHTMLBodyFromBase64(breakingDistanceInfo.htmlFile),
       breakingDistanceInfo.iconFile,
     ],
   );
@@ -31,10 +33,11 @@ function createBreakingDistanceTable(
   sqlTransaction: SQLite.SQLTransaction,
 ): void {
   sqlTransaction.executeSql(
-    'create table if not exists breakingDistance (title text not null constraint breakingDistance_pk primary key, explanation text not null, regulationChapter varchar not null, breakingDistanceImage blob not null, iconFile blob not null);',
+    'create table if not exists breakingDistance (title text not null constraint breakingDistance_pk primary key, explanation text not null, regulationButtonText varchar not null, breakingDistanceImage blob not null, htmlFile blob not null, iconFile blob not null);',
   );
 }
 
+// TODO: wrap response in promise
 function updateBreakingDistance(
   breakingDistanceInfo: BreakingDistanceInfo,
   version: string,

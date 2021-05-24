@@ -6,8 +6,9 @@ const db = SQLite.openDatabase('db.db');
 export interface BreakingDistanceInfo {
   title: string;
   explanation: string;
-  regulationChapter: string;
   breakingDistanceImage: string;
+  regulationButtonText: string;
+  htmlFile: string;
   iconFile: string;
 }
 

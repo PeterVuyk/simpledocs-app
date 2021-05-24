@@ -13,9 +13,7 @@ interface Props {
 }
 
 const RegulationListOverlay: React.FC<Props> = ({ toggleOverlay }) => {
-  const [chapters, setChapters] = ReaupdateBreakingDistancect.useState<
-    Chapter[]
-  >([]);
+  const [chapters, setChapters] = React.useState<Chapter[]>([]);
 
   const navigation = useNavigation<StackNavigationProp<any>>();
 

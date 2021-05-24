@@ -1,15 +1,10 @@
 import * as SQLite from 'expo-sqlite';
-import { Buffer } from 'buffer';
 import { Regulation } from '../repository/regulationRepository';
 import versioningRepository from '../repository/versioningRepository';
 import logger from '../../helper/logger';
+import htmlHelper from '../../helper/htmlHelper';
 
 const db = SQLite.openDatabase('db.db');
-
-function getHTMLBodyFromBase64(base64HTML: string): string {
-  const base64String = base64HTML.split('data:text/html;base64,')[1];
-  return Buffer.from(base64String, 'base64').toString('utf-8');
-}
 
 function addRegulation(
   sqlTransaction: SQLite.SQLTransaction,
@@ -22,7 +17,7 @@ function addRegulation(
       regulation.pageIndex,
       regulation.title,
       regulation.subTitle,
-      getHTMLBodyFromBase64(regulation.htmlFile),
+      htmlHelper.getHTMLBodyFromBase64(regulation.htmlFile),
       regulation.searchText,
       regulation.level,
       regulation.iconFile,
