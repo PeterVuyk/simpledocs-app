@@ -2,7 +2,7 @@ import React, { useCallback, useEffect } from 'react';
 import { Animated } from 'react-native';
 import { Button } from 'react-native-elements';
 import { connect } from 'react-redux';
-import HideWithKeyboard from './HideWithKeyboard';
+import HideWithKeyboardView from './HideWithKeyboardView';
 
 interface Props {
   title: string;
@@ -43,7 +43,7 @@ const ScrollAwareBottomButton: React.FC<Props> = ({
   }, [hideElement, showElement, scrollDirection]);
 
   return (
-    <HideWithKeyboard>
+    <HideWithKeyboardView>
       <Animated.View
         style={{
           margin: 10,
@@ -58,11 +58,11 @@ const ScrollAwareBottomButton: React.FC<Props> = ({
           buttonStyle={{ backgroundColor: '#154594', borderRadius: 5 }}
         />
       </Animated.View>
-    </HideWithKeyboard>
+    </HideWithKeyboardView>
   );
 };
 
-const mapStateToProps = (state) => {
+const mapStateToProps = state => {
   return {
     scrollDirection: state.scrolling.scrollDirection,
   };

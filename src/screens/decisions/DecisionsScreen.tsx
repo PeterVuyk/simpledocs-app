@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { FlatList, View, Text } from 'react-native';
+import { FlatList, View } from 'react-native';
 import decisionTreeRepository, {
   Title,
 } from '../../database/repository/decisionTreeRepository';
@@ -7,6 +7,7 @@ import ListItem from '../../components/ListItem';
 import breakingDistanceRepository, {
   BreakingDistanceInfo,
 } from '../../database/repository/breakingDistanceRepository';
+import TitleBar from '../../components/TitleBar';
 
 interface Props {
   navigation: any;
@@ -59,27 +60,12 @@ const DecisionsScreen: React.FC<Props> = ({ navigation }) => {
 
   const flatListHeader = () => {
     return (
-      <View
-        style={{
-          padding: 20,
-          backgroundColor: '#fff',
-        }}
-      >
-        <Text
-          style={{
-            fontSize: 21,
-            fontWeight: 'bold',
-            color: '#154594',
-            alignSelf: 'center',
-            paddingTop: 30,
-          }}
-        >
-          Besluitvormingsproces
-        </Text>
-        <Text style={{ paddingTop: 20, textAlign: 'center', fontSize: 15 }}>
-          Vergemakkelijk het maken van keuzes in het verkeer door verschillende
-          opties in regelgevingen tegen elkaar af te wegen.
-        </Text>
+      <View style={{ backgroundColor: '#fff' }}>
+        <TitleBar
+          title="Besluitvormingsproces"
+          subTitle="Vergemakkelijk het maken van keuzes in het verkeer door verschillende
+          opties in regelgevingen tegen elkaar af te wegen."
+        />
       </View>
     );
   };

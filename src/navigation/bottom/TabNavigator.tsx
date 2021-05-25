@@ -18,7 +18,7 @@ import {
   ParamListBase,
 } from '@react-navigation/native';
 import { Icon } from 'native-base';
-import HideWithKeyboard from '../../components/HideWithKeyboard';
+import HideWithKeyboardView from '../../components/HideWithKeyboardView';
 import ToggleBottomNavigator from '../../navigation/bottom/ToggleBottomNavigator';
 
 // Props accepted by the view
@@ -107,7 +107,7 @@ function TabNavigator({
       <View style={[{ flex: 1 }, contentStyle]}>
         {descriptors[state.routes[state.index].key].render()}
       </View>
-      <HideWithKeyboard>
+      <HideWithKeyboardView>
         <ToggleBottomNavigator>
           {state.routes.map((route, index) => (
             <View key={route.key} style={[{ flex: 1 }, tabBarStyle]}>
@@ -138,7 +138,7 @@ function TabNavigator({
             </View>
           ))}
         </ToggleBottomNavigator>
-      </HideWithKeyboard>
+      </HideWithKeyboardView>
     </>
   );
 }

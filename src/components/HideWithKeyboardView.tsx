@@ -1,11 +1,12 @@
 import React, { useCallback, useEffect } from 'react';
-import { View, Keyboard } from 'react-native';
+import { View, Keyboard, StyleProp, ViewStyle } from 'react-native';
 
 interface Props {
+  style?: StyleProp<ViewStyle>;
   children: React.ReactNode;
 }
 
-const HideWithKeyboard: React.FC<Props> = ({ children }) => {
+const HideWithKeyboardView: React.FC<Props> = ({ style, children }) => {
   const [isVisible, setVisible] = React.useState<boolean>(true);
 
   const keyboardDidShow = useCallback(() => {
@@ -25,7 +26,7 @@ const HideWithKeyboard: React.FC<Props> = ({ children }) => {
     };
   }, [keyboardDidHide, keyboardDidShow]);
 
-  return <View>{isVisible && children}</View>;
+  return <View style={style}>{isVisible && children}</View>;
 };
 
-export default HideWithKeyboard;
+export default HideWithKeyboardView;
