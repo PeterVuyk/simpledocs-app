@@ -1,7 +1,7 @@
 import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 import { DrawerNavigationHelpers } from '@react-navigation/drawer/lib/typescript/src/types';
-import InfoScreen from '../../screens/info/InfoScreen';
+import AboutUsScreen from '../../screens/about/AboutUsScreen';
 import Header from '../header/Header';
 
 const Stack = createStackNavigator();
@@ -10,12 +10,12 @@ interface Props {
   navigation: DrawerNavigationHelpers;
 }
 
-const InfoStackNavigator: React.FC<Props> = ({ navigation }) => {
+const StackNavigator: React.FC<Props> = ({ navigation }) => {
   return (
     <Stack.Navigator>
       <Stack.Screen
-        name="InfoScreen"
-        component={InfoScreen}
+        name="AboutUsScreen"
+        component={AboutUsScreen}
         options={{
           header: () => <Header navigation={navigation} />,
         }}
@@ -24,4 +24,4 @@ const InfoStackNavigator: React.FC<Props> = ({ navigation }) => {
   );
 };
 
-export default InfoStackNavigator;
+export default StackNavigator;

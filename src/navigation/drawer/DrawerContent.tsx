@@ -1,8 +1,9 @@
 import React from 'react';
-import { Linking, Image, View, BackHandler } from 'react-native';
+import { Linking, Image, View, BackHandler, Platform } from 'react-native';
 import { DrawerNavigationHelpers } from '@react-navigation/drawer/lib/typescript/src/types';
 import Animated from 'react-native-reanimated';
 import DrawerItem from './DrawerItem';
+import { getDrawerProgressListener } from './onDrawerProgressListener';
 
 interface Props {
   progress: Animated.Node<number>;
@@ -10,6 +11,12 @@ interface Props {
 }
 
 const DrawerContent: React.FC<Props> = ({ progress, navigation }) => {
+  React.useEffect(() => {
+    if (getDrawerProgressListener()) {
+      getDrawerProgressListener()(progress);
+    }
+  }, [progress]);
+
   return (
     <View style={{ flex: 1 }}>
       <View style={{ marginTop: 80 }}>
@@ -48,13 +55,25 @@ const DrawerContent: React.FC<Props> = ({ progress, navigation }) => {
         iconType="AntDesign"
       />
       <DrawerItem
-        label="Afsluiten"
-        onSubmit={(): void => {
-          BackHandler.exitApp();
+        label="Over de maker"
+        onSubmit={() => {
+          navigation.navigate('ScreenStack', {
+            screen: 'AboutUsScreen',
+          });
         }}
-        iconName="close"
+        iconName="information-outline"
         iconType="MaterialCommunityIcons"
       />
+      {Platform.OS !== 'ios' && (
+        <DrawerItem
+          label="Afsluiten"
+          onSubmit={(): void => {
+            BackHandler.exitApp();
+          }}
+          iconName="close"
+          iconType="MaterialCommunityIcons"
+        />
+      )}
     </View>
   );
 };

@@ -31,6 +31,7 @@ type TabNavigationConfig = {
 type TabNavigationOptions = {
   title: string;
   icon: string;
+  showInBottomBar: boolean;
 };
 
 // Map of event name and the type of data (in event.data)
@@ -109,34 +110,36 @@ function TabNavigator({
       </View>
       <HideWithKeyboardView>
         <ToggleBottomNavigator>
-          {state.routes.map((route, index) => (
-            <View key={route.key} style={[{ flex: 1 }, tabBarStyle]}>
-              <TouchableOpacity
-                onPress={() => onTabPress(route)}
-                style={{
-                  flex: 1,
-                }}
-              >
-                <Icon
+          {state.routes
+            .filter(route => descriptors[route.key].options.showInBottomBar)
+            .map((route, index) => (
+              <View key={route.key} style={[{ flex: 1 }, tabBarStyle]}>
+                <TouchableOpacity
+                  onPress={() => onTabPress(route)}
                   style={{
-                    textAlign: 'center',
-                    color: state.index === index ? '#fff' : '#4bb1fc',
-                  }}
-                  name={descriptors[route.key].options.icon}
-                  type="MaterialCommunityIcons"
-                  fontSize={26}
-                />
-                <Text
-                  style={{
-                    textAlign: 'center',
-                    color: state.index === index ? '#fff' : '#4bb1fc',
+                    flex: 1,
                   }}
                 >
-                  {descriptors[route.key].options.title}
-                </Text>
-              </TouchableOpacity>
-            </View>
-          ))}
+                  <Icon
+                    style={{
+                      textAlign: 'center',
+                      color: state.index === index ? '#fff' : '#4bb1fc',
+                    }}
+                    name={descriptors[route.key].options.icon}
+                    type="MaterialCommunityIcons"
+                    fontSize={26}
+                  />
+                  <Text
+                    style={{
+                      textAlign: 'center',
+                      color: state.index === index ? '#fff' : '#4bb1fc',
+                    }}
+                  >
+                    {descriptors[route.key].options.title}
+                  </Text>
+                </TouchableOpacity>
+              </View>
+            ))}
         </ToggleBottomNavigator>
       </HideWithKeyboardView>
     </>

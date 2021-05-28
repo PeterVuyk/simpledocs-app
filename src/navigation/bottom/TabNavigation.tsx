@@ -1,7 +1,7 @@
 import * as React from 'react';
 import Animated from 'react-native-reanimated';
 import RegulationStackNavigator from '../StackNavigator/RegulationStackNavigator';
-import InfoStackNavigator from '../StackNavigator/InfoStackNavigator';
+import StackNavigator from '../StackNavigator/StackNavigator';
 import { setDrawerProgressListener } from '../drawer/onDrawerProgressListener';
 import TabNavigator from './TabNavigator';
 import DecisionsStackNavigator from '../StackNavigator/DecisionsStackNavigator';
@@ -41,27 +41,30 @@ const TabNavigation: React.FC = () => {
         initialRouteName="RegulationsScreenStack"
       >
         <Tab.Screen
-          name="DecisionsScreenStack"
-          component={DecisionsStackNavigator}
-          options={{
-            title: 'Afwegingen',
-            icon: 'arrow-decision',
-          }}
-        />
-        <Tab.Screen
           name="RegulationsScreenStack"
           component={RegulationStackNavigator}
           options={{
             title: 'Regelgeving',
             icon: 'book-open-outline',
+            showInBottomBar: true,
           }}
         />
         <Tab.Screen
-          name="InfoScreenStack"
-          component={InfoStackNavigator}
+          name="DecisionsScreenStack"
+          component={DecisionsStackNavigator}
+          options={{
+            title: 'Afwegingen',
+            icon: 'arrow-decision',
+            showInBottomBar: true,
+          }}
+        />
+        <Tab.Screen
+          name="ScreenStack"
+          component={StackNavigator}
           options={{
             title: 'Info',
             icon: 'information-outline',
+            showInBottomBar: false,
           }}
         />
       </Tab.Navigator>
