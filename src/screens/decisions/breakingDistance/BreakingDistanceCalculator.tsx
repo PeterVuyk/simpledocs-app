@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { TextInput } from 'react-native-paper';
-import breakingDistanceAlgorithm from './breakingDistanceAlgorithm';
 
 const styles = StyleSheet.create({
   container: {
@@ -17,19 +16,34 @@ const styles = StyleSheet.create({
 const BreakingDistanceCalculator: React.FC = () => {
   const [textInput, setTextInput] = useState<number | undefined>();
 
+  const getTextInputValue = () =>
+    textInput === undefined ? '' : textInput?.toString();
+
+  const calculateBreakingDistance = (kmPerHour: number): string => {
+    if (kmPerHour < 0 || kmPerHour > 160) {
+      return 'Geef een waarde tot 160 km op.';
+    }
+    const responseTimeDistance = (kmPerHour / 10) * 3;
+    const stopDistance = ((kmPerHour / 10) * (kmPerHour / 10)) / 2;
+    const breakingDistance = +(responseTimeDistance + stopDistance).toFixed(2);
+    return `${breakingDistance} meter`;
+  };
+
   return (
     <View style={styles.container}>
       <Text
         style={[
-          { color: textInput ? '#154594' : '#fff' },
+          {
+            color: textInput === undefined ? '#fff' : '#154594',
+          },
           styles.headerSubTitle,
         ]}
       >
-        Stopafstand: {breakingDistanceAlgorithm.calculate(textInput)} meter
+        {calculateBreakingDistance(textInput ?? 0)}
       </Text>
       <TextInput
         label="Snelheid in KM"
-        value={textInput?.toString()}
+        value={getTextInputValue()}
         keyboardType="numeric"
         mode="outlined"
         theme={{ colors: { primary: '#154594' } }}
