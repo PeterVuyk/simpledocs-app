@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect } from 'react';
-import { View } from 'react-native';
+import { SafeAreaView } from 'react-native';
 import * as SplashScreen from 'expo-splash-screen';
 import * as Font from 'expo-font';
 import { Ionicons } from '@expo/vector-icons';
@@ -42,9 +42,9 @@ const AppSplashScreen: React.FC = () => {
   }
 
   return (
-    <View style={{ flex: 1 }} onLayout={onLayoutRootView}>
+    <SafeAreaView style={{ flex: 1 }} onLayout={onLayoutRootView}>
       <Drawer />
-    </View>
+    </SafeAreaView>
   );
 };
 

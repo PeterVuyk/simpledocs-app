@@ -19,14 +19,19 @@ const DrawerContent: React.FC<Props> = ({ progress, navigation }) => {
 
   return (
     <View style={{ flex: 1 }}>
-      <View style={{ marginTop: 80 }}>
+      <View
+        style={{
+          marginTop: 80,
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}
+      >
         <Image
           source={require('../../../assets/images/azn.png')}
           style={{
-            height: 40,
             resizeMode: 'contain',
-            marginLeft: -45,
-            marginBottom: 50,
+            width: 200,
+            marginBottom: 20,
           }}
         />
       </View>

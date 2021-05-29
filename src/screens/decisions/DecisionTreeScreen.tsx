@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { StyleSheet, View } from 'react-native';
-import { Text, Button, Icon, Content, H3 } from 'native-base';
+import { StyleSheet, View, Text } from 'react-native';
+import { Button, Icon } from 'react-native-elements';
 import { RouteProp } from '@react-navigation/native';
 import decisionTreeRepository, {
   DecisionTreeStep,
@@ -19,23 +19,19 @@ interface Props {
 }
 
 const styles = StyleSheet.create({
-  buttonText: {
-    textAlign: 'center',
-    flex: 1,
-  },
   question: {
     textAlign: 'center',
     fontWeight: 'bold',
     color: '#154594',
+    fontSize: 21,
   },
   buttonContainer: {
-    flexDirection: 'row',
     flex: 1,
     position: 'absolute',
     left: 0,
     right: 0,
     justifyContent: 'space-between',
-    padding: 10,
+    padding: 15,
   },
   container: {
     backgroundColor: '#fff',
@@ -48,22 +44,21 @@ const styles = StyleSheet.create({
     paddingRight: 20,
     paddingBottom: 200,
   },
-  buttonStyle: {
-    borderRadius: 5,
-  },
   regulationsButtonsStyle: {
-    flexGrow: 1,
-    flex: 1,
+    alignSelf: 'stretch',
+    backgroundColor: '#154594',
   },
   leftButtonStyle: {
     backgroundColor: 'red',
     marginRight: 5,
     flex: 1,
+    width: 100,
   },
   rightButtonStyle: {
     backgroundColor: 'green',
     marginLeft: 5,
     flex: 1,
+    width: 100,
   },
 });
 
@@ -106,29 +101,36 @@ const DecisionTreeScreen: React.FC<Props> = ({ route, navigation }) => {
   return (
     <View style={styles.container}>
       {decisionTreeSteps.length !== 0 && (
-        <Content contentContainerStyle={styles.contentContainerStyle}>
-          <H3 style={styles.question}>{currentStep?.label}</H3>
+        <View style={styles.contentContainerStyle}>
+          <Text style={styles.question}>{currentStep?.label}</Text>
           {!isRootQuestion && (
-            <View style={[{ bottom: 115 }, styles.buttonContainer]}>
-              <Button
-                style={styles.buttonStyle}
+            <View
+              style={[
+                { bottom: 120, flexDirection: 'row' },
+                styles.buttonContainer,
+              ]}
+            >
+              <Icon
+                color="#154594"
+                name="keyboard-backspace"
+                type="MaterialCommunityIcons"
                 onPress={() => setCurrentStep(getPreviousQuestion())}
-              >
-                <Icon name="keyboard-backspace" type="MaterialCommunityIcons" />
-              </Button>
-              <Button
-                style={styles.buttonStyle}
+                reverse
+              />
+              <Icon
+                color="#154594"
+                name="restore"
+                type="MaterialCommunityIcons"
                 onPress={() => setCurrentStep(undefined)}
-              >
-                <Icon name="restore" type="MaterialCommunityIcons" />
-              </Button>
+                reverse
+              />
             </View>
           )}
           {currentStep !== undefined && currentStep.regulationChapter !== null && (
             <View style={[{ bottom: 60 }, styles.buttonContainer]}>
               <Button
-                style={[styles.buttonStyle, styles.regulationsButtonsStyle]}
-                iconRight
+                buttonStyle={[styles.regulationsButtonsStyle]}
+                title="Open regelgeving"
                 onPress={() =>
                   navigation.navigate('RegulationsScreenStack', {
                     screen: 'RegulationDetailsScreen',
@@ -137,34 +139,32 @@ const DecisionTreeScreen: React.FC<Props> = ({ route, navigation }) => {
                     },
                   })
                 }
-              >
-                <Text uppercase={false} style={styles.buttonText}>
-                  Open regelgeving
-                </Text>
-              </Button>
+              />
             </View>
           )}
           {leftStep !== undefined && rightStep !== undefined && (
-            <View style={[{ bottom: 60 }, styles.buttonContainer]}>
+            <View
+              style={[
+                {
+                  bottom: 60,
+                  flexDirection: 'row',
+                },
+                styles.buttonContainer,
+              ]}
+            >
               <Button
-                style={[styles.buttonStyle, styles.leftButtonStyle]}
+                buttonStyle={[styles.leftButtonStyle]}
                 onPress={() => setCurrentStep(leftStep)}
-              >
-                <Text uppercase={false} style={styles.buttonText}>
-                  Nee
-                </Text>
-              </Button>
+                title="Nee"
+              />
               <Button
-                style={[styles.buttonStyle, styles.rightButtonStyle]}
+                buttonStyle={[styles.rightButtonStyle]}
                 onPress={() => setCurrentStep(rightStep)}
-              >
-                <Text uppercase={false} style={styles.buttonText}>
-                  Ja
-                </Text>
-              </Button>
+                title="Ja"
+              />
             </View>
           )}
-        </Content>
+        </View>
       )}
     </View>
   );

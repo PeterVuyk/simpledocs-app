@@ -1,6 +1,6 @@
 import React from 'react';
 import { Button, ListItem, Overlay } from 'react-native-elements';
-import { View, FlatList } from 'react-native';
+import { View, FlatList, Dimensions } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import regulationRepository, {
@@ -41,8 +41,7 @@ const RegulationListOverlay: React.FC<Props> = ({ toggleOverlay }) => {
   return (
     <View
       style={{
-        position: 'absolute',
-        flex: 1,
+        width: Dimensions.get('window').width,
       }}
     >
       <Overlay fullScreen isVisible onBackdropPress={toggleOverlay}>

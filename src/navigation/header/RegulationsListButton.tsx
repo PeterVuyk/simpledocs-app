@@ -16,13 +16,15 @@ const RegulationsListButton: React.FC<Props> = ({ regulationsButtonStyle }) => {
 
   return (
     <View>
-      <Icon
-        style={[{ color: '#154594' }, regulationsButtonStyle]}
-        name="book-open-variant"
-        type="MaterialCommunityIcons"
-        fontSize={26}
-        onPress={toggleOverlay}
-      />
+      {!visible && (
+        <Icon
+          style={[{ color: '#154594' }, regulationsButtonStyle]}
+          name="book-open-variant"
+          type="MaterialCommunityIcons"
+          fontSize={26}
+          onPress={toggleOverlay}
+        />
+      )}
       {visible && <RegulationListOverlay toggleOverlay={toggleOverlay} />}
     </View>
   );
