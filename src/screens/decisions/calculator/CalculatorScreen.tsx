@@ -9,6 +9,7 @@ import ListItem from '../../../components/ListItem';
 import BreakingDistanceCalculator from './BreakingDistanceCalculator';
 import HideWithKeyboardView from '../../../components/HideWithKeyboardView';
 import TitleBar from '../../../components/TitleBar';
+import OvertakingDistanceCalculator from './OvertakingDistanceCalculator';
 
 const styles = StyleSheet.create({
   container: {
@@ -63,6 +64,9 @@ const CalculatorScreen: React.FC<Props> = ({ route }) => {
           />
           {calculationInfo.calculationType === 'breakingDistance' && (
             <BreakingDistanceCalculator />
+          )}
+          {calculationInfo.calculationType === 'overtakingDistance' && (
+            <OvertakingDistanceCalculator />
           )}
           <ListItem
             onSubmit={() =>
