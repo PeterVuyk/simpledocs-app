@@ -19,15 +19,15 @@ type setDecisionTreeStepsCallback = (
 
 type setTitlesCallback = (titles: React.SetStateAction<Title[]>) => void;
 
-// eslint-disable-next-line @typescript-eslint/ban-types
-function getDecisionTreeSteps(
+function getDecisionTreeByTitle(
+  title: string,
   setDecisionTreeSteps: setDecisionTreeStepsCallback,
 ): void {
   db.transaction(
     sqlTransaction => {
       sqlTransaction.executeSql(
-        `SELECT * FROM decisionTree ORDER BY title, id ASC;`,
-        [],
+        `SELECT * FROM decisionTree WHERE title = ? ORDER BY id ASC;`,
+        [title],
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
         (_, { rows: { _array } }) => {
@@ -37,7 +37,7 @@ function getDecisionTreeSteps(
     },
     error =>
       logger.error(
-        'regulationRepository.getDecisionTreeSteps failed',
+        'regulationRepository.getDecisionTreeByTitle failed',
         error.message,
       ),
   );
@@ -73,7 +73,7 @@ function getDecisionTreeTitles(setTitles: setTitlesCallback): void {
 }
 
 const decisionTreeRepository = {
-  getDecisionTreeSteps,
+  getDecisionTreeByTitle,
   getDecisionTreeTitles,
 };
 

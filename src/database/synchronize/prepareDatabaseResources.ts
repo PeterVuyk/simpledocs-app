@@ -7,9 +7,9 @@ import updateDecisionTreeTable from './updateDecisionTreeTable';
 import { DecisionTreeStep } from '../repository/decisionTreeRepository';
 import collectDecisionTreeSteps from '../firebase/collectDecisionTreeSteps';
 import logger from '../../helper/logger';
-import updateBreakingDistanceTable from './updateBreakingDistanceTable';
-import { BreakingDistanceInfo } from '../repository/breakingDistanceRepository';
-import collectBreakingDistance from '../firebase/collectBreakingDistance';
+import updateCalculationsTable from './updateCalculationsTable';
+import { CalculationInfo } from '../repository/calculationsRepository';
+import collectCalculations from '../firebase/collectCalculations';
 
 const updateRegulations = async (newVersion: string) => {
   await collectRegulations
@@ -76,21 +76,18 @@ const updateDecisionTreeIfNewVersion = async () => {
   });
 };
 
-const updateBreakingDistance = async (newVersion: string) => {
-  const breakingDistance: BreakingDistanceInfo =
-    await collectBreakingDistance.getBreakingDistanceInfo();
-  updateBreakingDistanceTable.updateBreakingDistance(
-    breakingDistance,
-    newVersion,
-  );
+const updateCalculations = async (newVersion: string) => {
+  const calculationsInfo: CalculationInfo[] =
+    await collectCalculations.getCalculationsInfo();
+  updateCalculationsTable.updateCalculation(calculationsInfo, newVersion);
 };
 
-const updateBreakingDistanceIfNewVersion = async () => {
+const updateCalculationsIfNewVersion = async () => {
   const versionOnFirebase = await collectVersions
     .getVersioning()
     .catch(reason =>
       logger.error(
-        'collecting version from firebase in updateBreakingDistanceIfNewVersion',
+        'collecting version from firebase in updateCalculationsIfNewVersion',
         reason,
       ),
     );
@@ -99,14 +96,11 @@ const updateBreakingDistanceIfNewVersion = async () => {
     return;
   }
 
-  await versioningRepository.getVersioning(
-    'breakingDistance',
-    versionOnTheApp => {
-      if (versionOnTheApp?.version !== versionOnFirebase.breakingDistance) {
-        updateBreakingDistance(versionOnFirebase.breakingDistance);
-      }
-    },
-  );
+  await versioningRepository.getVersioning('calculations', versionOnTheApp => {
+    if (versionOnTheApp?.version !== versionOnFirebase.calculations) {
+      updateCalculations(versionOnFirebase.calculations);
+    }
+  });
 };
 
 const prepareDatabaseResources = () => {
@@ -114,7 +108,7 @@ const prepareDatabaseResources = () => {
     .initialize()
     .then(updateRegulationsIfNewVersion)
     .then(updateDecisionTreeIfNewVersion)
-    .then(updateBreakingDistanceIfNewVersion)
+    .then(updateCalculationsIfNewVersion)
     .catch(reason =>
       logger.error('prepareDatabaseResources failed', reason.message),
     );

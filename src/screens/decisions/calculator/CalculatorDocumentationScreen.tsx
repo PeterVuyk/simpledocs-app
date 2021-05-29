@@ -13,10 +13,10 @@ interface Props {
   >;
 }
 
-const BreakingDistanceDocumentationScreen: React.FC<Props> = ({ route }) => {
+const CalculatorDocumentationScreen: React.FC<Props> = ({ route }) => {
   const { htmlFile } = route.params;
 
   return <HTMLViewer htmlFile={htmlFile} />;
 };
 
-export default BreakingDistanceDocumentationScreen;
+export default CalculatorDocumentationScreen;

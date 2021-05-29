@@ -4,9 +4,9 @@ import decisionTreeRepository, {
   Title,
 } from '../../database/repository/decisionTreeRepository';
 import ListItem from '../../components/ListItem';
-import breakingDistanceRepository, {
-  BreakingDistanceInfo,
-} from '../../database/repository/breakingDistanceRepository';
+import calculationsRepository, {
+  CalculationInfo,
+} from '../../database/repository/calculationsRepository';
 import TitleBar from '../../components/TitleBar';
 
 interface Props {
@@ -20,36 +20,40 @@ interface DecisionItem {
 }
 
 const DecisionsScreen: React.FC<Props> = ({ navigation }) => {
-  const [titles, setTitles] = useState<Title[]>([]);
+  const [decisionTreeTitles, setDecisionTreeTitles] = useState<Title[]>([]);
+  const [calculationTitles, setCalculationTitles] = useState<CalculationInfo[]>(
+    [],
+  );
   const [decisionItems, setDecisionItems] = useState<DecisionItem[]>([]);
-  const [breakingDistanceInfo, setBreakingDistanceInfo] =
-    useState<BreakingDistanceInfo | null>(null);
 
   React.useEffect(() => {
-    decisionTreeRepository.getDecisionTreeTitles(setTitles);
-    breakingDistanceRepository.getBreakingDistanceInfo(setBreakingDistanceInfo);
+    decisionTreeRepository.getDecisionTreeTitles(setDecisionTreeTitles);
+    calculationsRepository.getCalculationsInfo(setCalculationTitles);
   }, []);
 
   React.useEffect(() => {
-    if (titles.length === 0 || breakingDistanceInfo === null) {
+    if (decisionTreeTitles.length === 0 || calculationTitles.length === 0) {
       return;
     }
-    const decisionTrees = titles.map(title => {
+    const decisionTrees = decisionTreeTitles.map(title => {
       return { categorization: 'decisionTree', ...title } as DecisionItem;
     });
-    setDecisionItems([
-      {
-        title: breakingDistanceInfo.title,
-        iconFile: breakingDistanceInfo.iconFile,
+    const calculations = calculationTitles.map(calculation => {
+      return {
+        title: calculation.title,
+        iconFile: calculation.iconFile,
         categorization: 'calculations',
-      },
-      ...decisionTrees,
-    ]);
-  }, [titles, breakingDistanceInfo]);
+      } as DecisionItem;
+    });
+    setDecisionItems([...calculations, ...decisionTrees]);
+  }, [decisionTreeTitles, calculationTitles]);
 
   const navigateDecisionTree = (decisionItem: DecisionItem) => {
     if (decisionItem.categorization === 'calculations') {
-      navigation.navigate('BreakingDistanceCalculatorScreen');
+      navigation.navigate('DecisionsScreenStack', {
+        screen: 'calculatorScreen',
+        params: { title: decisionItem.title },
+      });
       return;
     }
     navigation.navigate('DecisionsScreenStack', {

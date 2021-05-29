@@ -3,7 +3,7 @@ import database from './database';
 export interface Versioning {
   regulations: string;
   decisionTree: string;
-  breakingDistance: string;
+  calculations: string;
 }
 
 async function getVersioning() {

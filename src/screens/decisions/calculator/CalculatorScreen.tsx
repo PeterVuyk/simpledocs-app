@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { Image, View, StyleSheet, Keyboard } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import { RouteProp, useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
-import breakingDistanceRepository, {
-  BreakingDistanceInfo,
-} from '../../../database/repository/breakingDistanceRepository';
+import calculationsRepository, {
+  CalculationInfo,
+} from '../../../database/repository/calculationsRepository';
 import ListItem from '../../../components/ListItem';
 import BreakingDistanceCalculator from './BreakingDistanceCalculator';
 import HideWithKeyboardView from '../../../components/HideWithKeyboardView';
@@ -30,39 +30,54 @@ const styles = StyleSheet.create({
   },
 });
 
-const BreakingDistanceCalculatorScreen: React.FC = () => {
-  const [breakingDistanceInfo, setBreakingDistanceInfo] =
-    useState<BreakingDistanceInfo | null>(null);
+interface Props {
+  route: RouteProp<
+    {
+      params: {
+        title: string;
+      };
+    },
+    'params'
+  >;
+}
+
+const CalculatorScreen: React.FC<Props> = ({ route }) => {
+  const { title } = route.params;
+
+  const [calculationInfo, setCalculationInfo] =
+    useState<CalculationInfo | null>(null);
 
   const navigation = useNavigation<StackNavigationProp<any>>();
 
   React.useEffect(() => {
-    breakingDistanceRepository.getBreakingDistanceInfo(setBreakingDistanceInfo);
-  }, []);
+    calculationsRepository.getCalculationInfoByTitle(title, setCalculationInfo);
+  }, [title]);
 
   return (
     <View onTouchStart={Keyboard.dismiss} style={styles.container}>
-      {breakingDistanceInfo && (
+      {calculationInfo && (
         <>
           <TitleBar
-            title={breakingDistanceInfo.title}
-            subTitle={breakingDistanceInfo.explanation}
+            title={calculationInfo.title}
+            subTitle={calculationInfo.explanation}
           />
-          <BreakingDistanceCalculator />
+          {calculationInfo.calculationType === 'breakingDistance' && (
+            <BreakingDistanceCalculator />
+          )}
           <ListItem
             onSubmit={() =>
-              navigation.navigate('BreakingDistanceDocumentationScreen', {
-                htmlFile: breakingDistanceInfo.htmlFile,
+              navigation.navigate('CalculatorDocumentationScreen', {
+                htmlFile: calculationInfo.htmlFile,
               })
             }
-            iconFile={breakingDistanceInfo.iconFile}
-            title={breakingDistanceInfo.regulationButtonText}
+            iconFile={calculationInfo.iconFile}
+            title={calculationInfo.regulationButtonText}
           />
           <View />
           <HideWithKeyboardView style={styles.imageContainer}>
             <Image
               style={styles.image}
-              source={{ uri: breakingDistanceInfo.breakingDistanceImage }}
+              source={{ uri: calculationInfo.calculationImage }}
             />
           </HideWithKeyboardView>
         </>
@@ -71,4 +86,4 @@ const BreakingDistanceCalculatorScreen: React.FC = () => {
   );
 };
 
-export default BreakingDistanceCalculatorScreen;
+export default CalculatorScreen;

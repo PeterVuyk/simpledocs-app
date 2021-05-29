@@ -20,7 +20,7 @@ function initialize(): Promise<any> {
           "INSERT OR IGNORE INTO versioning (aggregate, version) VALUES ('decisionTree', 'initial');",
         );
         sqlTransaction.executeSql(
-          "INSERT OR IGNORE INTO versioning (aggregate, version) VALUES ('breakingDistance', 'initial');",
+          "INSERT OR IGNORE INTO versioning (aggregate, version) VALUES ('calculations', 'initial');",
         );
       },
       error => {
