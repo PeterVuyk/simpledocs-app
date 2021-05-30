@@ -18,7 +18,7 @@ import {
   ParamListBase,
 } from '@react-navigation/native';
 import { Icon } from 'native-base';
-import HideWithKeyboardView from '../../components/HideWithKeyboardView';
+import HideWithKeyboardView from '../../components/keyboard/HideWithKeyboardView';
 import ToggleBottomNavigator from '../../navigation/bottom/ToggleBottomNavigator';
 
 // Props accepted by the view

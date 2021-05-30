@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Keyboard, FlatList, Image } from 'react-native';
+import { FlatList, Image } from 'react-native';
 import { ListItem } from 'react-native-elements';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
@@ -11,6 +11,7 @@ import regulationRepository, {
 import SearchHeader from '../../navigation/header/SearchHeader';
 import searching, { SearchText } from '../../redux/actions/searching';
 import SVGIcon from '../../components/SVGIcon';
+import KeyboardAwareView from '../../components/keyboard/KeyboardAwareView';
 
 interface Props {
   setChapterSearchText: (searchText: SearchText) => void;
@@ -80,10 +81,7 @@ const SearchScreen: React.FC<Props> = ({ setChapterSearchText }) => {
       handleSearchTextChange={handleSearchTextChange}
       searchText={searchText}
     >
-      <View
-        style={{ flex: 1, paddingBottom: 60 }}
-        onTouchStart={Keyboard.dismiss}
-      >
+      <KeyboardAwareView>
         {regulations.length === 0 && (
           <Image
             style={{
@@ -102,7 +100,7 @@ const SearchScreen: React.FC<Props> = ({ setChapterSearchText }) => {
             renderItem={({ item }) => renderItem(item)}
           />
         )}
-      </View>
+      </KeyboardAwareView>
     </SearchHeader>
   );
 };

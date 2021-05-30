@@ -36,6 +36,7 @@ const ScrollViewToggleBottomBar: React.FC<Props> = ({
   return (
     <ScrollView
       onScroll={event => handleScroll(event.nativeEvent.contentOffset.y)}
+      scrollEventThrottle={1}
       contentContainerStyle={{
         flexGrow: 1,
         height: pageHeight,
@@ -46,15 +47,17 @@ const ScrollViewToggleBottomBar: React.FC<Props> = ({
   );
 };
 
-const mapStateToProps = (state) => { // maps the state van redux naar de props voor component.
+const mapStateToProps = state => {
+  // maps the state van redux naar de props voor component.
   return {
     scrollDirection: state.scrolling.scrollDirection,
   };
 };
 
-const mapDispatchToProps = (dispatch) => { // maps the actions naar de props
+const mapDispatchToProps = dispatch => {
+  // maps the actions naar de props
   return {
-    setScrollDirection: (key) => dispatch(scrolling.setScrollDirection(key)),
+    setScrollDirection: key => dispatch(scrolling.setScrollDirection(key)),
   };
 };
 

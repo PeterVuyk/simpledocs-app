@@ -7,7 +7,7 @@ import calculationsRepository, {
 } from '../../../database/repository/calculationsRepository';
 import ListItem from '../../../components/ListItem';
 import BreakingDistanceCalculator from './BreakingDistanceCalculator';
-import HideWithKeyboardView from '../../../components/HideWithKeyboardView';
+import HideWithKeyboardView from '../../../components/keyboard/HideWithKeyboardView';
 import TitleBar from '../../../components/TitleBar';
 import OvertakingDistanceCalculator from './OvertakingDistanceCalculator';
 

@@ -2,7 +2,7 @@ import React, { useCallback, useEffect } from 'react';
 import { Animated } from 'react-native';
 import { Button } from 'react-native-elements';
 import { connect } from 'react-redux';
-import HideWithKeyboardView from './HideWithKeyboardView';
+import HideWithKeyboardView from './keyboard/HideWithKeyboardView';
 
 interface Props {
   title: string;
