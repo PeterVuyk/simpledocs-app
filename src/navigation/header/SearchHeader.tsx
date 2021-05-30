@@ -23,7 +23,7 @@ const SearchHeader: React.FC<Props> = ({
   }, [searchRef]);
 
   return (
-    <SafeAreaView style={{ flex: 1 }}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: 'pink' }}>
       <View
         style={{
           flexDirection: 'row',
@@ -38,22 +38,20 @@ const SearchHeader: React.FC<Props> = ({
           alignItems: 'center',
         }}
       >
-        <View style={{ flex: 1, backgroundColor: '#fff' }}>
-          <SearchBar
-            ref={search => {
-              searchRef = search;
-            }}
-            containerStyle={{ backgroundColor: '#fff' }}
-            inputContainerStyle={{
-              backgroundColor: Platform.OS === 'ios' ? '#ddd' : '#fff',
-            }}
-            platform={Platform.OS === 'ios' ? 'ios' : 'android'}
-            placeholder="Zoek op titel of trefwoord..."
-            onCancel={() => (Platform.OS === 'ios' ? navigation.pop() : '')}
-            onChangeText={typedText => handleSearchTextChange(typedText)}
-            value={searchText}
-          />
-        </View>
+        <SearchBar
+          ref={search => {
+            searchRef = search;
+          }}
+          containerStyle={{ backgroundColor: '#fff' }}
+          inputContainerStyle={{
+            backgroundColor: Platform.OS === 'ios' ? '#ddd' : '#fff',
+          }}
+          platform={Platform.OS === 'ios' ? 'ios' : 'android'}
+          placeholder="Zoek op titel of trefwoord..."
+          onCancel={() => (Platform.OS === 'ios' ? navigation.pop() : '')}
+          onChangeText={typedText => handleSearchTextChange(typedText)}
+          value={searchText}
+        />
       </View>
       {children}
     </SafeAreaView>

@@ -25,5 +25,3 @@ const SearchButton: React.FC<Props> = ({ navigation }) => {
 };
 
 export default SearchButton;
-
-// TODO: media-queries gebruiken voor posities. css maak je dan afhankelijk

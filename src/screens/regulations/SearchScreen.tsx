@@ -36,13 +36,13 @@ const SearchScreen: React.FC<Props> = ({ setChapterSearchText }) => {
 
   const getShortenedBody = (fullBody: string): string => {
     const firstOccurrence: number = fullBody.indexOf(searchText);
-    if (firstOccurrence < 50 && fullBody.length > 100) {
-      return `${fullBody.substr(0, 100)}...`;
+    if (firstOccurrence < 100 && fullBody.length > 100) {
+      return `${fullBody.replace('\n', '').substring(0, 100)}...`;
     }
-    if (fullBody.length > 100) {
-      return `...${fullBody.substr(
-        firstOccurrence - 50,
-        firstOccurrence + 50,
+    if (fullBody.length > 200) {
+      return `...${fullBody.substring(
+        firstOccurrence - 10,
+        firstOccurrence + 10,
       )}...`;
     }
     return fullBody;
