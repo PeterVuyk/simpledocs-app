@@ -69,6 +69,16 @@ const DrawerContent: React.FC<Props> = ({ progress, navigation }) => {
         iconName="information-outline"
         iconType="MaterialCommunityIcons"
       />
+      <DrawerItem
+        label="Auteursrechten"
+        onSubmit={() => {
+          navigation.navigate('ScreenStack', {
+            screen: 'CopyrightScreen',
+          });
+        }}
+        iconName="copyright"
+        iconType="MaterialCommunityIcons"
+      />
       {Platform.OS !== 'ios' && (
         <DrawerItem
           label="Afsluiten"

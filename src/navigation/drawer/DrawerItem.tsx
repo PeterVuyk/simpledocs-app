@@ -38,12 +38,7 @@ const DrawerItem: React.FC<Props> = ({
       label={label}
       onPress={onSubmit}
       icon={({ color }) => (
-        <Icon
-          name={iconName}
-          style={{ color, transform: [{ rotateY: '180deg' }] }}
-          type={iconType}
-          fontSize={20}
-        />
+        <Icon name={iconName} style={{ color }} type={iconType} fontSize={20} />
       )}
     />
   );
