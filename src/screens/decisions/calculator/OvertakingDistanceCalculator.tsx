@@ -75,7 +75,7 @@ const OvertakingDistanceCalculator: React.FC = () => {
       />
       <TextInput
         style={{ marginTop: 5 }}
-        label="Snelheid voorligger in KM (40 t/m 150)"
+        label="Snelheid voorligger in KM (50 t/m 140)"
         value={getVehicleInFrontSpeed()}
         keyboardType="numeric"
         mode="outlined"

@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Keyboard, FlatList, ImageBackground } from 'react-native';
+import { View, Keyboard, FlatList, Image } from 'react-native';
 import { ListItem } from 'react-native-elements';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
@@ -85,14 +85,14 @@ const SearchScreen: React.FC<Props> = ({ setChapterSearchText }) => {
         onTouchStart={Keyboard.dismiss}
       >
         {regulations.length === 0 && (
-          <ImageBackground
+          <Image
             style={{
-              flex: 1,
               marginTop: 120,
               height: 120,
+              width: 'auto',
+              resizeMode: 'contain',
             }}
             source={require('../../../assets/images/find.png')}
-            resizeMode="center"
           />
         )}
         {regulations && (

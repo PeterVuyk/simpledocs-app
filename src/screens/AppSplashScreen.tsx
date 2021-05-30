@@ -1,10 +1,11 @@
 import React, { useCallback, useEffect } from 'react';
-import { SafeAreaView } from 'react-native';
+import { View } from 'react-native';
 import * as SplashScreen from 'expo-splash-screen';
 import * as Font from 'expo-font';
 import { Ionicons } from '@expo/vector-icons';
 import Drawer from '../navigation/drawer/Drawer';
 import prepareDatabaseResources from '../database/synchronize/prepareDatabaseResources';
+import logger from '../helper/logger';
 
 const AppSplashScreen: React.FC = () => {
   const [appIsReady, setAppReady] = React.useState<boolean>(false);
@@ -21,6 +22,9 @@ const AppSplashScreen: React.FC = () => {
     SplashScreen.preventAutoHideAsync()
       .then(loadFonts)
       .then(prepareDatabaseResources)
+      .catch(reason =>
+        logger.error('Failed initializing app by startup', reason),
+      )
       .finally(() => {
         setAppReady(true);
       });
@@ -42,9 +46,9 @@ const AppSplashScreen: React.FC = () => {
   }
 
   return (
-    <SafeAreaView style={{ flex: 1 }} onLayout={onLayoutRootView}>
+    <View style={{ flex: 1 }} onLayout={onLayoutRootView}>
       <Drawer />
-    </SafeAreaView>
+    </View>
   );
 };
 

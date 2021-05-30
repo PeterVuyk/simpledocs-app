@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View } from 'react-native';
+import { SafeAreaView, View } from 'react-native';
 import { DrawerNavigationHelpers } from '@react-navigation/drawer/lib/typescript/src/types';
 import DrawerButton from './DrawerButton';
 import SearchButton from './SearchButton';
@@ -13,7 +13,7 @@ interface Props {
 
 const Header: React.FC<Props> = ({ navigation, showRegulationsListButton }) => {
   return (
-    <View
+    <SafeAreaView
       style={{
         flexDirection: 'row',
         justifyContent: 'space-between',
@@ -47,7 +47,7 @@ const Header: React.FC<Props> = ({ navigation, showRegulationsListButton }) => {
           />
         )}
       </View>
-    </View>
+    </SafeAreaView>
   );
 };
 

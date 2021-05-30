@@ -15,7 +15,7 @@ const RegulationsScreen: React.FC<Props> = ({ navigation }) => {
   const [regulations, setRegulations] = React.useState<Regulation[]>([]);
 
   React.useEffect(() => {
-    regulationRepository.getChaptersByLevelChapter(setRegulations);
+    regulationRepository.getParagraphs(setRegulations);
   }, []);
 
   const renderItem = (item: Regulation) => (

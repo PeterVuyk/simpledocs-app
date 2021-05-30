@@ -20,8 +20,8 @@ const BreakingDistanceCalculator: React.FC = () => {
     textInput === undefined ? '' : textInput?.toString();
 
   const calculateBreakingDistance = (kmPerHour: number): string => {
-    if (kmPerHour < 0 || kmPerHour > 160) {
-      return 'Geef een waarde tot 160 km op.';
+    if (kmPerHour < 30 || kmPerHour > 160) {
+      return '';
     }
     const responseTimeDistance = (kmPerHour / 10) * 3;
     const stopDistance = ((kmPerHour / 10) * (kmPerHour / 10)) / 2;
@@ -42,7 +42,7 @@ const BreakingDistanceCalculator: React.FC = () => {
         {calculateBreakingDistance(textInput ?? 0)}
       </Text>
       <TextInput
-        label="Snelheid in KM"
+        label="Snelheid in KM (30 t/m 160)"
         value={getTextInputValue()}
         keyboardType="numeric"
         mode="outlined"

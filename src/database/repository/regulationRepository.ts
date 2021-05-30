@@ -87,11 +87,11 @@ function searchRegulations(
   );
 }
 
-function getChaptersByLevelChapter(setRegulations: setRegulationsCallback): void {
+function getParagraphs(setRegulations: setRegulationsCallback): void {
   db.transaction(
     sqlTransaction => {
       sqlTransaction.executeSql(
-        `SELECT * FROM regulation WHERE level = 'chapter' ORDER BY pageIndex;`,
+        `SELECT * FROM regulation WHERE level IN ('chapter', 'section', 'subSection') ORDER BY pageIndex;`,
         [],
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
@@ -129,7 +129,7 @@ function getChapters(setChapters: setChaptersCallback): void {
 const regulationRepository = {
   getRegulationByChapter,
   searchRegulations,
-  getChaptersByLevelChapter,
+  getParagraphs,
   getChapters,
 };
 

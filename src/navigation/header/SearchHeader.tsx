@@ -1,6 +1,8 @@
 import * as React from 'react';
-import { Platform, View } from 'react-native';
+import { Platform, SafeAreaView, View } from 'react-native';
 import { SearchBar } from 'react-native-elements';
+import { useNavigation } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
 
 interface Props {
   children: React.ReactNode;
@@ -14,13 +16,14 @@ const SearchHeader: React.FC<Props> = ({
   handleSearchTextChange,
 }) => {
   let searchRef: null | SearchBar = null;
+  const navigation = useNavigation<StackNavigationProp<any>>();
 
   React.useEffect(() => {
     searchRef?.focus();
   }, [searchRef]);
 
   return (
-    <View style={{ flex: 1 }}>
+    <SafeAreaView style={{ flex: 1 }}>
       <View
         style={{
           flexDirection: 'row',
@@ -41,16 +44,19 @@ const SearchHeader: React.FC<Props> = ({
               searchRef = search;
             }}
             containerStyle={{ backgroundColor: '#fff' }}
-            inputContainerStyle={{ backgroundColor: '#fff' }}
+            inputContainerStyle={{
+              backgroundColor: Platform.OS === 'ios' ? '#ddd' : '#fff',
+            }}
             platform={Platform.OS === 'ios' ? 'ios' : 'android'}
             placeholder="Zoek op titel of trefwoord..."
+            onCancel={() => (Platform.OS === 'ios' ? navigation.pop() : '')}
             onChangeText={typedText => handleSearchTextChange(typedText)}
             value={searchText}
           />
         </View>
       </View>
       {children}
-    </View>
+    </SafeAreaView>
   );
 };
 
