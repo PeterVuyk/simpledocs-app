@@ -35,14 +35,17 @@ const SearchScreen: React.FC<Props> = ({ setChapterSearchText }) => {
   const navigation = useNavigation<StackNavigationProp<any>>();
 
   const getShortenedBody = (fullBody: string): string => {
-    const firstOccurrence: number = fullBody.indexOf(searchText);
-    if (firstOccurrence < 100 && fullBody.length > 100) {
+    const firstOccurrence: number = fullBody
+      .toLowerCase()
+      .indexOf(searchText.toLowerCase());
+    const bodyLength = fullBody.replace('\n', '').length;
+    if (firstOccurrence < 100 && bodyLength > 100) {
       return `${fullBody.replace('\n', '').substring(0, 100)}...`;
     }
-    if (fullBody.length > 200) {
+    if (bodyLength > 200) {
       return `...${fullBody.substring(
-        firstOccurrence - 10,
-        firstOccurrence + 10,
+        firstOccurrence - 50,
+        firstOccurrence + 50,
       )}...`;
     }
     return fullBody;

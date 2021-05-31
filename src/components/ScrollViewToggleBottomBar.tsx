@@ -35,6 +35,7 @@ const ScrollViewToggleBottomBar: React.FC<Props> = ({
 
   return (
     <ScrollView
+      style={{ backgroundColor: '#fff' }}
       nestedScrollEnabled
       onScroll={event => {
         handleScroll(event.nativeEvent.contentOffset.y);
