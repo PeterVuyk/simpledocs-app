@@ -1,11 +1,11 @@
 import React from 'react';
 import { FlatList, View } from 'react-native';
-import { ListItem } from 'react-native-elements';
 import { DrawerNavigationProp } from '@react-navigation/drawer/lib/typescript/src/types';
 import regulationRepository, {
   Regulation,
 } from '../../database/repository/regulationRepository';
 import SVGIcon from '../../components/SVGIcon';
+import ListItem from '../../components/ListItem';
 
 interface Props {
   navigation: DrawerNavigationProp<any>;
@@ -18,30 +18,24 @@ const RegulationsScreen: React.FC<Props> = ({ navigation }) => {
     regulationRepository.getParagraphs(setRegulations);
   }, []);
 
-  const renderItem = (item: Regulation) => (
-    <ListItem
-      bottomDivider
-      onPress={() =>
-        navigation.navigate('RegulationDetailsScreen', {
-          regulationChapter: item.chapter,
-        })
-      }
-    >
-      <SVGIcon iconBlob={item.iconFile} />
-      <ListItem.Content>
-        <ListItem.Title>{item.title}</ListItem.Title>
-        <ListItem.Subtitle>{item.subTitle}</ListItem.Subtitle>
-      </ListItem.Content>
-    </ListItem>
-  );
-
   return (
     <View style={{ flex: 1, paddingBottom: 60, backgroundColor: '#fff' }}>
       {regulations && (
         <FlatList
           keyExtractor={item => item.chapter.toString()}
           data={regulations}
-          renderItem={({ item }) => renderItem(item)}
+          renderItem={({ item }) => (
+            <ListItem
+              title={item.title}
+              subTitle={item.subTitle}
+              iconFile={item.iconFile}
+              onSubmit={() =>
+                navigation.navigate('RegulationDetailsScreen', {
+                  regulationChapter: item.chapter,
+                })
+              }
+            />
+          )}
         />
       )}
     </View>

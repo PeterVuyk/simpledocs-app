@@ -41,6 +41,7 @@ const RegulationDetailsScreen: React.FC<Props> = ({ route }) => {
       }}
     >
       <FlatList
+        nestedScrollEnabled
         horizontal
         pagingEnabled
         bounces={false}

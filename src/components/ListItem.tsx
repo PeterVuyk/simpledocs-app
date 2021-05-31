@@ -15,7 +15,7 @@ const ListItem: React.FC<Props> = ({ onSubmit, iconFile, title, subTitle }) => {
       <SVGIcon iconBlob={iconFile} />
       <Item.Content>
         <Item.Title>{title}</Item.Title>
-        {subTitle && <Item.Subtitle>{subTitle}</Item.Subtitle>}
+        {subTitle !== undefined && <Item.Subtitle>{subTitle}</Item.Subtitle>}
       </Item.Content>
       <Item.Chevron />
     </Item>

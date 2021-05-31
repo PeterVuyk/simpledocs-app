@@ -31,11 +31,9 @@ const HTMLViewer: React.FC<Props> = ({ htmlFile, highlightText }) => {
    * scroll height from the html template and provide that height to the ScrollView
    */
   const injectedJavaScript = `
-    window.addEventListener('load', function () {
-      window.ReactNativeWebView.postMessage(
-        Math.max(document.body.offsetHeight, document.body.scrollHeight)
-      );
-    });`;
+  window.ReactNativeWebView.postMessage(
+    Math.max(document.body.offsetHeight, document.body.scrollHeight)
+  );`;
 
   const onMessage = (event: WebViewMessageEvent) => {
     setWebViewHeight(Number(event.nativeEvent.data));

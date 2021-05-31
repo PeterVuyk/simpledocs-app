@@ -39,11 +39,14 @@ const updateRegulationsIfNewVersion = async () => {
     return;
   }
 
-  await versioningRepository.getVersioning('regulations', versionOnTheApp => {
-    if (versionOnTheApp?.version !== versionOnFirebase.regulations) {
-      updateRegulations(versionOnFirebase.regulations);
-    }
-  });
+  await versioningRepository.getVersioning(
+    'regulations',
+    async versionOnTheApp => {
+      if (versionOnTheApp?.version !== versionOnFirebase.regulations) {
+        await updateRegulations(versionOnFirebase.regulations);
+      }
+    },
+  );
 };
 
 const updateDecisionTree = async (newVersion: string) => {
@@ -69,11 +72,14 @@ const updateDecisionTreeIfNewVersion = async () => {
     return;
   }
 
-  await versioningRepository.getVersioning('decisionTree', versionOnTheApp => {
-    if (versionOnTheApp?.version !== versionOnFirebase.decisionTree) {
-      updateDecisionTree(versionOnFirebase.decisionTree);
-    }
-  });
+  await versioningRepository.getVersioning(
+    'decisionTree',
+    async versionOnTheApp => {
+      if (versionOnTheApp?.version !== versionOnFirebase.decisionTree) {
+        await updateDecisionTree(versionOnFirebase.decisionTree);
+      }
+    },
+  );
 };
 
 const updateCalculations = async (newVersion: string) => {
@@ -96,11 +102,14 @@ const updateCalculationsIfNewVersion = async () => {
     return;
   }
 
-  await versioningRepository.getVersioning('calculations', versionOnTheApp => {
-    if (versionOnTheApp?.version !== versionOnFirebase.calculations) {
-      updateCalculations(versionOnFirebase.calculations);
-    }
-  });
+  await versioningRepository.getVersioning(
+    'calculations',
+    async versionOnTheApp => {
+      if (versionOnTheApp?.version !== versionOnFirebase.calculations) {
+        await updateCalculations(versionOnFirebase.calculations);
+      }
+    },
+  );
 };
 
 const prepareDatabaseResources = () => {

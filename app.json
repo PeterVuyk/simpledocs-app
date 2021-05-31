@@ -18,13 +18,15 @@
     ],
     "ios": {
       "supportsTablet": true,
-      "requireFullScreen": true
+      "requireFullScreen": true,
+      "bundleIdentifier": "com.petervuyk.ambulancezorgapp"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
-      }
+      },
+      "package": "com.petervuyk.ambulancezorgapp"
     },
     "extra": {
       "bugsnag": {

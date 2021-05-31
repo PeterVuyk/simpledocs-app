@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Image, View, StyleSheet, Keyboard } from 'react-native';
+import { Image, View, StyleSheet } from 'react-native';
 import { RouteProp, useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import calculationsRepository, {
@@ -10,13 +10,9 @@ import BreakingDistanceCalculator from './BreakingDistanceCalculator';
 import HideWithKeyboardView from '../../../components/keyboard/HideWithKeyboardView';
 import TitleBar from '../../../components/TitleBar';
 import OvertakingDistanceCalculator from './OvertakingDistanceCalculator';
+import KeyboardAwareView from '../../../components/keyboard/KeyboardAwareView';
 
 const styles = StyleSheet.create({
-  container: {
-    backgroundColor: 'white',
-    flex: 1,
-    marginBottom: 60,
-  },
   image: {
     flex: 1,
     resizeMode: 'contain',
@@ -24,9 +20,6 @@ const styles = StyleSheet.create({
   imageContainer: {
     flex: 1,
     justifyContent: 'center',
-    margin: 10,
-  },
-  calculatorContainer: {
     margin: 10,
   },
 });
@@ -55,7 +48,7 @@ const CalculatorScreen: React.FC<Props> = ({ route }) => {
   }, [title]);
 
   return (
-    <View onTouchStart={Keyboard.dismiss} style={styles.container}>
+    <KeyboardAwareView>
       {calculationInfo && (
         <>
           <TitleBar
@@ -86,7 +79,7 @@ const CalculatorScreen: React.FC<Props> = ({ route }) => {
           </HideWithKeyboardView>
         </>
       )}
-    </View>
+    </KeyboardAwareView>
   );
 };
 

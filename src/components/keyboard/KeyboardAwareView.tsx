@@ -11,7 +11,11 @@ interface Props {
 const SearchScreen: React.FC<Props> = ({ children, isKeyboardOpen }) => {
   return (
     <View
-      style={{ flex: 1, paddingBottom: isKeyboardOpen ? 0 : 60 }}
+      style={{
+        flex: 1,
+        paddingBottom: isKeyboardOpen ? 0 : 60,
+        backgroundColor: '#fff',
+      }}
       onTouchStart={Keyboard.dismiss}
     >
       {children}

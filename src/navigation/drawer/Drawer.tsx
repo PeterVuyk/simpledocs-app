@@ -14,7 +14,6 @@ const Drawer: React.FC = () => {
         drawerType="slide"
         drawerStyle={{ backgroundColor: '#fff' }}
         overlayColor="transparant"
-        drawerPosition={Platform.OS !== 'ios' ? 'left' : 'right'}
         drawerContentOptions={{
           activeBackgroundColor: '#fff',
         }}

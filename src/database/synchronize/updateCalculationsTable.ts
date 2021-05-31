@@ -45,7 +45,6 @@ function createCalculationTable(sqlTransaction: SQLite.SQLTransaction): void {
   );
 }
 
-// TODO: wrap response in promise
 function updateCalculation(
   calculationInfo: CalculationInfo[],
   version: string,
