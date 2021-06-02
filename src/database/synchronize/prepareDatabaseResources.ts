@@ -4,11 +4,9 @@ import updateRegulationsTable from './updateRegulationsTable';
 import initializeVersioningTable from './initializeVersioningTable';
 import collectVersions from '../firebase/collectVersions';
 import updateDecisionTreeTable from './updateDecisionTreeTable';
-import { DecisionTreeStep } from '../repository/decisionTreeRepository';
 import collectDecisionTreeSteps from '../firebase/collectDecisionTreeSteps';
 import logger from '../../helper/logger';
 import updateCalculationsTable from './updateCalculationsTable';
-import { CalculationInfo } from '../repository/calculationsRepository';
 import collectCalculations from '../firebase/collectCalculations';
 
 const updateRegulations = async (newVersion: string) => {
@@ -50,12 +48,11 @@ const updateRegulationsIfNewVersion = async () => {
 };
 
 const updateDecisionTree = async (newVersion: string) => {
-  const decisionTreeSteps: DecisionTreeStep[] =
-    await collectDecisionTreeSteps.getDecisionTreeSteps();
-  updateDecisionTreeTable.updateDecisionTreeSteps(
-    decisionTreeSteps,
-    newVersion,
-  );
+  await collectDecisionTreeSteps
+    .getDecisionTreeSteps()
+    .then(steps =>
+      updateDecisionTreeTable.updateDecisionTreeSteps(steps, newVersion),
+    );
 };
 
 const updateDecisionTreeIfNewVersion = async () => {
@@ -83,9 +80,11 @@ const updateDecisionTreeIfNewVersion = async () => {
 };
 
 const updateCalculations = async (newVersion: string) => {
-  const calculationsInfo: CalculationInfo[] =
-    await collectCalculations.getCalculationsInfo();
-  updateCalculationsTable.updateCalculation(calculationsInfo, newVersion);
+  await collectCalculations
+    .getCalculationsInfo()
+    .then(calculationsInfo =>
+      updateCalculationsTable.updateCalculation(calculationsInfo, newVersion),
+    );
 };
 
 const updateCalculationsIfNewVersion = async () => {
@@ -112,8 +111,8 @@ const updateCalculationsIfNewVersion = async () => {
   );
 };
 
-const prepareDatabaseResources = () => {
-  initializeVersioningTable
+const prepareDatabaseResources = async () => {
+  await initializeVersioningTable
     .initialize()
     .then(updateRegulationsIfNewVersion)
     .then(updateDecisionTreeIfNewVersion)

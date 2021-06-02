@@ -48,21 +48,29 @@ function createCalculationTable(sqlTransaction: SQLite.SQLTransaction): void {
 function updateCalculation(
   calculationInfo: CalculationInfo[],
   version: string,
-): void {
-  db.transaction(
-    sqlTransaction => {
-      removeAllCalculationsInfo(sqlTransaction);
-      createCalculationTable(sqlTransaction);
-      versioningRepository.updateVersioning(
-        sqlTransaction,
-        'calculations',
-        version,
-      );
-      addCalculations(sqlTransaction, calculationInfo);
-    },
-    error =>
-      logger.error('Updating calculations failed, rolled back', error.message),
-  );
+): Promise<void> {
+  return new Promise((resolve, reject) => {
+    db.transaction(
+      sqlTransaction => {
+        removeAllCalculationsInfo(sqlTransaction);
+        createCalculationTable(sqlTransaction);
+        versioningRepository.updateVersioning(
+          sqlTransaction,
+          'calculations',
+          version,
+        );
+        addCalculations(sqlTransaction, calculationInfo);
+      },
+      error => {
+        logger.error(
+          'Updating calculations failed, rolled back',
+          error.message,
+        );
+        reject();
+      },
+      resolve,
+    );
+  });
 }
 
 const updateCalculationsTable = {

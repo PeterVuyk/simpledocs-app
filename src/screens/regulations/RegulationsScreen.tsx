@@ -4,7 +4,6 @@ import { DrawerNavigationProp } from '@react-navigation/drawer/lib/typescript/sr
 import regulationRepository, {
   Regulation,
 } from '../../database/repository/regulationRepository';
-import SVGIcon from '../../components/SVGIcon';
 import ListItem from '../../components/ListItem';
 
 interface Props {

@@ -43,21 +43,29 @@ function createDecisionTreeTable(sqlTransaction: SQLite.SQLTransaction): void {
 function updateDecisionTreeSteps(
   decisionTreeSteps: DecisionTreeStep[],
   version: string,
-): void {
-  db.transaction(
-    sqlTransaction => {
-      removeAllDecisionTree(sqlTransaction);
-      createDecisionTreeTable(sqlTransaction);
-      versioningRepository.updateVersioning(
-        sqlTransaction,
-        'decisionTree',
-        version,
-      );
-      addDecisionTreeSteps(sqlTransaction, decisionTreeSteps);
-    },
-    error =>
-      logger.error('Updating decisionTree failed, rolled back', error.message),
-  );
+): Promise<void> {
+  return new Promise((resolve, reject) => {
+    db.transaction(
+      sqlTransaction => {
+        removeAllDecisionTree(sqlTransaction);
+        createDecisionTreeTable(sqlTransaction);
+        versioningRepository.updateVersioning(
+          sqlTransaction,
+          'decisionTree',
+          version,
+        );
+        addDecisionTreeSteps(sqlTransaction, decisionTreeSteps);
+      },
+      error => {
+        logger.error(
+          'Updating decisionTree failed, rolled back',
+          error.message,
+        );
+        reject();
+      },
+      resolve,
+    );
+  });
 }
 
 const updateDecisionTreeTable = {

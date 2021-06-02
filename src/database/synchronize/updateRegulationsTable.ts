@@ -42,21 +42,29 @@ function createRegulationTable(sqlTransaction: SQLite.SQLTransaction): void {
   );
 }
 
-function updateRegulations(regulations: Regulation[], version: string): void {
-  db.transaction(
-    sqlTransaction => {
-      removeAllRegulations(sqlTransaction);
-      createRegulationTable(sqlTransaction);
-      versioningRepository.updateVersioning(
-        sqlTransaction,
-        'regulations',
-        version,
-      );
-      addRegulations(sqlTransaction, regulations);
-    },
-    error =>
-      logger.error('Updating regulations failed, rolled back', error.message),
-  );
+function updateRegulations(
+  regulations: Regulation[],
+  version: string,
+): Promise<void> {
+  return new Promise((resolve, reject) => {
+    db.transaction(
+      sqlTransaction => {
+        removeAllRegulations(sqlTransaction);
+        createRegulationTable(sqlTransaction);
+        versioningRepository.updateVersioning(
+          sqlTransaction,
+          'regulations',
+          version,
+        );
+        addRegulations(sqlTransaction, regulations);
+      },
+      error => {
+        logger.error('Updating regulations failed, rolled back', error.message);
+        reject();
+      },
+      resolve,
+    );
+  });
 }
 
 const updateRegulationsTable = {
