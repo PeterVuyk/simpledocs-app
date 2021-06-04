@@ -9,7 +9,7 @@ export interface CalculationInfo {
   explanation: string;
   calculationImage: string;
   regulationButtonText: string;
-  htmlFile: string;
+  regulationChapter: string;
   iconFile: string;
 }
 
@@ -57,7 +57,7 @@ function getCalculationInfoByTitle(
         // @ts-ignore
         (_, { rows: { _array } }) => {
           if (_array.length === 1) {
-            setCalculation(_array[0]);
+            setCalculation(_array[0] as CalculationInfo);
           }
         },
       );

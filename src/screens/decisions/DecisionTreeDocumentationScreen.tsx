@@ -1,9 +1,9 @@
 import React from 'react';
 import { RouteProp } from '@react-navigation/native';
-import HTMLViewer from '../../../components/HTMLViewer';
+import HTMLViewer from '../../components/HTMLViewer';
 import RegulationRepository, {
   Regulation,
-} from '../../../database/repository/regulationRepository';
+} from '../../database/repository/regulationRepository';
 
 interface Props {
   route: RouteProp<
@@ -16,7 +16,7 @@ interface Props {
   >;
 }
 
-const CalculatorDocumentationScreen: React.FC<Props> = ({ route }) => {
+const DecisionTreeDocumentationScreen: React.FC<Props> = ({ route }) => {
   const { regulationChapter } = route.params;
   const [regulation, setRegulation] = React.useState<Regulation | null>();
 
@@ -30,4 +30,4 @@ const CalculatorDocumentationScreen: React.FC<Props> = ({ route }) => {
   return <>{regulation && <HTMLViewer htmlFile={regulation.htmlFile} />}</>;
 };
 
-export default CalculatorDocumentationScreen;
+export default DecisionTreeDocumentationScreen;

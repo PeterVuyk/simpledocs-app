@@ -2,7 +2,6 @@ import * as SQLite from 'expo-sqlite';
 import { Regulation } from '../repository/regulationRepository';
 import versioningRepository from '../repository/versioningRepository';
 import logger from '../../helper/logger';
-import htmlHelper from '../../helper/htmlHelper';
 
 const db = SQLite.openDatabase('db.db');
 
@@ -17,7 +16,7 @@ function addRegulation(
       regulation.pageIndex,
       regulation.title,
       regulation.subTitle,
-      htmlHelper.getHTMLBodyFromBase64(regulation.htmlFile),
+      regulation.htmlFile,
       regulation.searchText,
       regulation.level,
       regulation.iconFile,

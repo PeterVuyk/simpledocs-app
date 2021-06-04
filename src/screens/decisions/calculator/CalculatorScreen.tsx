@@ -64,7 +64,7 @@ const CalculatorScreen: React.FC<Props> = ({ route }) => {
           <ListItem
             onSubmit={() =>
               navigation.navigate('CalculatorDocumentationScreen', {
-                htmlFile: calculationInfo.htmlFile,
+                regulationChapter: calculationInfo.regulationChapter,
               })
             }
             iconFile={calculationInfo.iconFile}

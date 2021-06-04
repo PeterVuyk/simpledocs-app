@@ -131,14 +131,11 @@ const DecisionTreeScreen: React.FC<Props> = ({ route, navigation }) => {
               <Button
                 buttonStyle={[styles.regulationsButtonsStyle]}
                 title="Open regelgeving"
-                onPress={() =>
-                  navigation.navigate('RegulationsScreenStack', {
-                    screen: 'RegulationDetailsScreen',
-                    params: {
-                      regulationChapter: currentStep.regulationChapter,
-                    },
-                  })
-                }
+                onPress={() => {
+                  navigation.navigate('DecisionTreeDocumentationScreen', {
+                    regulationChapter: currentStep.regulationChapter,
+                  });
+                }}
               />
             </View>
           )}

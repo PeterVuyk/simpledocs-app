@@ -17,7 +17,9 @@ function addDecisionTreeStep(
       decisionTreeStep.label,
       decisionTreeStep.lineLabel,
       decisionTreeStep.parentId,
-      decisionTreeStep.regulationChapter,
+      decisionTreeStep.regulationChapter
+        ? `${decisionTreeStep.regulationChapter}`
+        : null,
       decisionTreeStep.iconFile,
     ],
   );
@@ -36,7 +38,7 @@ function removeAllDecisionTree(sqlTransaction: SQLite.SQLTransaction): void {
 
 function createDecisionTreeTable(sqlTransaction: SQLite.SQLTransaction): void {
   sqlTransaction.executeSql(
-    'create table if not exists decisionTree (id int not null, title text, label text not null, lineLabel varchar, parentId int, regulationChapter varchar, iconFile text);',
+    'create table if not exists decisionTree (id int not null, title text, label text not null, lineLabel varchar, parentId int, regulationChapter text, iconFile text);',
   );
 }
 

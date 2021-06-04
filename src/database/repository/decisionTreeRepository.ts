@@ -31,7 +31,7 @@ function getDecisionTreeByTitle(
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
         (_, { rows: { _array } }) => {
-          setDecisionTreeSteps(_array);
+          setDecisionTreeSteps(_array as DecisionTreeStep[]);
         },
       );
     },
@@ -48,6 +48,7 @@ export interface Title {
   iconFile: string;
 }
 
+// TODO: rename function
 // eslint-disable-next-line @typescript-eslint/ban-types
 function getDecisionTreeTitles(setTitles: setTitlesCallback): void {
   db.transaction(
@@ -59,7 +60,7 @@ function getDecisionTreeTitles(setTitles: setTitlesCallback): void {
         // @ts-ignore
         (_, { rows: { _array } }) => {
           if (_array.length !== 0) {
-            setTitles(_array);
+            setTitles(_array as Title[]);
           }
         },
       );

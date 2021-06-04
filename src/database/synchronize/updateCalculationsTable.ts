@@ -11,14 +11,14 @@ function addCalculationInfo(
   calculationInfo: CalculationInfo,
 ): void {
   sqlTransaction.executeSql(
-    'INSERT INTO calculations (calculationType, title, explanation, regulationButtonText, calculationImage, htmlFile, iconFile) VALUES (?, ?, ?, ?, ?, ?, ?)',
+    'INSERT INTO calculations (calculationType, title, explanation, regulationButtonText, calculationImage, regulationChapter, iconFile) VALUES (?, ?, ?, ?, ?, ?, ?)',
     [
       calculationInfo.calculationType,
       calculationInfo.title,
       calculationInfo.explanation,
       calculationInfo.regulationButtonText,
       calculationInfo.calculationImage,
-      htmlHelper.getHTMLBodyFromBase64(calculationInfo.htmlFile),
+      calculationInfo.regulationChapter,
       calculationInfo.iconFile,
     ],
   );
@@ -41,7 +41,7 @@ function removeAllCalculationsInfo(
 
 function createCalculationTable(sqlTransaction: SQLite.SQLTransaction): void {
   sqlTransaction.executeSql(
-    'create table if not exists calculations (calculationType text not null constraint calculations_pk primary key, title text not null, explanation text not null, regulationButtonText varchar not null, calculationImage blob not null, htmlFile blob not null, iconFile blob not null);',
+    'create table if not exists calculations (calculationType text not null constraint calculations_pk primary key, title text not null, explanation text not null, regulationButtonText varchar not null, calculationImage blob not null, regulationChapter varchar not null, iconFile blob not null);',
   );
 }
 
