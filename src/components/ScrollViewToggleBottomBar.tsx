@@ -23,6 +23,10 @@ const ScrollViewToggleBottomBar: React.FC<Props> = ({
   }, [setScrollDirection]);
 
   const handleScroll = (currentOffset: number) => {
+    if (currentOffset < 1) {
+      setScrollDirection('up');
+      return;
+    }
     setOldOffset(currentOffset);
     if (currentOffset >= 0 && currentOffset !== 0) {
       if (currentOffset < oldOffset) {
