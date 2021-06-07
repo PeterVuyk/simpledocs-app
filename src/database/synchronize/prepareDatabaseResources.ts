@@ -8,6 +8,7 @@ import collectDecisionTreeSteps from '../firebase/collectDecisionTreeSteps';
 import logger from '../../helper/logger';
 import updateCalculationsTable from './updateCalculationsTable';
 import collectCalculations from '../firebase/collectCalculations';
+import internetConnectivity from '../../helper/internetConnectivity';
 
 const updateRegulations = async (newVersion: string) => {
   await collectRegulations
@@ -112,9 +113,11 @@ const updateCalculationsIfNewVersion = async () => {
 };
 
 const prepareDatabaseResources = async () => {
-  await initializeVersioningTable
-    .initialize()
-    .then(updateRegulationsIfNewVersion)
+  await initializeVersioningTable.initialize();
+  if (!(await internetConnectivity.hasInternetConnection())) {
+    return;
+  }
+  await updateRegulationsIfNewVersion()
     .then(updateDecisionTreeIfNewVersion)
     .then(updateCalculationsIfNewVersion)
     .catch(reason =>

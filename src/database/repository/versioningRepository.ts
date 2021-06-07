@@ -19,7 +19,6 @@ function updateVersioning(
   );
 }
 
-// eslint-disable-next-line @typescript-eslint/ban-types
 async function getVersioning(
   aggregate: string,
   callback: (versioning: Versioning) => void,
@@ -54,8 +53,28 @@ async function getVersioning(
   });
 }
 
+function getAllVersions(callback: (versioning: Versioning[]) => void): void {
+  db.transaction(
+    sqlTransaction => {
+      sqlTransaction.executeSql(
+        `SELECT * FROM versioning`,
+        [],
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        (_, { rows: { _array } }) => {
+          callback(_array as Versioning[]);
+        },
+      );
+    },
+    error => {
+      logger.error('versioningRepository.getVersioning failed', error.message);
+    },
+  );
+}
+
 const versioningRepository = {
   getVersioning,
+  getAllVersions,
   updateVersioning,
 };
 
