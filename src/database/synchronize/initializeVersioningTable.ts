@@ -8,6 +8,15 @@ function initialize(): Promise<any> {
     db.transaction(
       sqlTransaction => {
         sqlTransaction.executeSql(
+          'create table if not exists notifications (notificationType varchar not null, notificationEnabled NUMERIC default 1 not null);',
+        );
+        sqlTransaction.executeSql(
+          "INSERT OR IGNORE INTO notifications (notificationType, notificationEnabled) VALUES ('noInternetConnection', 1);",
+        );
+        sqlTransaction.executeSql(
+          'CREATE UNIQUE INDEX IF NOT EXISTS notifications_uindex ON notifications (notificationType);',
+        );
+        sqlTransaction.executeSql(
           'create table if not exists versioning (aggregate varchar not null, version varchar not null);',
         );
         sqlTransaction.executeSql(
