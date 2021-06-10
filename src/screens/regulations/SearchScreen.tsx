@@ -5,20 +5,19 @@ import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { connect } from 'react-redux';
 import HighlightWords from '../../components/HighlightWords';
-import regulationRepository, {
-  Regulation,
-} from '../../database/repository/regulationRepository';
+import articleRepository from '../../database/repository/articleRepository';
 import SearchHeader from '../../navigation/header/SearchHeader';
 import searching, { SearchText } from '../../redux/actions/searching';
 import SVGIcon from '../../components/SVGIcon';
 import KeyboardAwareView from '../../components/keyboard/KeyboardAwareView';
+import { Article } from '../../database/entity/Article';
 
 interface Props {
   setChapterSearchText: (searchText: SearchText) => void;
 }
 
 const SearchScreen: React.FC<Props> = ({ setChapterSearchText }) => {
-  const [regulations, setRegulations] = React.useState<Regulation[]>([]);
+  const [regulations, setRegulations] = React.useState<Article[]>([]);
   const [searchText, setSearchText] = React.useState<string>('');
 
   React.useEffect(() => {
@@ -26,7 +25,7 @@ const SearchScreen: React.FC<Props> = ({ setChapterSearchText }) => {
       setRegulations([]);
       return;
     }
-    regulationRepository.searchRegulations(searchText, setRegulations);
+    articleRepository.searchArticles(searchText, setRegulations);
   }, [searchText]);
 
   const handleSearchTextChange = (searchedText: string): void =>
@@ -51,7 +50,7 @@ const SearchScreen: React.FC<Props> = ({ setChapterSearchText }) => {
     return fullBody;
   };
 
-  const submitSearch = (item: Regulation) => {
+  const submitSearch = (item: Article) => {
     setChapterSearchText({ chapter: item.chapter, searchText });
     navigation.push('RegulationDetailsScreen', {
       regulationChapter: item.chapter,
@@ -59,7 +58,7 @@ const SearchScreen: React.FC<Props> = ({ setChapterSearchText }) => {
     });
   };
 
-  const renderItem = (item: Regulation) => (
+  const renderItem = (item: Article) => (
     <ListItem bottomDivider onPress={() => submitSearch(item)}>
       <SVGIcon iconBlob={item.iconFile} />
       <ListItem.Content>
@@ -97,7 +96,7 @@ const SearchScreen: React.FC<Props> = ({ setChapterSearchText }) => {
           />
         )}
         {regulations && (
-          <FlatList<Regulation>
+          <FlatList<Article>
             data={regulations}
             keyExtractor={item => item.chapter.toString()}
             renderItem={({ item }) => renderItem(item)}

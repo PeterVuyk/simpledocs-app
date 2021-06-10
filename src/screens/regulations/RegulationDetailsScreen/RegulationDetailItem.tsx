@@ -1,12 +1,11 @@
 import React from 'react';
 import { View } from 'react-native';
 import { connect } from 'react-redux';
-import RegulationRepository, {
-  Regulation,
-} from '../../../database/repository/regulationRepository';
+import articleRepository from '../../../database/repository/articleRepository';
 import ScrollAwareBottomButton from '../../../components/ScrollAwareBottomButton';
 import searching, { SearchText } from '../../../redux/actions/searching';
 import HTMLViewer from '../../../components/HTMLViewer';
+import { Article } from '../../../database/entity/Article';
 
 interface Props {
   regulationChapter: string;
@@ -19,7 +18,7 @@ const RegulationDetailItem: React.FC<Props> = ({
   chapterSearchText,
   setChapterSearchText,
 }) => {
-  const [regulation, setRegulation] = React.useState<Regulation | null>();
+  const [regulation, setRegulation] = React.useState<Article | null>();
   const [highlightText, setHighlightedText] = React.useState<string>('');
 
   React.useEffect(() => {
@@ -29,10 +28,7 @@ const RegulationDetailItem: React.FC<Props> = ({
   }, [regulation, chapterSearchText]);
 
   React.useEffect(() => {
-    RegulationRepository.getRegulationByChapter(
-      regulationChapter,
-      setRegulation,
-    );
+    articleRepository.getArticleByChapter(regulationChapter, setRegulation);
   }, [regulationChapter]);
 
   const stopHighlightText = () => {

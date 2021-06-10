@@ -2,15 +2,14 @@ import React, { useState } from 'react';
 import { Image, View, StyleSheet } from 'react-native';
 import { RouteProp, useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
-import calculationsRepository, {
-  CalculationInfo,
-} from '../../../database/repository/calculationsRepository';
+import calculationsRepository from '../../../database/repository/calculationsRepository';
 import ListItem from '../../../components/ListItem';
 import BreakingDistanceCalculator from './BreakingDistanceCalculator';
 import HideWithKeyboardView from '../../../components/keyboard/HideWithKeyboardView';
 import TitleBar from '../../../components/TitleBar';
 import OvertakingDistanceCalculator from './OvertakingDistanceCalculator';
 import KeyboardAwareView from '../../../components/keyboard/KeyboardAwareView';
+import { CalculationInfo } from '../../../database/entity/CalculationInfo';
 
 const styles = StyleSheet.create({
   image: {

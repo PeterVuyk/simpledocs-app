@@ -31,6 +31,9 @@ function initialize(): Promise<any> {
         sqlTransaction.executeSql(
           "INSERT OR IGNORE INTO versioning (aggregate, version) VALUES ('calculations', 'initial');",
         );
+        sqlTransaction.executeSql(
+          "INSERT OR IGNORE INTO versioning (aggregate, version) VALUES ('instructionManual', 'initial');",
+        );
       },
       error => {
         logger.error(

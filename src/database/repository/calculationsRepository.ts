@@ -1,17 +1,8 @@
 import * as SQLite from 'expo-sqlite';
 import logger from '../../helper/logger';
+import { CalculationInfo } from '../entity/CalculationInfo';
 
 const db = SQLite.openDatabase('db.db');
-
-export interface CalculationInfo {
-  calculationType: string;
-  title: string;
-  explanation: string;
-  calculationImage: string;
-  regulationButtonText: string;
-  regulationChapter: string;
-  iconFile: string;
-}
 
 type setCalculationsCallback = (
   calculations: React.SetStateAction<CalculationInfo[]>,

@@ -71,7 +71,6 @@ function TabNavigator({
 
   const onTabPress = route => {
     if (route.name === 'RegulationsScreenStack') {
-      navigation.setParams({ params: null, screen: null });
       navigation.navigate('RegulationsScreenStack', {
         screen: 'RegulationsScreen',
       });
@@ -79,7 +78,6 @@ function TabNavigator({
     }
 
     if (route.name === 'DecisionsScreenStack') {
-      navigation.setParams({ params: null, screen: null });
       navigation.navigate('DecisionsScreenStack', {
         screen: 'DecisionsScreen',
       });
@@ -89,10 +87,10 @@ function TabNavigator({
     const event = navigation.emit({
       type: 'tabPress',
       target: route.key,
+      canPreventDefault: true,
       data: {
         isAlreadyFocused: route.key === state.routes[state.index].key,
       },
-      canPreventDefault: true,
     });
 
     if (!event.defaultPrevented) {

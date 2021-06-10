@@ -3,25 +3,24 @@ import { Button, ListItem, Overlay } from 'react-native-elements';
 import { View, FlatList, Dimensions } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
-import regulationRepository, {
-  Chapter,
-} from '../database/repository/regulationRepository';
+import articleRepository from '../database/repository/articleRepository';
 import SVGIcon from '../components/SVGIcon';
+import { ArticleChapter } from '../database/entity/ArticleChapter';
 
 interface Props {
   toggleOverlay: () => void;
 }
 
 const RegulationListOverlay: React.FC<Props> = ({ toggleOverlay }) => {
-  const [chapters, setChapters] = React.useState<Chapter[]>([]);
+  const [chapters, setChapters] = React.useState<ArticleChapter[]>([]);
 
   const navigation = useNavigation<StackNavigationProp<any>>();
 
   React.useEffect(() => {
-    regulationRepository.getChapters(setChapters);
+    articleRepository.getChapters(setChapters);
   }, [setChapters]);
 
-  const renderItem = (item: Chapter) => (
+  const renderItem = (item: ArticleChapter) => (
     <ListItem
       bottomDivider
       onPress={() => {

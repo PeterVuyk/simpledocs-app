@@ -1,13 +1,8 @@
 import * as SQLite from 'expo-sqlite';
-import { unwrapResult } from '@reduxjs/toolkit';
 import logger from '../../helper/logger';
+import { Notification } from '../entity/Notification';
 
 const db = SQLite.openDatabase('db.db');
-
-export interface Notification {
-  notificationType: string;
-  notificationEnabled: boolean;
-}
 
 function getNotifications(
   callback: (notifications: Notification[]) => void,

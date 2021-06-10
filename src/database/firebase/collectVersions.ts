@@ -4,6 +4,7 @@ export interface Versioning {
   regulations: string;
   decisionTree: string;
   calculations: string;
+  instructionManual: string;
 }
 
 async function getVersioning() {

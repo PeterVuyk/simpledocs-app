@@ -1,39 +1,24 @@
 import * as SQLite from 'expo-sqlite';
 import logger from '../../helper/logger';
+import { Article } from '../entity/Article';
+import { ArticleChapter } from '../entity/ArticleChapter';
 
 const db = SQLite.openDatabase('db.db');
 
-export interface Regulation {
-  pageIndex: number;
-  chapter: string;
-  level: string;
-  title: string;
-  subTitle: string;
-  htmlFile: string;
-  searchText: string;
-  iconFile: string;
-}
-
-export interface Chapter {
-  title: string;
-  chapter: string;
-  iconFile: string;
-}
-
-type setRegulationCallback = (
-  regulations: React.SetStateAction<Regulation | null | undefined>,
+type setArticleCallback = (
+  article: React.SetStateAction<Article | null | undefined>,
 ) => void;
 
-type setRegulationsCallback = (
-  regulations: React.SetStateAction<Regulation[]>,
-) => void;
+type setArticlesCallback = (articles: React.SetStateAction<Article[]>) => void;
 
-type setChaptersCallback = (chapters: React.SetStateAction<Chapter[]>) => void;
+type setChaptersCallback = (
+  chapters: React.SetStateAction<ArticleChapter[]>,
+) => void;
 
 // eslint-disable-next-line @typescript-eslint/ban-types
-function getRegulationByChapter(
+function getArticleByChapter(
   chapter: string,
-  setRegulations: setRegulationCallback,
+  setArticles: setArticleCallback,
 ): void {
   db.transaction(
     sqlTransaction => {
@@ -44,23 +29,20 @@ function getRegulationByChapter(
         // @ts-ignore
         (_, { rows: { _array } }) => {
           if (_array.length === 1) {
-            setRegulations(_array[0]);
+            setArticles(_array[0]);
           }
         },
       );
     },
     error =>
       logger.error(
-        'regulationRepository.getRegulationByChapter failed',
+        'articleRepository.getArticleByChapter failed',
         error.message,
       ),
   );
 }
 
-function searchRegulations(
-  text: string,
-  setRegulations: setRegulationsCallback,
-): void {
+function searchArticles(text: string, setArticles: setArticlesCallback): void {
   db.transaction(
     sqlTransaction => {
       sqlTransaction.executeSql(
@@ -75,19 +57,16 @@ function searchRegulations(
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
         (_, { rows: { _array } }) => {
-          setRegulations(_array);
+          setArticles(_array);
         },
       );
     },
     error =>
-      logger.error(
-        'regulationRepository.searchRegulations failed',
-        error.message,
-      ),
+      logger.error('articleRepository.searchArticles failed', error.message),
   );
 }
 
-function getParagraphs(setRegulations: setRegulationsCallback): void {
+function getParagraphs(setArticles: setArticlesCallback): void {
   db.transaction(
     sqlTransaction => {
       sqlTransaction.executeSql(
@@ -96,15 +75,12 @@ function getParagraphs(setRegulations: setRegulationsCallback): void {
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
         (_, { rows: { _array } }) => {
-          setRegulations(_array);
+          setArticles(_array);
         },
       );
     },
     error =>
-      logger.error(
-        'regulationRepository.getChaptersByLevelChapter failed',
-        error.message,
-      ),
+      logger.error('articleRepository.getParagraphs failed', error.message),
   );
 }
 
@@ -122,15 +98,15 @@ function getChapters(setChapters: setChaptersCallback): void {
       );
     },
     error =>
-      logger.error('regulationRepository.getChapters failed', error.message),
+      logger.error('articleRepository.getChapters failed', error.message),
   );
 }
 
-const regulationRepository = {
-  getRegulationByChapter,
-  searchRegulations,
+const articleRepository = {
+  getArticleByChapter,
+  searchArticles,
   getParagraphs,
   getChapters,
 };
 
-export default regulationRepository;
+export default articleRepository;

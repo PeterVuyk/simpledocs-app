@@ -1,12 +1,8 @@
 import * as SQLite from 'expo-sqlite';
 import logger from '../../helper/logger';
+import { Versioning } from '../entity/Versioning';
 
 const db = SQLite.openDatabase('db.db');
-
-export interface Versioning {
-  aggregate: string;
-  version: string;
-}
 
 function updateVersioning(
   sqlTransaction: SQLite.SQLTransaction,

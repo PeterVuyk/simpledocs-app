@@ -2,9 +2,8 @@ import React from 'react';
 import { RouteProp } from '@react-navigation/native';
 import { View, FlatList, Dimensions } from 'react-native';
 import RegulationDetailItem from './RegulationDetailItem';
-import regulationRepository, {
-  Chapter,
-} from '../../../database/repository/regulationRepository';
+import articleRepository from '../../../database/repository/articleRepository';
+import { ArticleChapter } from '../../../database/entity/ArticleChapter';
 
 interface Props {
   route: RouteProp<
@@ -18,13 +17,13 @@ interface Props {
 }
 
 const RegulationDetailsScreen: React.FC<Props> = ({ route }) => {
-  const [chapters, setChapters] = React.useState<Chapter[]>([]);
+  const [chapters, setChapters] = React.useState<ArticleChapter[]>([]);
 
   const { regulationChapter } = route.params;
   const { width } = Dimensions.get('window');
 
   React.useEffect(() => {
-    regulationRepository.getChapters(setChapters);
+    articleRepository.getChapters(setChapters);
   }, []);
 
   const getInitialPageIndex = () => {

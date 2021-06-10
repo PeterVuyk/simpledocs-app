@@ -9,6 +9,46 @@ import logger from '../../helper/logger';
 import updateCalculationsTable from './updateCalculationsTable';
 import collectCalculations from '../firebase/collectCalculations';
 import internetConnectivity from '../../helper/internetConnectivity';
+import collectInstructionManual from '../firebase/collectInstructionManual';
+import updateInstructionManualTable from './updateInstructionManualTable';
+
+const updateInstructionManual = async (newVersion: string) => {
+  await collectInstructionManual
+    .getInstructionManual()
+    .then(article =>
+      updateInstructionManualTable.updateInstructionManual(article, newVersion),
+    )
+    .catch(reason =>
+      logger.error(
+        'failure in preparing database resources collecting instructionManual from firebase',
+        reason,
+      ),
+    );
+};
+
+const updateInstructionManualIfNewVersion = async () => {
+  const versionOnFirebase = await collectVersions
+    .getVersioning()
+    .catch(reason =>
+      logger.error(
+        'collecting version from firebase in updateInstructionManualIfNewVersion',
+        reason,
+      ),
+    );
+
+  if (versionOnFirebase === undefined) {
+    return;
+  }
+
+  await versioningRepository.getVersioning(
+    'instructionManual',
+    async versionOnTheApp => {
+      if (versionOnTheApp?.version !== versionOnFirebase.instructionManual) {
+        await updateInstructionManual(versionOnFirebase.instructionManual);
+      }
+    },
+  );
+};
 
 const updateRegulations = async (newVersion: string) => {
   await collectRegulations
@@ -119,6 +159,7 @@ const prepareDatabaseResources = async () => {
   }
   await updateRegulationsIfNewVersion()
     .then(updateDecisionTreeIfNewVersion)
+    .then(updateInstructionManualIfNewVersion)
     .then(updateCalculationsIfNewVersion)
     .catch(reason =>
       logger.error('prepareDatabaseResources failed', reason.message),

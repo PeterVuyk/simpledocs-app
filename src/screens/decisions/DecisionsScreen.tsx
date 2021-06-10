@@ -4,10 +4,9 @@ import decisionTreeRepository, {
   Title,
 } from '../../database/repository/decisionTreeRepository';
 import ListItem from '../../components/ListItem';
-import calculationsRepository, {
-  CalculationInfo,
-} from '../../database/repository/calculationsRepository';
+import calculationsRepository from '../../database/repository/calculationsRepository';
 import TitleBar from '../../components/TitleBar';
+import { CalculationInfo } from '../../database/entity/CalculationInfo';
 
 interface Props {
   navigation: any;

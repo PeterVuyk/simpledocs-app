@@ -1,9 +1,8 @@
 import React from 'react';
 import { RouteProp } from '@react-navigation/native';
 import HTMLViewer from '../../../components/HTMLViewer';
-import RegulationRepository, {
-  Regulation,
-} from '../../../database/repository/regulationRepository';
+import { Article } from '../../../database/entity/Article';
+import articleRepository from '../../../database/repository/articleRepository';
 
 interface Props {
   route: RouteProp<
@@ -18,13 +17,10 @@ interface Props {
 
 const CalculatorDocumentationScreen: React.FC<Props> = ({ route }) => {
   const { regulationChapter } = route.params;
-  const [regulation, setRegulation] = React.useState<Regulation | null>();
+  const [regulation, setRegulation] = React.useState<Article | null>();
 
   React.useEffect(() => {
-    RegulationRepository.getRegulationByChapter(
-      regulationChapter,
-      setRegulation,
-    );
+    articleRepository.getArticleByChapter(regulationChapter, setRegulation);
   }, [regulationChapter]);
 
   return <>{regulation && <HTMLViewer htmlFile={regulation.htmlFile} />}</>;

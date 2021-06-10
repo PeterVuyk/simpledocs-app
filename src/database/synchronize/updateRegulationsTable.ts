@@ -1,13 +1,13 @@
 import * as SQLite from 'expo-sqlite';
-import { Regulation } from '../repository/regulationRepository';
 import versioningRepository from '../repository/versioningRepository';
 import logger from '../../helper/logger';
+import { Article } from '../entity/Article';
 
 const db = SQLite.openDatabase('db.db');
 
 function addRegulation(
   sqlTransaction: SQLite.SQLTransaction,
-  regulation: Regulation,
+  regulation: Article,
 ): void {
   sqlTransaction.executeSql(
     'INSERT INTO regulation (chapter, pageIndex, title, subTitle, htmlFile, searchText, level, iconFile) VALUES (?, ?, ?, ?, ?, ?, ?, ?)',
@@ -26,7 +26,7 @@ function addRegulation(
 
 function addRegulations(
   sqlTransaction: SQLite.SQLTransaction,
-  regulations: Regulation[],
+  regulations: Article[],
 ): void {
   regulations.forEach(regulation => addRegulation(sqlTransaction, regulation));
 }
@@ -42,7 +42,7 @@ function createRegulationTable(sqlTransaction: SQLite.SQLTransaction): void {
 }
 
 function updateRegulations(
-  regulations: Regulation[],
+  regulations: Article[],
   version: string,
 ): Promise<void> {
   return new Promise((resolve, reject) => {

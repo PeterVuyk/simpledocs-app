@@ -1,17 +1,8 @@
 import * as SQLite from 'expo-sqlite';
 import logger from '../../helper/logger';
+import { DecisionTreeStep } from '../entity/DecisionTreeStep';
 
 const db = SQLite.openDatabase('db.db');
-
-export interface DecisionTreeStep {
-  title: string;
-  id: number;
-  label: string;
-  lineLabel?: string;
-  parentId?: number;
-  regulationChapter?: string;
-  iconFile?: string;
-}
 
 type setDecisionTreeStepsCallback = (
   decisionTreeSteps: React.SetStateAction<DecisionTreeStep[]>,
@@ -37,7 +28,7 @@ function getDecisionTreeByTitle(
     },
     error =>
       logger.error(
-        'regulationRepository.getDecisionTreeByTitle failed',
+        'decisionTreeRepository.getDecisionTreeByTitle failed',
         error.message,
       ),
   );
@@ -67,7 +58,7 @@ function getDecisionTreeTitles(setTitles: setTitlesCallback): void {
     },
     error =>
       logger.error(
-        'regulationRepository.getDecisionTreeTitles failed',
+        'decisionTreeRepository.getDecisionTreeTitles failed',
         error.message,
       ),
   );
