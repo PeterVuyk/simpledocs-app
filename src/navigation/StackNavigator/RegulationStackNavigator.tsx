@@ -1,10 +1,10 @@
 import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 import { DrawerNavigationHelpers } from '@react-navigation/drawer/lib/typescript/src/types';
-import RegulationsScreen from '../../screens/regulations/RegulationsScreen';
-import SearchScreen from '../../screens/regulations/SearchScreen';
-import RegulationDetailsScreen from '../../screens/regulations/RegulationDetailsScreen/RegulationDetailsScreen';
 import Header from '../header/Header';
+import RegulationsScreen from '../../screens/article/regulations/RegulationsScreen';
+import RegulationDetailsScreen from '../../screens/article/regulations/RegulationDetailsScreen';
+import SearchScreen from '../../screens/article/regulations/SearchScreen';
 
 const Stack = createStackNavigator();
 

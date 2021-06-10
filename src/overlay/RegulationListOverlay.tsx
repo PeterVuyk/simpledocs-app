@@ -26,7 +26,8 @@ const RegulationListOverlay: React.FC<Props> = ({ toggleOverlay }) => {
       onPress={() => {
         toggleOverlay();
         navigation.push('RegulationDetailsScreen', {
-          regulationChapter: item.chapter,
+          articleChapter: item.chapter,
+          articleType: 'regulations',
         });
       }}
     >

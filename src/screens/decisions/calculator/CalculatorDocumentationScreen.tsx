@@ -20,7 +20,11 @@ const CalculatorDocumentationScreen: React.FC<Props> = ({ route }) => {
   const [regulation, setRegulation] = React.useState<Article | null>();
 
   React.useEffect(() => {
-    articleRepository.getArticleByChapter(regulationChapter, setRegulation);
+    articleRepository.getArticleByChapter(
+      'regulations',
+      regulationChapter,
+      setRegulation,
+    );
   }, [regulationChapter]);
 
   return <>{regulation && <HTMLViewer htmlFile={regulation.htmlFile} />}</>;

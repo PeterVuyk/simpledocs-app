@@ -1,44 +1,29 @@
 import React from 'react';
-import { RouteProp } from '@react-navigation/native';
 import { View, FlatList, Dimensions } from 'react-native';
-import RegulationDetailItem from './RegulationDetailItem';
-import articleRepository from '../../../database/repository/articleRepository';
-import { ArticleChapter } from '../../../database/entity/ArticleChapter';
+import ArticleDetailItem from './ArticleDetailItem';
+import { ArticleChapter } from '../../database/entity/ArticleChapter';
 
 interface Props {
-  route: RouteProp<
-    {
-      params: {
-        regulationChapter: string;
-      };
-    },
-    'params'
-  >;
+  articleChapter: string;
+  articleType: 'regulations' | 'instructionManual';
+  articleChapterList: ArticleChapter[];
 }
 
-const RegulationDetailsScreen: React.FC<Props> = ({ route }) => {
-  const [chapters, setChapters] = React.useState<ArticleChapter[]>([]);
-
-  const { regulationChapter } = route.params;
+const ArticleDetails: React.FC<Props> = ({
+  articleChapter,
+  articleChapterList,
+  articleType,
+}) => {
   const { width } = Dimensions.get('window');
-
-  React.useEffect(() => {
-    articleRepository.getChapters(setChapters);
-  }, []);
-
   const getInitialPageIndex = () => {
-    const index = chapters
+    const index = articleChapterList
       .map(chapter => chapter.chapter)
-      .indexOf(regulationChapter);
+      .indexOf(articleChapter);
     return index === -1 ? -1 : index;
   };
 
   return (
-    <View
-      style={{
-        flex: 1,
-      }}
-    >
+    <View style={{ flex: 1 }}>
       <FlatList
         nestedScrollEnabled
         horizontal
@@ -48,7 +33,7 @@ const RegulationDetailsScreen: React.FC<Props> = ({ route }) => {
         maxToRenderPerBatch={1}
         initialNumToRender={1}
         windowSize={1}
-        data={chapters}
+        data={articleChapterList}
         initialScrollIndex={getInitialPageIndex()}
         getItemLayout={(data, index) => ({
           length: width,
@@ -58,7 +43,10 @@ const RegulationDetailsScreen: React.FC<Props> = ({ route }) => {
         keyExtractor={item => item.chapter.toString()}
         renderItem={({ item }) => (
           <View style={{ width, flex: 1 }}>
-            <RegulationDetailItem regulationChapter={item.chapter} />
+            <ArticleDetailItem
+              articleChapter={item.chapter}
+              articleType={articleType}
+            />
           </View>
         )}
       />
@@ -66,4 +54,4 @@ const RegulationDetailsScreen: React.FC<Props> = ({ route }) => {
   );
 };
 
-export default RegulationDetailsScreen;
+export default ArticleDetails;

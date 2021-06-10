@@ -17,13 +17,14 @@ type setChaptersCallback = (
 
 // eslint-disable-next-line @typescript-eslint/ban-types
 function getArticleByChapter(
+  articleType: 'regulations' | 'instructionManual',
   chapter: string,
   setArticles: setArticleCallback,
 ): void {
   db.transaction(
     sqlTransaction => {
       sqlTransaction.executeSql(
-        `SELECT * FROM regulation WHERE chapter = ?;`,
+        `SELECT * FROM ${articleType} WHERE chapter = ?;`,
         [chapter],
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
@@ -42,14 +43,18 @@ function getArticleByChapter(
   );
 }
 
-function searchArticles(text: string, setArticles: setArticlesCallback): void {
+function searchArticles(
+  articleType: 'regulations' | 'instructionManual',
+  text: string,
+  setArticles: setArticlesCallback,
+): void {
   db.transaction(
     sqlTransaction => {
       sqlTransaction.executeSql(
         `SELECT *
             ,(CASE WHEN title LIKE ? THEN 1 ELSE 0 END) AS [priority]
             ,(CASE WHEN searchText like ? THEN 1 ELSE 0 END)
-       FROM (SELECT * From regulation ORDER BY pageIndex)
+       FROM (SELECT * FROM ${articleType} ORDER BY pageIndex)
        WHERE title LIKE ?
           OR searchText LIKE ?
        ORDER BY [priority] DESC;`,
@@ -66,11 +71,14 @@ function searchArticles(text: string, setArticles: setArticlesCallback): void {
   );
 }
 
-function getParagraphs(setArticles: setArticlesCallback): void {
+function getParagraphs(
+  articleType: 'regulations' | 'instructionManual',
+  setArticles: setArticlesCallback,
+): void {
   db.transaction(
     sqlTransaction => {
       sqlTransaction.executeSql(
-        `SELECT * FROM regulation WHERE level IN ('chapter', 'section', 'subSection') ORDER BY pageIndex;`,
+        `SELECT * FROM ${articleType} WHERE level IN ('chapter', 'section', 'subSection') ORDER BY pageIndex;`,
         [],
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
@@ -84,11 +92,14 @@ function getParagraphs(setArticles: setArticlesCallback): void {
   );
 }
 
-function getChapters(setChapters: setChaptersCallback): void {
+function getChapters(
+  articleType: 'regulations' | 'instructionManual',
+  setChapters: setChaptersCallback,
+): void {
   db.transaction(
     sqlTransaction => {
       sqlTransaction.executeSql(
-        `SELECT chapter, title, iconFile FROM regulation ORDER BY pageIndex;`,
+        `SELECT chapter, title, iconFile FROM ${articleType} ORDER BY pageIndex;`,
         [],
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore

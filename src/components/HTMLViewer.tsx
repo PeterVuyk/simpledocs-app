@@ -71,9 +71,11 @@ const HTMLViewer: React.FC<Props> = ({ htmlFile, highlightText }) => {
     }
     if (request.url.search('http://page-blank.firebaseapp.com/') !== -1) {
       setLoading(true);
+      // TODO: Depending what 'articleType' is, naar de juiste stack sturen.
       navigation.push('RegulationDetailsScreen', {
-        regulationChapter:
+        articleChapter:
           request.url.split('http://page-blank.firebaseapp.com/')[1] ?? '1',
+        articleType: 'regulations',
       });
     }
     return false;

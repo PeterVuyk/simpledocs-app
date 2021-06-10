@@ -4,13 +4,13 @@ import { ListItem } from 'react-native-elements';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { connect } from 'react-redux';
-import HighlightWords from '../../components/HighlightWords';
-import articleRepository from '../../database/repository/articleRepository';
-import SearchHeader from '../../navigation/header/SearchHeader';
-import searching, { SearchText } from '../../redux/actions/searching';
-import SVGIcon from '../../components/SVGIcon';
-import KeyboardAwareView from '../../components/keyboard/KeyboardAwareView';
-import { Article } from '../../database/entity/Article';
+import articleRepository from '../../../database/repository/articleRepository';
+import { Article } from '../../../database/entity/Article';
+import searching, { SearchText } from '../../../redux/actions/searching';
+import SVGIcon from '../../../components/SVGIcon';
+import HighlightWords from '../../../components/HighlightWords';
+import SearchHeader from '../../../navigation/header/SearchHeader';
+import KeyboardAwareView from '../../../components/keyboard/KeyboardAwareView';
 
 interface Props {
   setChapterSearchText: (searchText: SearchText) => void;
@@ -25,7 +25,7 @@ const SearchScreen: React.FC<Props> = ({ setChapterSearchText }) => {
       setRegulations([]);
       return;
     }
-    articleRepository.searchArticles(searchText, setRegulations);
+    articleRepository.searchArticles('regulations', searchText, setRegulations);
   }, [searchText]);
 
   const handleSearchTextChange = (searchedText: string): void =>
@@ -53,8 +53,9 @@ const SearchScreen: React.FC<Props> = ({ setChapterSearchText }) => {
   const submitSearch = (item: Article) => {
     setChapterSearchText({ chapter: item.chapter, searchText });
     navigation.push('RegulationDetailsScreen', {
-      regulationChapter: item.chapter,
+      articleChapter: item.chapter,
       searchText: { chapter: item.chapter, searchText },
+      articleType: 'regulations',
     });
   };
 
@@ -92,7 +93,7 @@ const SearchScreen: React.FC<Props> = ({ setChapterSearchText }) => {
               width: 'auto',
               resizeMode: 'contain',
             }}
-            source={require('../../../assets/images/find.png')}
+            source={require('../../../../assets/images/find.png')}
           />
         )}
         {regulations && (

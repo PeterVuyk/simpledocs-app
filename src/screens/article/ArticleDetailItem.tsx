@@ -1,35 +1,41 @@
 import React from 'react';
 import { View } from 'react-native';
 import { connect } from 'react-redux';
-import articleRepository from '../../../database/repository/articleRepository';
-import ScrollAwareBottomButton from '../../../components/ScrollAwareBottomButton';
-import searching, { SearchText } from '../../../redux/actions/searching';
-import HTMLViewer from '../../../components/HTMLViewer';
-import { Article } from '../../../database/entity/Article';
+import searching, { SearchText } from '../../redux/actions/searching';
+import { Article } from '../../database/entity/Article';
+import articleRepository from '../../database/repository/articleRepository';
+import HTMLViewer from '../../components/HTMLViewer';
+import ScrollAwareBottomButton from '../../components/ScrollAwareBottomButton';
 
 interface Props {
-  regulationChapter: string;
+  articleChapter: string;
+  articleType: 'regulations' | 'instructionManual';
   chapterSearchText: SearchText;
   setChapterSearchText: (searchText: SearchText) => void;
 }
 
-const RegulationDetailItem: React.FC<Props> = ({
-  regulationChapter,
+const ArticleDetailItem: React.FC<Props> = ({
+  articleChapter,
   chapterSearchText,
   setChapterSearchText,
+  articleType,
 }) => {
-  const [regulation, setRegulation] = React.useState<Article | null>();
+  const [article, setArticle] = React.useState<Article | null>();
   const [highlightText, setHighlightedText] = React.useState<string>('');
 
   React.useEffect(() => {
-    if (chapterSearchText.chapter === regulation?.chapter) {
+    if (chapterSearchText.chapter === article?.chapter) {
       setHighlightedText(chapterSearchText.searchText ?? '');
     }
-  }, [regulation, chapterSearchText]);
+  }, [article, chapterSearchText]);
 
   React.useEffect(() => {
-    articleRepository.getArticleByChapter(regulationChapter, setRegulation);
-  }, [regulationChapter]);
+    articleRepository.getArticleByChapter(
+      articleType,
+      articleChapter,
+      setArticle,
+    );
+  }, [articleType, articleChapter]);
 
   const stopHighlightText = () => {
     setChapterSearchText({ chapter: '', searchText: '' });
@@ -38,10 +44,10 @@ const RegulationDetailItem: React.FC<Props> = ({
 
   return (
     <View style={{ flex: 1 }}>
-      {regulation && (
+      {article && (
         <>
           <HTMLViewer
-            htmlFile={regulation?.htmlFile}
+            htmlFile={article?.htmlFile}
             highlightText={highlightText}
           />
           {highlightText !== '' && (
@@ -69,7 +75,4 @@ const mapDispatchToProps = dispatch => {
   };
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(RegulationDetailItem);
+export default connect(mapStateToProps, mapDispatchToProps)(ArticleDetailItem);

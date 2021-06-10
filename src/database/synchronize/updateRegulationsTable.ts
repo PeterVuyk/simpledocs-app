@@ -10,7 +10,7 @@ function addRegulation(
   regulation: Article,
 ): void {
   sqlTransaction.executeSql(
-    'INSERT INTO regulation (chapter, pageIndex, title, subTitle, htmlFile, searchText, level, iconFile) VALUES (?, ?, ?, ?, ?, ?, ?, ?)',
+    'INSERT INTO regulations (chapter, pageIndex, title, subTitle, htmlFile, searchText, level, iconFile) VALUES (?, ?, ?, ?, ?, ?, ?, ?)',
     [
       regulation.chapter,
       regulation.pageIndex,
@@ -32,12 +32,12 @@ function addRegulations(
 }
 
 function removeAllRegulations(sqlTransaction: SQLite.SQLTransaction): void {
-  sqlTransaction.executeSql(`DROP TABLE IF EXISTS regulation`, []);
+  sqlTransaction.executeSql(`DROP TABLE IF EXISTS regulations`, []);
 }
 
 function createRegulationTable(sqlTransaction: SQLite.SQLTransaction): void {
   sqlTransaction.executeSql(
-    'create table if not exists regulation (chapter varchar not null constraint regulation_pk primary key, pageIndex integer not null, title text not null, subTitle text, htmlFile text not null, searchText text not null, level varchar not null, iconFile text);',
+    'create table if not exists regulations (chapter varchar not null constraint regulations_pk primary key, pageIndex integer not null, title text not null, subTitle text, htmlFile text not null, searchText text not null, level varchar not null, iconFile text);',
   );
 }
 
