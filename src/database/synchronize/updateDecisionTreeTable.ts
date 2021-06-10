@@ -1,7 +1,7 @@
 import * as SQLite from 'expo-sqlite';
 import versioningRepository from '../repository/versioningRepository';
 import logger from '../../helper/logger';
-import { DecisionTreeStep } from '../entity/DecisionTreeStep';
+import { DecisionTreeStep } from '../model/DecisionTreeStep';
 
 const db = SQLite.openDatabase('db.db');
 
@@ -10,16 +10,17 @@ function addDecisionTreeStep(
   decisionTreeStep: DecisionTreeStep,
 ): void {
   sqlTransaction.executeSql(
-    'INSERT INTO decisionTree (id, title, label, lineLabel, parentId, regulationChapter, iconFile) VALUES (?, ?, ?, ?, ?, ?, ?)',
+    'INSERT INTO decisionTree (id, title, label, lineLabel, parentId, articleChapter, articleType, iconFile) VALUES (?, ?, ?, ?, ?, ?, ?, ?)',
     [
       decisionTreeStep.id,
       decisionTreeStep.title,
       decisionTreeStep.label,
       decisionTreeStep.lineLabel,
       decisionTreeStep.parentId,
-      decisionTreeStep.regulationChapter
-        ? `${decisionTreeStep.regulationChapter}`
+      decisionTreeStep.articleChapter
+        ? `${decisionTreeStep.articleChapter}`
         : null,
+      decisionTreeStep.articleType,
       decisionTreeStep.iconFile,
     ],
   );
@@ -38,7 +39,7 @@ function removeAllDecisionTree(sqlTransaction: SQLite.SQLTransaction): void {
 
 function createDecisionTreeTable(sqlTransaction: SQLite.SQLTransaction): void {
   sqlTransaction.executeSql(
-    'create table if not exists decisionTree (id int not null, title text, label text not null, lineLabel varchar, parentId int, regulationChapter text, iconFile text);',
+    'create table if not exists decisionTree (id int not null, title text, label text not null, lineLabel varchar, parentId int, articleChapter text, articleType text, iconFile text);',
   );
 }
 

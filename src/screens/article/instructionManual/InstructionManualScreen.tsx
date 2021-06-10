@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { View } from 'react-native';
 import { DrawerNavigationProp } from '@react-navigation/drawer/lib/typescript/src/types';
 import ArticlesList from '../ArticlesList';
-import { Article } from '../../../database/entity/Article';
+import { Article } from '../../../database/model/Article';
 import articleRepository from '../../../database/repository/articleRepository';
 
 interface Props {
@@ -17,7 +16,7 @@ const InstructionManualScreen: React.FC<Props> = ({ navigation }) => {
   }, []);
 
   return (
-    <View style={{ flex: 1, paddingBottom: 60, backgroundColor: '#fff' }}>
+    <>
       {articles && (
         <ArticlesList
           navigation={navigation}
@@ -25,7 +24,7 @@ const InstructionManualScreen: React.FC<Props> = ({ navigation }) => {
           articleType="instructionManual"
         />
       )}
-    </View>
+    </>
   );
 };
 

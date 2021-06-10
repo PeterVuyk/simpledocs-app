@@ -1,5 +1,5 @@
 import database from './database';
-import { Article } from '../entity/Article';
+import { Article } from '../model/Article';
 
 async function getInstructionManual(): Promise<Article[]> {
   const querySnapshot = await database()

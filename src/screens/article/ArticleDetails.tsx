@@ -1,11 +1,12 @@
 import React from 'react';
 import { View, FlatList, Dimensions } from 'react-native';
 import ArticleDetailItem from './ArticleDetailItem';
-import { ArticleChapter } from '../../database/entity/ArticleChapter';
+import { ArticleChapter } from '../../database/model/ArticleChapter';
+import { ArticleType } from '../../database/model/ArticleType';
 
 interface Props {
   articleChapter: string;
-  articleType: 'regulations' | 'instructionManual';
+  articleType: ArticleType;
   articleChapterList: ArticleChapter[];
 }
 

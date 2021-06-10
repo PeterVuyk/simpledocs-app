@@ -6,7 +6,7 @@ import decisionTreeRepository, {
 import ListItem from '../../components/ListItem';
 import calculationsRepository from '../../database/repository/calculationsRepository';
 import TitleBar from '../../components/TitleBar';
-import { CalculationInfo } from '../../database/entity/CalculationInfo';
+import { CalculationInfo } from '../../database/model/CalculationInfo';
 
 interface Props {
   navigation: any;

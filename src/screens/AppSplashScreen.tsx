@@ -10,8 +10,8 @@ import NoInternetConnectionOverlay from '../overlay/NoInternetConnectionOverlay'
 import internetConnectivity from '../helper/internetConnectivity';
 import versioningRepository from '../database/repository/versioningRepository';
 import notificationRepository from '../database/repository/notificationRepository';
-import { Notification } from '../database/entity/Notification';
-import { Versioning } from '../database/entity/Versioning';
+import { Notification } from '../database/model/Notification';
+import { Versioning } from '../database/model/Versioning';
 
 const AppSplashScreen: React.FC = () => {
   const [appIsReady, setAppReady] = React.useState<boolean>(false);

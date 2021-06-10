@@ -1,5 +1,5 @@
 import database from './database';
-import { CalculationInfo } from '../entity/CalculationInfo';
+import { CalculationInfo } from '../model/CalculationInfo';
 
 async function getCalculationsInfo(): Promise<CalculationInfo[]> {
   const querySnapshot = await database().collection('calculations').get();

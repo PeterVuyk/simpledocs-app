@@ -2,14 +2,15 @@ import React from 'react';
 import { View } from 'react-native';
 import { connect } from 'react-redux';
 import searching, { SearchText } from '../../redux/actions/searching';
-import { Article } from '../../database/entity/Article';
+import { Article } from '../../database/model/Article';
 import articleRepository from '../../database/repository/articleRepository';
 import HTMLViewer from '../../components/HTMLViewer';
 import ScrollAwareBottomButton from '../../components/ScrollAwareBottomButton';
+import { ArticleType } from '../../database/model/ArticleType';
 
 interface Props {
   articleChapter: string;
-  articleType: 'regulations' | 'instructionManual';
+  articleType: ArticleType;
   chapterSearchText: SearchText;
   setChapterSearchText: (searchText: SearchText) => void;
 }

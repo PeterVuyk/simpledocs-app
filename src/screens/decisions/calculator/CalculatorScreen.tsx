@@ -9,7 +9,7 @@ import HideWithKeyboardView from '../../../components/keyboard/HideWithKeyboardV
 import TitleBar from '../../../components/TitleBar';
 import OvertakingDistanceCalculator from './OvertakingDistanceCalculator';
 import KeyboardAwareView from '../../../components/keyboard/KeyboardAwareView';
-import { CalculationInfo } from '../../../database/entity/CalculationInfo';
+import { CalculationInfo } from '../../../database/model/CalculationInfo';
 
 const styles = StyleSheet.create({
   image: {
@@ -46,6 +46,20 @@ const CalculatorScreen: React.FC<Props> = ({ route }) => {
     calculationsRepository.getCalculationInfoByTitle(title, setCalculationInfo);
   }, [title]);
 
+  const navigateDecisionTree = (info: CalculationInfo) => {
+    if (info.articleType === 'regulations') {
+      navigation.navigate('RegulationsScreenStack', {
+        screen: 'RegulationDetailsScreen',
+        params: { articleChapter: info.articleChapter },
+      });
+      return;
+    }
+    navigation.navigate('InstructionManualStack', {
+      screen: 'InstructionManualDetailsScreen',
+      params: { articleChapter: info.articleChapter },
+    });
+  };
+
   return (
     <KeyboardAwareView>
       {calculationInfo && (
@@ -61,13 +75,9 @@ const CalculatorScreen: React.FC<Props> = ({ route }) => {
             <OvertakingDistanceCalculator />
           )}
           <ListItem
-            onSubmit={() =>
-              navigation.navigate('CalculatorDocumentationScreen', {
-                regulationChapter: calculationInfo.regulationChapter,
-              })
-            }
+            onSubmit={() => navigateDecisionTree(calculationInfo)}
             iconFile={calculationInfo.iconFile}
-            title={calculationInfo.regulationButtonText}
+            title={calculationInfo.articleButtonText}
           />
           <View />
           <HideWithKeyboardView style={styles.imageContainer}>

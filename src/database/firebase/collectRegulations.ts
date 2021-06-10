@@ -1,5 +1,5 @@
 import database from './database';
-import { Article } from '../entity/Article';
+import { Article } from '../model/Article';
 
 async function getRegulations(): Promise<Article[]> {
   const querySnapshot = await database()

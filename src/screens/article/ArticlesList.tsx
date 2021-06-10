@@ -2,12 +2,13 @@ import React from 'react';
 import { FlatList, View } from 'react-native';
 import { DrawerNavigationProp } from '@react-navigation/drawer/lib/typescript/src/types';
 import ListItem from '../../components/ListItem';
-import { Article } from '../../database/entity/Article';
+import { Article } from '../../database/model/Article';
+import { ArticleType } from '../../database/model/ArticleType';
 
 interface Props {
   navigation: DrawerNavigationProp<any>;
   articles: Article[];
-  articleType: 'regulations' | 'instructionManual';
+  articleType: ArticleType;
 }
 
 const ArticlesList: React.FC<Props> = ({
@@ -23,7 +24,7 @@ const ArticlesList: React.FC<Props> = ({
       });
       return;
     }
-    navigation.navigate('InstructionManualStackNavigator', {
+    navigation.navigate('InstructionManualStack', {
       screen: 'InstructionManualDetailsScreen',
       params: { articleChapter: article.chapter },
     });

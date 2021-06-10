@@ -1,7 +1,7 @@
 import * as SQLite from 'expo-sqlite';
 import versioningRepository from '../repository/versioningRepository';
 import logger from '../../helper/logger';
-import { CalculationInfo } from '../entity/CalculationInfo';
+import { CalculationInfo } from '../model/CalculationInfo';
 
 const db = SQLite.openDatabase('db.db');
 
@@ -10,14 +10,15 @@ function addCalculationInfo(
   calculationInfo: CalculationInfo,
 ): void {
   sqlTransaction.executeSql(
-    'INSERT INTO calculations (calculationType, title, explanation, regulationButtonText, calculationImage, regulationChapter, iconFile) VALUES (?, ?, ?, ?, ?, ?, ?)',
+    'INSERT INTO calculations (calculationType, title, explanation, articleButtonText, calculationImage, articleChapter, articleType, iconFile) VALUES (?, ?, ?, ?, ?, ?, ?, ?)',
     [
       calculationInfo.calculationType,
       calculationInfo.title,
       calculationInfo.explanation,
-      calculationInfo.regulationButtonText,
+      calculationInfo.articleButtonText,
       calculationInfo.calculationImage,
-      calculationInfo.regulationChapter,
+      calculationInfo.articleChapter,
+      calculationInfo.articleType,
       calculationInfo.iconFile,
     ],
   );
@@ -40,7 +41,7 @@ function removeAllCalculationsInfo(
 
 function createCalculationTable(sqlTransaction: SQLite.SQLTransaction): void {
   sqlTransaction.executeSql(
-    'create table if not exists calculations (calculationType text not null constraint calculations_pk primary key, title text not null, explanation text not null, regulationButtonText varchar not null, calculationImage blob not null, regulationChapter varchar not null, iconFile blob not null);',
+    'create table if not exists calculations (calculationType text not null constraint calculations_pk primary key, title text not null, explanation text not null, articleButtonText varchar not null, calculationImage blob not null, articleChapter varchar not null, articleType varchar not null, iconFile blob not null);',
   );
 }
 

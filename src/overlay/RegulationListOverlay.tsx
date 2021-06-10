@@ -5,7 +5,7 @@ import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import articleRepository from '../database/repository/articleRepository';
 import SVGIcon from '../components/SVGIcon';
-import { ArticleChapter } from '../database/entity/ArticleChapter';
+import { ArticleChapter } from '../database/model/ArticleChapter';
 
 interface Props {
   toggleOverlay: () => void;

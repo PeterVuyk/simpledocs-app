@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { RouteProp } from '@react-navigation/native';
-import { View } from 'react-native';
 import articleRepository from '../../../database/repository/articleRepository';
-import { ArticleChapter } from '../../../database/entity/ArticleChapter';
+import { ArticleChapter } from '../../../database/model/ArticleChapter';
 import ArticleDetails from '../ArticleDetails';
 
 interface Props {
@@ -25,13 +24,11 @@ const RegulationDetailsScreen: React.FC<Props> = ({ route }) => {
   }, []);
 
   return (
-    <View style={{ flex: 1 }}>
-      <ArticleDetails
-        articleType="regulations"
-        articleChapterList={chapters}
-        articleChapter={articleChapter}
-      />
-    </View>
+    <ArticleDetails
+      articleType="regulations"
+      articleChapterList={chapters}
+      articleChapter={articleChapter}
+    />
   );
 };
 

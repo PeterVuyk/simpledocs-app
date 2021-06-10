@@ -1,7 +1,8 @@
 import * as SQLite from 'expo-sqlite';
 import logger from '../../helper/logger';
-import { Article } from '../entity/Article';
-import { ArticleChapter } from '../entity/ArticleChapter';
+import { Article } from '../model/Article';
+import { ArticleChapter } from '../model/ArticleChapter';
+import { ArticleType } from '../model/ArticleType';
 
 const db = SQLite.openDatabase('db.db');
 
@@ -17,7 +18,7 @@ type setChaptersCallback = (
 
 // eslint-disable-next-line @typescript-eslint/ban-types
 function getArticleByChapter(
-  articleType: 'regulations' | 'instructionManual',
+  articleType: ArticleType,
   chapter: string,
   setArticles: setArticleCallback,
 ): void {
@@ -44,7 +45,7 @@ function getArticleByChapter(
 }
 
 function searchArticles(
-  articleType: 'regulations' | 'instructionManual',
+  articleType: ArticleType,
   text: string,
   setArticles: setArticlesCallback,
 ): void {
@@ -72,7 +73,7 @@ function searchArticles(
 }
 
 function getParagraphs(
-  articleType: 'regulations' | 'instructionManual',
+  articleType: ArticleType,
   setArticles: setArticlesCallback,
 ): void {
   db.transaction(
@@ -93,7 +94,7 @@ function getParagraphs(
 }
 
 function getChapters(
-  articleType: 'regulations' | 'instructionManual',
+  articleType: ArticleType,
   setChapters: setChaptersCallback,
 ): void {
   db.transaction(

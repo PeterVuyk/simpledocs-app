@@ -2,9 +2,8 @@ import React, { useState } from 'react';
 import { StyleSheet, View, Text } from 'react-native';
 import { Button, Icon } from 'react-native-elements';
 import { RouteProp } from '@react-navigation/native';
-import decisionTreeRepository, {
-  DecisionTreeStep,
-} from '../../database/repository/decisionTreeRepository';
+import decisionTreeRepository from '../../../database/repository/decisionTreeRepository';
+import { DecisionTreeStep } from '../../../database/model/DecisionTreeStep';
 
 interface Props {
   navigation: any;
@@ -44,7 +43,7 @@ const styles = StyleSheet.create({
     paddingRight: 20,
     paddingBottom: 200,
   },
-  regulationsButtonsStyle: {
+  articleButtonsStyle: {
     alignSelf: 'stretch',
     backgroundColor: '#154594',
   },
@@ -98,6 +97,20 @@ const DecisionTreeScreen: React.FC<Props> = ({ route, navigation }) => {
     return decisionTreeSteps.find(step => step.id === currentStep?.parentId);
   };
 
+  const navigateToArticle = (step: DecisionTreeStep) => {
+    if (step.articleType === 'regulations') {
+      navigation.navigate('RegulationsScreenStack', {
+        screen: 'RegulationDetailsScreen',
+        params: { articleChapter: step.articleChapter },
+      });
+      return;
+    }
+    navigation.navigate('InstructionManualStack', {
+      screen: 'InstructionManualDetailsScreen',
+      params: { articleChapter: step.articleChapter },
+    });
+  };
+
   return (
     <View style={styles.container}>
       {decisionTreeSteps.length !== 0 && (
@@ -126,16 +139,12 @@ const DecisionTreeScreen: React.FC<Props> = ({ route, navigation }) => {
               />
             </View>
           )}
-          {currentStep !== undefined && currentStep.regulationChapter !== null && (
+          {currentStep !== undefined && currentStep.articleChapter !== null && (
             <View style={[{ bottom: 60 }, styles.buttonContainer]}>
               <Button
-                buttonStyle={[styles.regulationsButtonsStyle]}
-                title="Open regelgeving"
-                onPress={() => {
-                  navigation.navigate('DecisionTreeDocumentationScreen', {
-                    regulationChapter: currentStep.regulationChapter,
-                  });
-                }}
+                buttonStyle={[styles.articleButtonsStyle]}
+                title="Open toelichting"
+                onPress={() => navigateToArticle(currentStep)}
               />
             </View>
           )}

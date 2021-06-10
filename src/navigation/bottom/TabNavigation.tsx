@@ -42,7 +42,7 @@ const TabNavigation: React.FC = () => {
         initialRouteName="RegulationsScreenStack"
       >
         <Tab.Screen
-          name="InstructionManualStackNavigator"
+          name="InstructionManualStack"
           component={InstructionManualStackNavigator}
           options={{
             title: 'Handboek',

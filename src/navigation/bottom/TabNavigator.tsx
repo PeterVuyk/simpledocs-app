@@ -91,8 +91,8 @@ function TabNavigator({
       return;
     }
 
-    if (route.name === 'InstructionManualStackNavigator') {
-      navigation.navigate('InstructionManualStackNavigator', {
+    if (route.name === 'InstructionManualStack') {
+      navigation.navigate('InstructionManualStack', {
         screen: 'InstructionManualScreen',
       });
       return;

@@ -5,7 +5,7 @@ import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { connect } from 'react-redux';
 import articleRepository from '../../../database/repository/articleRepository';
-import { Article } from '../../../database/entity/Article';
+import { Article } from '../../../database/model/Article';
 import searching, { SearchText } from '../../../redux/actions/searching';
 import SVGIcon from '../../../components/SVGIcon';
 import HighlightWords from '../../../components/HighlightWords';

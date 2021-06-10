@@ -1,5 +1,5 @@
 import database from './database';
-import { DecisionTreeStep } from '../entity/DecisionTreeStep';
+import { DecisionTreeStep } from '../model/DecisionTreeStep';
 
 async function getDecisionTreeSteps(): Promise<DecisionTreeStep[]> {
   const querySnapshot = await database().collection('decisionTree').get();
