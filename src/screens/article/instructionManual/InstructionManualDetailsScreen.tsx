@@ -16,18 +16,18 @@ interface Props {
   >;
 }
 
-const RegulationDetailsScreen: React.FC<Props> = ({ route }) => {
+const InstructionManualDetailsScreen: React.FC<Props> = ({ route }) => {
   const [chapters, setChapters] = useState<ArticleChapter[]>([]);
   const { articleChapter } = route.params;
 
   useEffect(() => {
-    articleRepository.getChapters('regulations', setChapters);
+    articleRepository.getChapters('instructionManual', setChapters);
   }, []);
 
   return (
     <View style={{ flex: 1 }}>
       <ArticleDetails
-        articleType="regulations"
+        articleType="instructionManual"
         articleChapterList={chapters}
         articleChapter={articleChapter}
       />
@@ -35,4 +35,4 @@ const RegulationDetailsScreen: React.FC<Props> = ({ route }) => {
   );
 };
 
-export default RegulationDetailsScreen;
+export default InstructionManualDetailsScreen;

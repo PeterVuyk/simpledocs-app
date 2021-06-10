@@ -75,7 +75,6 @@ const HTMLViewer: React.FC<Props> = ({ htmlFile, highlightText }) => {
       navigation.push('RegulationDetailsScreen', {
         articleChapter:
           request.url.split('http://page-blank.firebaseapp.com/')[1] ?? '1',
-        articleType: 'regulations',
       });
     }
     return false;

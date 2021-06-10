@@ -27,7 +27,6 @@ const RegulationListOverlay: React.FC<Props> = ({ toggleOverlay }) => {
         toggleOverlay();
         navigation.push('RegulationDetailsScreen', {
           articleChapter: item.chapter,
-          articleType: 'regulations',
         });
       }}
     >

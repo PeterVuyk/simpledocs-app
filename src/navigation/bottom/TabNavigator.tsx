@@ -31,6 +31,20 @@ type TabNavigationConfig = {
 type TabNavigationOptions = {
   title: string;
   icon: string;
+  iconFamilyType?:
+    | 'AntDesign'
+    | 'Entypo'
+    | 'EvilIcons'
+    | 'Feather'
+    | 'FontAwesome'
+    | 'FontAwesome5'
+    | 'Foundation'
+    | 'Ionicons'
+    | 'MaterialCommunityIcons'
+    | 'MaterialIcons'
+    | 'Octicons'
+    | 'SimpleLineIcons'
+    | 'Zocial';
   showInBottomBar: boolean;
 };
 
@@ -73,6 +87,13 @@ function TabNavigator({
     if (route.name === 'RegulationsScreenStack') {
       navigation.navigate('RegulationsScreenStack', {
         screen: 'RegulationsScreen',
+      });
+      return;
+    }
+
+    if (route.name === 'InstructionManualStackNavigator') {
+      navigation.navigate('InstructionManualStackNavigator', {
+        screen: 'InstructionManualScreen',
       });
       return;
     }
@@ -124,7 +145,10 @@ function TabNavigator({
                       color: state.index === index ? '#fff' : '#4bb1fc',
                     }}
                     name={descriptors[route.key].options.icon}
-                    type="MaterialCommunityIcons"
+                    type={
+                      descriptors[route.key].options.iconFamilyType ??
+                      'MaterialCommunityIcons'
+                    }
                     fontSize={26}
                   />
                   <Text

@@ -19,14 +19,13 @@ const ArticlesList: React.FC<Props> = ({
     if (articleType === 'regulations') {
       navigation.navigate('RegulationsScreenStack', {
         screen: 'RegulationDetailsScreen',
-        params: { articleChapter: article.chapter, articleType: 'regulations' },
+        params: { articleChapter: article.chapter },
       });
       return;
     }
-    // TODO: Update later voor instructionManual:
-    navigation.navigate('RegulationsScreenStack', {
-      screen: 'RegulationDetailsScreen',
-      params: { articleChapter: article.chapter, articleType: 'regulations' },
+    navigation.navigate('InstructionManualStackNavigator', {
+      screen: 'InstructionManualDetailsScreen',
+      params: { articleChapter: article.chapter },
     });
   };
 

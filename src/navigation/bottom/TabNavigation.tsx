@@ -5,6 +5,7 @@ import StackNavigator from '../StackNavigator/StackNavigator';
 import { setDrawerProgressListener } from '../drawer/onDrawerProgressListener';
 import TabNavigator from './TabNavigator';
 import DecisionsStackNavigator from '../StackNavigator/DecisionsStackNavigator';
+import InstructionManualStackNavigator from '../StackNavigator/InstructionManualStackNavigator';
 
 const Tab = TabNavigator();
 
@@ -40,6 +41,16 @@ const TabNavigation: React.FC = () => {
         }}
         initialRouteName="RegulationsScreenStack"
       >
+        <Tab.Screen
+          name="InstructionManualStackNavigator"
+          component={InstructionManualStackNavigator}
+          options={{
+            title: 'Handboek',
+            icon: 'graduation',
+            iconFamilyType: 'SimpleLineIcons',
+            showInBottomBar: true,
+          }}
+        />
         <Tab.Screen
           name="RegulationsScreenStack"
           component={RegulationStackNavigator}

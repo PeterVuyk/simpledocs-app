@@ -9,11 +9,11 @@ interface Props {
   navigation: DrawerNavigationProp<any>;
 }
 
-const RegulationsScreen: React.FC<Props> = ({ navigation }) => {
+const InstructionManualScreen: React.FC<Props> = ({ navigation }) => {
   const [articles, setArticles] = useState<Article[]>([]);
 
   useEffect(() => {
-    articleRepository.getParagraphs('regulations', setArticles);
+    articleRepository.getParagraphs('instructionManual', setArticles);
   }, []);
 
   return (
@@ -22,11 +22,11 @@ const RegulationsScreen: React.FC<Props> = ({ navigation }) => {
         <ArticlesList
           navigation={navigation}
           articles={articles}
-          articleType="regulations"
+          articleType="instructionManual"
         />
       )}
     </View>
   );
 };
 
-export default RegulationsScreen;
+export default InstructionManualScreen;

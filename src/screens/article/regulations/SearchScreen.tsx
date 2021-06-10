@@ -55,7 +55,6 @@ const SearchScreen: React.FC<Props> = ({ setChapterSearchText }) => {
     navigation.push('RegulationDetailsScreen', {
       articleChapter: item.chapter,
       searchText: { chapter: item.chapter, searchText },
-      articleType: 'regulations',
     });
   };
 
