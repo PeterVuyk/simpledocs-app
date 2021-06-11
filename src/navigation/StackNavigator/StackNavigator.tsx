@@ -4,6 +4,7 @@ import { DrawerNavigationHelpers } from '@react-navigation/drawer/lib/typescript
 import AboutUsScreen from '../../screens/about/AboutUsScreen';
 import Header from '../header/Header';
 import CopyrightScreen from '../../screens/copyright/CopyrightScreen';
+import SearchScreen from '../../screens/article/SearchScreen';
 
 const Stack = createStackNavigator();
 
@@ -27,6 +28,11 @@ const StackNavigator: React.FC<Props> = ({ navigation }) => {
         options={{
           header: () => <Header navigation={navigation} />,
         }}
+      />
+      <Stack.Screen
+        name="SearchScreen"
+        component={SearchScreen}
+        options={{ headerShown: false }}
       />
     </Stack.Navigator>
   );

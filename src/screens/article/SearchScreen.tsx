@@ -4,13 +4,13 @@ import { ListItem } from 'react-native-elements';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { connect } from 'react-redux';
-import articleRepository from '../../../database/repository/articleRepository';
-import { Article } from '../../../database/model/Article';
-import searching, { SearchText } from '../../../redux/actions/searching';
-import SVGIcon from '../../../components/SVGIcon';
-import HighlightWords from '../../../components/HighlightWords';
-import SearchHeader from '../../../navigation/header/SearchHeader';
-import KeyboardAwareView from '../../../components/keyboard/KeyboardAwareView';
+import articleRepository from '../../database/repository/articleRepository';
+import { Article } from '../../database/model/Article';
+import searching, { SearchText } from '../../redux/actions/searching';
+import SVGIcon from '../../components/SVGIcon';
+import HighlightWords from '../../components/HighlightWords';
+import SearchHeader from '../../navigation/header/SearchHeader';
+import KeyboardAwareView from '../../components/keyboard/KeyboardAwareView';
 
 interface Props {
   setChapterSearchText: (searchText: SearchText) => void;
@@ -52,9 +52,12 @@ const SearchScreen: React.FC<Props> = ({ setChapterSearchText }) => {
 
   const submitSearch = (item: Article) => {
     setChapterSearchText({ chapter: item.chapter, searchText });
-    navigation.push('RegulationDetailsScreen', {
-      articleChapter: item.chapter,
-      searchText: { chapter: item.chapter, searchText },
+    navigation.navigate('RegulationsScreenStack', {
+      screen: 'RegulationDetailsScreen',
+      params: {
+        articleChapter: item.chapter,
+        searchText: { chapter: item.chapter, searchText },
+      },
     });
   };
 
@@ -92,7 +95,7 @@ const SearchScreen: React.FC<Props> = ({ setChapterSearchText }) => {
               width: 'auto',
               resizeMode: 'contain',
             }}
-            source={require('../../../../assets/images/find.png')}
+            source={require('../../../assets/images/find.png')}
           />
         )}
         {regulations && (

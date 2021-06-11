@@ -6,13 +6,19 @@ import { useIsFocused, useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import highlightWordsInHTMLFile from '../helper/highlightWordsInHTMLFile';
 import ScrollViewToggleBottomBar from './ScrollViewToggleBottomBar';
+import { ArticleType } from '../database/model/ArticleType';
 
 interface Props {
   htmlFile: string;
   highlightText?: string;
+  articleType: ArticleType;
 }
 
-const HTMLViewer: React.FC<Props> = ({ htmlFile, highlightText }) => {
+const HTMLViewer: React.FC<Props> = ({
+  htmlFile,
+  highlightText,
+  articleType,
+}) => {
   const [webViewHeight, setWebViewHeight] = React.useState<number>(0);
   const [loading, setLoading] = React.useState<boolean>(false);
   const webview = React.createRef<WebView>();
@@ -52,7 +58,7 @@ const HTMLViewer: React.FC<Props> = ({ htmlFile, highlightText }) => {
    * loading the page from the links href, once a while it will attempt to load the page anyway. So in addition:
    * - We hide the webview component while switching to the next screen.
    * - We use http:// instead of app:// to avoid UNKNOWN_URL_SCHEME (Webview doesn't work well with 'unofficial' URI schemes
-   * - We use example.com instead of a local url to avoid ERR_CONNECTION_REFUSED (e.g. <a href="http://page-blank.firebaseapp.com/1.1">1.1</a> navigate to chapter 1.1)
+   * - We use example.com instead of a local url to avoid ERR_CONNECTION_REFUSED (e.g. <a href="https://page-blank.firebaseapp.com/<articleType>/1.1">1.1</a> navigate to chapter 1.1)
    *
    * If the user returns to this page the useEffect hook will enable the webview component whereupon the html file is loaded again.
    */
@@ -64,18 +70,58 @@ const HTMLViewer: React.FC<Props> = ({ htmlFile, highlightText }) => {
     }
 
     webview?.current?.stopLoading();
+    if (
+      request.url.search('https://page-blank.firebaseapp.com/calculations/') !==
+      -1
+    ) {
+      setLoading(true);
+
+      const chapter =
+        request.url.split(
+          'https://page-blank.firebaseapp.com/calculations/',
+        )[1] ?? '1';
+
+      if (articleType === 'regulations') {
+        navigation.push('RegulationDetailsScreen', {
+          articleChapter: chapter,
+        });
+        return false;
+      }
+      navigation.navigate('RegulationsScreenStack', {
+        screen: 'RegulationDetailsScreen',
+        params: { articleChapter: chapter },
+      });
+
+      return false;
+    }
+
+    if (
+      request.url.search(
+        'https://page-blank.firebaseapp.com/instructionManual/',
+      ) !== -1
+    ) {
+      setLoading(true);
+
+      const chapter =
+        request.url.split(
+          'https://page-blank.firebaseapp.com/instructionManual/',
+        )[1] ?? '1';
+
+      if (articleType === 'instructionManual') {
+        navigation.push('InstructionManualDetailsScreen', {
+          articleChapter: chapter,
+        });
+        return false;
+      }
+      navigation.navigate('InstructionManualStack', {
+        screen: 'InstructionManualDetailsScreen',
+        params: { articleChapter: chapter },
+      });
+      return false;
+    }
 
     if (request.url.search('https://') !== -1) {
       Linking.openURL(request.url);
-      return false;
-    }
-    if (request.url.search('http://page-blank.firebaseapp.com/') !== -1) {
-      setLoading(true);
-      // TODO: Depending what 'articleType' is, naar de juiste stack sturen.
-      navigation.push('RegulationDetailsScreen', {
-        articleChapter:
-          request.url.split('http://page-blank.firebaseapp.com/')[1] ?? '1',
-      });
     }
     return false;
   };
@@ -87,7 +133,7 @@ const HTMLViewer: React.FC<Props> = ({ htmlFile, highlightText }) => {
           <WebView
             ref={webview}
             startInLoadingState
-            originWhitelist={['http://*', 'https://*']}
+            originWhitelist={['https://*']}
             scalesPageToFit={false}
             onShouldStartLoadWithRequest={openExternalLink}
             onMessage={onMessage}

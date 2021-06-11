@@ -4,7 +4,6 @@ import { DrawerNavigationHelpers } from '@react-navigation/drawer/lib/typescript
 import Header from '../header/Header';
 import RegulationsScreen from '../../screens/article/regulations/RegulationsScreen';
 import RegulationDetailsScreen from '../../screens/article/regulations/RegulationDetailsScreen';
-import SearchScreen from '../../screens/article/regulations/SearchScreen';
 
 const Stack = createStackNavigator();
 
@@ -30,11 +29,6 @@ const RegulationStackNavigator: React.FC<Props> = ({ navigation }) => {
             <Header navigation={navigation} showRegulationsListButton />
           ),
         }}
-      />
-      <Stack.Screen
-        name="SearchScreen"
-        component={SearchScreen}
-        options={{ headerShown: false }}
       />
     </Stack.Navigator>
   );

@@ -50,6 +50,7 @@ const ArticleDetailItem: React.FC<Props> = ({
           <HTMLViewer
             htmlFile={article?.htmlFile}
             highlightText={highlightText}
+            articleType={articleType}
           />
           {highlightText !== '' && (
             <ScrollAwareBottomButton
