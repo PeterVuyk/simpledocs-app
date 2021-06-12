@@ -26,7 +26,10 @@ const InstructionManualStackNavigator: React.FC<Props> = ({ navigation }) => {
         component={InstructionManualDetailsScreen}
         options={{
           header: () => (
-            <Header navigation={navigation} showRegulationsListButton />
+            <Header
+              navigation={navigation}
+              showListButtonFromArticleType="instructionManual"
+            />
           ),
         }}
       />

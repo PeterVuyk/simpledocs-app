@@ -1,19 +1,23 @@
-import * as React from 'react';
+import React from 'react';
 import { Platform, SafeAreaView, View } from 'react-native';
 import { DrawerNavigationHelpers } from '@react-navigation/drawer/lib/typescript/src/types';
 import { HeaderBackButton, StackNavigationProp } from '@react-navigation/stack';
 import { useNavigation } from '@react-navigation/native';
 import DrawerButton from './DrawerButton';
 import SearchButton from './SearchButton';
-import RegulationsListButton from './RegulationsListButton';
+import ArticleListButton from './ArticleListButton';
 import HeaderLogo from './HeaderLogo';
+import { ArticleType } from '../../database/model/ArticleType';
 
 interface Props {
   navigation: DrawerNavigationHelpers;
-  showRegulationsListButton?: boolean;
+  showListButtonFromArticleType?: ArticleType;
 }
 
-const Header: React.FC<Props> = ({ navigation, showRegulationsListButton }) => {
+const Header: React.FC<Props> = ({
+  navigation,
+  showListButtonFromArticleType,
+}) => {
   const navigator = useNavigation<StackNavigationProp<any>>();
 
   return (
@@ -61,9 +65,10 @@ const Header: React.FC<Props> = ({ navigation, showRegulationsListButton }) => {
           />
         )}
         <SearchButton navigation={navigation} />
-        {showRegulationsListButton && (
-          <RegulationsListButton
-            regulationsButtonStyle={{
+        {showListButtonFromArticleType !== undefined && (
+          <ArticleListButton
+            articleType={showListButtonFromArticleType}
+            articleButtonStyle={{
               marginRight: 20,
             }}
           />

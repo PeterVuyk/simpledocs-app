@@ -26,7 +26,10 @@ const RegulationStackNavigator: React.FC<Props> = ({ navigation }) => {
         component={RegulationDetailsScreen}
         options={{
           header: () => (
-            <Header navigation={navigation} showRegulationsListButton />
+            <Header
+              navigation={navigation}
+              showListButtonFromArticleType="regulations"
+            />
           ),
         }}
       />

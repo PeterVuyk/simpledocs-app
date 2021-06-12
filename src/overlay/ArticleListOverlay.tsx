@@ -6,30 +6,40 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import articleRepository from '../database/repository/articleRepository';
 import SVGIcon from '../components/SVGIcon';
 import { ArticleChapter } from '../database/model/ArticleChapter';
+import { ArticleType } from '../database/model/ArticleType';
 
 interface Props {
+  articleType: ArticleType;
   toggleOverlay: () => void;
 }
 
-const RegulationListOverlay: React.FC<Props> = ({ toggleOverlay }) => {
+const ArticleListOverlay: React.FC<Props> = ({
+  articleType,
+  toggleOverlay,
+}) => {
   const [chapters, setChapters] = React.useState<ArticleChapter[]>([]);
 
   const navigation = useNavigation<StackNavigationProp<any>>();
 
   React.useEffect(() => {
-    articleRepository.getChapters(setChapters);
-  }, [setChapters]);
+    articleRepository.getChapters(articleType, setChapters);
+  }, [articleType, setChapters]);
+
+  const handleChapterClick = (item: ArticleChapter) => {
+    toggleOverlay();
+    if (articleType === 'regulations') {
+      navigation.push('RegulationDetailsScreen', {
+        articleChapter: item.chapter,
+      });
+      return;
+    }
+    navigation.push('InstructionManualDetailsScreen', {
+      articleChapter: item.chapter,
+    });
+  };
 
   const renderItem = (item: ArticleChapter) => (
-    <ListItem
-      bottomDivider
-      onPress={() => {
-        toggleOverlay();
-        navigation.push('RegulationDetailsScreen', {
-          articleChapter: item.chapter,
-        });
-      }}
-    >
+    <ListItem bottomDivider onPress={() => handleChapterClick(item)}>
       <SVGIcon iconBlob={item.iconFile} />
       <ListItem.Content>
         <ListItem.Title>{item.title}</ListItem.Title>
@@ -59,4 +69,4 @@ const RegulationListOverlay: React.FC<Props> = ({ toggleOverlay }) => {
   );
 };
 
-export default RegulationListOverlay;
+export default ArticleListOverlay;
