@@ -4,7 +4,7 @@ import { DrawerNavigationHelpers } from '@react-navigation/drawer/lib/typescript
 import AboutUsScreen from '../../screens/about/AboutUsScreen';
 import Header from '../header/Header';
 import CopyrightScreen from '../../screens/copyright/CopyrightScreen';
-import SearchScreen from '../../screens/article/SearchScreen';
+import SearchScreen from '../../screens/search/SearchScreen';
 
 const Stack = createStackNavigator();
 

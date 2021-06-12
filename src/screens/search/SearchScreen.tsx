@@ -11,25 +11,33 @@ import SVGIcon from '../../components/SVGIcon';
 import HighlightWords from '../../components/HighlightWords';
 import SearchHeader from '../../navigation/header/SearchHeader';
 import KeyboardAwareView from '../../components/keyboard/KeyboardAwareView';
+import { ArticleType } from '../../database/model/ArticleType';
 
 interface Props {
   setChapterSearchText: (searchText: SearchText) => void;
 }
 
 const SearchScreen: React.FC<Props> = ({ setChapterSearchText }) => {
-  const [regulations, setRegulations] = React.useState<Article[]>([]);
+  const [articleType, setArticleType] =
+    React.useState<ArticleType>('regulations');
+  const [article, setArticle] = React.useState<Article[]>([]);
   const [searchText, setSearchText] = React.useState<string>('');
 
   React.useEffect(() => {
     if (searchText === '') {
-      setRegulations([]);
+      setArticle([]);
       return;
     }
-    articleRepository.searchArticles('regulations', searchText, setRegulations);
-  }, [searchText]);
+    articleRepository.searchArticles(articleType, searchText, setArticle);
+  }, [articleType, searchText]);
 
   const handleSearchTextChange = (searchedText: string): void =>
     setSearchText(searchedText);
+
+  const handleArticleTypeTabChange = (type: ArticleType): void => {
+    setArticle([]);
+    setArticleType(type);
+  };
 
   const navigation = useNavigation<StackNavigationProp<any>>();
 
@@ -52,8 +60,18 @@ const SearchScreen: React.FC<Props> = ({ setChapterSearchText }) => {
 
   const submitSearch = (item: Article) => {
     setChapterSearchText({ chapter: item.chapter, searchText });
-    navigation.navigate('RegulationsScreenStack', {
-      screen: 'RegulationDetailsScreen',
+    if (articleType === 'regulations') {
+      navigation.navigate('RegulationsScreenStack', {
+        screen: 'RegulationDetailsScreen',
+        params: {
+          articleChapter: item.chapter,
+          searchText: { chapter: item.chapter, searchText },
+        },
+      });
+      return;
+    }
+    navigation.navigate('InstructionManualStack', {
+      screen: 'InstructionManualDetailsScreen',
       params: {
         articleChapter: item.chapter,
         searchText: { chapter: item.chapter, searchText },
@@ -83,11 +101,12 @@ const SearchScreen: React.FC<Props> = ({ setChapterSearchText }) => {
 
   return (
     <SearchHeader
+      handleArticleTypeTabChange={handleArticleTypeTabChange}
       handleSearchTextChange={handleSearchTextChange}
       searchText={searchText}
     >
       <KeyboardAwareView>
-        {regulations.length === 0 && (
+        {article.length === 0 && searchText === '' && (
           <Image
             style={{
               marginTop: 120,
@@ -98,9 +117,9 @@ const SearchScreen: React.FC<Props> = ({ setChapterSearchText }) => {
             source={require('../../../assets/images/find.png')}
           />
         )}
-        {regulations && (
+        {article && (
           <FlatList<Article>
-            data={regulations}
+            data={article}
             keyExtractor={item => item.chapter.toString()}
             renderItem={({ item }) => renderItem(item)}
           />

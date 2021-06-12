@@ -3,17 +3,21 @@ import { Platform, SafeAreaView, View } from 'react-native';
 import { SearchBar } from 'react-native-elements';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
+import SearchTab from '../../screens/search/SearchTab';
+import { ArticleType } from '../../database/model/ArticleType';
 
 interface Props {
   children: React.ReactNode;
   searchText: string;
   handleSearchTextChange: (searchText: string) => void;
+  handleArticleTypeTabChange: (articleType: ArticleType) => void;
 }
 
 const SearchHeader: React.FC<Props> = ({
   children,
   searchText,
   handleSearchTextChange,
+  handleArticleTypeTabChange,
 }) => {
   let searchRef: null | SearchBar = null;
   const navigation = useNavigation<StackNavigationProp<any>>();
@@ -29,7 +33,6 @@ const SearchHeader: React.FC<Props> = ({
           flexDirection: 'row',
           justifyContent: 'space-between',
           paddingTop: 40,
-          height: 110,
           shadowOffset: { width: 1, height: 2 },
           shadowOpacity: 0.1,
           shadowRadius: 3,
@@ -53,6 +56,7 @@ const SearchHeader: React.FC<Props> = ({
             onChangeText={typedText => handleSearchTextChange(typedText)}
             value={searchText}
           />
+          <SearchTab handleArticleTypeTabChange={handleArticleTypeTabChange} />
         </View>
       </View>
       {children}
