@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Platform, SafeAreaView, View } from 'react-native';
 import { SearchBar } from 'react-native-elements';
-import { useNavigation } from '@react-navigation/native';
+import { useIsFocused, useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import SearchTab from '../../screens/search/SearchTab';
 import { ArticleType } from '../../database/model/ArticleType';
@@ -21,10 +21,14 @@ const SearchHeader: React.FC<Props> = ({
 }) => {
   let searchRef: null | SearchBar = null;
   const navigation = useNavigation<StackNavigationProp<any>>();
+  const isFocused = useIsFocused();
 
   React.useEffect(() => {
+    if (!isFocused) {
+      return;
+    }
     searchRef?.focus();
-  }, [searchRef]);
+  }, [isFocused, searchRef]);
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: '#fff' }}>

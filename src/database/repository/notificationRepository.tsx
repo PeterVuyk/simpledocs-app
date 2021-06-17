@@ -1,36 +1,36 @@
 import * as SQLite from 'expo-sqlite';
 import logger from '../../helper/logger';
 import { Notification } from '../model/Notification';
+import { NotificationType } from '../model/NotificationType';
 
 const db = SQLite.openDatabase('db.db');
 
-function getNotifications(
-  callback: (notifications: Notification[]) => void,
+function getNotification(
+  callback: (notification: Notification) => void,
+  notificationType: NotificationType,
 ): Promise<void> {
   return new Promise((resolve, reject) => {
     db.transaction(
       sqlTransaction => {
         sqlTransaction.executeSql(
           `SELECT *
-           FROM notifications;`,
-          [],
+           FROM notifications WHERE notificationType = ? LIMIT 1;`,
+          [notificationType],
           // eslint-disable-next-line @typescript-eslint/ban-ts-comment
           // @ts-ignore
           (_, { rows: { _array } }) => {
-            callback(
-              _array.map((result: any) => {
-                return {
-                  notificationType: result.notificationType,
-                  notificationEnabled: result.notificationEnabled === 1,
-                } as Notification;
-              }) as Notification[],
-            );
+            if (_array.length === 1) {
+              callback({
+                notificationType: _array[0].notificationType,
+                notificationEnabled: _array[0].notificationEnabled === 1,
+              });
+            }
           },
         );
       },
       error => {
         logger.error(
-          'NotificationRepository.getNotifications failed',
+          'notificationRepository.getNotifications failed',
           error.message,
         );
         reject();
@@ -52,7 +52,7 @@ function updateNotification(notification: Notification): void {
 }
 
 const notificationRepository = {
-  getNotifications,
+  getNotification,
   updateNotification,
 };
 

@@ -13,8 +13,8 @@ const theme = {
     },
   },
   TabItem: {
-    titleStyle: { textTransform: 'none' },
-    theme: { colors: { secondary: '#154594' } },
+    titleStyle: { textTransform: 'none', color: '#154594' },
+    theme: { colors: { secondary: '#fff' } },
   },
 };
 

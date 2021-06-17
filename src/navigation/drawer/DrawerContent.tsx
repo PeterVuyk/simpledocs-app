@@ -62,7 +62,7 @@ const DrawerContent: React.FC<Props> = ({ progress, navigation }) => {
       <DrawerItem
         label="Over de maker"
         onSubmit={() => {
-          navigation.navigate('ScreenStack', {
+          navigation.navigate('AboutUsStack', {
             screen: 'AboutUsScreen',
           });
         }}
@@ -72,7 +72,7 @@ const DrawerContent: React.FC<Props> = ({ progress, navigation }) => {
       <DrawerItem
         label="Auteursrechten"
         onSubmit={() => {
-          navigation.navigate('ScreenStack', {
+          navigation.navigate('CopyrightStack', {
             screen: 'CopyrightScreen',
           });
         }}

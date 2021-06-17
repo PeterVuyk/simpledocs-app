@@ -125,7 +125,19 @@ function TabNavigator({
   return (
     <>
       <View style={[{ flex: 1 }, contentStyle]}>
-        {descriptors[state.routes[state.index].key].render()}
+        {state.routes.map((route, i) => {
+          return (
+            <View
+              key={route.key}
+              style={[
+                { flex: 1 },
+                { display: i === state.index ? 'flex' : 'none' },
+              ]}
+            >
+              {descriptors[route.key].render()}
+            </View>
+          );
+        })}
       </View>
       <HideWithKeyboardView>
         <ToggleBottomNavigator>

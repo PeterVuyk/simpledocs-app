@@ -1,10 +1,8 @@
 import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 import { DrawerNavigationHelpers } from '@react-navigation/drawer/lib/typescript/src/types';
-import AboutUsScreen from '../../screens/about/AboutUsScreen';
 import Header from '../header/Header';
 import CopyrightScreen from '../../screens/copyright/CopyrightScreen';
-import SearchScreen from '../../screens/search/SearchScreen';
 
 const Stack = createStackNavigator();
 
@@ -12,16 +10,9 @@ interface Props {
   navigation: DrawerNavigationHelpers;
 }
 
-const StackNavigator: React.FC<Props> = ({ navigation }) => {
+const CopyrightStackNavigator: React.FC<Props> = ({ navigation }) => {
   return (
-    <Stack.Navigator>
-      <Stack.Screen
-        name="AboutUsScreen"
-        component={AboutUsScreen}
-        options={{
-          header: () => <Header navigation={navigation} />,
-        }}
-      />
+    <Stack.Navigator screenOptions={{ detachPreviousScreen: true }}>
       <Stack.Screen
         name="CopyrightScreen"
         component={CopyrightScreen}
@@ -29,13 +20,8 @@ const StackNavigator: React.FC<Props> = ({ navigation }) => {
           header: () => <Header navigation={navigation} />,
         }}
       />
-      <Stack.Screen
-        name="SearchScreen"
-        component={SearchScreen}
-        options={{ headerShown: false }}
-      />
     </Stack.Navigator>
   );
 };
 
-export default StackNavigator;
+export default CopyrightStackNavigator;

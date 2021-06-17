@@ -15,7 +15,7 @@ const SearchButton: React.FC<Props> = ({ navigation }) => {
         style={{ color: '#154594' }}
         type="MaterialCommunityIcons"
         onPress={() => {
-          navigation.navigate('ScreenStack', {
+          navigation.navigate('SearchStack', {
             screen: 'SearchScreen',
           });
         }}

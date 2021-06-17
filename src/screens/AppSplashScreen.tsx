@@ -1,5 +1,5 @@
-import React, { useCallback, useEffect } from 'react';
-import { Alert, View } from 'react-native';
+import React, { useCallback, useEffect, useState } from 'react';
+import { View } from 'react-native';
 import * as SplashScreen from 'expo-splash-screen';
 import * as Font from 'expo-font';
 import { Ionicons } from '@expo/vector-icons';
@@ -9,16 +9,14 @@ import logger from '../helper/logger';
 import NoInternetConnectionOverlay from '../overlay/NoInternetConnectionOverlay';
 import internetConnectivity from '../helper/internetConnectivity';
 import versioningRepository from '../database/repository/versioningRepository';
-import notificationRepository from '../database/repository/notificationRepository';
-import { Notification } from '../database/model/Notification';
 import { Versioning } from '../database/model/Versioning';
+import ShowNotification from '../components/ShowNotification';
 
 const AppSplashScreen: React.FC = () => {
-  const [appIsReady, setAppReady] = React.useState<boolean>(false);
-  const [versions, setVersions] = React.useState<Versioning[]>([]);
-  const [notifications, setNotifications] = React.useState<Notification[]>([]);
+  const [appIsReady, setAppReady] = useState<boolean>(false);
+  const [versions, setVersions] = useState<Versioning[]>([]);
   const [startupIsSuccessful, setStartupIsSuccessful] =
-    React.useState<boolean | null>(null);
+    useState<boolean | null>(null);
 
   useEffect(() => {
     setStartupIsSuccessful(
@@ -26,39 +24,14 @@ const AppSplashScreen: React.FC = () => {
     );
   }, [versions]);
 
-  useEffect(() => {
-    if (!startupIsSuccessful || notifications.length === 0) {
-      return;
+  const showInternetConnectionNotification = async (): Promise<boolean> => {
+    if (!startupIsSuccessful) {
+      return false;
     }
-
-    const internetNotification = notifications.find(
-      value => value.notificationType === 'noInternetConnection',
-    );
-    internetConnectivity.hasInternetConnection().then(connected => {
-      if (
-        startupIsSuccessful &&
-        !connected &&
-        internetNotification !== undefined &&
-        internetNotification.notificationEnabled
-      ) {
-        Alert.alert(
-          'Er is geen internet beschikbaar',
-          'De app performt het beste met een internet verbinding, zo ontvang je van ons de laatste wijzigingen en worden alle afbeeldingen juist weergegeven.',
-          [
-            {
-              text: 'Niet meer melden',
-              onPress: () =>
-                notificationRepository.updateNotification({
-                  notificationType: 'noInternetConnection',
-                  notificationEnabled: false,
-                }),
-            },
-            { text: 'OK', onPress: () => null },
-          ],
-        );
-      }
-    });
-  }, [startupIsSuccessful, notifications]);
+    const hasInternetConnection =
+      await internetConnectivity.hasInternetConnection();
+    return startupIsSuccessful && !hasInternetConnection;
+  };
 
   const loadFonts = async () => {
     await Font.loadAsync({
@@ -76,7 +49,6 @@ const AppSplashScreen: React.FC = () => {
     SplashScreen.preventAutoHideAsync()
       .then(loadFonts)
       .then(prepareDatabaseResources)
-      .then(() => notificationRepository.getNotifications(setNotifications))
       .catch(reason =>
         logger.error('Failed initializing app by startup', reason),
       )
@@ -110,7 +82,14 @@ const AppSplashScreen: React.FC = () => {
           }}
         />
       )}
-      {startupIsSuccessful && <Drawer />}
+      {startupIsSuccessful && (
+        <>
+          {showInternetConnectionNotification() && (
+            <ShowNotification notificationType="noInternetConnection" />
+          )}
+          <Drawer />
+        </>
+      )}
     </View>
   );
 };

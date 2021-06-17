@@ -14,6 +14,9 @@ function initialize(): Promise<any> {
           "INSERT OR IGNORE INTO notifications (notificationType, notificationEnabled) VALUES ('noInternetConnection', 1);",
         );
         sqlTransaction.executeSql(
+          "INSERT OR IGNORE INTO notifications (notificationType, notificationEnabled) VALUES ('horizontalScrollTip', 1);",
+        );
+        sqlTransaction.executeSql(
           'CREATE UNIQUE INDEX IF NOT EXISTS notifications_uindex ON notifications (notificationType);',
         );
         sqlTransaction.executeSql(

@@ -1,11 +1,13 @@
 import * as React from 'react';
 import Animated from 'react-native-reanimated';
 import RegulationStackNavigator from '../StackNavigator/RegulationStackNavigator';
-import StackNavigator from '../StackNavigator/StackNavigator';
 import { setDrawerProgressListener } from '../drawer/onDrawerProgressListener';
 import TabNavigator from './TabNavigator';
 import DecisionsStackNavigator from '../StackNavigator/DecisionsStackNavigator';
 import InstructionManualStackNavigator from '../StackNavigator/InstructionManualStackNavigator';
+import AboutUsStackNavigator from '../StackNavigator/AboutUsStackNavigator';
+import CopyrightStackNavigator from '../StackNavigator/CopyrightStackNavigator';
+import SearchStackNavigator from '../StackNavigator/SearchStackNavigator';
 
 const Tab = TabNavigator();
 
@@ -70,8 +72,26 @@ const TabNavigation: React.FC = () => {
           }}
         />
         <Tab.Screen
-          name="ScreenStack"
-          component={StackNavigator}
+          name="SearchStack"
+          component={SearchStackNavigator}
+          options={{
+            title: 'Info',
+            icon: 'information-outline',
+            showInBottomBar: false,
+          }}
+        />
+        <Tab.Screen
+          name="AboutUsStack"
+          component={AboutUsStackNavigator}
+          options={{
+            title: 'Info',
+            icon: 'information-outline',
+            showInBottomBar: false,
+          }}
+        />
+        <Tab.Screen
+          name="CopyrightStack"
+          component={CopyrightStackNavigator}
           options={{
             title: 'Info',
             icon: 'information-outline',
