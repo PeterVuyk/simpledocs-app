@@ -25,10 +25,13 @@ const ArticleDetailItem: FC<Props> = ({
   const [highlightText, setHighlightedText] = useState<string>('');
 
   useEffect(() => {
-    if (chapterSearchText.chapter === article?.chapter) {
+    if (
+      chapterSearchText.chapter === article?.chapter &&
+      chapterSearchText.articleType === articleType
+    ) {
       setHighlightedText(chapterSearchText.searchText ?? '');
     }
-  }, [article, chapterSearchText]);
+  }, [article, articleType, chapterSearchText]);
 
   useEffect(() => {
     articleRepository.getArticleByChapter(
@@ -39,7 +42,7 @@ const ArticleDetailItem: FC<Props> = ({
   }, [articleType, articleChapter]);
 
   const stopHighlightText = () => {
-    setChapterSearchText({ chapter: '', searchText: '' });
+    setChapterSearchText({ chapter: '', searchText: '', articleType: null });
     setHighlightedText('');
   };
 

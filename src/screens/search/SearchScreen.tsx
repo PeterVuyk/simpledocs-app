@@ -60,7 +60,7 @@ const SearchScreen: FC<Props> = ({ setChapterSearchText }) => {
   };
 
   const submitSearch = (item: Article) => {
-    setChapterSearchText({ chapter: item.chapter, searchText });
+    setChapterSearchText({ chapter: item.chapter, searchText, articleType });
     if (articleType === ARTICLE_TYPE_REGULATIONS) {
       navigation.navigate('RegulationsScreenStack', {
         screen: 'RegulationDetailsScreen',
