@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { FC, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { TextInput } from 'react-native-paper';
 
@@ -13,7 +13,7 @@ const styles = StyleSheet.create({
   },
 });
 
-const BreakingDistanceCalculator: React.FC = () => {
+const BreakingDistanceCalculator: FC = () => {
   const [textInput, setTextInput] = useState<number | undefined>();
 
   const getTextInputValue = () =>

@@ -1,18 +1,15 @@
-import React, { useState } from 'react';
+import React, { FC, useState } from 'react';
 import { StyleProp, View, ViewStyle } from 'react-native';
 import { Icon } from 'native-base';
 import ArticleListOverlay from '../../overlay/ArticleListOverlay';
-import { ArticleType } from '../../database/model/ArticleType';
+import { ArticleType } from '../../model/ArticleType';
 
 interface Props {
   articleType: ArticleType;
   articleButtonStyle: StyleProp<ViewStyle>;
 }
 
-const ArticleListButton: React.FC<Props> = ({
-  articleType,
-  articleButtonStyle,
-}) => {
+const ArticleListButton: FC<Props> = ({ articleType, articleButtonStyle }) => {
   const [visible, setVisible] = useState(false);
 
   const toggleOverlay = () => {

@@ -1,9 +1,9 @@
-import React from 'react';
+import React, { FC } from 'react';
 import { FlatList, View } from 'react-native';
 import { DrawerNavigationProp } from '@react-navigation/drawer/lib/typescript/src/types';
 import ListItem from '../../components/ListItem';
-import { Article } from '../../database/model/Article';
-import { ArticleType } from '../../database/model/ArticleType';
+import { Article } from '../../model/Article';
+import { ARTICLE_TYPE_REGULATIONS, ArticleType } from '../../model/ArticleType';
 
 interface Props {
   navigation: DrawerNavigationProp<any>;
@@ -11,13 +11,9 @@ interface Props {
   articleType: ArticleType;
 }
 
-const ArticlesList: React.FC<Props> = ({
-  navigation,
-  articles,
-  articleType,
-}) => {
+const ArticlesList: FC<Props> = ({ navigation, articles, articleType }) => {
   const navigationDetailScreenHandler = (article: Article) => {
-    if (articleType === 'regulations') {
+    if (articleType === ARTICLE_TYPE_REGULATIONS) {
       navigation.navigate('RegulationsScreenStack', {
         screen: 'RegulationDetailsScreen',
         params: { articleChapter: article.chapter },

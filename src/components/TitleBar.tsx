@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { FC } from 'react';
 import { Text, View, StyleSheet, Keyboard } from 'react-native';
 
 const styles = StyleSheet.create({
@@ -24,7 +24,7 @@ interface Props {
   subTitle: string;
 }
 
-const TitleBar: React.FC<Props> = ({ title, subTitle }) => {
+const TitleBar: FC<Props> = ({ title, subTitle }) => {
   return (
     <View onTouchStart={Keyboard.dismiss} style={styles.container}>
       <Text style={styles.headerTitle}>{title}</Text>

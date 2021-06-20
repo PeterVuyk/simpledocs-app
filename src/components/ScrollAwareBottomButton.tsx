@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect } from 'react';
+import React, { FC, useCallback, useEffect, useRef } from 'react';
 import { Animated } from 'react-native';
 import { Button } from 'react-native-elements';
 import { connect } from 'react-redux';
@@ -10,12 +10,12 @@ interface Props {
   onPress: () => void;
 }
 
-const ScrollAwareBottomButton: React.FC<Props> = ({
+const ScrollAwareBottomButton: FC<Props> = ({
   title,
   scrollDirection,
   onPress,
 }) => {
-  const yValue = React.useRef(new Animated.Value(0)).current;
+  const yValue = useRef(new Animated.Value(0)).current;
 
   const hideElement = useCallback(() => {
     Animated.timing(yValue, {

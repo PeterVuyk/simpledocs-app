@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { FC } from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 import { DrawerNavigationHelpers } from '@react-navigation/drawer/lib/typescript/src/types';
 import Header from '../header/Header';
@@ -11,7 +11,7 @@ interface Props {
   navigation: DrawerNavigationHelpers;
 }
 
-const InstructionManualStackNavigator: React.FC<Props> = ({ navigation }) => {
+const InstructionManualStackNavigator: FC<Props> = ({ navigation }) => {
   return (
     <Stack.Navigator headerMode="screen">
       <Stack.Screen

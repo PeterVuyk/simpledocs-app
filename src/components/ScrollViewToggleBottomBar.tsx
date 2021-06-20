@@ -1,22 +1,22 @@
-import React from 'react';
+import React, { FC, ReactNode, useEffect, useState } from 'react';
 import { ScrollView } from 'react-native';
 import { connect } from 'react-redux';
 import scrolling from '../redux/actions/scrolling';
 
 interface Props {
-  children: React.ReactNode;
+  children: ReactNode;
   pageHeight: number;
   setScrollDirection: (scrollDirection: string) => void;
 }
 
-const ScrollViewToggleBottomBar: React.FC<Props> = ({
+const ScrollViewToggleBottomBar: FC<Props> = ({
   children,
   pageHeight,
   setScrollDirection,
 }) => {
-  const [oldOffset, setOldOffset] = React.useState(0);
+  const [oldOffset, setOldOffset] = useState(0);
 
-  React.useEffect(() => {
+  useEffect(() => {
     return () => {
       setScrollDirection('up');
     };

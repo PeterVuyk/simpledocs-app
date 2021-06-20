@@ -1,33 +1,30 @@
-import React from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import { Button, ListItem, Overlay } from 'react-native-elements';
 import { View, FlatList, Dimensions } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import articleRepository from '../database/repository/articleRepository';
 import SVGIcon from '../components/SVGIcon';
-import { ArticleChapter } from '../database/model/ArticleChapter';
-import { ArticleType } from '../database/model/ArticleType';
+import { ArticleChapter } from '../model/ArticleChapter';
+import { ARTICLE_TYPE_REGULATIONS, ArticleType } from '../model/ArticleType';
 
 interface Props {
   articleType: ArticleType;
   toggleOverlay: () => void;
 }
 
-const ArticleListOverlay: React.FC<Props> = ({
-  articleType,
-  toggleOverlay,
-}) => {
-  const [chapters, setChapters] = React.useState<ArticleChapter[]>([]);
+const ArticleListOverlay: FC<Props> = ({ articleType, toggleOverlay }) => {
+  const [chapters, setChapters] = useState<ArticleChapter[]>([]);
 
   const navigation = useNavigation<StackNavigationProp<any>>();
 
-  React.useEffect(() => {
+  useEffect(() => {
     articleRepository.getChapters(articleType, setChapters);
   }, [articleType, setChapters]);
 
   const handleChapterClick = (item: ArticleChapter) => {
     toggleOverlay();
-    if (articleType === 'regulations') {
+    if (articleType === ARTICLE_TYPE_REGULATIONS) {
       navigation.push('RegulationDetailsScreen', {
         articleChapter: item.chapter,
       });

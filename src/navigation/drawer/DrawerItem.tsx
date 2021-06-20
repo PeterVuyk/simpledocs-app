@@ -1,33 +1,16 @@
-import React from 'react';
+import React, { FC } from 'react';
 import { DrawerItem as Item } from '@react-navigation/drawer';
 import { Icon } from 'native-base';
+import { IconFamilyType } from '../../model/IconFamilyType';
 
 interface Props {
   label: string;
   onSubmit: () => void;
   iconName: string;
-  iconType:
-    | 'AntDesign'
-    | 'Entypo'
-    | 'EvilIcons'
-    | 'Feather'
-    | 'FontAwesome'
-    | 'FontAwesome5'
-    | 'Foundation'
-    | 'Ionicons'
-    | 'MaterialCommunityIcons'
-    | 'MaterialIcons'
-    | 'Octicons'
-    | 'SimpleLineIcons'
-    | 'Zocial';
+  iconType: IconFamilyType;
 }
 
-const DrawerItem: React.FC<Props> = ({
-  label,
-  onSubmit,
-  iconName,
-  iconType,
-}) => {
+const DrawerItem: FC<Props> = ({ label, onSubmit, iconName, iconType }) => {
   return (
     <Item
       style={{

@@ -1,7 +1,8 @@
 import * as React from 'react';
 import { Image, View } from 'react-native';
+import { FC } from 'react';
 
-const HeaderLogo: React.FC = () => {
+const HeaderLogo: FC = () => {
   return (
     <View style={{ flex: 1 }}>
       <Image

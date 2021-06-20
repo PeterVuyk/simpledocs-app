@@ -1,7 +1,8 @@
 import * as SQLite from 'expo-sqlite';
 import versioningRepository from '../repository/versioningRepository';
 import logger from '../../helper/logger';
-import { Article } from '../model/Article';
+import { Article } from '../../model/Article';
+import { ARTICLE_TYPE_INSTRUCTION_MANUAL } from '../../model/ArticleType';
 
 const db = SQLite.openDatabase('db.db');
 
@@ -58,7 +59,7 @@ function updateInstructionManual(
         createInstructionManualTable(sqlTransaction);
         versioningRepository.updateVersioning(
           sqlTransaction,
-          'instructionManual',
+          ARTICLE_TYPE_INSTRUCTION_MANUAL,
           version,
         );
         addInstructionManual(sqlTransaction, instructionManual);

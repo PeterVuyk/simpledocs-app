@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { FC, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { TextInput } from 'react-native-paper';
 
@@ -13,7 +13,7 @@ const styles = StyleSheet.create({
   },
 });
 
-const OvertakingDistanceCalculator: React.FC = () => {
+const OvertakingDistanceCalculator: FC = () => {
   const [ownSpeed, setOwnSpeed] = useState<number | undefined>();
   const [vehicleInFrontSpeed, setVehicleInFrontSpeed] =
     useState<number | undefined>();

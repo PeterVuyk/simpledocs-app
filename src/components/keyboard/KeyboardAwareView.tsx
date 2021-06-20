@@ -1,14 +1,14 @@
-import React from 'react';
+import React, { FC, ReactNode } from 'react';
 import { View, Keyboard } from 'react-native';
 import { connect } from 'react-redux';
 import searching, { SearchText } from '../../redux/actions/searching';
 
 interface Props {
-  children: React.ReactNode;
+  children: ReactNode;
   isKeyboardOpen: boolean;
 }
 
-const SearchScreen: React.FC<Props> = ({ children, isKeyboardOpen }) => {
+const SearchScreen: FC<Props> = ({ children, isKeyboardOpen }) => {
   return (
     <View
       style={{

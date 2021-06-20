@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { FC } from 'react';
 import { Button, Overlay } from 'react-native-elements';
 import { View } from 'react-native';
 import TitleBar from '../components/TitleBar';
@@ -7,9 +7,7 @@ interface Props {
   retryButtonHandler: () => void;
 }
 
-const NoInternetConnectionOverlay: React.FC<Props> = ({
-  retryButtonHandler,
-}) => {
+const NoInternetConnectionOverlay: FC<Props> = ({ retryButtonHandler }) => {
   return (
     <View style={{ flex: 1 }}>
       <Overlay fullScreen isVisible>

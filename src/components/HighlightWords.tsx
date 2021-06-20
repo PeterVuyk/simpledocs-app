@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { FC } from 'react';
 import { Text } from 'react-native';
 import { Chunk, findAll } from 'highlight-words-core';
 
@@ -7,7 +7,7 @@ interface Props {
   textToHighlight: string;
 }
 
-const HighlightWords: React.FC<Props> = ({ textToHighlight, searchText }) => {
+const HighlightWords: FC<Props> = ({ textToHighlight, searchText }) => {
   const chunks = findAll({
     textToHighlight,
     searchWords: [searchText],

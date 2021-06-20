@@ -1,6 +1,6 @@
 import database from './database';
 
-export interface Versioning {
+interface Versioning {
   regulations: string;
   decisionTree: string;
   calculations: string;
@@ -16,8 +16,8 @@ async function getVersioning() {
   return versioning.data() as Versioning;
 }
 
-const collectRegulations = {
+const collectVersions = {
   getVersioning,
 };
 
-export default collectRegulations;
+export default collectVersions;

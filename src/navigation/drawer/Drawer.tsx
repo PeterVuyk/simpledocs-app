@@ -1,13 +1,12 @@
-import React from 'react';
+import React, { FC } from 'react';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { NavigationContainer } from '@react-navigation/native';
-import { Platform } from 'react-native';
 import DrawerContent from './DrawerContent';
 import TabNavigation from '../bottom/TabNavigation';
 
 const DrawerNavigator = createDrawerNavigator();
 
-const Drawer: React.FC = () => {
+const Drawer: FC = () => {
   return (
     <NavigationContainer>
       <DrawerNavigator.Navigator

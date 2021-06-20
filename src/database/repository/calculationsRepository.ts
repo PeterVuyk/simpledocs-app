@@ -1,19 +1,12 @@
 import * as SQLite from 'expo-sqlite';
 import logger from '../../helper/logger';
-import { CalculationInfo } from '../model/CalculationInfo';
+import { CalculationInfo } from '../../model/CalculationInfo';
 
 const db = SQLite.openDatabase('db.db');
 
-type setCalculationsCallback = (
-  calculations: React.SetStateAction<CalculationInfo[]>,
-) => void;
-
-type setCalculationCallback = (
-  calculationInfo: React.SetStateAction<CalculationInfo | null>,
-) => void;
-
-// eslint-disable-next-line @typescript-eslint/ban-types
-function getCalculationsInfo(setCalculations: setCalculationsCallback): void {
+function getCalculationsInfo(
+  callback: (calculations: CalculationInfo[]) => void,
+): void {
   db.transaction(
     sqlTransaction => {
       sqlTransaction.executeSql(
@@ -22,7 +15,7 @@ function getCalculationsInfo(setCalculations: setCalculationsCallback): void {
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
         (_, { rows: { _array } }) => {
-          setCalculations(_array as CalculationInfo[]);
+          callback(_array as CalculationInfo[]);
         },
       );
     },
@@ -34,10 +27,9 @@ function getCalculationsInfo(setCalculations: setCalculationsCallback): void {
   );
 }
 
-// eslint-disable-next-line @typescript-eslint/ban-types
 function getCalculationInfoByTitle(
   title: string,
-  setCalculation: setCalculationCallback,
+  callback: (calculationInfo: CalculationInfo) => void,
 ): void {
   db.transaction(
     sqlTransaction => {
@@ -48,7 +40,7 @@ function getCalculationInfoByTitle(
         // @ts-ignore
         (_, { rows: { _array } }) => {
           if (_array.length === 1) {
-            setCalculation(_array[0] as CalculationInfo);
+            callback(_array[0] as CalculationInfo);
           }
         },
       );

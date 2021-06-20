@@ -1,5 +1,5 @@
 import { ListItem as Item } from 'react-native-elements';
-import React from 'react';
+import React, { FC } from 'react';
 import SVGIcon from './SVGIcon';
 
 interface Props {
@@ -9,7 +9,7 @@ interface Props {
   subTitle?: string;
 }
 
-const ListItem: React.FC<Props> = ({ onSubmit, iconFile, title, subTitle }) => {
+const ListItem: FC<Props> = ({ onSubmit, iconFile, title, subTitle }) => {
   return (
     <Item topDivider bottomDivider onPress={onSubmit}>
       <SVGIcon iconBlob={iconFile} />

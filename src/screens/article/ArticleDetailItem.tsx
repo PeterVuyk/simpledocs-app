@@ -1,12 +1,12 @@
-import React from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import { View } from 'react-native';
 import { connect } from 'react-redux';
 import searching, { SearchText } from '../../redux/actions/searching';
-import { Article } from '../../database/model/Article';
+import { Article } from '../../model/Article';
 import articleRepository from '../../database/repository/articleRepository';
 import HTMLViewer from '../../components/HTMLViewer';
 import ScrollAwareBottomButton from '../../components/ScrollAwareBottomButton';
-import { ArticleType } from '../../database/model/ArticleType';
+import { ArticleType } from '../../model/ArticleType';
 
 interface Props {
   articleChapter: string;
@@ -15,22 +15,22 @@ interface Props {
   setChapterSearchText: (searchText: SearchText) => void;
 }
 
-const ArticleDetailItem: React.FC<Props> = ({
+const ArticleDetailItem: FC<Props> = ({
   articleChapter,
   chapterSearchText,
   setChapterSearchText,
   articleType,
 }) => {
-  const [article, setArticle] = React.useState<Article | null>();
-  const [highlightText, setHighlightedText] = React.useState<string>('');
+  const [article, setArticle] = useState<Article | null>();
+  const [highlightText, setHighlightedText] = useState<string>('');
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (chapterSearchText.chapter === article?.chapter) {
       setHighlightedText(chapterSearchText.searchText ?? '');
     }
   }, [article, chapterSearchText]);
 
-  React.useEffect(() => {
+  useEffect(() => {
     articleRepository.getArticleByChapter(
       articleType,
       articleChapter,

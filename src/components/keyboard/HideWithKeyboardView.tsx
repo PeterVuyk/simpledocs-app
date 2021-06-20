@@ -1,16 +1,16 @@
-import React, { useCallback, useEffect } from 'react';
+import React, { FC, ReactNode, useCallback, useEffect } from 'react';
 import { View, Keyboard, StyleProp, ViewStyle } from 'react-native';
 import { connect } from 'react-redux';
 import keyboard from '../../redux/actions/keyboard';
 
 interface Props {
   style?: StyleProp<ViewStyle>;
-  children: React.ReactNode;
+  children: ReactNode;
   isKeyboardOpen: boolean;
   setIsKeyboardOpen: (isKeyboardOpen: boolean) => void;
 }
 
-const HideWithKeyboardView: React.FC<Props> = ({
+const HideWithKeyboardView: FC<Props> = ({
   style,
   children,
   isKeyboardOpen,

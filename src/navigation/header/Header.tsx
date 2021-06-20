@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { FC } from 'react';
 import { Platform, SafeAreaView, View } from 'react-native';
 import { DrawerNavigationHelpers } from '@react-navigation/drawer/lib/typescript/src/types';
 import { HeaderBackButton, StackNavigationProp } from '@react-navigation/stack';
@@ -7,17 +7,14 @@ import DrawerButton from './DrawerButton';
 import SearchButton from './SearchButton';
 import ArticleListButton from './ArticleListButton';
 import HeaderLogo from './HeaderLogo';
-import { ArticleType } from '../../database/model/ArticleType';
+import { ArticleType } from '../../model/ArticleType';
 
 interface Props {
   navigation: DrawerNavigationHelpers;
   showListButtonFromArticleType?: ArticleType;
 }
 
-const Header: React.FC<Props> = ({
-  navigation,
-  showListButtonFromArticleType,
-}) => {
+const Header: FC<Props> = ({ navigation, showListButtonFromArticleType }) => {
   const navigator = useNavigation<StackNavigationProp<any>>();
 
   return (

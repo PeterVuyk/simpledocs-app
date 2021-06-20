@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import { Image, View, StyleSheet } from 'react-native';
 import { RouteProp, useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
@@ -9,7 +9,8 @@ import HideWithKeyboardView from '../../../components/keyboard/HideWithKeyboardV
 import TitleBar from '../../../components/TitleBar';
 import OvertakingDistanceCalculator from './OvertakingDistanceCalculator';
 import KeyboardAwareView from '../../../components/keyboard/KeyboardAwareView';
-import { CalculationInfo } from '../../../database/model/CalculationInfo';
+import { CalculationInfo } from '../../../model/CalculationInfo';
+import { ARTICLE_TYPE_REGULATIONS } from '../../../model/ArticleType';
 
 const styles = StyleSheet.create({
   image: {
@@ -34,7 +35,7 @@ interface Props {
   >;
 }
 
-const CalculatorScreen: React.FC<Props> = ({ route }) => {
+const CalculatorScreen: FC<Props> = ({ route }) => {
   const { title } = route.params;
 
   const [calculationInfo, setCalculationInfo] =
@@ -42,12 +43,12 @@ const CalculatorScreen: React.FC<Props> = ({ route }) => {
 
   const navigation = useNavigation<StackNavigationProp<any>>();
 
-  React.useEffect(() => {
+  useEffect(() => {
     calculationsRepository.getCalculationInfoByTitle(title, setCalculationInfo);
   }, [title]);
 
   const navigateDecisionTree = (info: CalculationInfo) => {
-    if (info.articleType === 'regulations') {
+    if (info.articleType === ARTICLE_TYPE_REGULATIONS) {
       navigation.navigate('RegulationsScreenStack', {
         screen: 'RegulationDetailsScreen',
         params: { articleChapter: info.articleChapter },

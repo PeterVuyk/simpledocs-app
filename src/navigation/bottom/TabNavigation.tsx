@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import Animated from 'react-native-reanimated';
 import RegulationStackNavigator from '../StackNavigator/RegulationStackNavigator';
 import { setDrawerProgressListener } from '../drawer/onDrawerProgressListener';
@@ -11,8 +11,8 @@ import SearchStackNavigator from '../StackNavigator/SearchStackNavigator';
 
 const Tab = TabNavigator();
 
-const TabNavigation: React.FC = () => {
-  const [progress, setProgress] = React.useState(new Animated.Value(0));
+const TabNavigation: FC = () => {
+  const [progress, setProgress] = useState(new Animated.Value(0));
   const scale = Animated.interpolate(progress, {
     inputRange: [0, 1],
     outputRange: [1, 0.8],
@@ -23,7 +23,7 @@ const TabNavigation: React.FC = () => {
   });
   const animatedStyle = { borderRadius, transform: [{ scale }] };
 
-  React.useEffect(() => {
+  useEffect(() => {
     setDrawerProgressListener((updatedProgress: Animated.Value<0>) =>
       setProgress(updatedProgress),
     );

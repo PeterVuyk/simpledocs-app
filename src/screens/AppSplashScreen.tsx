@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { FC, useCallback, useEffect, useState } from 'react';
 import { View } from 'react-native';
 import * as SplashScreen from 'expo-splash-screen';
 import * as Font from 'expo-font';
@@ -9,10 +9,11 @@ import logger from '../helper/logger';
 import NoInternetConnectionOverlay from '../overlay/NoInternetConnectionOverlay';
 import internetConnectivity from '../helper/internetConnectivity';
 import versioningRepository from '../database/repository/versioningRepository';
-import { Versioning } from '../database/model/Versioning';
+import { Versioning } from '../model/Versioning';
 import ShowNotification from '../components/ShowNotification';
+import { NOTIFICATION_TYPE_NO_INTERNET_CONNECTION } from '../model/NotificationType';
 
-const AppSplashScreen: React.FC = () => {
+const AppSplashScreen: FC = () => {
   const [appIsReady, setAppReady] = useState<boolean>(false);
   const [versions, setVersions] = useState<Versioning[]>([]);
   const [startupIsSuccessful, setStartupIsSuccessful] =
@@ -85,7 +86,9 @@ const AppSplashScreen: React.FC = () => {
       {startupIsSuccessful && (
         <>
           {showInternetConnectionNotification() && (
-            <ShowNotification notificationType="noInternetConnection" />
+            <ShowNotification
+              notificationType={NOTIFICATION_TYPE_NO_INTERNET_CONNECTION}
+            />
           )}
           <Drawer />
         </>

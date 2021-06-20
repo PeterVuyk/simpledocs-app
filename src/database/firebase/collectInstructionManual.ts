@@ -1,16 +1,17 @@
 import database from './database';
-import { Article } from '../model/Article';
+import { Article } from '../../model/Article';
+import { ARTICLE_TYPE_INSTRUCTION_MANUAL } from '../../model/ArticleType';
 
 async function getInstructionManual(): Promise<Article[]> {
   const querySnapshot = await database()
-    .collection('instructionManual')
+    .collection(ARTICLE_TYPE_INSTRUCTION_MANUAL)
     .where('isDraft', '==', false)
     .get();
   return querySnapshot.docs.map(doc => doc.data() as Article);
 }
 
-const collectRegulations = {
+const collectInstructionManual = {
   getInstructionManual,
 };
 
-export default collectRegulations;
+export default collectInstructionManual;

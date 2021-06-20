@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { FC } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { DrawerNavigationProp } from '@react-navigation/drawer/lib/typescript/src/types';
 import TitleBar from '../../components/TitleBar';
@@ -15,7 +15,7 @@ interface Props {
   navigation: DrawerNavigationProp<any>;
 }
 
-const AboutUsScreen: React.FC<Props> = ({ navigation }) => {
+const AboutUsScreen: FC<Props> = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <TitleBar

@@ -1,6 +1,6 @@
 import * as SQLite from 'expo-sqlite';
 import logger from '../../helper/logger';
-import { Versioning } from '../model/Versioning';
+import { Versioning } from '../../model/Versioning';
 
 const db = SQLite.openDatabase('db.db');
 

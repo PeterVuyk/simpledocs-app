@@ -11,6 +11,12 @@ import collectCalculations from '../firebase/collectCalculations';
 import internetConnectivity from '../../helper/internetConnectivity';
 import collectInstructionManual from '../firebase/collectInstructionManual';
 import updateInstructionManualTable from './updateInstructionManualTable';
+import { ARTICLE_TYPE_INSTRUCTION_MANUAL } from '../../model/ArticleType';
+import {
+  AGGREGATE_CALCULATIONS,
+  AGGREGATE_DECISION_TREE,
+  AGGREGATE_REGULATIONS,
+} from '../../model/Versioning';
 
 const updateInstructionManual = async (newVersion: string) => {
   await collectInstructionManual
@@ -41,7 +47,7 @@ const updateInstructionManualIfNewVersion = async () => {
   }
 
   await versioningRepository.getVersioning(
-    'instructionManual',
+    ARTICLE_TYPE_INSTRUCTION_MANUAL,
     async versionOnTheApp => {
       if (versionOnTheApp?.version !== versionOnFirebase.instructionManual) {
         await updateInstructionManual(versionOnFirebase.instructionManual);
@@ -79,7 +85,7 @@ const updateRegulationsIfNewVersion = async () => {
   }
 
   await versioningRepository.getVersioning(
-    'regulations',
+    AGGREGATE_REGULATIONS,
     async versionOnTheApp => {
       if (versionOnTheApp?.version !== versionOnFirebase.regulations) {
         await updateRegulations(versionOnFirebase.regulations);
@@ -111,7 +117,7 @@ const updateDecisionTreeIfNewVersion = async () => {
   }
 
   await versioningRepository.getVersioning(
-    'decisionTree',
+    AGGREGATE_DECISION_TREE,
     async versionOnTheApp => {
       if (versionOnTheApp?.version !== versionOnFirebase.decisionTree) {
         await updateDecisionTree(versionOnFirebase.decisionTree);
@@ -143,7 +149,7 @@ const updateCalculationsIfNewVersion = async () => {
   }
 
   await versioningRepository.getVersioning(
-    'calculations',
+    AGGREGATE_CALCULATIONS,
     async versionOnTheApp => {
       if (versionOnTheApp?.version !== versionOnFirebase.calculations) {
         await updateCalculations(versionOnFirebase.calculations);

@@ -1,17 +1,14 @@
-import React, { useCallback, useEffect } from 'react';
+import React, { FC, ReactNode, useCallback, useEffect, useRef } from 'react';
 import { Animated, View } from 'react-native';
 import { connect } from 'react-redux';
 
 interface Props {
-  children: React.ReactNode;
+  children: ReactNode;
   scrollDirection: string;
 }
 
-const ToggleBottomNavigator: React.FC<Props> = ({
-  children,
-  scrollDirection,
-}) => {
-  const yValue = React.useRef(new Animated.Value(0)).current;
+const ToggleBottomNavigator: FC<Props> = ({ children, scrollDirection }) => {
+  const yValue = useRef(new Animated.Value(0)).current;
 
   const hideElement = useCallback(() => {
     Animated.timing(yValue, {
@@ -54,7 +51,7 @@ const ToggleBottomNavigator: React.FC<Props> = ({
   );
 };
 
-const mapStateToProps = (state) => {
+const mapStateToProps = state => {
   return {
     scrollDirection: state.scrolling.scrollDirection,
   };

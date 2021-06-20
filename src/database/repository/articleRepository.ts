@@ -1,26 +1,15 @@
 import * as SQLite from 'expo-sqlite';
 import logger from '../../helper/logger';
-import { Article } from '../model/Article';
-import { ArticleChapter } from '../model/ArticleChapter';
-import { ArticleType } from '../model/ArticleType';
+import { Article } from '../../model/Article';
+import { ArticleChapter } from '../../model/ArticleChapter';
+import { ArticleType } from '../../model/ArticleType';
 
 const db = SQLite.openDatabase('db.db');
 
-type setArticleCallback = (
-  article: React.SetStateAction<Article | null | undefined>,
-) => void;
-
-type setArticlesCallback = (articles: React.SetStateAction<Article[]>) => void;
-
-type setChaptersCallback = (
-  chapters: React.SetStateAction<ArticleChapter[]>,
-) => void;
-
-// eslint-disable-next-line @typescript-eslint/ban-types
 function getArticleByChapter(
   articleType: ArticleType,
   chapter: string,
-  setArticles: setArticleCallback,
+  callback: (article: Article) => void,
 ): void {
   db.transaction(
     sqlTransaction => {
@@ -31,7 +20,7 @@ function getArticleByChapter(
         // @ts-ignore
         (_, { rows: { _array } }) => {
           if (_array.length === 1) {
-            setArticles(_array[0]);
+            callback(_array[0]);
           }
         },
       );
@@ -47,7 +36,7 @@ function getArticleByChapter(
 function searchArticles(
   articleType: ArticleType,
   text: string,
-  setArticles: setArticlesCallback,
+  setArticles: (articles: Article[]) => void,
 ): void {
   db.transaction(
     sqlTransaction => {
@@ -74,7 +63,7 @@ function searchArticles(
 
 function getParagraphs(
   articleType: ArticleType,
-  setArticles: setArticlesCallback,
+  setArticles: (articles: Article[]) => void,
 ): void {
   db.transaction(
     sqlTransaction => {
@@ -95,7 +84,7 @@ function getParagraphs(
 
 function getChapters(
   articleType: ArticleType,
-  setChapters: setChaptersCallback,
+  setChapters: (chapters: ArticleChapter[]) => void,
 ): void {
   db.transaction(
     sqlTransaction => {

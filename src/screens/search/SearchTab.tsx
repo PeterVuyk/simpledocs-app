@@ -1,6 +1,10 @@
-import React, { useState } from 'react';
+import React, { FC, useState } from 'react';
 import { Tab, ThemeProvider } from 'react-native-elements';
-import { ArticleType } from '../../database/model/ArticleType';
+import {
+  ARTICLE_TYPE_INSTRUCTION_MANUAL,
+  ARTICLE_TYPE_REGULATIONS,
+  ArticleType,
+} from '../../model/ArticleType';
 
 interface Props {
   handleArticleTypeTabChange: (articleType: ArticleType) => void;
@@ -18,25 +22,25 @@ const theme = {
   },
 };
 
-const SearchTab: React.FC<Props> = ({ handleArticleTypeTabChange }) => {
+const SearchTab: FC<Props> = ({ handleArticleTypeTabChange }) => {
   const [tab, setTab] = useState(1);
 
   const handleTabChange = (clickedTab: number): void => {
     setTab(clickedTab);
     handleArticleTypeTabChange(
-      clickedTab === 1 ? 'regulations' : 'instructionManual',
+      clickedTab === 1
+        ? ARTICLE_TYPE_REGULATIONS
+        : ARTICLE_TYPE_INSTRUCTION_MANUAL,
     );
   };
 
   return (
-    <>
-      <ThemeProvider theme={theme}>
-        <Tab value={tab} onChange={handleTabChange}>
-          <Tab.Item title="Handboek" />
-          <Tab.Item title="Regelgeving" />
-        </Tab>
-      </ThemeProvider>
-    </>
+    <ThemeProvider theme={theme}>
+      <Tab value={tab} onChange={handleTabChange}>
+        <Tab.Item title="Handboek" />
+        <Tab.Item title="Regelgeving" />
+      </Tab>
+    </ThemeProvider>
   );
 };
 

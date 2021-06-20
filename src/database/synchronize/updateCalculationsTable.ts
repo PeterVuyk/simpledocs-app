@@ -1,7 +1,8 @@
 import * as SQLite from 'expo-sqlite';
 import versioningRepository from '../repository/versioningRepository';
 import logger from '../../helper/logger';
-import { CalculationInfo } from '../model/CalculationInfo';
+import { CalculationInfo } from '../../model/CalculationInfo';
+import { AGGREGATE_CALCULATIONS } from '../../model/Versioning';
 
 const db = SQLite.openDatabase('db.db');
 
@@ -56,7 +57,7 @@ function updateCalculation(
         createCalculationTable(sqlTransaction);
         versioningRepository.updateVersioning(
           sqlTransaction,
-          'calculations',
+          AGGREGATE_CALCULATIONS,
           version,
         );
         addCalculations(sqlTransaction, calculationInfo);

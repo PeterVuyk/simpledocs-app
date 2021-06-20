@@ -3,17 +3,18 @@ import { Platform, SafeAreaView, View } from 'react-native';
 import { SearchBar } from 'react-native-elements';
 import { useIsFocused, useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
+import { FC, ReactNode, useEffect } from 'react';
 import SearchTab from '../../screens/search/SearchTab';
-import { ArticleType } from '../../database/model/ArticleType';
+import { ArticleType } from '../../model/ArticleType';
 
 interface Props {
-  children: React.ReactNode;
+  children: ReactNode;
   searchText: string;
   handleSearchTextChange: (searchText: string) => void;
   handleArticleTypeTabChange: (articleType: ArticleType) => void;
 }
 
-const SearchHeader: React.FC<Props> = ({
+const SearchHeader: FC<Props> = ({
   children,
   searchText,
   handleSearchTextChange,
@@ -23,7 +24,7 @@ const SearchHeader: React.FC<Props> = ({
   const navigation = useNavigation<StackNavigationProp<any>>();
   const isFocused = useIsFocused();
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (!isFocused) {
       return;
     }

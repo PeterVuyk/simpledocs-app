@@ -1,18 +1,13 @@
 import * as SQLite from 'expo-sqlite';
 import logger from '../../helper/logger';
-import { DecisionTreeStep } from '../model/DecisionTreeStep';
+import { DecisionTreeStep } from '../../model/DecisionTreeStep';
+import { DecisionTreeTitle } from '../../model/DecisionTreeTitle';
 
 const db = SQLite.openDatabase('db.db');
 
-type setDecisionTreeStepsCallback = (
-  decisionTreeSteps: React.SetStateAction<DecisionTreeStep[]>,
-) => void;
-
-type setTitlesCallback = (titles: React.SetStateAction<Title[]>) => void;
-
 function getDecisionTreeByTitle(
   title: string,
-  setDecisionTreeSteps: setDecisionTreeStepsCallback,
+  callback: (steps: DecisionTreeStep[]) => void,
 ): void {
   db.transaction(
     sqlTransaction => {
@@ -22,7 +17,7 @@ function getDecisionTreeByTitle(
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
         (_, { rows: { _array } }) => {
-          setDecisionTreeSteps(_array as DecisionTreeStep[]);
+          callback(_array as DecisionTreeStep[]);
         },
       );
     },
@@ -34,14 +29,9 @@ function getDecisionTreeByTitle(
   );
 }
 
-export interface Title {
-  title: string;
-  iconFile: string;
-}
-
-// TODO: rename function
-// eslint-disable-next-line @typescript-eslint/ban-types
-function getDecisionTreeTitles(setTitles: setTitlesCallback): void {
+function getDecisionTrees(
+  callback: (decisionTree: DecisionTreeTitle[]) => void,
+): void {
   db.transaction(
     sqlTransaction => {
       sqlTransaction.executeSql(
@@ -51,14 +41,14 @@ function getDecisionTreeTitles(setTitles: setTitlesCallback): void {
         // @ts-ignore
         (_, { rows: { _array } }) => {
           if (_array.length !== 0) {
-            setTitles(_array as Title[]);
+            callback(_array as DecisionTreeTitle[]);
           }
         },
       );
     },
     error =>
       logger.error(
-        'decisionTreeRepository.getDecisionTreeTitles failed',
+        'decisionTreeRepository.getDecisionTrees failed',
         error.message,
       ),
   );
@@ -66,7 +56,7 @@ function getDecisionTreeTitles(setTitles: setTitlesCallback): void {
 
 const decisionTreeRepository = {
   getDecisionTreeByTitle,
-  getDecisionTreeTitles,
+  getDecisionTrees,
 };
 
 export default decisionTreeRepository;

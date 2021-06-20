@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { FC } from 'react';
 import { View } from 'react-native';
 import { DrawerNavigationHelpers } from '@react-navigation/drawer/lib/typescript/src/types';
 import { Icon } from 'native-base';
@@ -6,7 +6,7 @@ import { Icon } from 'native-base';
 interface Props {
   navigation: DrawerNavigationHelpers;
 }
-const SearchButton: React.FC<Props> = ({ navigation }) => {
+const SearchButton: FC<Props> = ({ navigation }) => {
   return (
     <View>
       <Icon

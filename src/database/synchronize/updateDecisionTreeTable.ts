@@ -1,7 +1,8 @@
 import * as SQLite from 'expo-sqlite';
 import versioningRepository from '../repository/versioningRepository';
 import logger from '../../helper/logger';
-import { DecisionTreeStep } from '../model/DecisionTreeStep';
+import { DecisionTreeStep } from '../../model/DecisionTreeStep';
+import { AGGREGATE_DECISION_TREE } from '../../model/Versioning';
 
 const db = SQLite.openDatabase('db.db');
 
@@ -54,7 +55,7 @@ function updateDecisionTreeSteps(
         createDecisionTreeTable(sqlTransaction);
         versioningRepository.updateVersioning(
           sqlTransaction,
-          'decisionTree',
+          AGGREGATE_DECISION_TREE,
           version,
         );
         addDecisionTreeSteps(sqlTransaction, decisionTreeSteps);

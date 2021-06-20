@@ -20,6 +20,7 @@ import {
 import { Icon } from 'native-base';
 import HideWithKeyboardView from '../../components/keyboard/HideWithKeyboardView';
 import ToggleBottomNavigator from '../../navigation/bottom/ToggleBottomNavigator';
+import { IconFamilyType } from '../../model/IconFamilyType';
 
 // Props accepted by the view
 type TabNavigationConfig = {
@@ -31,20 +32,7 @@ type TabNavigationConfig = {
 type TabNavigationOptions = {
   title: string;
   icon: string;
-  iconFamilyType?:
-    | 'AntDesign'
-    | 'Entypo'
-    | 'EvilIcons'
-    | 'Feather'
-    | 'FontAwesome'
-    | 'FontAwesome5'
-    | 'Foundation'
-    | 'Ionicons'
-    | 'MaterialCommunityIcons'
-    | 'MaterialIcons'
-    | 'Octicons'
-    | 'SimpleLineIcons'
-    | 'Zocial';
+  iconFamilyType?: IconFamilyType;
   showInBottomBar: boolean;
 };
 

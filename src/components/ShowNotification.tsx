@@ -1,17 +1,21 @@
-import React, { useCallback, useState } from 'react';
+import React, { FC, useCallback, useEffect, useState } from 'react';
 import { Alert, View } from 'react-native';
-import { NotificationType } from '../database/model/NotificationType';
+import {
+  NOTIFICATION_TYPE_HORIZONTAL_SCROLL_TIP,
+  NOTIFICATION_TYPE_NO_INTERNET_CONNECTION,
+  NotificationType,
+} from '../model/NotificationType';
 import notificationRepository from '../database/repository/notificationRepository';
-import { Notification } from '../database/model/Notification';
+import { Notification } from '../model/Notification';
 
 interface Props {
   notificationType: NotificationType;
 }
 
-const ShowNotification: React.FC<Props> = ({ notificationType }) => {
+const ShowNotification: FC<Props> = ({ notificationType }) => {
   const [notification, setNotification] = useState<Notification | null>(null);
 
-  React.useEffect(() => {
+  useEffect(() => {
     notificationRepository.getNotification(setNotification, notificationType);
   }, [notificationType]);
 
@@ -29,7 +33,8 @@ const ShowNotification: React.FC<Props> = ({ notificationType }) => {
       [
         {
           text: 'Niet meer melden',
-          onPress: () => disableNotification('noInternetConnection'),
+          onPress: () =>
+            disableNotification(NOTIFICATION_TYPE_NO_INTERNET_CONNECTION),
         },
         { text: 'OK', onPress: () => null },
       ],
@@ -43,20 +48,21 @@ const ShowNotification: React.FC<Props> = ({ notificationType }) => {
       [
         {
           text: 'Niet meer melden',
-          onPress: () => disableNotification('horizontalScrollTip'),
+          onPress: () =>
+            disableNotification(NOTIFICATION_TYPE_HORIZONTAL_SCROLL_TIP),
         },
         { text: 'OK', onPress: () => null },
       ],
     );
   }, []);
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (notification !== null && notification.notificationEnabled) {
       switch (notification.notificationType) {
-        case 'horizontalScrollTip':
+        case NOTIFICATION_TYPE_HORIZONTAL_SCROLL_TIP:
           showHorizontalScrollTip();
           break;
-        case 'noInternetConnection':
+        case NOTIFICATION_TYPE_NO_INTERNET_CONNECTION:
           showNoInternetNotification();
           break;
         default:

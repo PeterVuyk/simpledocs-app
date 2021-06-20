@@ -1,7 +1,7 @@
 import * as SQLite from 'expo-sqlite';
 import logger from '../../helper/logger';
-import { Notification } from '../model/Notification';
-import { NotificationType } from '../model/NotificationType';
+import { Notification } from '../../model/Notification';
+import { NotificationType } from '../../model/NotificationType';
 
 const db = SQLite.openDatabase('db.db');
 

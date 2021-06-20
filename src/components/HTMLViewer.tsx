@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { createRef, FC, useEffect, useState } from 'react';
 import WebView, { WebViewMessageEvent } from 'react-native-webview';
 import { ShouldStartLoadRequest } from 'react-native-webview/lib/WebViewTypes';
 import { Linking, Platform, View } from 'react-native';
@@ -6,7 +6,11 @@ import { useIsFocused, useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import highlightWordsInHTMLFile from '../helper/highlightWordsInHTMLFile';
 import ScrollViewToggleBottomBar from './ScrollViewToggleBottomBar';
-import { ArticleType } from '../database/model/ArticleType';
+import {
+  ARTICLE_TYPE_INSTRUCTION_MANUAL,
+  ARTICLE_TYPE_REGULATIONS,
+  ArticleType,
+} from '../model/ArticleType';
 
 interface Props {
   htmlFile: string;
@@ -14,18 +18,14 @@ interface Props {
   articleType: ArticleType;
 }
 
-const HTMLViewer: React.FC<Props> = ({
-  htmlFile,
-  highlightText,
-  articleType,
-}) => {
-  const [webViewHeight, setWebViewHeight] = React.useState<number>(0);
-  const [loading, setLoading] = React.useState<boolean>(false);
-  const webview = React.createRef<WebView>();
+const HTMLViewer: FC<Props> = ({ htmlFile, highlightText, articleType }) => {
+  const [webViewHeight, setWebViewHeight] = useState<number>(0);
+  const [loading, setLoading] = useState<boolean>(false);
+  const webview = createRef<WebView>();
   const navigation = useNavigation<StackNavigationProp<any>>();
   const isFocused = useIsFocused();
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (loading && !isFocused) {
       setLoading(false);
     }
@@ -52,6 +52,39 @@ const HTMLViewer: React.FC<Props> = ({
     return highlightWordsInHTMLFile(htmlFile, highlightText ?? '');
   };
 
+  const redirectToInstructionManual = (url: string): void => {
+    const chapter =
+      url.split('https://page-blank.firebaseapp.com/instructionManual/')[1] ??
+      '1';
+
+    if (articleType === ARTICLE_TYPE_INSTRUCTION_MANUAL) {
+      navigation.push('InstructionManualDetailsScreen', {
+        articleChapter: chapter,
+      });
+      return;
+    }
+    navigation.navigate('InstructionManualStack', {
+      screen: 'InstructionManualDetailsScreen',
+      params: { articleChapter: chapter },
+    });
+  };
+
+  const redirectToRegulations = (url: string): void => {
+    const chapter =
+      url.split('https://page-blank.firebaseapp.com/regulations/')[1] ?? '1';
+
+    if (articleType === ARTICLE_TYPE_REGULATIONS) {
+      navigation.push('RegulationDetailsScreen', {
+        articleChapter: chapter,
+      });
+      return;
+    }
+    navigation.navigate('RegulationsScreenStack', {
+      screen: 'RegulationDetailsScreen',
+      params: { articleChapter: chapter },
+    });
+  };
+
   /**
    * This function always returns false to tell webview that links should not be loaded inside the app. Only https request will be
    * opened in the default browser. We want to use the html links to switch between screens. Even though we tell Webview to stop
@@ -71,27 +104,11 @@ const HTMLViewer: React.FC<Props> = ({
 
     webview?.current?.stopLoading();
     if (
-      request.url.search('https://page-blank.firebaseapp.com/calculations/') !==
+      request.url.search('https://page-blank.firebaseapp.com/regulations/') !==
       -1
     ) {
       setLoading(true);
-
-      const chapter =
-        request.url.split(
-          'https://page-blank.firebaseapp.com/calculations/',
-        )[1] ?? '1';
-
-      if (articleType === 'regulations') {
-        navigation.push('RegulationDetailsScreen', {
-          articleChapter: chapter,
-        });
-        return false;
-      }
-      navigation.navigate('RegulationsScreenStack', {
-        screen: 'RegulationDetailsScreen',
-        params: { articleChapter: chapter },
-      });
-
+      redirectToRegulations(request.url);
       return false;
     }
 
@@ -101,22 +118,7 @@ const HTMLViewer: React.FC<Props> = ({
       ) !== -1
     ) {
       setLoading(true);
-
-      const chapter =
-        request.url.split(
-          'https://page-blank.firebaseapp.com/instructionManual/',
-        )[1] ?? '1';
-
-      if (articleType === 'instructionManual') {
-        navigation.push('InstructionManualDetailsScreen', {
-          articleChapter: chapter,
-        });
-        return false;
-      }
-      navigation.navigate('InstructionManualStack', {
-        screen: 'InstructionManualDetailsScreen',
-        params: { articleChapter: chapter },
-      });
+      redirectToInstructionManual(request.url);
       return false;
     }
 

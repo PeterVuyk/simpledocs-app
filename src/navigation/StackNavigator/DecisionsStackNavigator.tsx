@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { FC } from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 import { DrawerNavigationHelpers } from '@react-navigation/drawer/lib/typescript/src/types';
 import DecisionTreeScreen from '../../screens/decisions/decisionTree/DecisionTreeScreen';
@@ -12,7 +12,7 @@ interface Props {
   navigation: DrawerNavigationHelpers;
 }
 
-const DecisionsStackNavigator: React.FC<Props> = ({ navigation }) => {
+const DecisionsStackNavigator: FC<Props> = ({ navigation }) => {
   return (
     <Stack.Navigator>
       <Stack.Screen

@@ -1,29 +1,30 @@
-import React from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import { FlatList, Image } from 'react-native';
 import { ListItem } from 'react-native-elements';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { connect } from 'react-redux';
 import articleRepository from '../../database/repository/articleRepository';
-import { Article } from '../../database/model/Article';
+import { Article } from '../../model/Article';
 import searching, { SearchText } from '../../redux/actions/searching';
 import SVGIcon from '../../components/SVGIcon';
 import HighlightWords from '../../components/HighlightWords';
 import SearchHeader from '../../navigation/header/SearchHeader';
 import KeyboardAwareView from '../../components/keyboard/KeyboardAwareView';
-import { ArticleType } from '../../database/model/ArticleType';
+import { ARTICLE_TYPE_REGULATIONS, ArticleType } from '../../model/ArticleType';
 
 interface Props {
   setChapterSearchText: (searchText: SearchText) => void;
 }
 
-const SearchScreen: React.FC<Props> = ({ setChapterSearchText }) => {
-  const [articleType, setArticleType] =
-    React.useState<ArticleType>('regulations');
-  const [article, setArticle] = React.useState<Article[]>([]);
-  const [searchText, setSearchText] = React.useState<string>('');
+const SearchScreen: FC<Props> = ({ setChapterSearchText }) => {
+  const [articleType, setArticleType] = useState<ArticleType>(
+    ARTICLE_TYPE_REGULATIONS,
+  );
+  const [article, setArticle] = useState<Article[]>([]);
+  const [searchText, setSearchText] = useState<string>('');
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (searchText === '') {
       setArticle([]);
       return;
@@ -60,7 +61,7 @@ const SearchScreen: React.FC<Props> = ({ setChapterSearchText }) => {
 
   const submitSearch = (item: Article) => {
     setChapterSearchText({ chapter: item.chapter, searchText });
-    if (articleType === 'regulations') {
+    if (articleType === ARTICLE_TYPE_REGULATIONS) {
       navigation.navigate('RegulationsScreenStack', {
         screen: 'RegulationDetailsScreen',
         params: {

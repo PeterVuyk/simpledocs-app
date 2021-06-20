@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { FC, useEffect } from 'react';
 import { Linking, Image, View, BackHandler, Platform } from 'react-native';
 import { DrawerNavigationHelpers } from '@react-navigation/drawer/lib/typescript/src/types';
 import Animated from 'react-native-reanimated';
@@ -10,8 +10,8 @@ interface Props {
   navigation: DrawerNavigationHelpers;
 }
 
-const DrawerContent: React.FC<Props> = ({ progress, navigation }) => {
-  React.useEffect(() => {
+const DrawerContent: FC<Props> = ({ progress, navigation }) => {
+  useEffect(() => {
     if (getDrawerProgressListener()) {
       getDrawerProgressListener()(progress);
     }

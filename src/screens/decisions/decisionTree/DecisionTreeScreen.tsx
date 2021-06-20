@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import { StyleSheet, View, Text } from 'react-native';
 import { Button, Icon } from 'react-native-elements';
 import { RouteProp } from '@react-navigation/native';
 import decisionTreeRepository from '../../../database/repository/decisionTreeRepository';
-import { DecisionTreeStep } from '../../../database/model/DecisionTreeStep';
+import { DecisionTreeStep } from '../../../model/DecisionTreeStep';
+import { ARTICLE_TYPE_REGULATIONS } from '../../../model/ArticleType';
 
 interface Props {
   navigation: any;
@@ -61,7 +62,7 @@ const styles = StyleSheet.create({
   },
 });
 
-const DecisionTreeScreen: React.FC<Props> = ({ route, navigation }) => {
+const DecisionTreeScreen: FC<Props> = ({ route, navigation }) => {
   const [isRootQuestion, setRootQuestion] = useState<boolean>(true);
   const [currentStep, setCurrentStep] =
     useState<DecisionTreeStep | undefined>();
@@ -71,12 +72,12 @@ const DecisionTreeScreen: React.FC<Props> = ({ route, navigation }) => {
     DecisionTreeStep[]
   >([]);
 
-  React.useEffect(() => {
+  useEffect(() => {
     const { title } = route.params;
     decisionTreeRepository.getDecisionTreeByTitle(title, setDecisionTreeSteps);
   }, [route]);
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (currentStep === undefined) {
       setCurrentStep(decisionTreeSteps[0]);
     }
@@ -98,7 +99,7 @@ const DecisionTreeScreen: React.FC<Props> = ({ route, navigation }) => {
   };
 
   const navigateToArticle = (step: DecisionTreeStep) => {
-    if (step.articleType === 'regulations') {
+    if (step.articleType === ARTICLE_TYPE_REGULATIONS) {
       navigation.navigate('RegulationsScreenStack', {
         screen: 'RegulationDetailsScreen',
         params: { articleChapter: step.articleChapter },
