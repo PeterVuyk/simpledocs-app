@@ -28,6 +28,10 @@
       },
       "package": "com.petervuyk.ambulancezorgapp"
     },
+    "androidNavigationBar": {
+      "barStyle": "light-content",
+      "backgroundColor": "#000000"
+    },
     "extra": {
       "bugsnag": {
         "apiKey": "f497cc85f47c5f022b288a650c793c7b"
