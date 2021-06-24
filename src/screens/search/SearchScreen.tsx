@@ -12,6 +12,7 @@ import HighlightWords from '../../components/HighlightWords';
 import SearchHeader from '../../navigation/header/SearchHeader';
 import KeyboardAwareView from '../../components/keyboard/KeyboardAwareView';
 import { ARTICLE_TYPE_REGULATIONS, ArticleType } from '../../model/ArticleType';
+import navigationHelper from '../../helper/navigationHelper';
 
 interface Props {
   setChapterSearchText: (searchText: SearchText) => void;
@@ -61,23 +62,14 @@ const SearchScreen: FC<Props> = ({ setChapterSearchText }) => {
 
   const submitSearch = (item: Article) => {
     setChapterSearchText({ chapter: item.chapter, searchText, articleType });
-    if (articleType === ARTICLE_TYPE_REGULATIONS) {
-      navigation.navigate('RegulationsScreenStack', {
-        screen: 'RegulationDetailsScreen',
-        params: {
-          articleChapter: item.chapter,
-          searchText: { chapter: item.chapter, searchText },
-        },
-      });
-      return;
-    }
-    navigation.navigate('InstructionManualStack', {
-      screen: 'InstructionManualDetailsScreen',
-      params: {
+    navigationHelper.navigateToChapter(
+      {
         articleChapter: item.chapter,
         searchText: { chapter: item.chapter, searchText },
       },
-    });
+      articleType,
+      navigation,
+    );
   };
 
   const renderItem = (item: Article) => (

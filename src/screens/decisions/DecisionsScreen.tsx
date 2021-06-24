@@ -10,6 +10,7 @@ import {
   AGGREGATE_DECISION_TREE,
 } from '../../model/Versioning';
 import { DecisionTreeTitle } from '../../model/DecisionTreeTitle';
+import navigationHelper from '../../helper/navigationHelper';
 
 interface Props {
   navigation: any;

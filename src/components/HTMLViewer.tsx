@@ -6,11 +6,8 @@ import { useIsFocused, useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import highlightWordsInHTMLFile from '../helper/highlightWordsInHTMLFile';
 import ScrollViewToggleBottomBar from './ScrollViewToggleBottomBar';
-import {
-  ARTICLE_TYPE_INSTRUCTION_MANUAL,
-  ARTICLE_TYPE_REGULATIONS,
-  ArticleType,
-} from '../model/ArticleType';
+import { ArticleType } from '../model/ArticleType';
+import navigationHelper, { BLANK_WEBPAGE } from '../helper/navigationHelper';
 
 interface Props {
   htmlFile: string;
@@ -52,46 +49,14 @@ const HTMLViewer: FC<Props> = ({ htmlFile, highlightText, articleType }) => {
     return highlightWordsInHTMLFile(htmlFile, highlightText ?? '');
   };
 
-  const redirectToInstructionManual = (url: string): void => {
-    const chapter =
-      url.split('https://page-blank.firebaseapp.com/instructionManual/')[1] ??
-      '1';
-
-    if (articleType === ARTICLE_TYPE_INSTRUCTION_MANUAL) {
-      navigation.push('InstructionManualDetailsScreen', {
-        articleChapter: chapter,
-      });
-      return;
-    }
-    navigation.navigate('InstructionManualStack', {
-      screen: 'InstructionManualDetailsScreen',
-      params: { articleChapter: chapter },
-    });
-  };
-
-  const redirectToRegulations = (url: string): void => {
-    const chapter =
-      url.split('https://page-blank.firebaseapp.com/regulations/')[1] ?? '1';
-
-    if (articleType === ARTICLE_TYPE_REGULATIONS) {
-      navigation.push('RegulationDetailsScreen', {
-        articleChapter: chapter,
-      });
-      return;
-    }
-    navigation.navigate('RegulationsScreenStack', {
-      screen: 'RegulationDetailsScreen',
-      params: { articleChapter: chapter },
-    });
-  };
-
   /**
    * This function always returns false to tell webview that links should not be loaded inside the app. Only https request will be
    * opened in the default browser. We want to use the html links to switch between screens. Even though we tell Webview to stop
    * loading the page from the links href, once a while it will attempt to load the page anyway. So in addition:
    * - We hide the webview component while switching to the next screen.
    * - We use http:// instead of app:// to avoid UNKNOWN_URL_SCHEME (Webview doesn't work well with 'unofficial' URI schemes
-   * - We use example.com instead of a local url to avoid ERR_CONNECTION_REFUSED (e.g. <a href="https://page-blank.firebaseapp.com/<articleType>/1.1">1.1</a> navigate to chapter 1.1)
+   * - We use example.com instead of a local url to avoid ERR_CONNECTION_REFUSED
+   * (e.g. <a href="https://page-blank.firebaseapp.com/<articleType>/1.1">1.1</a> navigate to chapter 1.1)
    *
    * If the user returns to this page the useEffect hook will enable the webview component whereupon the html file is loaded again.
    */
@@ -103,22 +68,13 @@ const HTMLViewer: FC<Props> = ({ htmlFile, highlightText, articleType }) => {
     }
 
     webview?.current?.stopLoading();
-    if (
-      request.url.search('https://page-blank.firebaseapp.com/regulations/') !==
-      -1
-    ) {
+    if (request.url.search(BLANK_WEBPAGE) !== -1) {
       setLoading(true);
-      redirectToRegulations(request.url);
-      return false;
-    }
-
-    if (
-      request.url.search(
-        'https://page-blank.firebaseapp.com/instructionManual/',
-      ) !== -1
-    ) {
-      setLoading(true);
-      redirectToInstructionManual(request.url);
+      navigationHelper.navigateFromHttpsUrlToChapter(
+        request.url,
+        articleType,
+        navigation,
+      );
       return false;
     }
 

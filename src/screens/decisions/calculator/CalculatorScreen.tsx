@@ -11,6 +11,8 @@ import OvertakingDistanceCalculator from './OvertakingDistanceCalculator';
 import KeyboardAwareView from '../../../components/keyboard/KeyboardAwareView';
 import { CalculationInfo } from '../../../model/CalculationInfo';
 import { ARTICLE_TYPE_REGULATIONS } from '../../../model/ArticleType';
+import navigationHelper from '../../../helper/navigationHelper';
+import articleRepository from '../../../database/repository/articleRepository';
 
 const styles = StyleSheet.create({
   image: {
@@ -48,17 +50,11 @@ const CalculatorScreen: FC<Props> = ({ route }) => {
   }, [title]);
 
   const navigateDecisionTree = (info: CalculationInfo) => {
-    if (info.articleType === ARTICLE_TYPE_REGULATIONS) {
-      navigation.navigate('RegulationsScreenStack', {
-        screen: 'RegulationDetailsScreen',
-        params: { articleChapter: info.articleChapter },
-      });
-      return;
-    }
-    navigation.navigate('InstructionManualStack', {
-      screen: 'InstructionManualDetailsScreen',
-      params: { articleChapter: info.articleChapter },
-    });
+    navigationHelper.navigateToChapter(
+      { articleChapter: info.articleChapter },
+      info.articleType,
+      navigation,
+    );
   };
 
   return (

@@ -5,6 +5,7 @@ import { RouteProp } from '@react-navigation/native';
 import decisionTreeRepository from '../../../database/repository/decisionTreeRepository';
 import { DecisionTreeStep } from '../../../model/DecisionTreeStep';
 import { ARTICLE_TYPE_REGULATIONS } from '../../../model/ArticleType';
+import navigationHelper from '../../../helper/navigationHelper';
 
 interface Props {
   navigation: any;
@@ -64,8 +65,9 @@ const styles = StyleSheet.create({
 
 const DecisionTreeScreen: FC<Props> = ({ route, navigation }) => {
   const [isRootQuestion, setRootQuestion] = useState<boolean>(true);
-  const [currentStep, setCurrentStep] =
-    useState<DecisionTreeStep | undefined>();
+  const [currentStep, setCurrentStep] = useState<
+    DecisionTreeStep | undefined
+  >();
   const [leftStep, setLeftStep] = useState<DecisionTreeStep | undefined>();
   const [rightStep, setRightStep] = useState<DecisionTreeStep | undefined>();
   const [decisionTreeSteps, setDecisionTreeSteps] = useState<
@@ -99,17 +101,11 @@ const DecisionTreeScreen: FC<Props> = ({ route, navigation }) => {
   };
 
   const navigateToArticle = (step: DecisionTreeStep) => {
-    if (step.articleType === ARTICLE_TYPE_REGULATIONS) {
-      navigation.navigate('RegulationsScreenStack', {
-        screen: 'RegulationDetailsScreen',
-        params: { articleChapter: step.articleChapter },
-      });
-      return;
-    }
-    navigation.navigate('InstructionManualStack', {
-      screen: 'InstructionManualDetailsScreen',
-      params: { articleChapter: step.articleChapter },
-    });
+    navigationHelper.navigateToChapter(
+      { articleChapter: step.articleChapter ?? '' },
+      step.articleType,
+      navigation,
+    );
   };
 
   return (

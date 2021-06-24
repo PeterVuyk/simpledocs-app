@@ -42,24 +42,6 @@ const DrawerContent: FC<Props> = ({ progress, navigation }) => {
         iconType="MaterialCommunityIcons"
       />
       <DrawerItem
-        label="Nieuws"
-        onSubmit={() => Linking.openURL('https://www.ambulancezorg.nl/nieuws')}
-        iconName="newspaper"
-        iconType="FontAwesome5"
-      />
-      <DrawerItem
-        label="Actueel"
-        onSubmit={() => Linking.openURL('https://www.ambulancezorg.nl/actueel')}
-        iconName="topic"
-        iconType="MaterialIcons"
-      />
-      <DrawerItem
-        label="Contact"
-        onSubmit={() => Linking.openURL('https://www.ambulancezorg.nl/contact')}
-        iconName="contacts"
-        iconType="AntDesign"
-      />
-      <DrawerItem
         label="Over de maker"
         onSubmit={() => {
           navigation.navigate('AboutUsStack', {
