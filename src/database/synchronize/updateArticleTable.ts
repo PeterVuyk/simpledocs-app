@@ -2,16 +2,17 @@ import * as SQLite from 'expo-sqlite';
 import versioningRepository from '../repository/versioningRepository';
 import logger from '../../helper/logger';
 import { Article } from '../../model/Article';
-import { ARTICLE_TYPE_INSTRUCTION_MANUAL } from '../../model/ArticleType';
+import { ArticleType } from '../../model/ArticleType';
 
 const db = SQLite.openDatabase('db.db');
 
-function addInstructionManualArticle(
+function addArticle(
   sqlTransaction: SQLite.SQLTransaction,
   instructionManual: Article,
+  articleType: ArticleType,
 ): void {
   sqlTransaction.executeSql(
-    'INSERT INTO instructionManual (chapter, pageIndex, title, subTitle, htmlFile, searchText, level, iconFile) VALUES (?, ?, ?, ?, ?, ?, ?, ?)',
+    `INSERT INTO ${articleType} (chapter, pageIndex, title, subTitle, htmlFile, searchText, level, iconFile) VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
     [
       instructionManual.chapter,
       instructionManual.pageIndex,
@@ -25,48 +26,52 @@ function addInstructionManualArticle(
   );
 }
 
-function addInstructionManual(
+function addArticles(
   sqlTransaction: SQLite.SQLTransaction,
   instructionManual: Article[],
+  articleType: ArticleType,
 ): void {
   instructionManual.forEach(article =>
-    addInstructionManualArticle(sqlTransaction, article),
+    addArticle(sqlTransaction, article, articleType),
   );
 }
 
-function removeAllInstructionManualArticles(
+function removeAllArticles(
   sqlTransaction: SQLite.SQLTransaction,
+  articleType: ArticleType,
 ): void {
-  sqlTransaction.executeSql(`DROP TABLE IF EXISTS instructionManual`, []);
+  sqlTransaction.executeSql(`DROP TABLE IF EXISTS ${articleType}`, []);
 }
 
-function createInstructionManualTable(
+function createArticleTable(
   sqlTransaction: SQLite.SQLTransaction,
+  articleType: ArticleType,
 ): void {
   sqlTransaction.executeSql(
-    'create table if not exists instructionManual (chapter varchar not null constraint instruction_manual_pk primary key, pageIndex integer not null, title text not null, subTitle text, htmlFile text not null, searchText text not null, level varchar not null, iconFile text);',
+    `create table if not exists ${articleType} (chapter varchar not null constraint instruction_manual_pk primary key, pageIndex integer not null, title text not null, subTitle text, htmlFile text not null, searchText text not null, level varchar not null, iconFile text);`,
   );
 }
 
-function updateInstructionManual(
-  instructionManual: Article[],
+function updateArticles(
+  articles: Article[],
   version: string,
+  articleType: ArticleType,
 ): Promise<void> {
   return new Promise((resolve, reject) => {
     db.transaction(
       sqlTransaction => {
-        removeAllInstructionManualArticles(sqlTransaction);
-        createInstructionManualTable(sqlTransaction);
+        removeAllArticles(sqlTransaction, articleType);
+        createArticleTable(sqlTransaction, articleType);
         versioningRepository.updateVersioning(
           sqlTransaction,
-          ARTICLE_TYPE_INSTRUCTION_MANUAL,
+          articleType,
           version,
         );
-        addInstructionManual(sqlTransaction, instructionManual);
+        addArticles(sqlTransaction, articles, articleType);
       },
       error => {
         logger.error(
-          'Updating instructionManual failed, rolled back',
+          `Updating ${articleType} failed, rolled back`,
           error.message,
         );
         reject();
@@ -76,8 +81,8 @@ function updateInstructionManual(
   });
 }
 
-const updateInstructionManualTable = {
-  updateInstructionManual,
+const updateArticleTable = {
+  updateArticles,
 };
 
-export default updateInstructionManualTable;
+export default updateArticleTable;
