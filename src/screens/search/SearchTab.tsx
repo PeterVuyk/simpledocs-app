@@ -23,7 +23,7 @@ const theme = {
 };
 
 const SearchTab: FC<Props> = ({ handleArticleTypeTabChange }) => {
-  const [tab, setTab] = useState(1);
+  const [tab, setTab] = useState(0);
 
   const handleTabChange = (clickedTab: number): void => {
     setTab(clickedTab);

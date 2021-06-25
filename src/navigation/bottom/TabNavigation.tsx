@@ -66,7 +66,7 @@ const TabNavigation: FC = () => {
           name="DecisionsScreenStack"
           component={DecisionsStackNavigator}
           options={{
-            title: 'Afwegingen',
+            title: 'Besluitvorming',
             icon: 'arrow-decision',
             showInBottomBar: true,
           }}

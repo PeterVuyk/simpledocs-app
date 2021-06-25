@@ -10,7 +10,6 @@ import {
   AGGREGATE_DECISION_TREE,
 } from '../../model/Versioning';
 import { DecisionTreeTitle } from '../../model/DecisionTreeTitle';
-import navigationHelper from '../../helper/navigationHelper';
 
 interface Props {
   navigation: any;
@@ -53,10 +52,10 @@ const DecisionsScreen: FC<Props> = ({ navigation }) => {
         categorization: AGGREGATE_CALCULATIONS,
       } as DecisionItem;
     });
-    setDecisionItems([...calculations, ...decisionTrees]);
+    setDecisionItems([...decisionTrees, ...calculations]);
   }, [decisionTreeTitles, calculationTitles]);
 
-  const navigateDecisionTree = (decisionItem: DecisionItem) => {
+  const navigateDecisionItem = (decisionItem: DecisionItem) => {
     if (decisionItem.categorization === AGGREGATE_CALCULATIONS) {
       navigation.navigate('DecisionsScreenStack', {
         screen: 'calculatorScreen',
@@ -102,7 +101,7 @@ const DecisionsScreen: FC<Props> = ({ navigation }) => {
           ListHeaderComponent={flatListHeader}
           renderItem={({ item }) => (
             <ListItem
-              onSubmit={() => navigateDecisionTree(item)}
+              onSubmit={() => navigateDecisionItem(item)}
               iconFile={item.iconFile}
               title={item.title}
               subTitle={getSubtitleFromCategorization(item.categorization)}
