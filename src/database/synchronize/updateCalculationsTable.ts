@@ -11,8 +11,9 @@ function addCalculationInfo(
   calculationInfo: CalculationInfo,
 ): void {
   sqlTransaction.executeSql(
-    'INSERT INTO calculations (calculationType, title, explanation, articleButtonText, calculationImage, articleChapter, articleType, iconFile) VALUES (?, ?, ?, ?, ?, ?, ?, ?)',
+    'INSERT INTO calculations (listIndex, calculationType, title, explanation, articleButtonText, calculationImage, articleChapter, articleType, iconFile) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)',
     [
+      calculationInfo.listIndex,
       calculationInfo.calculationType,
       calculationInfo.title,
       calculationInfo.explanation,
@@ -42,7 +43,7 @@ function removeAllCalculationsInfo(
 
 function createCalculationTable(sqlTransaction: SQLite.SQLTransaction): void {
   sqlTransaction.executeSql(
-    'create table if not exists calculations (calculationType text not null constraint calculations_pk primary key, title text not null, explanation text not null, articleButtonText varchar not null, calculationImage blob not null, articleChapter varchar not null, articleType varchar not null, iconFile blob not null);',
+    'create table if not exists calculations (calculationType text not null constraint calculations_pk primary key, listIndex integer not null, title text not null, explanation text not null, articleButtonText varchar not null, calculationImage blob not null, articleChapter varchar not null, articleType varchar not null, iconFile blob not null);',
   );
 }
 

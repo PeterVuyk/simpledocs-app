@@ -13,20 +13,20 @@ const styles = StyleSheet.create({
   },
 });
 
-const BreakingDistanceCalculator: FC = () => {
+const BrakingDistanceCalculator: FC = () => {
   const [textInput, setTextInput] = useState<number | undefined>();
 
   const getTextInputValue = () =>
     textInput === undefined ? '' : textInput?.toString();
 
-  const calculateBreakingDistance = (kmPerHour: number): string => {
+  const calculateBrakingDistance = (kmPerHour: number): string => {
     if (kmPerHour < 30 || kmPerHour > 160) {
       return '';
     }
-    const responseTimeDistance = (kmPerHour / 10) * 3;
-    const stopDistance = ((kmPerHour / 10) * (kmPerHour / 10)) / 2;
-    const breakingDistance = +(responseTimeDistance + stopDistance).toFixed(2);
-    return `${breakingDistance} meter`;
+    const brakingDistance = (((kmPerHour / 10) * (kmPerHour / 10)) / 2).toFixed(
+      2,
+    );
+    return `${brakingDistance} meter`;
   };
 
   return (
@@ -39,7 +39,7 @@ const BreakingDistanceCalculator: FC = () => {
           styles.headerSubTitle,
         ]}
       >
-        {calculateBreakingDistance(textInput ?? 0)}
+        {calculateBrakingDistance(textInput ?? 0)}
       </Text>
       <TextInput
         label="Snelheid in KM (30 t/m 160)"
@@ -60,4 +60,4 @@ const BreakingDistanceCalculator: FC = () => {
   );
 };
 
-export default BreakingDistanceCalculator;
+export default BrakingDistanceCalculator;

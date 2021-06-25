@@ -1,6 +1,12 @@
 import * as SQLite from 'expo-sqlite';
 import logger from '../../helper/logger';
 import { CalculationInfo } from '../../model/CalculationInfo';
+import {
+  BRAKING_DISTANCE,
+  OVERTAKING_DISTANCE,
+  REACTION_PATH_DISTANCE,
+  STOPPING_DISTANCE,
+} from '../../model/CalculationType';
 
 const db = SQLite.openDatabase('db.db');
 
@@ -10,8 +16,13 @@ function getCalculationsInfo(
   db.transaction(
     sqlTransaction => {
       sqlTransaction.executeSql(
-        `SELECT * FROM calculations;`,
-        [],
+        `SELECT * FROM calculations WHERE calculationType IN (?, ?, ?, ?) ORDER BY listIndex`,
+        [
+          OVERTAKING_DISTANCE,
+          STOPPING_DISTANCE,
+          BRAKING_DISTANCE,
+          REACTION_PATH_DISTANCE,
+        ],
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
         (_, { rows: { _array } }) => {
