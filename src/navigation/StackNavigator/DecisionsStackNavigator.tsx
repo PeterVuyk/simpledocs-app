@@ -5,6 +5,7 @@ import DecisionTreeScreen from '../../screens/decisions/decisionTree/DecisionTre
 import Header from '../header/Header';
 import DecisionsScreen from '../../screens/decisions/DecisionsScreen';
 import CalculatorScreen from '../../screens/decisions/calculator/CalculatorScreen';
+import DocumentationScreen from '../../screens/decisions/DocumentationScreen';
 
 const Stack = createStackNavigator();
 
@@ -32,6 +33,13 @@ const DecisionsStackNavigator: FC<Props> = ({ navigation }) => {
       <Stack.Screen
         name="DecisionTreeScreen"
         component={DecisionTreeScreen}
+        options={{
+          header: () => <Header navigation={navigation} />,
+        }}
+      />
+      <Stack.Screen
+        name="DocumentationScreen"
+        component={DocumentationScreen}
         options={{
           header: () => <Header navigation={navigation} />,
         }}

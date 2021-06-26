@@ -9,7 +9,6 @@ import TitleBar from '../../../components/TitleBar';
 import OvertakingDistanceCalculator from './OvertakingDistanceCalculator';
 import KeyboardAwareView from '../../../components/keyboard/KeyboardAwareView';
 import { CalculationInfo } from '../../../model/CalculationInfo';
-import navigationHelper from '../../../helper/navigationHelper';
 import {
   BRAKING_DISTANCE,
   OVERTAKING_DISTANCE,
@@ -54,11 +53,10 @@ const CalculatorScreen: FC<Props> = ({ route }) => {
   }, [title]);
 
   const navigateDecisionTree = (info: CalculationInfo) => {
-    navigationHelper.navigateToChapter(
-      { articleChapter: info.articleChapter },
-      info.articleType,
-      navigation,
-    );
+    navigation.navigate('DecisionsScreenStack', {
+      screen: 'DocumentationScreen',
+      params: { htmlFile: info.htmlFile },
+    });
   };
 
   return (

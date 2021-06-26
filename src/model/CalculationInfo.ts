@@ -1,5 +1,3 @@
-import { ArticleType } from './ArticleType';
-
 export interface CalculationInfo {
   listIndex: number;
   calculationType: string;
@@ -7,7 +5,6 @@ export interface CalculationInfo {
   explanation: string;
   calculationImage: string;
   articleButtonText: string;
-  articleType: ArticleType;
-  articleChapter: string;
+  htmlFile: string;
   iconFile: string;
 }

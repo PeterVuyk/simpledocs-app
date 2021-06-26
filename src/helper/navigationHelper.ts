@@ -1,6 +1,7 @@
 import { StackNavigationProp } from '@react-navigation/stack';
 import { DrawerNavigationProp } from '@react-navigation/drawer/lib/typescript/src/types';
 import {
+  ARTICLE_TYPE_CALCULATIONS,
   ARTICLE_TYPE_INSTRUCTION_MANUAL,
   ARTICLE_TYPE_REGULATIONS,
   ArticleType,
@@ -28,10 +29,12 @@ const navigateToChapter = (
     });
     return;
   }
-  navigation.navigate('InstructionManualStack', {
-    screen: 'InstructionManualDetailsScreen',
-    params: navigationParams,
-  });
+  if (articleType === ARTICLE_TYPE_CALCULATIONS) {
+    navigation.navigate('InstructionManualStack', {
+      screen: 'InstructionManualDetailsScreen',
+      params: navigationParams,
+    });
+  }
 };
 
 const redirectToRegulations = (
