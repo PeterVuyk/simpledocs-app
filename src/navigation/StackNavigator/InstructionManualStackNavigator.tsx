@@ -2,8 +2,8 @@ import React, { FC } from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 import { DrawerNavigationHelpers } from '@react-navigation/drawer/lib/typescript/src/types';
 import Header from '../header/Header';
-import InstructionManualDetailsScreen from '../../screens/article/instructionManual/InstructionManualDetailsScreen';
 import InstructionManualScreen from '../../screens/article/instructionManual/InstructionManualScreen';
+import ArticleDetailsScreen from '../../screens/article/ArticleDetailsScreen';
 
 const Stack = createStackNavigator();
 
@@ -23,7 +23,7 @@ const InstructionManualStackNavigator: FC<Props> = ({ navigation }) => {
       />
       <Stack.Screen
         name="InstructionManualDetailsScreen"
-        component={InstructionManualDetailsScreen}
+        component={ArticleDetailsScreen}
         options={{
           header: () => (
             <Header

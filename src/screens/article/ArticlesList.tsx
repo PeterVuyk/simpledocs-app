@@ -15,7 +15,7 @@ interface Props {
 const ArticlesList: FC<Props> = ({ navigation, articles, articleType }) => {
   const navigationDetailScreenHandler = (article: Article) => {
     navigationHelper.navigateToChapter(
-      { articleChapter: article.chapter },
+      { articleChapter: article.chapter, articleType },
       articleType,
       navigation,
     );

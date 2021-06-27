@@ -65,6 +65,7 @@ const SearchScreen: FC<Props> = ({ setChapterSearchText }) => {
     navigationHelper.navigateToChapter(
       {
         articleChapter: item.chapter,
+        articleType,
         searchText: { chapter: item.chapter, searchText },
       },
       articleType,

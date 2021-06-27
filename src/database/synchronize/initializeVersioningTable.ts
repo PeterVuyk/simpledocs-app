@@ -29,6 +29,18 @@ function initialize(): Promise<any> {
           "INSERT OR IGNORE INTO versioning (aggregate, version) VALUES ('regulations', 'initial');",
         );
         sqlTransaction.executeSql(
+          "INSERT OR IGNORE INTO versioning (aggregate, version) VALUES ('RVV1990', 'initial');",
+        );
+        sqlTransaction.executeSql(
+          "INSERT OR IGNORE INTO versioning (aggregate, version) VALUES ('regelingOGS2009', 'initial');",
+        );
+        sqlTransaction.executeSql(
+          "INSERT OR IGNORE INTO versioning (aggregate, version) VALUES ('brancherichtlijnMedischeHulpverlening', 'initial');",
+        );
+        sqlTransaction.executeSql(
+          "INSERT OR IGNORE INTO versioning (aggregate, version) VALUES ('ontheffingGoedeTaakuitoefening', 'initial');",
+        );
+        sqlTransaction.executeSql(
           "INSERT OR IGNORE INTO versioning (aggregate, version) VALUES ('decisionTree', 'initial');",
         );
         sqlTransaction.executeSql(

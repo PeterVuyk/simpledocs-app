@@ -4,7 +4,6 @@ import { Button, Icon } from 'react-native-elements';
 import { RouteProp } from '@react-navigation/native';
 import decisionTreeRepository from '../../../database/repository/decisionTreeRepository';
 import { DecisionTreeStep } from '../../../model/DecisionTreeStep';
-import { ARTICLE_TYPE_REGULATIONS } from '../../../model/ArticleType';
 import navigationHelper from '../../../helper/navigationHelper';
 
 interface Props {
@@ -102,7 +101,10 @@ const DecisionTreeScreen: FC<Props> = ({ route, navigation }) => {
 
   const navigateToArticle = (step: DecisionTreeStep) => {
     navigationHelper.navigateToChapter(
-      { articleChapter: step.articleChapter ?? '' },
+      {
+        articleChapter: step.articleChapter ?? '',
+        articleType: step.articleType,
+      },
       step.articleType,
       navigation,
     );

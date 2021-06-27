@@ -1,9 +1,13 @@
 import { StackNavigationProp } from '@react-navigation/stack';
 import { DrawerNavigationProp } from '@react-navigation/drawer/lib/typescript/src/types';
 import {
+  ARTICLE_TYPE_BRANCHE_RICHTLIJN_MEDISCHE_HULPVERLENING,
   ARTICLE_TYPE_CALCULATIONS,
   ARTICLE_TYPE_INSTRUCTION_MANUAL,
+  ARTICLE_TYPE_ONTHEFFING_GOEDE_TAAKUITVOERING,
+  ARTICLE_TYPE_REGELING_OGS_2009,
   ARTICLE_TYPE_REGULATIONS,
+  ARTICLE_TYPE_RVV_1990,
   ArticleType,
 } from '../model/ArticleType';
 
@@ -11,6 +15,7 @@ export const BLANK_WEBPAGE = 'https://page-blank.firebaseapp.com/';
 
 interface NavigationParams {
   articleChapter: string;
+  articleType: ArticleType;
   searchText?: {
     chapter: string;
     searchText: string;
@@ -22,14 +27,19 @@ const navigateToChapter = (
   articleType: ArticleType,
   navigation: StackNavigationProp<any> | DrawerNavigationProp<any>,
 ): void => {
-  if (articleType === ARTICLE_TYPE_REGULATIONS) {
+  if (
+    articleType === ARTICLE_TYPE_RVV_1990 ||
+    articleType === ARTICLE_TYPE_REGELING_OGS_2009 ||
+    articleType === ARTICLE_TYPE_ONTHEFFING_GOEDE_TAAKUITVOERING ||
+    articleType === ARTICLE_TYPE_BRANCHE_RICHTLIJN_MEDISCHE_HULPVERLENING
+  ) {
     navigation.navigate('RegulationsScreenStack', {
       screen: 'RegulationDetailsScreen',
       params: navigationParams,
     });
     return;
   }
-  if (articleType === ARTICLE_TYPE_CALCULATIONS) {
+  if (articleType === ARTICLE_TYPE_INSTRUCTION_MANUAL) {
     navigation.navigate('InstructionManualStack', {
       screen: 'InstructionManualDetailsScreen',
       params: navigationParams,
