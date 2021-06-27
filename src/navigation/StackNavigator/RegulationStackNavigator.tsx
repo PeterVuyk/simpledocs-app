@@ -32,14 +32,7 @@ const RegulationStackNavigator: FC<Props> = ({ navigation }) => {
       <Stack.Screen
         name="RegulationDetailsScreen"
         component={ArticleDetailsScreen}
-        options={{
-          header: () => (
-            <Header
-              navigation={navigation}
-              showListButtonFromArticleType="regulations"
-            />
-          ),
-        }}
+        options={{ headerShown: false }}
       />
     </Stack.Navigator>
   );

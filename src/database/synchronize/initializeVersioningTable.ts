@@ -26,9 +26,6 @@ function initialize(): Promise<any> {
           'CREATE UNIQUE INDEX IF NOT EXISTS versioning_aggregate_uindex ON versioning (aggregate);',
         );
         sqlTransaction.executeSql(
-          "INSERT OR IGNORE INTO versioning (aggregate, version) VALUES ('regulations', 'initial');",
-        );
-        sqlTransaction.executeSql(
           "INSERT OR IGNORE INTO versioning (aggregate, version) VALUES ('RVV1990', 'initial');",
         );
         sqlTransaction.executeSql(

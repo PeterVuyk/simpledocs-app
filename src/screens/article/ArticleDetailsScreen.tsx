@@ -1,12 +1,14 @@
 import React, { FC, useEffect, useState } from 'react';
-import { RouteProp, useNavigation } from '@react-navigation/native';
-import { StackNavigationProp } from '@react-navigation/stack';
+import { RouteProp } from '@react-navigation/native';
+import { DrawerNavigationHelpers } from '@react-navigation/drawer/lib/typescript/src/types';
 import articleRepository from '../../database/repository/articleRepository';
 import { ArticleChapter } from '../../model/ArticleChapter';
 import ArticleDetails from './ArticleDetails';
 import { ArticleType } from '../../model/ArticleType';
+import Header from '../../navigation/header/Header';
 
 interface Props {
+  navigation: DrawerNavigationHelpers;
   route: RouteProp<
     {
       params: {
@@ -18,10 +20,9 @@ interface Props {
   >;
 }
 
-const ArticleDetailsScreen: FC<Props> = ({ route }) => {
+const ArticleDetailsScreen: FC<Props> = ({ navigation, route }) => {
   const [chapters, setChapters] = useState<ArticleChapter[]>([]);
   const { articleType, articleChapter } = route.params;
-  const navigation = useNavigation<StackNavigationProp<any>>();
 
   useEffect(() => {
     articleRepository.getChapters(articleType, setChapters);
@@ -29,6 +30,10 @@ const ArticleDetailsScreen: FC<Props> = ({ route }) => {
 
   return (
     <>
+      <Header
+        navigation={navigation}
+        showListButtonFromArticleType={articleType}
+      />
       {chapters.length !== 0 && (
         <ArticleDetails
           articleType={articleType}

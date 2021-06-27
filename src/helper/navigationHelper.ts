@@ -2,7 +2,6 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import { DrawerNavigationProp } from '@react-navigation/drawer/lib/typescript/src/types';
 import {
   ARTICLE_TYPE_BRANCHE_RICHTLIJN_MEDISCHE_HULPVERLENING,
-  ARTICLE_TYPE_CALCULATIONS,
   ARTICLE_TYPE_INSTRUCTION_MANUAL,
   ARTICLE_TYPE_ONTHEFFING_GOEDE_TAAKUITVOERING,
   ARTICLE_TYPE_REGELING_OGS_2009,
@@ -50,19 +49,20 @@ const navigateToChapter = (
 const redirectToRegulations = (
   url: string,
   currentArticleType: ArticleType,
+  targetArticleType: ArticleType,
+  chapter: string,
   navigation: StackNavigationProp<any>,
 ): void => {
-  const chapter = url.split(`${BLANK_WEBPAGE}regulations/`)[1] ?? '1';
-
   if (currentArticleType === ARTICLE_TYPE_REGULATIONS) {
     navigation.push('RegulationDetailsScreen', {
       articleChapter: chapter,
+      articleType: targetArticleType,
     });
     return;
   }
   navigation.navigate('RegulationsScreenStack', {
     screen: 'RegulationDetailsScreen',
-    params: { articleChapter: chapter },
+    params: { articleChapter: chapter, articleType: targetArticleType },
   });
 };
 
@@ -76,12 +76,16 @@ const redirectToInstructionManual = (
   if (currentArticleType === ARTICLE_TYPE_INSTRUCTION_MANUAL) {
     navigation.push('InstructionManualDetailsScreen', {
       articleChapter: chapter,
+      articleType: ARTICLE_TYPE_INSTRUCTION_MANUAL,
     });
     return;
   }
   navigation.navigate('InstructionManualStack', {
     screen: 'InstructionManualDetailsScreen',
-    params: { articleChapter: chapter },
+    params: {
+      articleChapter: chapter,
+      articleType: ARTICLE_TYPE_INSTRUCTION_MANUAL,
+    },
   });
 };
 
@@ -90,8 +94,55 @@ const navigateFromHttpsUrlToChapter = (
   currentArticleType: ArticleType,
   navigation: StackNavigationProp<any>,
 ) => {
-  if (url.search(`${BLANK_WEBPAGE}regulations/`) !== -1) {
-    redirectToRegulations(url, currentArticleType, navigation);
+  if (url.search(`${BLANK_WEBPAGE}${ARTICLE_TYPE_RVV_1990}/`) !== -1) {
+    redirectToRegulations(
+      url,
+      currentArticleType,
+      url.split(`${BLANK_WEBPAGE}${ARTICLE_TYPE_RVV_1990}/`)[1] as ArticleType,
+      ARTICLE_TYPE_RVV_1990,
+      navigation,
+    );
+  }
+  if (url.search(`${BLANK_WEBPAGE}${ARTICLE_TYPE_REGELING_OGS_2009}/`) !== -1) {
+    redirectToRegulations(
+      url,
+      currentArticleType,
+      url.split(
+        `${BLANK_WEBPAGE}${ARTICLE_TYPE_REGELING_OGS_2009}/`,
+      )[1] as ArticleType,
+      ARTICLE_TYPE_REGELING_OGS_2009,
+      navigation,
+    );
+  }
+  if (
+    url.search(
+      `${BLANK_WEBPAGE}${ARTICLE_TYPE_ONTHEFFING_GOEDE_TAAKUITVOERING}/`,
+    ) !== -1
+  ) {
+    redirectToRegulations(
+      url,
+      currentArticleType,
+      url.split(
+        `${BLANK_WEBPAGE}${ARTICLE_TYPE_ONTHEFFING_GOEDE_TAAKUITVOERING}/`,
+      )[1] as ArticleType,
+      ARTICLE_TYPE_ONTHEFFING_GOEDE_TAAKUITVOERING,
+      navigation,
+    );
+  }
+  if (
+    url.search(
+      `${BLANK_WEBPAGE}${ARTICLE_TYPE_BRANCHE_RICHTLIJN_MEDISCHE_HULPVERLENING}/`,
+    ) !== -1
+  ) {
+    redirectToRegulations(
+      url,
+      currentArticleType,
+      url.split(
+        `${BLANK_WEBPAGE}${ARTICLE_TYPE_BRANCHE_RICHTLIJN_MEDISCHE_HULPVERLENING}/`,
+      )[1] as ArticleType,
+      ARTICLE_TYPE_BRANCHE_RICHTLIJN_MEDISCHE_HULPVERLENING,
+      navigation,
+    );
   }
 
   if (url.search(`${BLANK_WEBPAGE}instructionManual/`) !== -1) {

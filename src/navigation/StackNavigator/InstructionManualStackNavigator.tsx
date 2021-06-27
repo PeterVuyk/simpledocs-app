@@ -24,14 +24,7 @@ const InstructionManualStackNavigator: FC<Props> = ({ navigation }) => {
       <Stack.Screen
         name="InstructionManualDetailsScreen"
         component={ArticleDetailsScreen}
-        options={{
-          header: () => (
-            <Header
-              navigation={navigation}
-              showListButtonFromArticleType="instructionManual"
-            />
-          ),
-        }}
+        options={{ headerShown: false }}
       />
     </Stack.Navigator>
   );

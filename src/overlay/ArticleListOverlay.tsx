@@ -6,7 +6,13 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import articleRepository from '../database/repository/articleRepository';
 import SVGIcon from '../components/SVGIcon';
 import { ArticleChapter } from '../model/ArticleChapter';
-import { ARTICLE_TYPE_REGULATIONS, ArticleType } from '../model/ArticleType';
+import {
+  ARTICLE_TYPE_BRANCHE_RICHTLIJN_MEDISCHE_HULPVERLENING,
+  ARTICLE_TYPE_ONTHEFFING_GOEDE_TAAKUITVOERING,
+  ARTICLE_TYPE_REGELING_OGS_2009,
+  ARTICLE_TYPE_RVV_1990,
+  ArticleType,
+} from '../model/ArticleType';
 
 interface Props {
   articleType: ArticleType;
@@ -24,14 +30,21 @@ const ArticleListOverlay: FC<Props> = ({ articleType, toggleOverlay }) => {
 
   const handleChapterClick = (item: ArticleChapter) => {
     toggleOverlay();
-    if (articleType === ARTICLE_TYPE_REGULATIONS) {
+    if (
+      articleType === ARTICLE_TYPE_RVV_1990 ||
+      articleType === ARTICLE_TYPE_REGELING_OGS_2009 ||
+      articleType === ARTICLE_TYPE_ONTHEFFING_GOEDE_TAAKUITVOERING ||
+      articleType === ARTICLE_TYPE_BRANCHE_RICHTLIJN_MEDISCHE_HULPVERLENING
+    ) {
       navigation.push('RegulationDetailsScreen', {
         articleChapter: item.chapter,
+        articleType,
       });
       return;
     }
     navigation.push('InstructionManualDetailsScreen', {
       articleChapter: item.chapter,
+      articleType,
     });
   };
 

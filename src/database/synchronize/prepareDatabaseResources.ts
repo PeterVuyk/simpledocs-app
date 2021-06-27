@@ -12,7 +12,6 @@ import {
   ARTICLE_TYPE_INSTRUCTION_MANUAL,
   ARTICLE_TYPE_ONTHEFFING_GOEDE_TAAKUITVOERING,
   ARTICLE_TYPE_REGELING_OGS_2009,
-  ARTICLE_TYPE_REGULATIONS,
   ARTICLE_TYPE_RVV_1990,
   ArticleType,
 } from '../../model/ArticleType';
@@ -132,7 +131,6 @@ const prepareDatabaseResources = async () => {
   }
   await updateDecisionTreeIfNewVersion()
     .then(() => updateArticleIfNewVersion(ARTICLE_TYPE_INSTRUCTION_MANUAL))
-    .then(() => updateArticleIfNewVersion(ARTICLE_TYPE_REGULATIONS))
     .then(() => updateArticleIfNewVersion(ARTICLE_TYPE_REGELING_OGS_2009))
     .then(() => updateArticleIfNewVersion(ARTICLE_TYPE_RVV_1990))
     .then(() =>
