@@ -11,7 +11,10 @@ import SVGIcon from '../../components/SVGIcon';
 import HighlightWords from '../../components/HighlightWords';
 import SearchHeader from '../../navigation/header/SearchHeader';
 import KeyboardAwareView from '../../components/keyboard/KeyboardAwareView';
-import { ARTICLE_TYPE_REGULATIONS, ArticleType } from '../../model/ArticleType';
+import {
+  ARTICLE_TYPE_INSTRUCTION_MANUAL,
+  ArticleType,
+} from '../../model/ArticleType';
 import navigationHelper from '../../helper/navigationHelper';
 
 interface Props {
@@ -20,7 +23,7 @@ interface Props {
 
 const SearchScreen: FC<Props> = ({ setChapterSearchText }) => {
   const [articleType, setArticleType] = useState<ArticleType>(
-    ARTICLE_TYPE_REGULATIONS,
+    ARTICLE_TYPE_INSTRUCTION_MANUAL,
   );
   const [article, setArticle] = useState<Article[]>([]);
   const [searchText, setSearchText] = useState<string>('');

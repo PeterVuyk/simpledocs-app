@@ -1,4 +1,3 @@
-export const ARTICLE_TYPE_REGULATIONS = 'regulations';
 export const ARTICLE_TYPE_INSTRUCTION_MANUAL = 'instructionManual';
 export const ARTICLE_TYPE_CALCULATIONS = 'calculations';
 export const ARTICLE_TYPE_RVV_1990 = 'RVV1990';
@@ -9,7 +8,6 @@ export const ARTICLE_TYPE_ONTHEFFING_GOEDE_TAAKUITVOERING =
   'ontheffingGoedeTaakuitoefening';
 
 export type ArticleType =
-  | 'regulations'
   | 'instructionManual'
   | 'calculations'
   | 'RVV1990'

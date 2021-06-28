@@ -5,7 +5,6 @@ import {
   ARTICLE_TYPE_INSTRUCTION_MANUAL,
   ARTICLE_TYPE_ONTHEFFING_GOEDE_TAAKUITVOERING,
   ARTICLE_TYPE_REGELING_OGS_2009,
-  ARTICLE_TYPE_REGULATIONS,
   ARTICLE_TYPE_RVV_1990,
   ArticleType,
 } from '../model/ArticleType';
@@ -53,7 +52,12 @@ const redirectToRegulations = (
   chapter: string,
   navigation: StackNavigationProp<any>,
 ): void => {
-  if (currentArticleType === ARTICLE_TYPE_REGULATIONS) {
+  if (
+    currentArticleType === ARTICLE_TYPE_RVV_1990 ||
+    currentArticleType === ARTICLE_TYPE_REGELING_OGS_2009 ||
+    currentArticleType === ARTICLE_TYPE_ONTHEFFING_GOEDE_TAAKUITVOERING ||
+    currentArticleType === ARTICLE_TYPE_BRANCHE_RICHTLIJN_MEDISCHE_HULPVERLENING
+  ) {
     navigation.push('RegulationDetailsScreen', {
       articleChapter: chapter,
       articleType: targetArticleType,
@@ -71,7 +75,8 @@ const redirectToInstructionManual = (
   currentArticleType: ArticleType,
   navigation: StackNavigationProp<any>,
 ): void => {
-  const chapter = url.split(`${BLANK_WEBPAGE}instructionManual/`)[1] ?? '1';
+  const chapter =
+    url.split(`${BLANK_WEBPAGE}${ARTICLE_TYPE_INSTRUCTION_MANUAL}/`)[1] ?? '1';
 
   if (currentArticleType === ARTICLE_TYPE_INSTRUCTION_MANUAL) {
     navigation.push('InstructionManualDetailsScreen', {
@@ -98,8 +103,8 @@ const navigateFromHttpsUrlToChapter = (
     redirectToRegulations(
       url,
       currentArticleType,
-      url.split(`${BLANK_WEBPAGE}${ARTICLE_TYPE_RVV_1990}/`)[1] as ArticleType,
       ARTICLE_TYPE_RVV_1990,
+      url.split(`${BLANK_WEBPAGE}${ARTICLE_TYPE_RVV_1990}/`)[1],
       navigation,
     );
   }
@@ -107,10 +112,8 @@ const navigateFromHttpsUrlToChapter = (
     redirectToRegulations(
       url,
       currentArticleType,
-      url.split(
-        `${BLANK_WEBPAGE}${ARTICLE_TYPE_REGELING_OGS_2009}/`,
-      )[1] as ArticleType,
       ARTICLE_TYPE_REGELING_OGS_2009,
+      url.split(`${BLANK_WEBPAGE}${ARTICLE_TYPE_REGELING_OGS_2009}/`)[1],
       navigation,
     );
   }
@@ -122,10 +125,10 @@ const navigateFromHttpsUrlToChapter = (
     redirectToRegulations(
       url,
       currentArticleType,
+      ARTICLE_TYPE_ONTHEFFING_GOEDE_TAAKUITVOERING,
       url.split(
         `${BLANK_WEBPAGE}${ARTICLE_TYPE_ONTHEFFING_GOEDE_TAAKUITVOERING}/`,
-      )[1] as ArticleType,
-      ARTICLE_TYPE_ONTHEFFING_GOEDE_TAAKUITVOERING,
+      )[1],
       navigation,
     );
   }
@@ -137,15 +140,17 @@ const navigateFromHttpsUrlToChapter = (
     redirectToRegulations(
       url,
       currentArticleType,
+      ARTICLE_TYPE_BRANCHE_RICHTLIJN_MEDISCHE_HULPVERLENING,
       url.split(
         `${BLANK_WEBPAGE}${ARTICLE_TYPE_BRANCHE_RICHTLIJN_MEDISCHE_HULPVERLENING}/`,
-      )[1] as ArticleType,
-      ARTICLE_TYPE_BRANCHE_RICHTLIJN_MEDISCHE_HULPVERLENING,
+      )[1],
       navigation,
     );
   }
 
-  if (url.search(`${BLANK_WEBPAGE}instructionManual/`) !== -1) {
+  if (
+    url.search(`${BLANK_WEBPAGE}${ARTICLE_TYPE_INSTRUCTION_MANUAL}/`) !== -1
+  ) {
     redirectToInstructionManual(url, currentArticleType, navigation);
   }
 };

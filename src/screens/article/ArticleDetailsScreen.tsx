@@ -22,7 +22,7 @@ interface Props {
 
 const ArticleDetailsScreen: FC<Props> = ({ navigation, route }) => {
   const [chapters, setChapters] = useState<ArticleChapter[]>([]);
-  const { articleType, articleChapter } = route.params;
+  const { articleChapter, articleType } = route.params;
 
   useEffect(() => {
     articleRepository.getChapters(articleType, setChapters);
