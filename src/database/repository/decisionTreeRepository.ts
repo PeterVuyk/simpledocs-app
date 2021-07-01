@@ -14,7 +14,6 @@ function getDecisionTreeByTitle(
       sqlTransaction.executeSql(
         `SELECT * FROM decisionTree WHERE title = ? ORDER BY id ASC;`,
         [title],
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
         (_, { rows: { _array } }) => {
           callback(_array as DecisionTreeStep[]);
@@ -37,7 +36,6 @@ function getDecisionTrees(
       sqlTransaction.executeSql(
         `SELECT title, iconFile FROM decisionTree WHERE iconFile IS NOT NULL;`,
         [],
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
         (_, { rows: { _array } }) => {
           if (_array.length !== 0) {

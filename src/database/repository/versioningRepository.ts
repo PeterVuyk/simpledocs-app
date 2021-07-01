@@ -28,7 +28,6 @@ async function getVersioning(
            WHERE aggregate = ?
            LIMIT 1;`,
           [aggregate],
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
           // @ts-ignore
           (_, { rows: { _array } }) => {
             if (_array.length === 1) {
@@ -55,7 +54,6 @@ function getAllVersions(callback: (versioning: Versioning[]) => void): void {
       sqlTransaction.executeSql(
         `SELECT * FROM versioning`,
         [],
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
         (_, { rows: { _array } }) => {
           callback(_array as Versioning[]);

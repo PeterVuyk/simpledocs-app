@@ -16,7 +16,6 @@ function getNotification(
           `SELECT *
            FROM notifications WHERE notificationType = ? LIMIT 1;`,
           [notificationType],
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
           // @ts-ignore
           (_, { rows: { _array } }) => {
             if (_array.length === 1) {

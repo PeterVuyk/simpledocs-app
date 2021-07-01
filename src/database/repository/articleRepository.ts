@@ -16,7 +16,6 @@ function getArticleByChapter(
       sqlTransaction.executeSql(
         `SELECT * FROM ${articleType} WHERE chapter = ?;`,
         [chapter],
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
         (_, { rows: { _array } }) => {
           if (_array.length === 1) {
@@ -49,7 +48,6 @@ function searchArticles(
           OR searchText LIKE ?
        ORDER BY [priority] DESC;`,
         [`%${text}%`, `%${text}%`, `%${text}%`, `%${text}%`],
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
         (_, { rows: { _array } }) => {
           setArticles(_array);
@@ -70,7 +68,6 @@ function getParagraphs(
       sqlTransaction.executeSql(
         `SELECT * FROM ${articleType} WHERE level IN ('chapter', 'section', 'subSection') ORDER BY pageIndex;`,
         [],
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
         (_, { rows: { _array } }) => {
           setArticles(_array);
@@ -91,7 +88,6 @@ function getChapters(
       sqlTransaction.executeSql(
         `SELECT chapter, title, iconFile FROM ${articleType} ORDER BY pageIndex;`,
         [],
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
         (_, { rows: { _array } }) => {
           setChapters(_array);

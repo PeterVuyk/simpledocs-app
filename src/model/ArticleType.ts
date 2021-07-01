@@ -1,5 +1,5 @@
 export const ARTICLE_TYPE_INSTRUCTION_MANUAL = 'instructionManual';
-export const ARTICLE_TYPE_CALCULATIONS = 'calculations';
+export const ARTICLE_TYPE_CONSIDERATIONS = 'considerations';
 export const ARTICLE_TYPE_RVV_1990 = 'RVV1990';
 export const ARTICLE_TYPE_REGELING_OGS_2009 = 'regelingOGS2009';
 export const ARTICLE_TYPE_BRANCHE_RICHTLIJN_MEDISCHE_HULPVERLENING =
@@ -9,7 +9,7 @@ export const ARTICLE_TYPE_ONTHEFFING_GOEDE_TAAKUITVOERING =
 
 export type ArticleType =
   | 'instructionManual'
-  | 'calculations'
+  | 'considerations'
   | 'RVV1990'
   | 'regelingOGS2009'
   | 'brancherichtlijnMedischeHulpverlening'

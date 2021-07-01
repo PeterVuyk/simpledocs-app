@@ -48,7 +48,7 @@ function createArticleTable(
   articleType: ArticleType,
 ): void {
   sqlTransaction.executeSql(
-    `create table if not exists ${articleType} (chapter varchar not null constraint instruction_manual_pk primary key, pageIndex integer not null, title text not null, subTitle text, htmlFile text not null, searchText text not null, level varchar not null, iconFile text);`,
+    `create table if not exists ${articleType} (chapter varchar not null constraint instruction_manual_pk primary key, pageIndex integer not null, title text not null, subTitle text, htmlFile text not null, searchText text not null, level varchar not null, iconFile blob);`,
   );
 }
 

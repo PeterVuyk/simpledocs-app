@@ -53,7 +53,9 @@ const updateArticleIfNewVersion = async (articleType: ArticleType) => {
   await versioningRepository.getVersioning(
     articleType,
     async versionOnTheApp => {
+      // @ts-ignore
       if (versionOnTheApp?.version !== versionOnFirebase[articleType]) {
+        // @ts-ignore
         await updateArticles(versionOnFirebase[articleType], articleType);
       }
     },

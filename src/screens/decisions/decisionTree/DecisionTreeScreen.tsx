@@ -5,6 +5,7 @@ import { RouteProp } from '@react-navigation/native';
 import decisionTreeRepository from '../../../database/repository/decisionTreeRepository';
 import { DecisionTreeStep } from '../../../model/DecisionTreeStep';
 import navigationHelper from '../../../helper/navigationHelper';
+import { CalculationInfo } from '../../../model/CalculationInfo';
 
 interface Props {
   navigation: any;
@@ -100,14 +101,10 @@ const DecisionTreeScreen: FC<Props> = ({ route, navigation }) => {
   };
 
   const navigateToArticle = (step: DecisionTreeStep) => {
-    navigationHelper.navigateToChapter(
-      {
-        articleChapter: step.articleChapter ?? '',
-        articleType: step.articleType,
-      },
-      step.articleType,
-      navigation,
-    );
+    navigation.navigate('DecisionsScreenStack', {
+      screen: 'DocumentationScreen',
+      params: { htmlFile: step.htmlFile },
+    });
   };
 
   return (
@@ -138,7 +135,7 @@ const DecisionTreeScreen: FC<Props> = ({ route, navigation }) => {
               />
             </View>
           )}
-          {currentStep !== undefined && currentStep.articleChapter !== null && (
+          {currentStep !== undefined && currentStep.htmlFile && (
             <View style={[{ bottom: 60 }, styles.buttonContainer]}>
               <Button
                 buttonStyle={[styles.articleButtonsStyle]}

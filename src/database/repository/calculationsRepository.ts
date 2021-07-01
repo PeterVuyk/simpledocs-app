@@ -23,7 +23,6 @@ function getCalculationsInfo(
           BRAKING_DISTANCE,
           REACTION_PATH_DISTANCE,
         ],
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
         (_, { rows: { _array } }) => {
           callback(_array as CalculationInfo[]);
@@ -47,7 +46,6 @@ function getCalculationInfoByTitle(
       sqlTransaction.executeSql(
         `SELECT * FROM calculations WHERE title = ? LIMIT 1;`,
         [title],
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
         (_, { rows: { _array } }) => {
           if (_array.length === 1) {
