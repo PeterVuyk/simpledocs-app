@@ -19,14 +19,14 @@ if (!global.atob) {
 LogBox.ignoreLogs(['Setting a timer']);
 
 const firebaseConfig = {
-  apiKey: 'AIzaSyCj7pKykN3ot7fqp0lf7Wi6JfNtdVFf9PE',
-  authDomain: 'ambulancezorg-app.firebaseapp.com',
-  databaseURL: 'https://ambulancezorg-app.europe-west1.firebaseio.com',
-  projectId: 'ambulancezorg-app',
-  storageBucket: 'ambulancezorg-app.appspot.com',
-  messagingSenderId: '824736346090',
-  appId: '1:824736346090:web:57b383dd2f5ee3d3654c93',
-  measurementId: 'G-F5H77QVVV3',
+  apiKey: process.env.API_KEY,
+  authDomain: process.env.AUTH_DOMAIN,
+  databaseURL: process.env.DATABASE_URL,
+  projectId: process.env.PROJECT_ID,
+  storageBucket: process.env.STORAGE_BUCKET,
+  messagingSenderId: process.env.MESSAGING_SENDER_ID,
+  appId: process.env.APP_ID,
+  measurementId: process.env.MEASUREMENT_ID,
 };
 
 const database = () => {
