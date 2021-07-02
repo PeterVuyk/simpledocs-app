@@ -1,5 +1,5 @@
 import React, { FC, useEffect, useState } from 'react';
-import { FlatList, Image } from 'react-native';
+import { FlatList, Image, StyleSheet } from 'react-native';
 import { ListItem } from 'react-native-elements';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
@@ -16,6 +16,15 @@ import {
   ArticleType,
 } from '../../model/ArticleType';
 import navigationHelper from '../../helper/navigationHelper';
+
+const styles = StyleSheet.create({
+  findPlaceholderImage: {
+    marginTop: 120,
+    height: 120,
+    width: 'auto',
+    resizeMode: 'contain',
+  },
+});
 
 interface Props {
   setChapterSearchText: (searchText: SearchText) => void;
@@ -105,12 +114,7 @@ const SearchScreen: FC<Props> = ({ setChapterSearchText }) => {
       <KeyboardAwareView>
         {article.length === 0 && searchText === '' && (
           <Image
-            style={{
-              marginTop: 120,
-              height: 120,
-              width: 'auto',
-              resizeMode: 'contain',
-            }}
+            style={styles.findPlaceholderImage}
             source={require('../../../assets/images/find.png')}
           />
         )}

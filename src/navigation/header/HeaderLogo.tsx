@@ -1,16 +1,19 @@
-import * as React from 'react';
-import { Image, View } from 'react-native';
-import { FC } from 'react';
+import React, { FC } from 'react';
+import { Image, StyleSheet, View } from 'react-native';
+
+const styles = StyleSheet.create({
+  headerLogo: {
+    height: 45,
+    width: 'auto',
+    resizeMode: 'contain',
+  },
+});
 
 const HeaderLogo: FC = () => {
   return (
     <View style={{ flex: 1 }}>
       <Image
-        style={{
-          height: 45,
-          width: 'auto',
-          resizeMode: 'contain',
-        }}
+        style={styles.headerLogo}
         source={require('../../../assets/images/azn.png')}
       />
     </View>

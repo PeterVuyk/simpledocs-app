@@ -1,8 +1,14 @@
 import React, { FC, useState } from 'react';
-import { StyleProp, View, ViewStyle } from 'react-native';
+import { StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
 import { Icon } from 'native-base';
 import ArticleListOverlay from '../../overlay/ArticleListOverlay';
 import { ArticleType } from '../../model/ArticleType';
+
+const styles = StyleSheet.create({
+  buttonColor: {
+    color: '#154594',
+  },
+});
 
 interface Props {
   articleType: ArticleType;
@@ -20,7 +26,7 @@ const ArticleListButton: FC<Props> = ({ articleType, articleButtonStyle }) => {
     <View>
       {!visible && (
         <Icon
-          style={[{ color: '#154594' }, articleButtonStyle]}
+          style={[styles.buttonColor, articleButtonStyle]}
           name="book-open-variant"
           type="MaterialCommunityIcons"
           fontSize={26}

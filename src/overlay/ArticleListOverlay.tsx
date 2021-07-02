@@ -1,6 +1,6 @@
 import React, { FC, useEffect, useState } from 'react';
 import { Button, ListItem, Overlay } from 'react-native-elements';
-import { View, FlatList, Dimensions } from 'react-native';
+import { View, FlatList, Dimensions, StyleSheet } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import articleRepository from '../database/repository/articleRepository';
@@ -13,6 +13,10 @@ import {
   ARTICLE_TYPE_RVV_1990,
   ArticleType,
 } from '../model/ArticleType';
+
+const styles = StyleSheet.create({
+  buttonStyle: { backgroundColor: '#154594', borderRadius: 5 },
+});
 
 interface Props {
   articleType: ArticleType;
@@ -72,7 +76,7 @@ const ArticleListOverlay: FC<Props> = ({ articleType, toggleOverlay }) => {
         <Button
           title="Terug"
           onPress={toggleOverlay}
-          buttonStyle={{ backgroundColor: '#154594', borderRadius: 5 }}
+          buttonStyle={styles.buttonStyle}
         />
       </Overlay>
     </View>

@@ -1,11 +1,25 @@
-import * as React from 'react';
-import { Platform, SafeAreaView, View } from 'react-native';
+import React, { FC, ReactNode, useEffect } from 'react';
+import { Platform, SafeAreaView, StyleSheet, View } from 'react-native';
 import { SearchBar } from 'react-native-elements';
 import { useIsFocused, useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { FC, ReactNode, useEffect } from 'react';
 import SearchTab from '../../screens/search/SearchTab';
 import { ArticleType } from '../../model/ArticleType';
+
+const styles = StyleSheet.create({
+  container: { flex: 1, backgroundColor: '#fff' },
+  searchInputContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingTop: 40,
+    shadowOffset: { width: 1, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 3,
+    elevation: 2,
+    backgroundColor: '#fff',
+    alignItems: 'center',
+  },
+});
 
 interface Props {
   children: ReactNode;
@@ -32,21 +46,9 @@ const SearchHeader: FC<Props> = ({
   }, [isFocused, searchRef]);
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: '#fff' }}>
-      <View
-        style={{
-          flexDirection: 'row',
-          justifyContent: 'space-between',
-          paddingTop: 40,
-          shadowOffset: { width: 1, height: 2 },
-          shadowOpacity: 0.1,
-          shadowRadius: 3,
-          elevation: 2,
-          backgroundColor: '#fff',
-          alignItems: 'center',
-        }}
-      >
-        <View style={{ flex: 1, backgroundColor: '#fff' }}>
+    <SafeAreaView style={styles.container}>
+      <View style={styles.searchInputContainer}>
+        <View style={styles.container}>
           <SearchBar
             ref={search => {
               searchRef = search;

@@ -7,6 +7,7 @@ import {
 } from '../model/NotificationType';
 import notificationRepository from '../database/repository/notificationRepository';
 import { Notification } from '../model/Notification';
+import logger from '../helper/logger';
 
 interface Props {
   notificationType: NotificationType;
@@ -16,7 +17,11 @@ const ShowNotification: FC<Props> = ({ notificationType }) => {
   const [notification, setNotification] = useState<Notification | null>(null);
 
   useEffect(() => {
-    notificationRepository.getNotification(setNotification, notificationType);
+    notificationRepository
+      .getNotification(setNotification, notificationType)
+      .catch(reason =>
+        logger.error('Failed retrieving notification from repository', reason),
+      );
   }, [notificationType]);
 
   const disableNotification = (type: NotificationType) => {

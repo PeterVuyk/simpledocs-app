@@ -3,7 +3,7 @@ import { Text, View, StyleSheet, Keyboard } from 'react-native';
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: 'white',
+    backgroundColor: '#fff',
     margin: 20,
   },
   headerTitle: {

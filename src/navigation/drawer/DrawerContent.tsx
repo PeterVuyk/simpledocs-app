@@ -1,9 +1,29 @@
 import React, { FC, useEffect } from 'react';
-import { Linking, Image, View, BackHandler, Platform } from 'react-native';
+import {
+  Linking,
+  Image,
+  View,
+  BackHandler,
+  Platform,
+  StyleSheet,
+} from 'react-native';
 import { DrawerNavigationHelpers } from '@react-navigation/drawer/lib/typescript/src/types';
 import Animated from 'react-native-reanimated';
 import DrawerItem from './DrawerItem';
 import { getDrawerProgressListener } from './onDrawerProgressListener';
+
+const styles = StyleSheet.create({
+  drawerImageContainer: {
+    marginTop: 80,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  drawerImage: {
+    resizeMode: 'contain',
+    width: 200,
+    marginBottom: 20,
+  },
+});
 
 interface Props {
   progress: Animated.Node<number>;
@@ -19,20 +39,10 @@ const DrawerContent: FC<Props> = ({ progress, navigation }) => {
 
   return (
     <View style={{ flex: 1 }}>
-      <View
-        style={{
-          marginTop: 80,
-          alignItems: 'center',
-          justifyContent: 'center',
-        }}
-      >
+      <View style={styles.drawerImageContainer}>
         <Image
           source={require('../../../assets/images/azn.png')}
-          style={{
-            resizeMode: 'contain',
-            width: 200,
-            marginBottom: 20,
-          }}
+          style={styles.drawerImage}
         />
       </View>
       <DrawerItem
