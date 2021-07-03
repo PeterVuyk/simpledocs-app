@@ -2,8 +2,8 @@ import React, { FC } from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 import { DrawerNavigationHelpers } from '@react-navigation/drawer/lib/typescript/src/types';
 import Header from '../header/Header';
-import InstructionManualScreen from '../../screens/article/instructionManual/InstructionManualScreen';
 import ArticleDetailsScreen from '../../screens/article/ArticleDetailsScreen';
+import ArticleListScreen from '../../screens/article/ArticleListScreen';
 
 const Stack = createStackNavigator();
 
@@ -16,7 +16,15 @@ const InstructionManualStackNavigator: FC<Props> = ({ navigation }) => {
     <Stack.Navigator headerMode="screen">
       <Stack.Screen
         name="InstructionManualScreen"
-        component={InstructionManualScreen}
+        component={ArticleListScreen}
+        initialParams={{ articleType: 'instructionManual' }}
+        options={{
+          header: () => <Header navigation={navigation} />,
+        }}
+      />
+      <Stack.Screen
+        name="InstructionManualIntermediateScreen"
+        component={ArticleListScreen}
         options={{
           header: () => <Header navigation={navigation} />,
         }}

@@ -59,26 +59,6 @@ function searchArticles(
   );
 }
 
-function getParagraphs(
-  articleType: ArticleType,
-  setArticles: (articles: Article[]) => void,
-): void {
-  db.transaction(
-    sqlTransaction => {
-      sqlTransaction.executeSql(
-        `SELECT * FROM ${articleType} WHERE level IN ('chapter', 'section', 'subSection') ORDER BY pageIndex;`,
-        [],
-        // @ts-ignore
-        (_, { rows: { _array } }) => {
-          setArticles(_array);
-        },
-      );
-    },
-    error =>
-      logger.error('articleRepository.getParagraphs failed', error.message),
-  );
-}
-
 function getChapters(
   articleType: ArticleType,
   setChapters: (chapters: ArticleChapter[]) => void,
@@ -86,7 +66,7 @@ function getChapters(
   db.transaction(
     sqlTransaction => {
       sqlTransaction.executeSql(
-        `SELECT chapter, title, iconFile FROM ${articleType} ORDER BY pageIndex;`,
+        `SELECT chapter, title, subTitle, pageIndex, level, iconFile FROM ${articleType} ORDER BY pageIndex;`,
         [],
         // @ts-ignore
         (_, { rows: { _array } }) => {
@@ -99,11 +79,35 @@ function getChapters(
   );
 }
 
+function getChaptersByList(
+  articleType: ArticleType,
+  chapters: string[],
+  setChapters: (chapters: ArticleChapter[]) => void,
+): void {
+  db.transaction(
+    sqlTransaction => {
+      sqlTransaction.executeSql(
+        // Not working with prepared statements is bad bad. But unfortunately SQLite doesn't work with prepared statement in combination with 'IN'
+        `SELECT chapter, title, subTitle, pageIndex, level, iconFile FROM ${articleType} WHERE chapter IN (${chapters
+          .map(value => `'${value}'`)
+          .join(', ')}) ORDER BY pageIndex;`,
+        [],
+        // @ts-ignore
+        (_, { rows: { _array } }) => {
+          setChapters(_array);
+        },
+      );
+    },
+    error =>
+      logger.error('articleRepository.getChaptersByList failed', error.message),
+  );
+}
+
 const articleRepository = {
   getArticleByChapter,
   searchArticles,
-  getParagraphs,
   getChapters,
+  getChaptersByList,
 };
 
 export default articleRepository;
