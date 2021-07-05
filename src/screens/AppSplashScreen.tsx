@@ -14,25 +14,19 @@ import ShowNotification from '../components/ShowNotification';
 import { NOTIFICATION_TYPE_NO_INTERNET_CONNECTION } from '../model/NotificationType';
 
 const AppSplashScreen: FC = () => {
-  const [appIsReady, setAppReady] = useState<boolean>(false);
+  const [appIsReady, setAppReady] = useState<boolean | null>(null);
+  const [hasInternetConnection, setInternetConnection] =
+    useState<boolean>(false);
   const [versions, setVersions] = useState<Versioning[]>([]);
-  const [startupIsSuccessful, setStartupIsSuccessful] =
-    useState<boolean | null>(null);
+  const [startupIsSuccessful, setStartupIsSuccessful] = useState<
+    boolean | null
+  >(null);
 
   useEffect(() => {
     setStartupIsSuccessful(
       versions.every(version => version.version !== 'initial'),
     );
   }, [versions]);
-
-  const showInternetConnectionNotification = async (): Promise<boolean> => {
-    if (!startupIsSuccessful) {
-      return false;
-    }
-    const hasInternetConnection =
-      await internetConnectivity.hasInternetConnection();
-    return startupIsSuccessful && !hasInternetConnection;
-  };
 
   const loadFonts = async () => {
     await Font.loadAsync({
@@ -49,6 +43,11 @@ const AppSplashScreen: FC = () => {
     }
     SplashScreen.preventAutoHideAsync()
       .then(loadFonts)
+      .then(() =>
+        internetConnectivity
+          .hasInternetConnection()
+          .then(connection => setInternetConnection(connection)),
+      )
       .then(prepareDatabaseResources)
       .catch(reason =>
         logger.error('Failed initializing app by startup', reason),
@@ -85,12 +84,12 @@ const AppSplashScreen: FC = () => {
       )}
       {startupIsSuccessful && (
         <>
-          {showInternetConnectionNotification() && (
+          <Drawer />
+          {!hasInternetConnection && (
             <ShowNotification
               notificationType={NOTIFICATION_TYPE_NO_INTERNET_CONNECTION}
             />
           )}
-          <Drawer />
         </>
       )}
     </View>

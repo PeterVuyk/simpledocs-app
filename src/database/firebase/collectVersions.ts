@@ -1,23 +1,19 @@
 import database from './database';
+import logger from '../../helper/logger';
+import { AggregateVersions } from '../../model/AggregateVersions';
 
-interface Versioning {
-  regulations: string;
-  decisionTree: string;
-  calculations: string;
-  instructionManual: string;
-  RVV1990: string;
-  regelingOGS2009: string;
-  brancherichtlijnMedischeHulpverlening: string;
-  ontheffingGoedeTaakuitoefening: string;
-}
-
-async function getVersioning() {
+async function getVersioning(): Promise<AggregateVersions | null> {
   const versioning = await database()
     .collection('versioning')
     .doc('aggregate')
-    .get();
-
-  return versioning.data() as Versioning;
+    .get()
+    .catch(reason =>
+      logger.error(
+        'collecting version from firebase in updateDecisionTreeIfNewVersion',
+        reason,
+      ),
+    );
+  return versioning ? (versioning.data() as AggregateVersions) : null;
 }
 
 const collectVersions = {

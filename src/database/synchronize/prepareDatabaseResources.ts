@@ -18,112 +18,75 @@ import {
 import {
   AGGREGATE_CALCULATIONS,
   AGGREGATE_DECISION_TREE,
+  Versioning,
 } from '../../model/Versioning';
 import collectArticlesByType from '../firebase/collectArticlesByType';
 import updateArticleTable from './updateArticleTable';
+import { AggregateVersions } from '../../model/AggregateVersions';
 
-const updateArticles = async (newVersion: string, articleType: ArticleType) => {
-  await collectArticlesByType
-    .getArticles(articleType)
-    .then(article =>
-      updateArticleTable.updateArticles(article, newVersion, articleType),
-    )
-    .catch(reason =>
-      logger.error(
-        'failure in preparing database resources collecting instructionManual from firebase',
-        reason,
-      ),
-    );
+let versioning: Versioning | undefined;
+const setVersionCallback: any = (callback: Versioning) => {
+  versioning = callback;
 };
 
-const updateArticleIfNewVersion = async (articleType: ArticleType) => {
-  const versionOnFirebase = await collectVersions
-    .getVersioning()
-    .catch(reason =>
-      logger.error(
-        `collecting version from firebase in updateArticleIfNewVersion: ${articleType}`,
-        reason,
-      ),
-    );
-
-  if (versionOnFirebase === undefined) {
-    return;
+const updateArticleIfNewVersion = async (
+  articleType: ArticleType,
+  versions: AggregateVersions,
+) => {
+  await versioningRepository.getVersioning(articleType, setVersionCallback);
+  // @ts-ignore
+  if (versioning?.version !== versions[articleType]) {
+    await collectArticlesByType
+      .getArticles(articleType)
+      .then(article =>
+        updateArticleTable.updateArticles(
+          article,
+          // @ts-ignore
+          versions[articleType],
+          articleType,
+        ),
+      )
+      .catch(reason =>
+        logger.error(
+          'failure in preparing database resources collecting instructionManual from firebase',
+          reason,
+        ),
+      );
   }
-
-  await versioningRepository.getVersioning(
-    articleType,
-    async versionOnTheApp => {
-      // @ts-ignore
-      if (versionOnTheApp?.version !== versionOnFirebase[articleType]) {
-        // @ts-ignore
-        await updateArticles(versionOnFirebase[articleType], articleType);
-      }
-    },
-  );
 };
 
-const updateDecisionTree = async (newVersion: string) => {
-  await collectDecisionTreeSteps
-    .getDecisionTreeSteps()
-    .then(steps =>
-      updateDecisionTreeTable.updateDecisionTreeSteps(steps, newVersion),
-    );
-};
-
-const updateDecisionTreeIfNewVersion = async () => {
-  const versionOnFirebase = await collectVersions
-    .getVersioning()
-    .catch(reason =>
-      logger.error(
-        'collecting version from firebase in updateDecisionTreeIfNewVersion',
-        reason,
-      ),
-    );
-
-  if (versionOnFirebase === undefined) {
-    return;
-  }
-
+const updateDecisionTreeIfNewVersion = async (versions: AggregateVersions) => {
   await versioningRepository.getVersioning(
     AGGREGATE_DECISION_TREE,
-    async versionOnTheApp => {
-      if (versionOnTheApp?.version !== versionOnFirebase.decisionTree) {
-        await updateDecisionTree(versionOnFirebase.decisionTree);
-      }
-    },
+    setVersionCallback,
   );
-};
-
-const updateCalculations = async (newVersion: string) => {
-  await collectCalculations
-    .getCalculationsInfo()
-    .then(calculationsInfo =>
-      updateCalculationsTable.updateCalculation(calculationsInfo, newVersion),
-    );
-};
-
-const updateCalculationsIfNewVersion = async () => {
-  const versionOnFirebase = await collectVersions
-    .getVersioning()
-    .catch(reason =>
-      logger.error(
-        'collecting version from firebase in updateCalculationsIfNewVersion',
-        reason,
-      ),
-    );
-
-  if (versionOnFirebase === undefined) {
-    return;
+  if (versioning?.version !== versions.decisionTree) {
+    await collectDecisionTreeSteps
+      .getDecisionTreeSteps()
+      .then(steps =>
+        updateDecisionTreeTable.updateDecisionTreeSteps(
+          steps,
+          versions.decisionTree,
+        ),
+      );
   }
+};
 
+const updateCalculationsIfNewVersion = async (versions: AggregateVersions) => {
   await versioningRepository.getVersioning(
     AGGREGATE_CALCULATIONS,
-    async versionOnTheApp => {
-      if (versionOnTheApp?.version !== versionOnFirebase.calculations) {
-        await updateCalculations(versionOnFirebase.calculations);
-      }
-    },
+    setVersionCallback,
   );
+  if (versioning?.version !== versions.calculations) {
+    await collectCalculations
+      .getCalculationsInfo()
+      .then(calculationsInfo =>
+        updateCalculationsTable.updateCalculation(
+          calculationsInfo,
+          versions.calculations,
+        ),
+      );
+  }
 };
 
 const prepareDatabaseResources = async () => {
@@ -131,19 +94,41 @@ const prepareDatabaseResources = async () => {
   if (!(await internetConnectivity.hasInternetConnection())) {
     return;
   }
-  await updateDecisionTreeIfNewVersion()
-    .then(() => updateArticleIfNewVersion(ARTICLE_TYPE_INSTRUCTION_MANUAL))
-    .then(() => updateArticleIfNewVersion(ARTICLE_TYPE_REGELING_OGS_2009))
-    .then(() => updateArticleIfNewVersion(ARTICLE_TYPE_RVV_1990))
+  const firebaseVersions = await collectVersions.getVersioning();
+  // TODO: If firebaseVersions == null ? show error message.
+  if (firebaseVersions === null) {
+    return;
+  }
+
+  await updateDecisionTreeIfNewVersion(firebaseVersions)
     .then(() =>
-      updateArticleIfNewVersion(ARTICLE_TYPE_ONTHEFFING_GOEDE_TAAKUITVOERING),
+      updateArticleIfNewVersion(
+        ARTICLE_TYPE_INSTRUCTION_MANUAL,
+        firebaseVersions,
+      ),
+    )
+    .then(() =>
+      updateArticleIfNewVersion(
+        ARTICLE_TYPE_REGELING_OGS_2009,
+        firebaseVersions,
+      ),
+    )
+    .then(() =>
+      updateArticleIfNewVersion(ARTICLE_TYPE_RVV_1990, firebaseVersions),
+    )
+    .then(() =>
+      updateArticleIfNewVersion(
+        ARTICLE_TYPE_ONTHEFFING_GOEDE_TAAKUITVOERING,
+        firebaseVersions,
+      ),
     )
     .then(() =>
       updateArticleIfNewVersion(
         ARTICLE_TYPE_BRANCHE_RICHTLIJN_MEDISCHE_HULPVERLENING,
+        firebaseVersions,
       ),
     )
-    .then(updateCalculationsIfNewVersion)
+    .then(() => updateCalculationsIfNewVersion(firebaseVersions))
     .catch(reason =>
       logger.error('prepareDatabaseResources failed', reason.message),
     );
