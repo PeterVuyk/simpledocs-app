@@ -1,5 +1,5 @@
 import React, { FC, useEffect, useState } from 'react';
-import { FlatList, Image, StyleSheet } from 'react-native';
+import { FlatList, Image, StyleSheet, View, Text } from 'react-native';
 import { ListItem } from 'react-native-elements';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
@@ -24,6 +24,8 @@ const styles = StyleSheet.create({
     width: 'auto',
     resizeMode: 'contain',
   },
+  noResultsTextSize: { fontSize: 15 },
+  noResultContainer: { flex: 1, margin: 20 },
 });
 
 interface Props {
@@ -34,22 +36,22 @@ const SearchScreen: FC<Props> = ({ setChapterSearchText }) => {
   const [articleType, setArticleType] = useState<ArticleType>(
     ARTICLE_TYPE_INSTRUCTION_MANUAL,
   );
-  const [article, setArticle] = useState<Article[]>([]);
+  const [articles, setArticles] = useState<Article[] | null>(null);
   const [searchText, setSearchText] = useState<string>('');
 
   useEffect(() => {
     if (searchText === '') {
-      setArticle([]);
+      setArticles([]);
       return;
     }
-    articleRepository.searchArticles(articleType, searchText, setArticle);
+    articleRepository.searchArticles(articleType, searchText, setArticles);
   }, [articleType, searchText]);
 
   const handleSearchTextChange = (searchedText: string): void =>
     setSearchText(searchedText);
 
   const handleArticleTypeTabChange = (type: ArticleType): void => {
-    setArticle([]);
+    setArticles(null);
     setArticleType(type);
   };
 
@@ -112,15 +114,28 @@ const SearchScreen: FC<Props> = ({ setChapterSearchText }) => {
       searchText={searchText}
     >
       <KeyboardAwareView>
-        {article.length === 0 && searchText === '' && (
+        {articles && articles.length === 0 && searchText === '' && (
           <Image
             style={styles.findPlaceholderImage}
             source={require('../../../assets/images/find.png')}
           />
         )}
-        {article && (
+        {articles && articles.length === 0 && searchText !== '' && (
+          <View style={styles.noResultContainer}>
+            <Text style={styles.noResultsTextSize}>
+              Geen zoekresultaten.{`\n\n`}
+              <Text>Suggesties:{`\n`}</Text>
+              <Text>
+                - Zorg ervoor dat de zoekopdracht goed gespeld is.{`\n`}
+              </Text>
+              <Text>- Gebruik andere trefwoorden.{`\n`}</Text>
+              <Text>- Zoek in een andere categorie.{`\n`}</Text>
+            </Text>
+          </View>
+        )}
+        {articles && (
           <FlatList<Article>
-            data={article}
+            data={articles}
             keyExtractor={item => item.chapter.toString()}
             renderItem={({ item }) => renderItem(item)}
           />
