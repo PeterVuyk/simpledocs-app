@@ -8,32 +8,30 @@ const db = SQLite.openDatabase('db.db');
 
 function addArticle(
   sqlTransaction: SQLite.SQLTransaction,
-  instructionManual: Article,
+  article: Article,
   articleType: ArticleType,
 ): void {
   sqlTransaction.executeSql(
     `INSERT INTO ${articleType} (chapter, pageIndex, title, subTitle, htmlFile, searchText, level, iconFile) VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
     [
-      instructionManual.chapter,
-      instructionManual.pageIndex,
-      instructionManual.title,
-      instructionManual.subTitle,
-      instructionManual.htmlFile,
-      instructionManual.searchText,
-      instructionManual.level,
-      instructionManual.iconFile,
+      `${article.chapter}`,
+      article.pageIndex,
+      article.title,
+      article.subTitle,
+      article.htmlFile,
+      article.searchText,
+      article.level,
+      article.iconFile,
     ],
   );
 }
 
 function addArticles(
   sqlTransaction: SQLite.SQLTransaction,
-  instructionManual: Article[],
+  articles: Article[],
   articleType: ArticleType,
 ): void {
-  instructionManual.forEach(article =>
-    addArticle(sqlTransaction, article, articleType),
-  );
+  articles.forEach(article => addArticle(sqlTransaction, article, articleType));
 }
 
 function removeAllArticles(
@@ -48,7 +46,7 @@ function createArticleTable(
   articleType: ArticleType,
 ): void {
   sqlTransaction.executeSql(
-    `create table if not exists ${articleType} (chapter varchar not null constraint instruction_manual_pk primary key, pageIndex integer not null, title text not null, subTitle text, htmlFile text not null, searchText text not null, level varchar not null, iconFile blob);`,
+    `create table if not exists ${articleType} (chapter varchar not null constraint article_pk primary key, pageIndex integer not null, title text not null, subTitle text, htmlFile text not null, searchText text not null, level varchar not null, iconFile blob);`,
   );
 }
 

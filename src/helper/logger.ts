@@ -6,8 +6,13 @@ const error = (errorMessage: string, reason: string) => {
   );
 };
 
+const errorFromMessage = (errorMessage: string) => {
+  Bugsnag.notify(new Error(`errorMessage: ${errorMessage}`));
+};
+
 const logger = {
   error,
+  errorFromMessage,
 };
 
 export default logger;

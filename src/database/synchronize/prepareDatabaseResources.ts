@@ -95,7 +95,6 @@ const prepareDatabaseResources = async () => {
     return;
   }
   const firebaseVersions = await collectVersions.getVersioning();
-  // TODO: If firebaseVersions == null ? show error message.
   if (firebaseVersions === null) {
     return;
   }
