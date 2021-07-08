@@ -41,7 +41,7 @@ const SearchScreen: FC<Props> = ({ setChapterSearchText }) => {
 
   useEffect(() => {
     if (searchText === '') {
-      setArticles([]);
+      setArticles(null);
       return;
     }
     articleRepository.searchArticles(articleType, searchText, setArticles);
@@ -114,7 +114,7 @@ const SearchScreen: FC<Props> = ({ setChapterSearchText }) => {
       searchText={searchText}
     >
       <KeyboardAwareView>
-        {articles && articles.length === 0 && searchText === '' && (
+        {!articles && searchText === '' && (
           <Image
             style={styles.findPlaceholderImage}
             source={require('../../../assets/images/find.png')}

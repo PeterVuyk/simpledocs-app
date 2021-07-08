@@ -58,22 +58,16 @@ const highlightSearchWords = (
 };
 
 /**
- * This is an ugly way to highlight words in html files by adding markup e.g. '<mark>word</mark>'.
- * For MVP usage it's acceptable because the HTML files is managed by ourself, two rules:
- * - It start searching after <article>
- * - It is not allowed to use characters '<' or '>' in the html text.
+ * Because we know the html-structure by validate and adjusting it in our own CMS,
+ * we know the html files are and highlight can be applied by adding markup e.g. '<mark>word</mark>'.
+ * - It is not allowed to use characters '<' or '>' in the html text, use instead &gt; and &lt;.
  */
 const highlightWordsInHTMLFile = (
   text: string,
-  textToHighlight: string,
+  highLightText: string,
 ): string => {
-  if (
-    textToHighlight.includes('<') ||
-    textToHighlight.includes('>') ||
-    text.indexOf('<article>') === -1
-  ) {
-    return text;
-  }
+  let textToHighlight = highLightText.replace('<', '&lt;');
+  textToHighlight = textToHighlight.replace('>', '&gt;');
 
   let indexOfAllMatches: number[] = allIndexOf(
     text,
