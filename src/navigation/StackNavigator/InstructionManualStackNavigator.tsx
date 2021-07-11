@@ -4,6 +4,7 @@ import { DrawerNavigationHelpers } from '@react-navigation/drawer/lib/typescript
 import Header from '../header/Header';
 import ArticleDetailsScreen from '../../screens/article/ArticleDetailsScreen';
 import ArticleListScreen from '../../screens/article/ArticleListScreen';
+import { ARTICLE_TYPE_INSTRUCTION_MANUAL } from '../../model/ArticleType';
 
 const Stack = createStackNavigator();
 
@@ -17,7 +18,7 @@ const InstructionManualStackNavigator: FC<Props> = ({ navigation }) => {
       <Stack.Screen
         name="InstructionManualScreen"
         component={ArticleListScreen}
-        initialParams={{ articleType: 'instructionManual' }}
+        initialParams={{ articleType: ARTICLE_TYPE_INSTRUCTION_MANUAL }}
         options={{
           header: () => <Header navigation={navigation} />,
         }}

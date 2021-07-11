@@ -1,19 +1,17 @@
 import { StackNavigationProp } from '@react-navigation/stack';
 import { DrawerNavigationProp } from '@react-navigation/drawer/lib/typescript/src/types';
+import articleTypeHelper from './articleTypeHelper';
 import {
-  ARTICLE_TYPE_BRANCHE_RICHTLIJN_MEDISCHE_HULPVERLENING,
+  ARTICLE_TAB_INSTRUCTION_MANUAL,
+  ARTICLE_TAB_REGULATIONS,
   ARTICLE_TYPE_INSTRUCTION_MANUAL,
-  ARTICLE_TYPE_ONTHEFFING_GOEDE_TAAKUITVOERING,
-  ARTICLE_TYPE_REGELING_OGS_2009,
-  ARTICLE_TYPE_RVV_1990,
-  ArticleType,
 } from '../model/ArticleType';
 
 export const BLANK_WEBPAGE = 'https://page-blank.firebaseapp.com/';
 
 interface NavigationParams {
   articleChapter: string;
-  articleType: ArticleType;
+  articleType: string;
   searchText?: {
     chapter: string;
     searchText: string;
@@ -22,22 +20,18 @@ interface NavigationParams {
 
 const navigateToChapter = (
   navigationParams: NavigationParams,
-  articleType: ArticleType,
+  articleType: string,
   navigation: StackNavigationProp<any> | DrawerNavigationProp<any>,
 ): void => {
-  if (
-    articleType === ARTICLE_TYPE_RVV_1990 ||
-    articleType === ARTICLE_TYPE_REGELING_OGS_2009 ||
-    articleType === ARTICLE_TYPE_ONTHEFFING_GOEDE_TAAKUITVOERING ||
-    articleType === ARTICLE_TYPE_BRANCHE_RICHTLIJN_MEDISCHE_HULPVERLENING
-  ) {
+  const currentTab = articleTypeHelper.getTabByArticleType(articleType);
+  if (currentTab === ARTICLE_TAB_REGULATIONS) {
     navigation.navigate('RegulationsScreenStack', {
       screen: 'RegulationDetailsScreen',
       params: navigationParams,
     });
     return;
   }
-  if (articleType === ARTICLE_TYPE_INSTRUCTION_MANUAL) {
+  if (currentTab === ARTICLE_TAB_INSTRUCTION_MANUAL) {
     navigation.navigate('InstructionManualStack', {
       screen: 'InstructionManualDetailsScreen',
       params: navigationParams,
@@ -45,114 +39,72 @@ const navigateToChapter = (
   }
 };
 
-const redirectToRegulations = (
-  url: string,
-  currentArticleType: ArticleType,
-  targetArticleType: ArticleType,
+const redirect = (
+  currentArticleType: string,
+  targetArticleType: string,
   chapter: string,
   navigation: StackNavigationProp<any>,
 ): void => {
-  if (
-    currentArticleType === ARTICLE_TYPE_RVV_1990 ||
-    currentArticleType === ARTICLE_TYPE_REGELING_OGS_2009 ||
-    currentArticleType === ARTICLE_TYPE_ONTHEFFING_GOEDE_TAAKUITVOERING ||
-    currentArticleType === ARTICLE_TYPE_BRANCHE_RICHTLIJN_MEDISCHE_HULPVERLENING
-  ) {
-    navigation.push('RegulationDetailsScreen', {
-      articleChapter: chapter,
-      articleType: targetArticleType,
+  const currentTab = articleTypeHelper.getTabByArticleType(currentArticleType);
+  const targetTab = articleTypeHelper.getTabByArticleType(targetArticleType);
+  if (targetTab === ARTICLE_TAB_REGULATIONS) {
+    if (currentTab === ARTICLE_TAB_REGULATIONS) {
+      navigation.push('RegulationDetailsScreen', {
+        articleChapter: chapter,
+        articleType: targetArticleType,
+      });
+      return;
+    }
+    navigation.navigate('RegulationsScreenStack', {
+      screen: 'RegulationDetailsScreen',
+      params: { articleChapter: chapter, articleType: targetArticleType },
     });
-    return;
   }
-  navigation.navigate('RegulationsScreenStack', {
-    screen: 'RegulationDetailsScreen',
-    params: { articleChapter: chapter, articleType: targetArticleType },
-  });
+  if (targetTab === ARTICLE_TYPE_INSTRUCTION_MANUAL) {
+    if (currentTab === ARTICLE_TYPE_INSTRUCTION_MANUAL) {
+      navigation.push('InstructionManualDetailsScreen', {
+        articleChapter: chapter,
+        articleType: targetArticleType,
+      });
+      return;
+    }
+    navigation.navigate('InstructionManualStack', {
+      screen: 'InstructionManualDetailsScreen',
+      params: { articleChapter: chapter, articleType: targetArticleType },
+    });
+  }
 };
 
-const redirectToInstructionManual = (
-  url: string,
-  currentArticleType: ArticleType,
-  navigation: StackNavigationProp<any>,
-): void => {
-  const chapter =
-    url.split(`${BLANK_WEBPAGE}${ARTICLE_TYPE_INSTRUCTION_MANUAL}/`)[1] ?? '1';
-
-  if (currentArticleType === ARTICLE_TYPE_INSTRUCTION_MANUAL) {
-    navigation.push('InstructionManualDetailsScreen', {
-      articleChapter: chapter,
-      articleType: ARTICLE_TYPE_INSTRUCTION_MANUAL,
-    });
-    return;
+// returns the articleTYpe
+const getArticleTypeFromUrl = (url: string): string | null => {
+  const path = url.split(BLANK_WEBPAGE, 1);
+  if (path.length === 0) {
+    return null;
   }
-  navigation.navigate('InstructionManualStack', {
-    screen: 'InstructionManualDetailsScreen',
-    params: {
-      articleChapter: chapter,
-      articleType: ARTICLE_TYPE_INSTRUCTION_MANUAL,
-    },
-  });
+  path[1].split('/', 1);
+  return path.length === 0 ? null : path[0];
+};
+
+const getChapterFromUrl = (url: string): string | null => {
+  const path = url.split('/');
+  if (path.length < 3) {
+    return null;
+  }
+  return path[path.length - 1];
 };
 
 const navigateFromHttpsUrlToChapter = (
   url: string,
-  currentArticleType: ArticleType,
+  currentArticleType: string,
   navigation: StackNavigationProp<any>,
 ) => {
-  if (url.search(`${BLANK_WEBPAGE}${ARTICLE_TYPE_RVV_1990}/`) !== -1) {
-    redirectToRegulations(
-      url,
-      currentArticleType,
-      ARTICLE_TYPE_RVV_1990,
-      url.split(`${BLANK_WEBPAGE}${ARTICLE_TYPE_RVV_1990}/`)[1],
-      navigation,
-    );
+  const articleType = getArticleTypeFromUrl(url);
+  const chapter = getChapterFromUrl(url);
+  if (articleType === null || chapter === null) {
+    // TODO: Logger dat er geen articleType / chapter beschikbaar is.
+    return;
   }
-  if (url.search(`${BLANK_WEBPAGE}${ARTICLE_TYPE_REGELING_OGS_2009}/`) !== -1) {
-    redirectToRegulations(
-      url,
-      currentArticleType,
-      ARTICLE_TYPE_REGELING_OGS_2009,
-      url.split(`${BLANK_WEBPAGE}${ARTICLE_TYPE_REGELING_OGS_2009}/`)[1],
-      navigation,
-    );
-  }
-  if (
-    url.search(
-      `${BLANK_WEBPAGE}${ARTICLE_TYPE_ONTHEFFING_GOEDE_TAAKUITVOERING}/`,
-    ) !== -1
-  ) {
-    redirectToRegulations(
-      url,
-      currentArticleType,
-      ARTICLE_TYPE_ONTHEFFING_GOEDE_TAAKUITVOERING,
-      url.split(
-        `${BLANK_WEBPAGE}${ARTICLE_TYPE_ONTHEFFING_GOEDE_TAAKUITVOERING}/`,
-      )[1],
-      navigation,
-    );
-  }
-  if (
-    url.search(
-      `${BLANK_WEBPAGE}${ARTICLE_TYPE_BRANCHE_RICHTLIJN_MEDISCHE_HULPVERLENING}/`,
-    ) !== -1
-  ) {
-    redirectToRegulations(
-      url,
-      currentArticleType,
-      ARTICLE_TYPE_BRANCHE_RICHTLIJN_MEDISCHE_HULPVERLENING,
-      url.split(
-        `${BLANK_WEBPAGE}${ARTICLE_TYPE_BRANCHE_RICHTLIJN_MEDISCHE_HULPVERLENING}/`,
-      )[1],
-      navigation,
-    );
-  }
-
-  if (
-    url.search(`${BLANK_WEBPAGE}${ARTICLE_TYPE_INSTRUCTION_MANUAL}/`) !== -1
-  ) {
-    redirectToInstructionManual(url, currentArticleType, navigation);
-  }
+  redirect(currentArticleType, articleType, chapter, navigation);
 };
 
 const navigationHelper = {

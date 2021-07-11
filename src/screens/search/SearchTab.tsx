@@ -7,11 +7,10 @@ import {
   ARTICLE_TYPE_ONTHEFFING_GOEDE_TAAKUITVOERING,
   ARTICLE_TYPE_REGELING_OGS_2009,
   ARTICLE_TYPE_RVV_1990,
-  ArticleType,
 } from '../../model/ArticleType';
 
 interface Props {
-  handleArticleTypeTabChange: (articleType: ArticleType) => void;
+  handleArticleTypeTabChange: (articleType: string) => void;
 }
 
 const theme = {

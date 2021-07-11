@@ -2,7 +2,6 @@ import React, { FC, useEffect, useState } from 'react';
 import { RouteProp } from '@react-navigation/native';
 import ArticlesList from './ArticlesList';
 import articleRepository from '../../database/repository/articleRepository';
-import { ArticleType } from '../../model/ArticleType';
 import { ArticleChapter } from '../../model/ArticleChapter';
 
 interface Props {
@@ -11,7 +10,7 @@ interface Props {
     {
       params: {
         chapters?: string[];
-        articleType: ArticleType;
+        articleType: string;
       };
     },
     'params'

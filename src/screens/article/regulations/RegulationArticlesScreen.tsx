@@ -6,7 +6,6 @@ import {
   ARTICLE_TYPE_ONTHEFFING_GOEDE_TAAKUITVOERING,
   ARTICLE_TYPE_REGELING_OGS_2009,
   ARTICLE_TYPE_RVV_1990,
-  ArticleType,
 } from '../../../model/ArticleType';
 import TitleBar from '../../../components/TitleBar';
 import ListItem from '../../../components/ListItem';
@@ -24,7 +23,7 @@ interface Props {
 }
 
 interface RegulationArticle {
-  articleType: ArticleType;
+  articleType: string;
   title: string;
   subTitle: string;
   iconFile: string;

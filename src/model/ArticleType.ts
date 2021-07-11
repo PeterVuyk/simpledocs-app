@@ -7,10 +7,5 @@ export const ARTICLE_TYPE_BRANCHE_RICHTLIJN_MEDISCHE_HULPVERLENING =
 export const ARTICLE_TYPE_ONTHEFFING_GOEDE_TAAKUITVOERING =
   'ontheffingGoedeTaakuitoefening';
 
-export type ArticleType =
-  | 'instructionManual'
-  | 'considerations'
-  | 'RVV1990'
-  | 'regelingOGS2009'
-  | 'brancherichtlijnMedischeHulpverlening'
-  | 'ontheffingGoedeTaakuitoefening';
+export const ARTICLE_TAB_REGULATIONS = 'regulations';
+export const ARTICLE_TAB_INSTRUCTION_MANUAL = 'instructionManual';

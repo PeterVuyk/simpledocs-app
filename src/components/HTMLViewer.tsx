@@ -6,13 +6,12 @@ import { useIsFocused, useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import highlightWordsInHTMLFile from '../helper/highlightWordsInHTMLFile';
 import ScrollViewToggleBottomBar from './ScrollViewToggleBottomBar';
-import { ArticleType } from '../model/ArticleType';
 import navigationHelper, { BLANK_WEBPAGE } from '../helper/navigationHelper';
 
 interface Props {
   htmlFile: string;
   highlightText?: string;
-  articleType: ArticleType;
+  articleType: string;
 }
 
 const HTMLViewer: FC<Props> = ({ htmlFile, highlightText, articleType }) => {

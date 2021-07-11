@@ -6,11 +6,10 @@ import { Article } from '../../model/Article';
 import articleRepository from '../../database/repository/articleRepository';
 import HTMLViewer from '../../components/HTMLViewer';
 import ScrollAwareBottomButton from '../../components/ScrollAwareBottomButton';
-import { ArticleType } from '../../model/ArticleType';
 
 interface Props {
   articleChapter: string;
-  articleType: ArticleType;
+  articleType: string;
   chapterSearchText: SearchText;
   setChapterSearchText: (searchText: SearchText) => void;
 }

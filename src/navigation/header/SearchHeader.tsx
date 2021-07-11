@@ -4,7 +4,6 @@ import { SearchBar } from 'react-native-elements';
 import { useIsFocused, useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import SearchTab from '../../screens/search/SearchTab';
-import { ArticleType } from '../../model/ArticleType';
 
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: '#fff' },
@@ -25,7 +24,7 @@ interface Props {
   children: ReactNode;
   searchText: string;
   handleSearchTextChange: (searchText: string) => void;
-  handleArticleTypeTabChange: (articleType: ArticleType) => void;
+  handleArticleTypeTabChange: (articleType: string) => void;
 }
 
 const SearchHeader: FC<Props> = ({

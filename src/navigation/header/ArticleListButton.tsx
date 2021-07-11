@@ -2,7 +2,6 @@ import React, { FC, useState } from 'react';
 import { StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
 import { Icon } from 'native-base';
 import ArticleListOverlay from '../../overlay/ArticleListOverlay';
-import { ArticleType } from '../../model/ArticleType';
 
 const styles = StyleSheet.create({
   buttonColor: {
@@ -11,7 +10,7 @@ const styles = StyleSheet.create({
 });
 
 interface Props {
-  articleType: ArticleType;
+  articleType: string;
   articleButtonStyle: StyleProp<ViewStyle>;
 }
 

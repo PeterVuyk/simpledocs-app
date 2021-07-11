@@ -2,12 +2,10 @@ import React, { FC } from 'react';
 import { FlatList, StyleSheet, View } from 'react-native';
 import { DrawerNavigationProp } from '@react-navigation/drawer/lib/typescript/src/types';
 import ListItem from '../../components/ListItem';
-import {
-  ARTICLE_TYPE_INSTRUCTION_MANUAL,
-  ArticleType,
-} from '../../model/ArticleType';
 import navigationHelper from '../../helper/navigationHelper';
 import { ArticleChapter } from '../../model/ArticleChapter';
+import articleTypeHelper from '../../helper/articleTypeHelper';
+import { ARTICLE_TYPE_INSTRUCTION_MANUAL } from '../../model/ArticleType';
 
 const styles = StyleSheet.create({
   container: {
@@ -21,7 +19,7 @@ interface Props {
   showLevels?: string[];
   navigation: DrawerNavigationProp<any>;
   articleChapters: ArticleChapter[];
-  articleType: ArticleType;
+  articleType: string;
 }
 
 const ArticlesList: FC<Props> = ({
@@ -33,7 +31,10 @@ const ArticlesList: FC<Props> = ({
   const levelsForSeparateList = ['subHead', 'subSubSection'];
 
   const navigateArticleList = (chapters: string[]) => {
-    if (articleType === ARTICLE_TYPE_INSTRUCTION_MANUAL) {
+    if (
+      articleTypeHelper.getTabByArticleType(articleType) ===
+      ARTICLE_TYPE_INSTRUCTION_MANUAL
+    ) {
       navigation.navigate('InstructionManualStack', {
         screen: 'InstructionManualIntermediateScreen',
         params: { articleType, chapters },

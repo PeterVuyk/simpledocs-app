@@ -2,12 +2,11 @@ import * as SQLite from 'expo-sqlite';
 import logger from '../../helper/logger';
 import { Article } from '../../model/Article';
 import { ArticleChapter } from '../../model/ArticleChapter';
-import { ArticleType } from '../../model/ArticleType';
 
 const db = SQLite.openDatabase('db.db');
 
 function getArticleByChapter(
-  articleType: ArticleType,
+  articleType: string,
   chapter: string,
   callback: (article: Article) => void,
 ): void {
@@ -33,7 +32,7 @@ function getArticleByChapter(
 }
 
 function searchArticles(
-  articleType: ArticleType,
+  articleType: string,
   text: string,
   setArticles: (articles: Article[]) => void,
 ): void {
@@ -60,7 +59,7 @@ function searchArticles(
 }
 
 function getChapters(
-  articleType: ArticleType,
+  articleType: string,
   setChapters: (chapters: ArticleChapter[]) => void,
 ): void {
   db.transaction(
@@ -80,7 +79,7 @@ function getChapters(
 }
 
 function getChaptersByList(
-  articleType: ArticleType,
+  articleType: string,
   chapters: string[],
   setChapters: (chapters: ArticleChapter[]) => void,
 ): void {

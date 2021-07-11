@@ -6,20 +6,15 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import articleRepository from '../database/repository/articleRepository';
 import SVGIcon from '../components/SVGIcon';
 import { ArticleChapter } from '../model/ArticleChapter';
-import {
-  ARTICLE_TYPE_BRANCHE_RICHTLIJN_MEDISCHE_HULPVERLENING,
-  ARTICLE_TYPE_ONTHEFFING_GOEDE_TAAKUITVOERING,
-  ARTICLE_TYPE_REGELING_OGS_2009,
-  ARTICLE_TYPE_RVV_1990,
-  ArticleType,
-} from '../model/ArticleType';
+import articleTypeHelper from '../helper/articleTypeHelper';
+import { ARTICLE_TAB_REGULATIONS } from '../model/ArticleType';
 
 const styles = StyleSheet.create({
   buttonStyle: { backgroundColor: '#154594', borderRadius: 5 },
 });
 
 interface Props {
-  articleType: ArticleType;
+  articleType: string;
   toggleOverlay: () => void;
 }
 
@@ -35,10 +30,8 @@ const ArticleListOverlay: FC<Props> = ({ articleType, toggleOverlay }) => {
   const handleChapterClick = (item: ArticleChapter) => {
     toggleOverlay();
     if (
-      articleType === ARTICLE_TYPE_RVV_1990 ||
-      articleType === ARTICLE_TYPE_REGELING_OGS_2009 ||
-      articleType === ARTICLE_TYPE_ONTHEFFING_GOEDE_TAAKUITVOERING ||
-      articleType === ARTICLE_TYPE_BRANCHE_RICHTLIJN_MEDISCHE_HULPVERLENING
+      articleTypeHelper.getTabByArticleType(articleType) ===
+      ARTICLE_TAB_REGULATIONS
     ) {
       navigation.push('RegulationDetailsScreen', {
         articleChapter: item.chapter,

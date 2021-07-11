@@ -1,10 +1,9 @@
 import reduxTypes from './reduxTypes';
-import { ArticleType } from '../../model/ArticleType';
 
 export interface SearchText {
   chapter: string;
   searchText: string;
-  articleType: ArticleType | null;
+  articleType: string | null;
 }
 
 const setChapterSearchText = (searchText: SearchText) => ({

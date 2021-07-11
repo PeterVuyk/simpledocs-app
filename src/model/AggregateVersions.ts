@@ -1,4 +1,4 @@
-export interface AggregateVersions {
+interface AggregateVersionsOld {
   regulations: string;
   decisionTree: string;
   calculations: string;
@@ -7,4 +7,8 @@ export interface AggregateVersions {
   regelingOGS2009: string;
   brancherichtlijnMedischeHulpverlening: string;
   ontheffingGoedeTaakuitoefening: string;
+}
+
+export interface AggregateVersions {
+  [key: string]: string;
 }

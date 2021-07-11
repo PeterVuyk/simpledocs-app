@@ -2,7 +2,7 @@ import database from './database';
 import logger from '../../helper/logger';
 import { AggregateVersions } from '../../model/AggregateVersions';
 
-async function getVersioning(): Promise<AggregateVersions | null> {
+async function getVersioning(): Promise<AggregateVersions[]> {
   const versioning = await database()
     .collection('versioning')
     .doc('aggregate')
@@ -13,7 +13,15 @@ async function getVersioning(): Promise<AggregateVersions | null> {
         reason,
       ),
     );
-  return versioning ? (versioning.data() as AggregateVersions) : null;
+  if (!versioning) {
+    return [];
+  }
+  const result = [];
+  // eslint-disable-next-line no-restricted-syntax,@typescript-eslint/ban-types
+  for (const [key, value] of Object.entries(versioning.data() as object)) {
+    result.push({ [key]: value });
+  }
+  return result as AggregateVersions[];
 }
 
 const collectVersions = {

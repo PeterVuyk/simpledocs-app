@@ -8,14 +8,6 @@ import updateCalculationsTable from './updateCalculationsTable';
 import collectCalculations from '../firebase/collectCalculations';
 import internetConnectivity from '../../helper/internetConnectivity';
 import {
-  ARTICLE_TYPE_BRANCHE_RICHTLIJN_MEDISCHE_HULPVERLENING,
-  ARTICLE_TYPE_INSTRUCTION_MANUAL,
-  ARTICLE_TYPE_ONTHEFFING_GOEDE_TAAKUITVOERING,
-  ARTICLE_TYPE_REGELING_OGS_2009,
-  ARTICLE_TYPE_RVV_1990,
-  ArticleType,
-} from '../../model/ArticleType';
-import {
   AGGREGATE_CALCULATIONS,
   AGGREGATE_DECISION_TREE,
   Versioning,
@@ -23,6 +15,7 @@ import {
 import collectArticlesByType from '../firebase/collectArticlesByType';
 import updateArticleTable from './updateArticleTable';
 import { AggregateVersions } from '../../model/AggregateVersions';
+import articleTypeHelper from '../../helper/articleTypeHelper';
 
 let versioning: Versioning | undefined;
 const setVersionCallback: any = (callback: Versioning) => {
@@ -30,60 +23,81 @@ const setVersionCallback: any = (callback: Versioning) => {
 };
 
 const updateArticleIfNewVersion = async (
-  articleType: ArticleType,
+  articleType: string,
   versions: AggregateVersions,
 ) => {
   await versioningRepository.getVersioning(articleType, setVersionCallback);
-  // @ts-ignore
   if (versioning?.version !== versions[articleType]) {
     await collectArticlesByType
       .getArticles(articleType)
       .then(article =>
         updateArticleTable.updateArticles(
           article,
-          // @ts-ignore
           versions[articleType],
           articleType,
         ),
       )
       .catch(reason =>
         logger.error(
-          'failure in preparing database resources collecting instructionManual from firebase',
+          `failure in preparing database resources collecting articles from firebase articleType: ${updateArticleIfNewVersion}`,
           reason,
         ),
       );
   }
 };
 
-const updateDecisionTreeIfNewVersion = async (versions: AggregateVersions) => {
+const updateArticlesIfNewVersion = async (versions: AggregateVersions[]) => {
+  // eslint-disable-next-line no-restricted-syntax
+  for (const articleType of articleTypeHelper.getArticles()) {
+    const aggregateVersion = versions.find(version => version[articleType]);
+    if (aggregateVersion !== undefined) {
+      // eslint-disable-next-line no-await-in-loop
+      await updateArticleIfNewVersion(articleType, aggregateVersion);
+    }
+  }
+};
+
+const updateDecisionTreeIfNewVersion = async (
+  versions: AggregateVersions[],
+) => {
   await versioningRepository.getVersioning(
     AGGREGATE_DECISION_TREE,
     setVersionCallback,
   );
-  if (versioning?.version !== versions.decisionTree) {
+  const aggregateVersion = versions.find(version => version.decisionTree);
+  if (
+    aggregateVersion !== undefined &&
+    versioning?.version !== aggregateVersion.decisionTree
+  ) {
     await collectDecisionTreeSteps
       .getDecisionTreeSteps()
       .then(steps =>
         updateDecisionTreeTable.updateDecisionTreeSteps(
           steps,
-          versions.decisionTree,
+          aggregateVersion.decisionTree,
         ),
       );
   }
 };
 
-const updateCalculationsIfNewVersion = async (versions: AggregateVersions) => {
+const updateCalculationsIfNewVersion = async (
+  versions: AggregateVersions[],
+) => {
   await versioningRepository.getVersioning(
     AGGREGATE_CALCULATIONS,
     setVersionCallback,
   );
-  if (versioning?.version !== versions.calculations) {
+  const aggregateVersion = versions.find(version => version.calculations);
+  if (
+    aggregateVersion !== undefined &&
+    versioning?.version !== aggregateVersion.calculations
+  ) {
     await collectCalculations
       .getCalculationsInfo()
       .then(calculationsInfo =>
         updateCalculationsTable.updateCalculation(
           calculationsInfo,
-          versions.calculations,
+          aggregateVersion.calculations,
         ),
       );
   }
@@ -100,33 +114,7 @@ const prepareDatabaseResources = async () => {
   }
 
   await updateDecisionTreeIfNewVersion(firebaseVersions)
-    .then(() =>
-      updateArticleIfNewVersion(
-        ARTICLE_TYPE_INSTRUCTION_MANUAL,
-        firebaseVersions,
-      ),
-    )
-    .then(() =>
-      updateArticleIfNewVersion(
-        ARTICLE_TYPE_REGELING_OGS_2009,
-        firebaseVersions,
-      ),
-    )
-    .then(() =>
-      updateArticleIfNewVersion(ARTICLE_TYPE_RVV_1990, firebaseVersions),
-    )
-    .then(() =>
-      updateArticleIfNewVersion(
-        ARTICLE_TYPE_ONTHEFFING_GOEDE_TAAKUITVOERING,
-        firebaseVersions,
-      ),
-    )
-    .then(() =>
-      updateArticleIfNewVersion(
-        ARTICLE_TYPE_BRANCHE_RICHTLIJN_MEDISCHE_HULPVERLENING,
-        firebaseVersions,
-      ),
-    )
+    .then(() => updateArticlesIfNewVersion(firebaseVersions))
     .then(() => updateCalculationsIfNewVersion(firebaseVersions))
     .catch(reason =>
       logger.error('prepareDatabaseResources failed', reason.message),

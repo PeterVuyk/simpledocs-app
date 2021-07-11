@@ -1,8 +1,7 @@
 import database from './database';
 import { Article } from '../../model/Article';
-import { ArticleType } from '../../model/ArticleType';
 
-async function getArticles(articleType: ArticleType): Promise<Article[]> {
+async function getArticles(articleType: string): Promise<Article[]> {
   const querySnapshot = await database()
     .collection(articleType)
     .where('isDraft', '==', false)

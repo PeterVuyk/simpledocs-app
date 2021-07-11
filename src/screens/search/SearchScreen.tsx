@@ -11,11 +11,8 @@ import SVGIcon from '../../components/SVGIcon';
 import HighlightWords from '../../components/HighlightWords';
 import SearchHeader from '../../navigation/header/SearchHeader';
 import KeyboardAwareView from '../../components/keyboard/KeyboardAwareView';
-import {
-  ARTICLE_TYPE_INSTRUCTION_MANUAL,
-  ArticleType,
-} from '../../model/ArticleType';
 import navigationHelper from '../../helper/navigationHelper';
+import { ARTICLE_TYPE_INSTRUCTION_MANUAL } from '../../model/ArticleType';
 
 const styles = StyleSheet.create({
   findPlaceholderImage: {
@@ -33,7 +30,7 @@ interface Props {
 }
 
 const SearchScreen: FC<Props> = ({ setChapterSearchText }) => {
-  const [articleType, setArticleType] = useState<ArticleType>(
+  const [articleType, setArticleType] = useState<string>(
     ARTICLE_TYPE_INSTRUCTION_MANUAL,
   );
   const [articles, setArticles] = useState<Article[] | null>(null);
@@ -50,7 +47,7 @@ const SearchScreen: FC<Props> = ({ setChapterSearchText }) => {
   const handleSearchTextChange = (searchedText: string): void =>
     setSearchText(searchedText);
 
-  const handleArticleTypeTabChange = (type: ArticleType): void => {
+  const handleArticleTypeTabChange = (type: string): void => {
     setArticles(null);
     setArticleType(type);
   };

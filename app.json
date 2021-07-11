@@ -26,7 +26,8 @@
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
       },
-      "package": "com.petervuyk.ambulancezorgapp"
+      "package": "com.petervuyk.ambulancezorgapp",
+      "permissions": ["WRITE_EXTERNAL_STORAGE", "WRITE_EXTERNAL_STORAGE"]
     },
     "androidNavigationBar": {
       "barStyle": "light-content",

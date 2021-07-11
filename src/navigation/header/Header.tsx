@@ -7,7 +7,6 @@ import DrawerButton from './DrawerButton';
 import SearchButton from './SearchButton';
 import ArticleListButton from './ArticleListButton';
 import HeaderLogo from './HeaderLogo';
-import { ArticleType } from '../../model/ArticleType';
 
 const styles = StyleSheet.create({
   container: {
@@ -33,7 +32,7 @@ const styles = StyleSheet.create({
 
 interface Props {
   navigation: DrawerNavigationHelpers;
-  showListButtonFromArticleType?: ArticleType;
+  showListButtonFromArticleType?: string;
 }
 
 const Header: FC<Props> = ({ navigation, showListButtonFromArticleType }) => {

@@ -4,7 +4,6 @@ import { DrawerNavigationHelpers } from '@react-navigation/drawer/lib/typescript
 import articleRepository from '../../database/repository/articleRepository';
 import { ArticleChapter } from '../../model/ArticleChapter';
 import ArticleDetails from './ArticleDetails';
-import { ArticleType } from '../../model/ArticleType';
 import Header from '../../navigation/header/Header';
 
 interface Props {
@@ -13,7 +12,7 @@ interface Props {
     {
       params: {
         articleChapter: string;
-        articleType: ArticleType;
+        articleType: string;
       };
     },
     'params'
