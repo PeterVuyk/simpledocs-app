@@ -44,10 +44,38 @@ const getArticles = () => {
   ];
 };
 
+export interface ArticleTypesOrderedTranslated {
+  articleType: string;
+  translation: string;
+  index: number;
+}
+const getArticleTypeTitlesTranslated = (): ArticleTypesOrderedTranslated[] => {
+  return [
+    { articleType: 'instructionManual', translation: 'Handboek', index: 0 },
+    { articleType: 'RVV1990', translation: 'RVV 1990', index: 1 },
+    {
+      articleType: 'regelingOGS2009',
+      translation: 'Regeling OGS 2009',
+      index: 2,
+    },
+    {
+      articleType: 'ontheffingGoedeTaakuitoefening',
+      translation: 'Ontheffing goede taakuitoefening',
+      index: 3,
+    },
+    {
+      articleType: 'brancherichtlijnMedischeHulpverlening',
+      translation: 'Brancherichtlijn medische hulpverlening',
+      index: 4,
+    },
+  ];
+};
+
 const articleTypeHelper = {
   getTabByArticleType,
   getArticleTypesByTab,
   getArticles,
+  getArticleTypeTitlesTranslated,
 };
 
 export default articleTypeHelper;

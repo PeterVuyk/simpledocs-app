@@ -1,13 +1,9 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import { Tab, ThemeProvider } from 'react-native-elements';
 import { ScrollView } from 'react-native';
-import {
-  ARTICLE_TYPE_BRANCHE_RICHTLIJN_MEDISCHE_HULPVERLENING,
-  ARTICLE_TYPE_INSTRUCTION_MANUAL,
-  ARTICLE_TYPE_ONTHEFFING_GOEDE_TAAKUITVOERING,
-  ARTICLE_TYPE_REGELING_OGS_2009,
-  ARTICLE_TYPE_RVV_1990,
-} from '../../model/ArticleType';
+import articleTypeHelper, {
+  ArticleTypesOrderedTranslated,
+} from '../../helper/articleTypeHelper';
 
 interface Props {
   handleArticleTypeTabChange: (articleType: string) => void;
@@ -27,44 +23,33 @@ const theme = {
 
 const SearchTab: FC<Props> = ({ handleArticleTypeTabChange }) => {
   const [tab, setTab] = useState(0);
+  const [articleTypes, setArticleTypes] = useState<
+    ArticleTypesOrderedTranslated[]
+  >([]);
+
+  useEffect(() => {
+    setArticleTypes(articleTypeHelper.getArticleTypeTitlesTranslated());
+  }, []);
 
   const handleTabChange = (clickedTab: number): void => {
-    setTab(clickedTab);
-    switch (clickedTab) {
-      case 0:
-        handleArticleTypeTabChange(ARTICLE_TYPE_INSTRUCTION_MANUAL);
-        break;
-      case 1:
-        handleArticleTypeTabChange(ARTICLE_TYPE_RVV_1990);
-        break;
-      case 2:
-        handleArticleTypeTabChange(ARTICLE_TYPE_REGELING_OGS_2009);
-        break;
-      case 3:
-        handleArticleTypeTabChange(
-          ARTICLE_TYPE_ONTHEFFING_GOEDE_TAAKUITVOERING,
-        );
-        break;
-      case 4:
-        handleArticleTypeTabChange(
-          ARTICLE_TYPE_BRANCHE_RICHTLIJN_MEDISCHE_HULPVERLENING,
-        );
-        break;
-      default:
-        handleArticleTypeTabChange(ARTICLE_TYPE_INSTRUCTION_MANUAL);
+    const result = articleTypes.find(value => value.index === clickedTab);
+    if (result === undefined || tab === result.index) {
+      return;
     }
+    setTab(clickedTab);
+    handleArticleTypeTabChange(result ? result.articleType : '');
   };
 
   return (
     <ThemeProvider theme={theme}>
       <ScrollView horizontal>
-        <Tab value={tab} onChange={handleTabChange}>
-          <Tab.Item title="Handboek" />
-          <Tab.Item title="RVV 1990" />
-          <Tab.Item title="Regeling OGS 2009" />
-          <Tab.Item title="Ontheffing goede taakuitoefening" />
-          <Tab.Item title="Brancherichtlijn medische hulpverlening" />
-        </Tab>
+        {articleTypes.length !== 0 && (
+          <Tab value={tab} onChange={handleTabChange}>
+            {articleTypes.map(value => (
+              <Tab.Item title={value.translation} key={value.articleType} />
+            ))}
+          </Tab>
+        )}
       </ScrollView>
     </ThemeProvider>
   );
