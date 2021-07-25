@@ -74,14 +74,14 @@ function TabNavigator({
   const onTabPress = route => {
     if (route.name === 'RegulationsScreenStack') {
       navigation.navigate('RegulationsScreenStack', {
-        screen: 'RegulationArticlesScreen',
+        screen: 'RegulationOverviewScreen',
       });
       return;
     }
 
     if (route.name === 'InstructionManualStack') {
       navigation.navigate('InstructionManualStack', {
-        screen: 'InstructionManualScreen',
+        screen: 'InstructionManualOverviewScreen',
       });
       return;
     }

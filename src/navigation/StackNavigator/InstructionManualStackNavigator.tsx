@@ -3,22 +3,45 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { DrawerNavigationHelpers } from '@react-navigation/drawer/lib/typescript/src/types';
 import Header from '../header/Header';
 import ArticleDetailsScreen from '../../screens/article/ArticleDetailsScreen';
+import { ArticlesInfo } from '../../helper/articleTypeHelper';
 import ArticleListScreen from '../../screens/article/ArticleListScreen';
-import { ARTICLE_TYPE_INSTRUCTION_MANUAL } from '../../model/ArticleType';
+import { ARTICLE_TAB_INSTRUCTION_MANUAL } from '../../model/ArticleType';
+import ArticlesOverviewScreen from '../../screens/article/ArticlesOverviewScreen';
 
 const Stack = createStackNavigator();
 
 interface Props {
   navigation: DrawerNavigationHelpers;
+  articlesInfo: ArticlesInfo;
 }
 
-const InstructionManualStackNavigator: FC<Props> = ({ navigation }) => {
+const InstructionManualStackNavigator: FC<Props> = ({
+  navigation,
+  articlesInfo,
+}) => {
   return (
     <Stack.Navigator headerMode="screen">
+      {articlesInfo.articleTypes.length !== 1 && (
+        <Stack.Screen
+          name="InstructionManualOverviewScreen"
+          component={ArticlesOverviewScreen}
+          initialParams={{
+            articlesInfo,
+            currentTab: ARTICLE_TAB_INSTRUCTION_MANUAL,
+          }}
+          options={{
+            header: () => <Header navigation={navigation} />,
+          }}
+        />
+      )}
       <Stack.Screen
-        name="InstructionManualScreen"
+        name={
+          articlesInfo.articleTypes.length !== 1
+            ? 'InstructionManualScreen'
+            : 'InstructionManualOverviewScreen'
+        }
         component={ArticleListScreen}
-        initialParams={{ articleType: ARTICLE_TYPE_INSTRUCTION_MANUAL }}
+        initialParams={{ articlesInfo, chapters: null, articleType: null }}
         options={{
           header: () => <Header navigation={navigation} />,
         }}
@@ -26,6 +49,7 @@ const InstructionManualStackNavigator: FC<Props> = ({ navigation }) => {
       <Stack.Screen
         name="InstructionManualIntermediateScreen"
         component={ArticleListScreen}
+        initialParams={{ articlesInfo, chapters: null, articleType: null }}
         options={{
           header: () => <Header navigation={navigation} />,
         }}

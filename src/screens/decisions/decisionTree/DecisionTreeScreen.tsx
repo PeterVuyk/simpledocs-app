@@ -4,8 +4,6 @@ import { Button, Icon } from 'react-native-elements';
 import { RouteProp } from '@react-navigation/native';
 import decisionTreeRepository from '../../../database/repository/decisionTreeRepository';
 import { DecisionTreeStep } from '../../../model/DecisionTreeStep';
-import navigationHelper from '../../../helper/navigationHelper';
-import { CalculationInfo } from '../../../model/CalculationInfo';
 
 interface Props {
   navigation: any;
