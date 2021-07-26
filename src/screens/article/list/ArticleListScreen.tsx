@@ -1,9 +1,9 @@
 import React, { FC, useEffect, useState } from 'react';
 import { RouteProp } from '@react-navigation/native';
 import ArticlesList from './ArticlesList';
-import articleRepository from '../../database/repository/articleRepository';
-import { ArticleChapter } from '../../model/ArticleChapter';
-import { ArticlesInfo } from '../../helper/articleTypeHelper';
+import articleRepository from '../../../database/repository/articleRepository';
+import { ArticleChapter } from '../../../model/ArticleChapter';
+import { ArticlesInfo } from '../../../model/ArticlesInfo';
 
 interface Props {
   navigation: any;

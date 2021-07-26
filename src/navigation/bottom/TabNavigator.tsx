@@ -72,16 +72,16 @@ function TabNavigator({
   });
 
   const onTabPress = route => {
-    if (route.name === 'RegulationsScreenStack') {
-      navigation.navigate('RegulationsScreenStack', {
-        screen: 'RegulationOverviewScreen',
+    if (route.name === 'SecondArticleTabStack') {
+      navigation.navigate('SecondArticleTabStack', {
+        screen: 'SecondArticleTabOverviewScreen',
       });
       return;
     }
 
-    if (route.name === 'InstructionManualStack') {
-      navigation.navigate('InstructionManualStack', {
-        screen: 'InstructionManualOverviewScreen',
+    if (route.name === 'FirstArticleTabStack') {
+      navigation.navigate('FirstArticleTabStack', {
+        screen: 'FirstArticleTabOverviewScreen',
       });
       return;
     }

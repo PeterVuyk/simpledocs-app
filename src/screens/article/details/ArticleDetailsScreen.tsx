@@ -1,10 +1,10 @@
 import React, { FC, useEffect, useState } from 'react';
 import { RouteProp } from '@react-navigation/native';
 import { DrawerNavigationHelpers } from '@react-navigation/drawer/lib/typescript/src/types';
-import articleRepository from '../../database/repository/articleRepository';
-import { ArticleChapter } from '../../model/ArticleChapter';
+import articleRepository from '../../../database/repository/articleRepository';
+import { ArticleChapter } from '../../../model/ArticleChapter';
 import ArticleDetails from './ArticleDetails';
-import Header from '../../navigation/header/Header';
+import Header from '../../../navigation/header/Header';
 
 interface Props {
   navigation: DrawerNavigationHelpers;

@@ -1,21 +1,17 @@
 import React, { FC, useEffect, useState } from 'react';
 import Animated from 'react-native-reanimated';
 import { DrawerNavigationHelpers } from '@react-navigation/drawer/lib/typescript/src/types';
-import RegulationStackNavigator from '../StackNavigator/RegulationStackNavigator';
 import { setDrawerProgressListener } from '../drawer/onDrawerProgressListener';
 import TabNavigator from './TabNavigator';
 import DecisionsStackNavigator from '../StackNavigator/DecisionsStackNavigator';
-import InstructionManualStackNavigator from '../StackNavigator/InstructionManualStackNavigator';
 import AboutUsStackNavigator from '../StackNavigator/AboutUsStackNavigator';
 import CopyrightStackNavigator from '../StackNavigator/CopyrightStackNavigator';
+import articleTypeHelper from '../../helper/articleTypeHelper';
+import { FIRST_ARTICLE_TAB, SECOND_ARTICLE_TAB } from '../../model/ArticleType';
+import { ArticlesInfo } from '../../model/ArticlesInfo';
+import SecondArticleTabStackNavigator from '../StackNavigator/SecondArticleTabStackNavigator';
+import FirstArticleTabStackNavigator from '../StackNavigator/FirstArticleTabStackNavigator';
 import SearchStackNavigator from '../StackNavigator/SearchStackNavigator';
-import articleTypeHelper, {
-  ArticlesInfo,
-} from '../../helper/articleTypeHelper';
-import {
-  ARTICLE_TAB_INSTRUCTION_MANUAL,
-  ARTICLE_TAB_REGULATIONS,
-} from '../../model/ArticleType';
 
 const Tab = TabNavigator();
 
@@ -24,16 +20,18 @@ interface Props {
 }
 
 const TabNavigation: FC<Props> = ({ navigation }) => {
-  const [regulationsConfig, setRegulationsConfig] =
-    useState<ArticlesInfo | null>(null);
-  const [instructionManualConfig, setInstructionManualConfig] =
-    useState<ArticlesInfo | null>(null);
+  const [secondTabConfig, setSecondTabConfig] = useState<ArticlesInfo | null>(
+    null,
+  );
+  const [firstTabConfig, setFirstTabConfig] = useState<ArticlesInfo | null>(
+    null,
+  );
   useEffect(() => {
-    setInstructionManualConfig(
-      articleTypeHelper.getArticlesInfoByTab(ARTICLE_TAB_INSTRUCTION_MANUAL),
+    setFirstTabConfig(
+      articleTypeHelper.getArticlesInfoByTab(FIRST_ARTICLE_TAB),
     );
-    setRegulationsConfig(
-      articleTypeHelper.getArticlesInfoByTab(ARTICLE_TAB_REGULATIONS),
+    setSecondTabConfig(
+      articleTypeHelper.getArticlesInfoByTab(SECOND_ARTICLE_TAB),
     );
   }, []);
   const [progress, setProgress] = useState(new Animated.Value(0));
@@ -55,7 +53,7 @@ const TabNavigation: FC<Props> = ({ navigation }) => {
 
   return (
     <Animated.View style={[{ flex: 1, overflow: 'hidden' }, animatedStyle]}>
-      {regulationsConfig && instructionManualConfig && (
+      {secondTabConfig && firstTabConfig && (
         <Tab.Navigator
           tabBarStyle={{
             paddingBottom: 5,
@@ -66,35 +64,35 @@ const TabNavigation: FC<Props> = ({ navigation }) => {
           contentStyle={{
             height: 60,
           }}
-          initialRouteName="RegulationsScreenStack"
+          initialRouteName="SecondArticleTabStack"
         >
           <Tab.Screen
-            name="InstructionManualStack"
+            name="FirstArticleTabStack"
             children={() => (
-              <InstructionManualStackNavigator
+              <FirstArticleTabStackNavigator
                 navigation={navigation}
-                articlesInfo={instructionManualConfig}
+                articlesInfo={firstTabConfig}
               />
             )}
             options={{
-              title: instructionManualConfig.bottomTab.title,
-              icon: instructionManualConfig.bottomTab.icon,
-              iconFamilyType: instructionManualConfig.bottomTab.familyType,
+              title: firstTabConfig.bottomTab.title,
+              icon: firstTabConfig.bottomTab.icon,
+              iconFamilyType: firstTabConfig.bottomTab.familyType,
               showInBottomBar: true,
             }}
           />
           <Tab.Screen
-            name="RegulationsScreenStack"
+            name="SecondArticleTabStack"
             children={() => (
-              <RegulationStackNavigator
+              <SecondArticleTabStackNavigator
                 navigation={navigation}
-                articlesInfo={regulationsConfig}
+                articlesInfo={secondTabConfig}
               />
             )}
             options={{
-              title: regulationsConfig.bottomTab.title,
-              icon: regulationsConfig.bottomTab.icon,
-              iconFamilyType: regulationsConfig.bottomTab.familyType,
+              title: secondTabConfig.bottomTab.title,
+              icon: secondTabConfig.bottomTab.icon,
+              iconFamilyType: secondTabConfig.bottomTab.familyType,
               showInBottomBar: true,
             }}
           />
@@ -109,7 +107,9 @@ const TabNavigation: FC<Props> = ({ navigation }) => {
           />
           <Tab.Screen
             name="SearchStack"
-            component={SearchStackNavigator}
+            children={() => (
+              <SearchStackNavigator articlesInfo={secondTabConfig} />
+            )}
             options={{
               title: 'Info',
               icon: 'information-outline',

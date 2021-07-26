@@ -1,9 +1,9 @@
 import {
-  ARTICLE_TAB_INSTRUCTION_MANUAL,
-  ARTICLE_TAB_REGULATIONS,
+  FIRST_ARTICLE_TAB,
+  SECOND_ARTICLE_TAB,
   ARTICLE_TYPE_INSTRUCTION_MANUAL,
 } from '../model/ArticleType';
-import { IconFamilyType } from '../model/IconFamilyType';
+import { ArticlesInfo } from '../model/ArticlesInfo';
 
 const getTabByArticleType = (articleType: string): string | null => {
   if (
@@ -12,16 +12,16 @@ const getTabByArticleType = (articleType: string): string | null => {
     articleType === 'regelingOGS2009' ||
     articleType === 'RVV1990'
   ) {
-    return ARTICLE_TAB_REGULATIONS;
+    return SECOND_ARTICLE_TAB;
   }
   if (articleType === ARTICLE_TYPE_INSTRUCTION_MANUAL) {
-    return ARTICLE_TAB_INSTRUCTION_MANUAL;
+    return FIRST_ARTICLE_TAB;
   }
   return null;
 };
 
 const getArticleTypesByTab = (tab: string): string[] => {
-  if (tab === ARTICLE_TAB_REGULATIONS) {
+  if (tab === SECOND_ARTICLE_TAB) {
     return [
       'ontheffingGoedeTaakuitoefening',
       'brancherichtlijnMedischeHulpverlening',
@@ -29,7 +29,7 @@ const getArticleTypesByTab = (tab: string): string[] => {
       'RVV1990',
     ];
   }
-  if (tab === ARTICLE_TAB_INSTRUCTION_MANUAL) {
+  if (tab === FIRST_ARTICLE_TAB) {
     return [ARTICLE_TYPE_INSTRUCTION_MANUAL];
   }
   return [];
@@ -45,30 +45,11 @@ const getArticles = () => {
   ];
 };
 
-export interface BottomTab {
-  familyType: IconFamilyType;
-  icon: string;
-  title: string;
-}
-
-export interface ArticleInfo {
-  index: number;
-  articleType: string;
-  title?: string;
-  subTitle?: string;
-  iconFile?: string;
-}
-export interface ArticlesInfo {
-  title?: string;
-  subTitle?: string;
-  articleTypes: ArticleInfo[];
-  bottomTab: BottomTab;
-}
-
 // eslint-disable-next-line @typescript-eslint/ban-types
 const getArticlesInfoByTab = (articleTab: string): ArticlesInfo => {
-  if (articleTab === ARTICLE_TAB_REGULATIONS) {
+  if (articleTab === SECOND_ARTICLE_TAB) {
     return {
+      defaultArticleTypeSearch: 'instructionManual',
       bottomTab: {
         familyType: 'MaterialCommunityIcons',
         icon: 'book-open-outline',
@@ -115,6 +96,7 @@ const getArticlesInfoByTab = (articleTab: string): ArticlesInfo => {
   }
   return {
     articleTypes: [{ articleType: 'instructionManual', index: 0 }],
+    defaultArticleTypeSearch: 'instructionManual',
     bottomTab: {
       familyType: 'SimpleLineIcons',
       icon: 'graduation',

@@ -1,20 +1,21 @@
 import React, { FC } from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
-import { DrawerNavigationHelpers } from '@react-navigation/drawer/lib/typescript/src/types';
 import SearchScreen from '../../screens/search/SearchScreen';
+import { ArticlesInfo } from '../../model/ArticlesInfo';
 
 const Stack = createStackNavigator();
 
 interface Props {
-  navigation: DrawerNavigationHelpers;
+  articlesInfo: ArticlesInfo;
 }
 
-const SearchStackNavigator: FC<Props> = ({ navigation }) => {
+const SearchStackNavigator: FC<Props> = ({ articlesInfo }) => {
   return (
     <Stack.Navigator screenOptions={{ detachPreviousScreen: true }}>
       <Stack.Screen
         name="SearchScreen"
         component={SearchScreen}
+        initialParams={{ articlesInfo }}
         options={{ headerShown: false }}
       />
     </Stack.Navigator>

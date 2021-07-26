@@ -1,11 +1,11 @@
 import React, { FC, useEffect, useState } from 'react';
 import { View } from 'react-native';
 import { connect } from 'react-redux';
-import searching, { SearchText } from '../../redux/actions/searching';
-import { Article } from '../../model/Article';
-import articleRepository from '../../database/repository/articleRepository';
-import HTMLViewer from '../../components/HTMLViewer';
-import ScrollAwareBottomButton from '../../components/ScrollAwareBottomButton';
+import searching, { SearchText } from '../../../redux/actions/searching';
+import { Article } from '../../../model/Article';
+import articleRepository from '../../../database/repository/articleRepository';
+import HTMLViewer from '../../../components/HTMLViewer';
+import ScrollAwareBottomButton from '../../../components/ScrollAwareBottomButton';
 
 interface Props {
   articleChapter: string;

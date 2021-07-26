@@ -1,7 +1,7 @@
 import React, { FC, useEffect, useState } from 'react';
 import { FlatList, Image, StyleSheet, View, Text } from 'react-native';
 import { ListItem } from 'react-native-elements';
-import { useNavigation } from '@react-navigation/native';
+import { RouteProp, useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { connect } from 'react-redux';
 import articleRepository from '../../database/repository/articleRepository';
@@ -12,7 +12,7 @@ import HighlightWords from '../../components/HighlightWords';
 import SearchHeader from '../../navigation/header/SearchHeader';
 import KeyboardAwareView from '../../components/keyboard/KeyboardAwareView';
 import navigationHelper from '../../helper/navigationHelper';
-import { ARTICLE_TYPE_INSTRUCTION_MANUAL } from '../../model/ArticleType';
+import { ArticlesInfo } from '../../model/ArticlesInfo';
 
 const styles = StyleSheet.create({
   findPlaceholderImage: {
@@ -27,11 +27,20 @@ const styles = StyleSheet.create({
 
 interface Props {
   setChapterSearchText: (searchText: SearchText) => void;
+  route: RouteProp<
+    {
+      params: {
+        articlesInfo: ArticlesInfo;
+      };
+    },
+    'params'
+  >;
 }
 
-const SearchScreen: FC<Props> = ({ setChapterSearchText }) => {
+const SearchScreen: FC<Props> = ({ setChapterSearchText, route }) => {
+  const { articlesInfo } = route.params;
   const [articleType, setArticleType] = useState<string>(
-    ARTICLE_TYPE_INSTRUCTION_MANUAL,
+    articlesInfo.defaultArticleTypeSearch,
   );
   const [articles, setArticles] = useState<Article[] | null>(null);
   const [searchText, setSearchText] = useState<string>('');

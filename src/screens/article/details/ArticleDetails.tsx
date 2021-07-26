@@ -2,9 +2,9 @@ import React, { FC, useEffect, useState } from 'react';
 import { View, FlatList, Dimensions } from 'react-native';
 import { useIsFocused } from '@react-navigation/native';
 import ArticleDetailItem from './ArticleDetailItem';
-import { ArticleChapter } from '../../model/ArticleChapter';
-import ShowNotification from '../../components/ShowNotification';
-import { NOTIFICATION_TYPE_HORIZONTAL_SCROLL_TIP } from '../../model/NotificationType';
+import { ArticleChapter } from '../../../model/ArticleChapter';
+import ShowNotification from '../../../components/ShowNotification';
+import { NOTIFICATION_TYPE_HORIZONTAL_SCROLL_TIP } from '../../../model/NotificationType';
 
 interface Props {
   articleChapter: string;

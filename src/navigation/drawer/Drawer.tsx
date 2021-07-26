@@ -27,7 +27,7 @@ const Drawer: FC = () => {
         }}
       >
         <DrawerNavigator.Screen name="tabs">
-          {() => <TabNavigation />}
+          {props => <TabNavigation navigation={props.navigation} />}
         </DrawerNavigator.Screen>
       </DrawerNavigator.Navigator>
     </NavigationContainer>

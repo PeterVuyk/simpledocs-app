@@ -2,11 +2,11 @@ import React, { FC } from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 import { DrawerNavigationHelpers } from '@react-navigation/drawer/lib/typescript/src/types';
 import Header from '../header/Header';
-import ArticleDetailsScreen from '../../screens/article/ArticleDetailsScreen';
-import { ArticlesInfo } from '../../helper/articleTypeHelper';
-import ArticleListScreen from '../../screens/article/ArticleListScreen';
-import { ARTICLE_TAB_INSTRUCTION_MANUAL } from '../../model/ArticleType';
+import ArticleDetailsScreen from '../../screens/article/details/ArticleDetailsScreen';
+import ArticleListScreen from '../../screens/article/list/ArticleListScreen';
+import { SECOND_ARTICLE_TAB } from '../../model/ArticleType';
 import ArticlesOverviewScreen from '../../screens/article/ArticlesOverviewScreen';
+import { ArticlesInfo } from '../../model/ArticlesInfo';
 
 const Stack = createStackNavigator();
 
@@ -15,7 +15,7 @@ interface Props {
   articlesInfo: ArticlesInfo;
 }
 
-const InstructionManualStackNavigator: FC<Props> = ({
+const SecondArticleTabStackNavigator: FC<Props> = ({
   navigation,
   articlesInfo,
 }) => {
@@ -23,12 +23,9 @@ const InstructionManualStackNavigator: FC<Props> = ({
     <Stack.Navigator headerMode="screen">
       {articlesInfo.articleTypes.length !== 1 && (
         <Stack.Screen
-          name="InstructionManualOverviewScreen"
+          name="SecondArticleTabOverviewScreen"
           component={ArticlesOverviewScreen}
-          initialParams={{
-            articlesInfo,
-            currentTab: ARTICLE_TAB_INSTRUCTION_MANUAL,
-          }}
+          initialParams={{ articlesInfo, currentTab: SECOND_ARTICLE_TAB }}
           options={{
             header: () => <Header navigation={navigation} />,
           }}
@@ -37,8 +34,8 @@ const InstructionManualStackNavigator: FC<Props> = ({
       <Stack.Screen
         name={
           articlesInfo.articleTypes.length !== 1
-            ? 'InstructionManualScreen'
-            : 'InstructionManualOverviewScreen'
+            ? 'SecondArticleTabArticleScreen'
+            : 'SecondArticleTabOverviewScreen'
         }
         component={ArticleListScreen}
         initialParams={{ articlesInfo, chapters: null, articleType: null }}
@@ -47,7 +44,7 @@ const InstructionManualStackNavigator: FC<Props> = ({
         }}
       />
       <Stack.Screen
-        name="InstructionManualIntermediateScreen"
+        name="SecondArticleTabIntermediateScreen"
         component={ArticleListScreen}
         initialParams={{ articlesInfo, chapters: null, articleType: null }}
         options={{
@@ -55,7 +52,7 @@ const InstructionManualStackNavigator: FC<Props> = ({
         }}
       />
       <Stack.Screen
-        name="InstructionManualDetailsScreen"
+        name="SecondArticleTabDetailsScreen"
         component={ArticleDetailsScreen}
         options={{ headerShown: false }}
       />
@@ -63,4 +60,4 @@ const InstructionManualStackNavigator: FC<Props> = ({
   );
 };
 
-export default InstructionManualStackNavigator;
+export default SecondArticleTabStackNavigator;

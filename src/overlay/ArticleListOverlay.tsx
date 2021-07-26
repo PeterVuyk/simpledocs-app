@@ -7,7 +7,7 @@ import articleRepository from '../database/repository/articleRepository';
 import SVGIcon from '../components/SVGIcon';
 import { ArticleChapter } from '../model/ArticleChapter';
 import articleTypeHelper from '../helper/articleTypeHelper';
-import { ARTICLE_TAB_REGULATIONS } from '../model/ArticleType';
+import { SECOND_ARTICLE_TAB } from '../model/ArticleType';
 
 const styles = StyleSheet.create({
   buttonStyle: { backgroundColor: '#154594', borderRadius: 5 },
@@ -30,16 +30,15 @@ const ArticleListOverlay: FC<Props> = ({ articleType, toggleOverlay }) => {
   const handleChapterClick = (item: ArticleChapter) => {
     toggleOverlay();
     if (
-      articleTypeHelper.getTabByArticleType(articleType) ===
-      ARTICLE_TAB_REGULATIONS
+      articleTypeHelper.getTabByArticleType(articleType) === SECOND_ARTICLE_TAB
     ) {
-      navigation.push('RegulationDetailsScreen', {
+      navigation.push('SecondArticleTabDetailsScreen', {
         articleChapter: item.chapter,
         articleType,
       });
       return;
     }
-    navigation.push('InstructionManualDetailsScreen', {
+    navigation.push('FirstArticleTabDetailsScreen', {
       articleChapter: item.chapter,
       articleType,
     });

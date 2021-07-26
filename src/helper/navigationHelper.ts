@@ -1,11 +1,7 @@
 import { StackNavigationProp } from '@react-navigation/stack';
 import { DrawerNavigationProp } from '@react-navigation/drawer/lib/typescript/src/types';
 import articleTypeHelper from './articleTypeHelper';
-import {
-  ARTICLE_TAB_INSTRUCTION_MANUAL,
-  ARTICLE_TAB_REGULATIONS,
-  ARTICLE_TYPE_INSTRUCTION_MANUAL,
-} from '../model/ArticleType';
+import { FIRST_ARTICLE_TAB, SECOND_ARTICLE_TAB } from '../model/ArticleType';
 
 export const BLANK_WEBPAGE = 'https://page-blank.firebaseapp.com/';
 
@@ -24,16 +20,16 @@ const navigateToChapter = (
   navigation: StackNavigationProp<any> | DrawerNavigationProp<any>,
 ): void => {
   const currentTab = articleTypeHelper.getTabByArticleType(articleType);
-  if (currentTab === ARTICLE_TAB_REGULATIONS) {
-    navigation.navigate('RegulationsScreenStack', {
-      screen: 'RegulationDetailsScreen',
+  if (currentTab === SECOND_ARTICLE_TAB) {
+    navigation.navigate('SecondArticleTabStack', {
+      screen: 'SecondArticleTabDetailsScreen',
       params: navigationParams,
     });
     return;
   }
-  if (currentTab === ARTICLE_TAB_INSTRUCTION_MANUAL) {
-    navigation.navigate('InstructionManualStack', {
-      screen: 'InstructionManualDetailsScreen',
+  if (currentTab === FIRST_ARTICLE_TAB) {
+    navigation.navigate('FirstArticleTabStack', {
+      screen: 'FirstArticleTabDetailsScreen',
       params: navigationParams,
     });
   }
@@ -47,47 +43,46 @@ const redirect = (
 ): void => {
   const currentTab = articleTypeHelper.getTabByArticleType(currentArticleType);
   const targetTab = articleTypeHelper.getTabByArticleType(targetArticleType);
-  if (targetTab === ARTICLE_TAB_REGULATIONS) {
-    if (currentTab === ARTICLE_TAB_REGULATIONS) {
-      navigation.push('RegulationDetailsScreen', {
+  if (targetTab === SECOND_ARTICLE_TAB) {
+    if (currentTab === SECOND_ARTICLE_TAB) {
+      navigation.push('SecondArticleTabDetailsScreen', {
         articleChapter: chapter,
         articleType: targetArticleType,
       });
       return;
     }
-    navigation.navigate('RegulationsScreenStack', {
-      screen: 'RegulationDetailsScreen',
+    navigation.navigate('SecondArticleTabStack', {
+      screen: 'SecondArticleTabDetailsScreen',
       params: { articleChapter: chapter, articleType: targetArticleType },
     });
   }
-  if (targetTab === ARTICLE_TYPE_INSTRUCTION_MANUAL) {
-    if (currentTab === ARTICLE_TYPE_INSTRUCTION_MANUAL) {
-      navigation.push('InstructionManualDetailsScreen', {
+  if (targetTab === FIRST_ARTICLE_TAB) {
+    if (currentTab === FIRST_ARTICLE_TAB) {
+      navigation.push('FirstArticleTabDetailsScreen', {
         articleChapter: chapter,
         articleType: targetArticleType,
       });
       return;
     }
-    navigation.navigate('InstructionManualStack', {
-      screen: 'InstructionManualDetailsScreen',
+    navigation.navigate('FirstArticleTabStack', {
+      screen: 'FirstArticleTabDetailsScreen',
       params: { articleChapter: chapter, articleType: targetArticleType },
     });
   }
 };
 
-// returns the articleTYpe
 const getArticleTypeFromUrl = (url: string): string | null => {
-  const path = url.split(BLANK_WEBPAGE, 1);
+  const path = url.split(BLANK_WEBPAGE);
   if (path.length === 0) {
     return null;
   }
-  path[1].split('/', 1);
-  return path.length === 0 ? null : path[0];
+  const article = path[1].split('/');
+  return article.length === 0 ? null : article[0];
 };
 
 const getChapterFromUrl = (url: string): string | null => {
   const path = url.split('/');
-  if (path.length < 3) {
+  if (path.length < 5) {
     return null;
   }
   return path[path.length - 1];

@@ -2,10 +2,10 @@ import React, { FC } from 'react';
 import { DrawerNavigationProp } from '@react-navigation/drawer/lib/typescript/src/types';
 import { FlatList, StyleSheet, View } from 'react-native';
 import { RouteProp } from '@react-navigation/native';
-import { ARTICLE_TAB_REGULATIONS } from '../../model/ArticleType';
+import { SECOND_ARTICLE_TAB } from '../../model/ArticleType';
 import TitleBar from '../../components/TitleBar';
 import ListItem from '../../components/ListItem';
-import { ArticlesInfo } from '../../helper/articleTypeHelper';
+import { ArticlesInfo } from '../../model/ArticlesInfo';
 
 const styles = StyleSheet.create({
   container: {
@@ -32,15 +32,15 @@ const ArticlesOverviewScreen: FC<Props> = ({ navigation, route }) => {
   const { articlesInfo, currentTab } = route.params;
 
   const navigate = (articleType: string) => {
-    if (currentTab === ARTICLE_TAB_REGULATIONS) {
-      navigation.navigate('RegulationsScreenStack', {
-        screen: 'RegulationsScreen',
+    if (currentTab === SECOND_ARTICLE_TAB) {
+      navigation.navigate('SecondArticleTabStack', {
+        screen: 'SecondArticleTabArticleScreen',
         params: { articleType, articlesInfo },
       });
       return;
     }
-    navigation.navigate('InstructionManualStack', {
-      screen: 'InstructionManualScreen',
+    navigation.navigate('FirstArticleTabStack', {
+      screen: 'FirstArticleTabArticleScreen',
       params: { articleType, articlesInfo },
     });
   };
