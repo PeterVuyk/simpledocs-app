@@ -48,28 +48,60 @@ async function getVersioning(
   });
 }
 
-function getAllVersions(callback: (versioning: Versioning[]) => void): void {
-  db.transaction(
-    sqlTransaction => {
-      sqlTransaction.executeSql(
-        `SELECT * FROM versioning`,
-        [],
-        // @ts-ignore
-        (_, { rows: { _array } }) => {
-          callback(_array as Versioning[]);
-        },
-      );
-    },
-    error => {
-      logger.error('versioningRepository.getVersioning failed', error.message);
-    },
-  );
+function getAllVersions(
+  callback: (versioning: Versioning[]) => void,
+): Promise<void> {
+  return new Promise((resolve, reject) => {
+    db.transaction(
+      sqlTransaction => {
+        sqlTransaction.executeSql(
+          `SELECT *
+           FROM versioning`,
+          [],
+          // @ts-ignore
+          (_, { rows: { _array } }) => {
+            callback(_array as Versioning[]);
+          },
+        );
+      },
+      error => {
+        logger.error(
+          'versioningRepository.getVersioning failed',
+          error.message,
+        );
+        reject();
+      },
+      resolve,
+    );
+  });
+}
+
+function removeVersion(versioning: Versioning): Promise<void> {
+  return new Promise((resolve, reject) => {
+    db.transaction(
+      sqlTransaction => {
+        sqlTransaction.executeSql(
+          `DELETE FROM versioning WHERE aggregate = ?`,
+          [versioning.aggregate],
+        );
+      },
+      error => {
+        logger.error(
+          'removeVersion from versioning table has failed, rolled back',
+          error.message,
+        );
+        reject();
+      },
+      resolve,
+    );
+  });
 }
 
 const versioningRepository = {
   getVersioning,
   getAllVersions,
   updateVersioning,
+  removeVersion,
 };
 
 export default versioningRepository;

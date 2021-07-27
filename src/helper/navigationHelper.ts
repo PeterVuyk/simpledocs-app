@@ -2,6 +2,7 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import { DrawerNavigationProp } from '@react-navigation/drawer/lib/typescript/src/types';
 import articleTypeHelper from './articleTypeHelper';
 import { FIRST_ARTICLE_TAB, SECOND_ARTICLE_TAB } from '../model/ArticleType';
+import logger from './logger';
 
 export const BLANK_WEBPAGE = 'https://page-blank.firebaseapp.com/';
 
@@ -96,7 +97,9 @@ const navigateFromHttpsUrlToChapter = (
   const articleType = getArticleTypeFromUrl(url);
   const chapter = getChapterFromUrl(url);
   if (articleType === null || chapter === null) {
-    // TODO: Logger dat er geen articleType / chapter beschikbaar is.
+    logger.errorFromMessage(
+      `Navigation from link in html file to another chapter failed, url with link: ${url}, currentArticleType: ${currentArticleType}`,
+    );
     return;
   }
   redirect(currentArticleType, articleType, chapter, navigation);

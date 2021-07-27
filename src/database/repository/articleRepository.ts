@@ -13,8 +13,8 @@ function getArticleByChapter(
   db.transaction(
     sqlTransaction => {
       sqlTransaction.executeSql(
-        `SELECT * FROM ${articleType} WHERE chapter = ?;`,
-        [chapter],
+        `SELECT * FROM articles WHERE articleType = ? AND chapter = ?;`,
+        [articleType, chapter],
         // @ts-ignore
         (_, { rows: { _array } }) => {
           if (_array.length === 1) {
@@ -42,11 +42,10 @@ function searchArticles(
         `SELECT *
             ,(CASE WHEN title LIKE ? THEN 1 ELSE 0 END) AS [priority]
             ,(CASE WHEN searchText like ? THEN 1 ELSE 0 END)
-       FROM (SELECT * FROM ${articleType} ORDER BY pageIndex)
-       WHERE title LIKE ?
-          OR searchText LIKE ?
+       FROM (SELECT * FROM articles WHERE articleType = ? ORDER BY pageIndex)
+       WHERE title LIKE ? OR searchText LIKE ?
        ORDER BY [priority] DESC;`,
-        [`%${text}%`, `%${text}%`, `%${text}%`, `%${text}%`],
+        [`%${text}%`, `%${text}%`, articleType, `%${text}%`, `%${text}%`],
         // @ts-ignore
         (_, { rows: { _array } }) => {
           setArticles(_array);
@@ -65,8 +64,8 @@ function getChapters(
   db.transaction(
     sqlTransaction => {
       sqlTransaction.executeSql(
-        `SELECT chapter, title, subTitle, pageIndex, level, iconFile FROM ${articleType} ORDER BY pageIndex;`,
-        [],
+        `SELECT chapter, title, subTitle, pageIndex, level, iconFile FROM articles WHERE articleType = ? ORDER BY pageIndex;`,
+        [articleType],
         // @ts-ignore
         (_, { rows: { _array } }) => {
           setChapters(_array);
@@ -87,10 +86,10 @@ function getChaptersByList(
     sqlTransaction => {
       sqlTransaction.executeSql(
         // Not working with prepared statements is bad bad. But unfortunately SQLite doesn't work with prepared statement in combination with 'IN'
-        `SELECT chapter, title, subTitle, pageIndex, level, iconFile FROM ${articleType} WHERE chapter IN (${chapters
+        `SELECT chapter, title, subTitle, pageIndex, level, iconFile FROM articles WHERE articleType = ? AND chapter IN (${chapters
           .map(value => `'${value}'`)
           .join(', ')}) ORDER BY pageIndex;`,
-        [],
+        [articleType],
         // @ts-ignore
         (_, { rows: { _array } }) => {
           setChapters(_array);

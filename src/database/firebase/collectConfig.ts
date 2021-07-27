@@ -1,5 +1,10 @@
 import database from './database';
 import logger from '../../helper/logger';
+import articleTypeHelper from '../../helper/articleTypeHelper';
+
+async function getConfigs(): Promise<string[]> {
+  return articleTypeHelper.getArticles();
+}
 
 // eslint-disable-next-line @typescript-eslint/ban-types
 async function getConfig(): Promise<object> {
@@ -18,6 +23,7 @@ async function getConfig(): Promise<object> {
 
 const collectVersions = {
   getConfig,
+  getConfigs,
 };
 
 export default collectVersions;

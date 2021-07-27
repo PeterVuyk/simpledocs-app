@@ -17,16 +17,27 @@ const AppSplashScreen: FC = () => {
   const [appIsReady, setAppReady] = useState<boolean | null>(null);
   const [hasInternetConnection, setInternetConnection] =
     useState<boolean>(false);
-  const [versions, setVersions] = useState<Versioning[]>([]);
+  const [versions, setVersions] = useState<Versioning[] | null>(null);
   const [startupIsSuccessful, setStartupIsSuccessful] = useState<
     boolean | null
   >(null);
 
+  /**
+   * After wait for startup we validate that all versions for aggregates/articleTypes are not initial
+   * and at least 4 versions are set: 2 for aggregate 'articleTypes' and 2 for the last tab.
+   * If this check fails then the user installed the app, turned off the internet and started the app.
+   * Only the first time the user runs the app it requires internet. After it will be recommended to
+   * receive the latest updates.
+   */
   useEffect(() => {
-    setStartupIsSuccessful(
-      versions.every(version => version.version !== 'initial'),
-    );
-  }, [versions]);
+    const MINIMUM_NUMBER_OF_VERSIONS = 4;
+    if (versions !== null) {
+      setStartupIsSuccessful(
+        versions.length >= MINIMUM_NUMBER_OF_VERSIONS ||
+          versions.every(version => version.version !== 'initial'),
+      );
+    }
+  }, [startupIsSuccessful, versions]);
 
   const loadFonts = async () => {
     await Font.loadAsync({
@@ -74,7 +85,7 @@ const AppSplashScreen: FC = () => {
 
   return (
     <View style={{ flex: 1 }} onLayout={onLayoutRootView}>
-      {!startupIsSuccessful && (
+      {startupIsSuccessful === false && (
         <NoInternetConnectionOverlay
           retryButtonHandler={() => {
             setAppReady(false);

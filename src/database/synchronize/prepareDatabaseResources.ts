@@ -103,6 +103,30 @@ const updateCalculationsIfNewVersion = async (
   }
 };
 
+const cleanupRemovedArticleTypesFromVersioningTable = async (
+  versions: AggregateVersions[],
+) => {
+  versioningRepository
+    .getAllVersions(databaseVersions => {
+      databaseVersions
+        .filter(
+          version =>
+            version.aggregate !== AGGREGATE_CALCULATIONS &&
+            version.aggregate !== AGGREGATE_DECISION_TREE,
+        )
+        .filter(version => !versions.find(value => value[version.aggregate]))
+        .forEach(value => versioningRepository.removeVersion(value));
+    })
+    .catch(reason =>
+      logger.error(
+        `failed cleanup (removing) removed articleTypes from versioning table, firebaseVersions: ${versions.map(
+          value => Object.entries(value).join(', ').toString(),
+        )}`,
+        reason,
+      ),
+    );
+};
+
 const prepareDatabaseResources = async () => {
   await initializeVersioningTable.initialize();
   if (!(await internetConnectivity.hasInternetConnection())) {
@@ -119,6 +143,7 @@ const prepareDatabaseResources = async () => {
     .catch(reason =>
       logger.error('prepareDatabaseResources failed', reason.message),
     );
+  cleanupRemovedArticleTypesFromVersioningTable(firebaseVersions);
 };
 
 export default prepareDatabaseResources;

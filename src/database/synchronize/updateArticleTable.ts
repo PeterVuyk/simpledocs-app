@@ -11,11 +11,12 @@ function addArticle(
   articleType: string,
 ): void {
   sqlTransaction.executeSql(
-    `INSERT INTO ${articleType} (chapter, pageIndex, title, subTitle, htmlFile, searchText, level, iconFile) VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
+    `INSERT INTO articles (chapter, pageIndex, title, articleType, subTitle, htmlFile, searchText, level, iconFile) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
     [
       `${article.chapter}`,
       article.pageIndex,
       article.title,
+      articleType,
       article.subTitle,
       article.htmlFile,
       article.searchText,
@@ -33,20 +34,13 @@ function addArticles(
   articles.forEach(article => addArticle(sqlTransaction, article, articleType));
 }
 
-function removeAllArticles(
+function removeArticlesByType(
   sqlTransaction: SQLite.SQLTransaction,
   articleType: string,
 ): void {
-  sqlTransaction.executeSql(`DROP TABLE IF EXISTS ${articleType}`, []);
-}
-
-function createArticleTable(
-  sqlTransaction: SQLite.SQLTransaction,
-  articleType: string,
-): void {
-  sqlTransaction.executeSql(
-    `create table if not exists ${articleType} (chapter varchar not null constraint article_pk primary key, pageIndex integer not null, title text not null, subTitle text, htmlFile text not null, searchText text not null, level varchar not null, iconFile blob);`,
-  );
+  sqlTransaction.executeSql(`DELETE FROM articles WHERE articleType = ?`, [
+    articleType,
+  ]);
 }
 
 function updateArticles(
@@ -57,8 +51,7 @@ function updateArticles(
   return new Promise((resolve, reject) => {
     db.transaction(
       sqlTransaction => {
-        removeAllArticles(sqlTransaction, articleType);
-        createArticleTable(sqlTransaction, articleType);
+        removeArticlesByType(sqlTransaction, articleType);
         versioningRepository.updateVersioning(
           sqlTransaction,
           articleType,
