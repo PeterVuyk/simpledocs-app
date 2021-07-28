@@ -10,6 +10,7 @@ import {
   AGGREGATE_DECISION_TREE,
 } from '../../model/Versioning';
 import { DecisionTreeTitle } from '../../model/DecisionTreeTitle';
+import configDAO from '../../fileSystem/configDAO';
 
 interface Props {
   navigation: any;
@@ -29,6 +30,7 @@ const DecisionsScreen: FC<Props> = ({ navigation }) => {
     [],
   );
   const [decisionItems, setDecisionItems] = useState<DecisionItem[]>([]);
+  const configInfo = configDAO.getConfig();
 
   useEffect(() => {
     decisionTreeRepository.getDecisionTrees(setDecisionTreeTitles);
@@ -52,8 +54,16 @@ const DecisionsScreen: FC<Props> = ({ navigation }) => {
         categorization: AGGREGATE_CALCULATIONS,
       } as DecisionItem;
     });
-    setDecisionItems([...decisionTrees, ...calculations]);
-  }, [decisionTreeTitles, calculationTitles]);
+    setDecisionItems(
+      configInfo.decisionsTab.indexDecisionType[0] === 'decisionTree'
+        ? [...decisionTrees, ...calculations]
+        : [...calculations, ...decisionTrees],
+    );
+  }, [
+    decisionTreeTitles,
+    calculationTitles,
+    configInfo.decisionsTab.indexDecisionType,
+  ]);
 
   const navigateDecisionItem = (decisionItem: DecisionItem) => {
     if (decisionItem.categorization === AGGREGATE_CALCULATIONS) {
@@ -73,9 +83,8 @@ const DecisionsScreen: FC<Props> = ({ navigation }) => {
     return (
       <View style={{ backgroundColor: '#fff' }}>
         <TitleBar
-          title="Besluitvormingsproces"
-          subTitle="Vergemakkelijk het maken van keuzes in het verkeer door verschillende
-          opties in regelgevingen tegen elkaar af te wegen."
+          title={configInfo.decisionsTab.title}
+          subTitle={configInfo.decisionsTab.subTitle}
         />
       </View>
     );

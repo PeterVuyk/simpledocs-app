@@ -89,8 +89,9 @@ const TabNavigation: FC<Props> = ({ navigation }) => {
             name="DecisionsScreenStack"
             component={DecisionsStackNavigator}
             options={{
-              title: 'Besluitvorming',
-              icon: 'arrow-decision',
+              title: configInfo.decisionsTab.bottomTab.title,
+              icon: configInfo.decisionsTab.bottomTab.icon,
+              iconFamilyType: configInfo.decisionsTab.bottomTab.familyType,
               showInBottomBar: true,
             }}
           />
