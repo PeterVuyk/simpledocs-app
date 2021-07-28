@@ -4,8 +4,8 @@ import { DrawerNavigationProp } from '@react-navigation/drawer/lib/typescript/sr
 import ListItem from '../../../components/ListItem';
 import navigationHelper from '../../../helper/navigationHelper';
 import { ArticleChapter } from '../../../model/ArticleChapter';
-import articleTypeHelper from '../../../helper/articleTypeHelper';
-import { FIRST_ARTICLE_TAB } from '../../../model/ArticleType';
+import configHelper from '../../../helper/configHelper';
+import { FIRST_ARTICLE_TAB } from '../../../model/ArticleTab';
 
 const styles = StyleSheet.create({
   container: {
@@ -31,9 +31,7 @@ const ArticlesList: FC<Props> = ({
   const levelsForSeparateList = ['subHead', 'subSubSection'];
 
   const navigateArticleList = (chapters: string[]) => {
-    if (
-      articleTypeHelper.getTabByArticleType(articleType) === FIRST_ARTICLE_TAB
-    ) {
+    if (configHelper.getTabByArticleType(articleType) === FIRST_ARTICLE_TAB) {
       navigation.navigate('FirstArticleTabStack', {
         screen: 'FirstArticleTabIntermediateScreen',
         params: { articleType, chapters },

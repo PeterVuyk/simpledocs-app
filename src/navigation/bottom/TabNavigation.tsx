@@ -6,12 +6,11 @@ import TabNavigator from './TabNavigator';
 import DecisionsStackNavigator from '../StackNavigator/DecisionsStackNavigator';
 import AboutUsStackNavigator from '../StackNavigator/AboutUsStackNavigator';
 import CopyrightStackNavigator from '../StackNavigator/CopyrightStackNavigator';
-import articleTypeHelper from '../../helper/articleTypeHelper';
-import { FIRST_ARTICLE_TAB, SECOND_ARTICLE_TAB } from '../../model/ArticleType';
-import { ArticlesInfo } from '../../model/ArticlesInfo';
+import { ConfigInfo } from '../../model/ConfigInfo';
 import SecondArticleTabStackNavigator from '../StackNavigator/SecondArticleTabStackNavigator';
 import FirstArticleTabStackNavigator from '../StackNavigator/FirstArticleTabStackNavigator';
 import SearchStackNavigator from '../StackNavigator/SearchStackNavigator';
+import configDAO from '../../fileSystem/configDAO';
 
 const Tab = TabNavigator();
 
@@ -20,19 +19,9 @@ interface Props {
 }
 
 const TabNavigation: FC<Props> = ({ navigation }) => {
-  const [secondTabConfig, setSecondTabConfig] = useState<ArticlesInfo | null>(
-    null,
-  );
-  const [firstTabConfig, setFirstTabConfig] = useState<ArticlesInfo | null>(
-    null,
-  );
+  const [configInfo, setConfigInfo] = useState<ConfigInfo | null>(null);
   useEffect(() => {
-    setFirstTabConfig(
-      articleTypeHelper.getArticlesInfoByTab(FIRST_ARTICLE_TAB),
-    );
-    setSecondTabConfig(
-      articleTypeHelper.getArticlesInfoByTab(SECOND_ARTICLE_TAB),
-    );
+    setConfigInfo(configDAO.getConfig());
   }, []);
   const [progress, setProgress] = useState(new Animated.Value(0));
   const scale = Animated.interpolate(progress, {
@@ -53,7 +42,7 @@ const TabNavigation: FC<Props> = ({ navigation }) => {
 
   return (
     <Animated.View style={[{ flex: 1, overflow: 'hidden' }, animatedStyle]}>
-      {secondTabConfig && firstTabConfig && (
+      {configInfo && (
         <Tab.Navigator
           tabBarStyle={{
             paddingBottom: 5,
@@ -71,13 +60,13 @@ const TabNavigation: FC<Props> = ({ navigation }) => {
             children={() => (
               <FirstArticleTabStackNavigator
                 navigation={navigation}
-                articlesInfo={firstTabConfig}
+                tabInfo={configInfo.firstTab}
               />
             )}
             options={{
-              title: firstTabConfig.bottomTab.title,
-              icon: firstTabConfig.bottomTab.icon,
-              iconFamilyType: firstTabConfig.bottomTab.familyType,
+              title: configInfo.firstTab.bottomTab.title,
+              icon: configInfo.firstTab.bottomTab.icon,
+              iconFamilyType: configInfo.firstTab.bottomTab.familyType,
               showInBottomBar: true,
             }}
           />
@@ -86,13 +75,13 @@ const TabNavigation: FC<Props> = ({ navigation }) => {
             children={() => (
               <SecondArticleTabStackNavigator
                 navigation={navigation}
-                articlesInfo={secondTabConfig}
+                tabInfo={configInfo.secondTab}
               />
             )}
             options={{
-              title: secondTabConfig.bottomTab.title,
-              icon: secondTabConfig.bottomTab.icon,
-              iconFamilyType: secondTabConfig.bottomTab.familyType,
+              title: configInfo.secondTab.bottomTab.title,
+              icon: configInfo.secondTab.bottomTab.icon,
+              iconFamilyType: configInfo.secondTab.bottomTab.familyType,
               showInBottomBar: true,
             }}
           />
@@ -107,9 +96,7 @@ const TabNavigation: FC<Props> = ({ navigation }) => {
           />
           <Tab.Screen
             name="SearchStack"
-            children={() => (
-              <SearchStackNavigator articlesInfo={secondTabConfig} />
-            )}
+            children={() => <SearchStackNavigator configInfo={configInfo} />}
             options={{
               title: 'Info',
               icon: 'information-outline',

@@ -6,8 +6,8 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import articleRepository from '../database/repository/articleRepository';
 import SVGIcon from '../components/SVGIcon';
 import { ArticleChapter } from '../model/ArticleChapter';
-import articleTypeHelper from '../helper/articleTypeHelper';
-import { SECOND_ARTICLE_TAB } from '../model/ArticleType';
+import configHelper from '../helper/configHelper';
+import { SECOND_ARTICLE_TAB } from '../model/ArticleTab';
 
 const styles = StyleSheet.create({
   buttonStyle: { backgroundColor: '#154594', borderRadius: 5 },
@@ -29,9 +29,7 @@ const ArticleListOverlay: FC<Props> = ({ articleType, toggleOverlay }) => {
 
   const handleChapterClick = (item: ArticleChapter) => {
     toggleOverlay();
-    if (
-      articleTypeHelper.getTabByArticleType(articleType) === SECOND_ARTICLE_TAB
-    ) {
+    if (configHelper.getTabByArticleType(articleType) === SECOND_ARTICLE_TAB) {
       navigation.push('SecondArticleTabDetailsScreen', {
         articleChapter: item.chapter,
         articleType,

@@ -1,9 +1,10 @@
 import database from './database';
 import logger from '../../helper/logger';
-import articleTypeHelper from '../../helper/articleTypeHelper';
+import configHelper from '../../helper/configHelper';
 
+// TODO: Mag deze weg?
 async function getConfigs(): Promise<string[]> {
-  return articleTypeHelper.getArticles();
+  return configHelper.getArticleTypes().map(value => value.articleType);
 }
 
 // eslint-disable-next-line @typescript-eslint/ban-types

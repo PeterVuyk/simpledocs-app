@@ -12,7 +12,7 @@ import HighlightWords from '../../components/HighlightWords';
 import SearchHeader from '../../navigation/header/SearchHeader';
 import KeyboardAwareView from '../../components/keyboard/KeyboardAwareView';
 import navigationHelper from '../../helper/navigationHelper';
-import { ArticlesInfo } from '../../model/ArticlesInfo';
+import { ConfigInfo } from '../../model/ConfigInfo';
 
 const styles = StyleSheet.create({
   findPlaceholderImage: {
@@ -30,7 +30,7 @@ interface Props {
   route: RouteProp<
     {
       params: {
-        articlesInfo: ArticlesInfo;
+        configInfo: ConfigInfo;
       };
     },
     'params'
@@ -38,9 +38,9 @@ interface Props {
 }
 
 const SearchScreen: FC<Props> = ({ setChapterSearchText, route }) => {
-  const { articlesInfo } = route.params;
+  const { configInfo } = route.params;
   const [articleType, setArticleType] = useState<string>(
-    articlesInfo.defaultArticleTypeSearch,
+    configInfo.defaultArticleTypeSearch,
   );
   const [articles, setArticles] = useState<Article[] | null>(null);
   const [searchText, setSearchText] = useState<string>('');

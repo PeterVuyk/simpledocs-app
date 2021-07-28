@@ -1,21 +1,21 @@
 import React, { FC } from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 import SearchScreen from '../../screens/search/SearchScreen';
-import { ArticlesInfo } from '../../model/ArticlesInfo';
+import { ConfigInfo } from '../../model/ConfigInfo';
 
 const Stack = createStackNavigator();
 
 interface Props {
-  articlesInfo: ArticlesInfo;
+  configInfo: ConfigInfo;
 }
 
-const SearchStackNavigator: FC<Props> = ({ articlesInfo }) => {
+const SearchStackNavigator: FC<Props> = ({ configInfo }) => {
   return (
     <Stack.Navigator screenOptions={{ detachPreviousScreen: true }}>
       <Stack.Screen
         name="SearchScreen"
         component={SearchScreen}
-        initialParams={{ articlesInfo }}
+        initialParams={{ configInfo }}
         options={{ headerShown: false }}
       />
     </Stack.Navigator>

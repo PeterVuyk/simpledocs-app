@@ -6,18 +6,23 @@ interface BottomTab {
   title: string;
 }
 
-interface ArticleInfo {
+export interface ArticleInfo {
   index: number;
   articleType: string;
-  title?: string;
+  title: string;
   subTitle?: string;
   iconFile?: string;
 }
 
-export interface ArticlesInfo {
+export interface TabInfo {
+  bottomTab: BottomTab;
+  articleTypes: ArticleInfo[];
   title?: string;
   subTitle?: string;
-  articleTypes: ArticleInfo[];
-  bottomTab: BottomTab;
+}
+
+export interface ConfigInfo {
+  firstTab: TabInfo;
+  secondTab: TabInfo;
   defaultArticleTypeSearch: string;
 }

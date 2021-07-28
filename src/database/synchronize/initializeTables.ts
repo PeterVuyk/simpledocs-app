@@ -68,8 +68,8 @@ function initialize(): Promise<any> {
   });
 }
 
-const initializeVersioningTable = {
+const initializeTables = {
   initialize,
 };
 
-export default initializeVersioningTable;
+export default initializeTables;

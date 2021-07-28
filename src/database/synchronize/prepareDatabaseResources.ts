@@ -1,5 +1,5 @@
 import versioningRepository from '../repository/versioningRepository';
-import initializeVersioningTable from './initializeVersioningTable';
+import initializeTables from './initializeTables';
 import collectVersions from '../firebase/collectVersions';
 import updateDecisionTreeTable from './updateDecisionTreeTable';
 import collectDecisionTreeSteps from '../firebase/collectDecisionTreeSteps';
@@ -15,7 +15,7 @@ import {
 import collectArticlesByType from '../firebase/collectArticlesByType';
 import updateArticleTable from './updateArticleTable';
 import { AggregateVersions } from '../../model/AggregateVersions';
-import articleTypeHelper from '../../helper/articleTypeHelper';
+import configHelper from '../../helper/configHelper';
 
 let versioning: Versioning | undefined;
 const setVersionCallback: any = (callback: Versioning) => {
@@ -48,11 +48,16 @@ const updateArticleIfNewVersion = async (
 
 const updateArticlesIfNewVersion = async (versions: AggregateVersions[]) => {
   // eslint-disable-next-line no-restricted-syntax
-  for (const articleType of articleTypeHelper.getArticles()) {
-    const aggregateVersion = versions.find(version => version[articleType]);
+  for (const articleInfo of configHelper.getArticleTypes()) {
+    const aggregateVersion = versions.find(
+      version => version[articleInfo.articleType],
+    );
     if (aggregateVersion !== undefined) {
       // eslint-disable-next-line no-await-in-loop
-      await updateArticleIfNewVersion(articleType, aggregateVersion);
+      await updateArticleIfNewVersion(
+        articleInfo.articleType,
+        aggregateVersion,
+      );
     }
   }
 };
@@ -128,7 +133,7 @@ const cleanupRemovedArticleTypesFromVersioningTable = async (
 };
 
 const prepareDatabaseResources = async () => {
-  await initializeVersioningTable.initialize();
+  await initializeTables.initialize();
   if (!(await internetConnectivity.hasInternetConnection())) {
     return;
   }

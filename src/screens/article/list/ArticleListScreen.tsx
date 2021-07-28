@@ -3,7 +3,7 @@ import { RouteProp } from '@react-navigation/native';
 import ArticlesList from './ArticlesList';
 import articleRepository from '../../../database/repository/articleRepository';
 import { ArticleChapter } from '../../../model/ArticleChapter';
-import { ArticlesInfo } from '../../../model/ArticlesInfo';
+import { TabInfo } from '../../../model/ConfigInfo';
 
 interface Props {
   navigation: any;
@@ -12,7 +12,7 @@ interface Props {
       params: {
         chapters: string[];
         articleType: string;
-        articlesInfo: ArticlesInfo;
+        tabInfo: TabInfo;
       };
     },
     'params'
@@ -20,17 +20,15 @@ interface Props {
 }
 
 const ArticleListScreen: FC<Props> = ({ navigation, route }) => {
-  const { articleType, chapters, articlesInfo } = route.params;
+  const { articleType, chapters, tabInfo } = route.params;
   const [articleChapters, setArticleChapters] = useState<ArticleChapter[]>([]);
   const [currentArticleType, setCurrentArticleType] = useState<string | null>(
     null,
   );
 
   useEffect(() => {
-    setCurrentArticleType(
-      articleType ?? articlesInfo.articleTypes[0].articleType,
-    );
-  }, [articlesInfo, articleType]);
+    setCurrentArticleType(articleType ?? tabInfo.articleTypes[0].articleType);
+  }, [tabInfo, articleType]);
 
   useEffect(() => {
     if (currentArticleType === null) {

@@ -7,6 +7,7 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import highlightWordsInHTMLFile from '../helper/highlightWordsInHTMLFile';
 import ScrollViewToggleBottomBar from './ScrollViewToggleBottomBar';
 import navigationHelper, { BLANK_WEBPAGE } from '../helper/navigationHelper';
+import { ConfigInfo } from '../model/ConfigInfo';
 
 interface Props {
   htmlFile: string;

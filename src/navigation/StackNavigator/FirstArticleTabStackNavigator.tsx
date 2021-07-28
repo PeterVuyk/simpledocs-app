@@ -4,31 +4,25 @@ import { DrawerNavigationHelpers } from '@react-navigation/drawer/lib/typescript
 import Header from '../header/Header';
 import ArticleDetailsScreen from '../../screens/article/details/ArticleDetailsScreen';
 import ArticleListScreen from '../../screens/article/list/ArticleListScreen';
-import { FIRST_ARTICLE_TAB } from '../../model/ArticleType';
+import { FIRST_ARTICLE_TAB } from '../../model/ArticleTab';
 import ArticlesOverviewScreen from '../../screens/article/ArticlesOverviewScreen';
-import { ArticlesInfo } from '../../model/ArticlesInfo';
+import { TabInfo } from '../../model/ConfigInfo';
 
 const Stack = createStackNavigator();
 
 interface Props {
   navigation: DrawerNavigationHelpers;
-  articlesInfo: ArticlesInfo;
+  tabInfo: TabInfo;
 }
 
-const FirstArticleTabStackNavigator: FC<Props> = ({
-  navigation,
-  articlesInfo,
-}) => {
+const FirstArticleTabStackNavigator: FC<Props> = ({ navigation, tabInfo }) => {
   return (
     <Stack.Navigator headerMode="screen">
-      {articlesInfo.articleTypes.length !== 1 && (
+      {tabInfo.articleTypes.length !== 1 && (
         <Stack.Screen
           name="FirstArticleTabOverviewScreen"
           component={ArticlesOverviewScreen}
-          initialParams={{
-            articlesInfo,
-            currentTab: FIRST_ARTICLE_TAB,
-          }}
+          initialParams={{ tabInfo, currentTab: FIRST_ARTICLE_TAB }}
           options={{
             header: () => <Header navigation={navigation} />,
           }}
@@ -36,12 +30,16 @@ const FirstArticleTabStackNavigator: FC<Props> = ({
       )}
       <Stack.Screen
         name={
-          articlesInfo.articleTypes.length !== 1
+          tabInfo.articleTypes.length !== 1
             ? 'FirstArticleTabArticleScreen'
             : 'FirstArticleTabOverviewScreen'
         }
         component={ArticleListScreen}
-        initialParams={{ articlesInfo, chapters: null, articleType: null }}
+        initialParams={{
+          tabInfo,
+          chapters: null,
+          articleType: null,
+        }}
         options={{
           header: () => <Header navigation={navigation} />,
         }}
@@ -49,7 +47,11 @@ const FirstArticleTabStackNavigator: FC<Props> = ({
       <Stack.Screen
         name="FirstArticleTabIntermediateScreen"
         component={ArticleListScreen}
-        initialParams={{ articlesInfo, chapters: null, articleType: null }}
+        initialParams={{
+          tabInfo,
+          chapters: null,
+          articleType: null,
+        }}
         options={{
           header: () => <Header navigation={navigation} />,
         }}

@@ -1,7 +1,7 @@
 import { StackNavigationProp } from '@react-navigation/stack';
 import { DrawerNavigationProp } from '@react-navigation/drawer/lib/typescript/src/types';
-import articleTypeHelper from './articleTypeHelper';
-import { FIRST_ARTICLE_TAB, SECOND_ARTICLE_TAB } from '../model/ArticleType';
+import configHelper from './configHelper';
+import { FIRST_ARTICLE_TAB, SECOND_ARTICLE_TAB } from '../model/ArticleTab';
 import logger from './logger';
 
 export const BLANK_WEBPAGE = 'https://page-blank.firebaseapp.com/';
@@ -20,7 +20,7 @@ const navigateToChapter = (
   articleType: string,
   navigation: StackNavigationProp<any> | DrawerNavigationProp<any>,
 ): void => {
-  const currentTab = articleTypeHelper.getTabByArticleType(articleType);
+  const currentTab = configHelper.getTabByArticleType(articleType);
   if (currentTab === SECOND_ARTICLE_TAB) {
     navigation.navigate('SecondArticleTabStack', {
       screen: 'SecondArticleTabDetailsScreen',
@@ -42,8 +42,8 @@ const redirect = (
   chapter: string,
   navigation: StackNavigationProp<any>,
 ): void => {
-  const currentTab = articleTypeHelper.getTabByArticleType(currentArticleType);
-  const targetTab = articleTypeHelper.getTabByArticleType(targetArticleType);
+  const currentTab = configHelper.getTabByArticleType(currentArticleType);
+  const targetTab = configHelper.getTabByArticleType(targetArticleType);
   if (targetTab === SECOND_ARTICLE_TAB) {
     if (currentTab === SECOND_ARTICLE_TAB) {
       navigation.push('SecondArticleTabDetailsScreen', {

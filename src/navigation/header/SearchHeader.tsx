@@ -4,6 +4,7 @@ import { SearchBar } from 'react-native-elements';
 import { useIsFocused, useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import SearchTab from '../../screens/search/SearchTab';
+import { ConfigInfo } from '../../model/ConfigInfo';
 
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: '#fff' },

@@ -2,10 +2,10 @@ import React, { FC } from 'react';
 import { DrawerNavigationProp } from '@react-navigation/drawer/lib/typescript/src/types';
 import { FlatList, StyleSheet, View } from 'react-native';
 import { RouteProp } from '@react-navigation/native';
-import { SECOND_ARTICLE_TAB } from '../../model/ArticleType';
+import { SECOND_ARTICLE_TAB } from '../../model/ArticleTab';
 import TitleBar from '../../components/TitleBar';
 import ListItem from '../../components/ListItem';
-import { ArticlesInfo } from '../../model/ArticlesInfo';
+import { TabInfo } from '../../model/ConfigInfo';
 
 const styles = StyleSheet.create({
   container: {
@@ -20,7 +20,7 @@ interface Props {
   route: RouteProp<
     {
       params: {
-        articlesInfo: ArticlesInfo;
+        tabInfo: TabInfo;
         currentTab: string;
       };
     },
@@ -29,31 +29,28 @@ interface Props {
 }
 
 const ArticlesOverviewScreen: FC<Props> = ({ navigation, route }) => {
-  const { articlesInfo, currentTab } = route.params;
+  const { tabInfo, currentTab } = route.params;
 
   const navigate = (articleType: string) => {
     if (currentTab === SECOND_ARTICLE_TAB) {
       navigation.navigate('SecondArticleTabStack', {
         screen: 'SecondArticleTabArticleScreen',
-        params: { articleType, articlesInfo },
+        params: { articleType, tabInfo },
       });
       return;
     }
     navigation.navigate('FirstArticleTabStack', {
       screen: 'FirstArticleTabArticleScreen',
-      params: { articleType, articlesInfo },
+      params: { articleType, tabInfo },
     });
   };
 
   return (
     <View style={styles.container}>
-      <TitleBar
-        title={articlesInfo.title ?? ''}
-        subTitle={articlesInfo.subTitle ?? ''}
-      />
+      <TitleBar title={tabInfo.title ?? ''} subTitle={tabInfo.subTitle ?? ''} />
       <FlatList
         keyExtractor={item => item.articleType.toString()}
-        data={articlesInfo.articleTypes}
+        data={tabInfo.articleTypes}
         renderItem={({ item }) => (
           <ListItem
             title={item.title ?? ''}

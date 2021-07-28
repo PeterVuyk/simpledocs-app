@@ -1,9 +1,8 @@
 import React, { FC, useEffect, useState } from 'react';
 import { Tab, ThemeProvider } from 'react-native-elements';
 import { ScrollView } from 'react-native';
-import articleTypeHelper, {
-  ArticleTypesOrderedTranslated,
-} from '../../helper/articleTypeHelper';
+import configHelper from '../../helper/configHelper';
+import { ArticleInfo } from '../../model/ConfigInfo';
 
 interface Props {
   handleArticleTypeTabChange: (articleType: string) => void;
@@ -23,12 +22,10 @@ const theme = {
 
 const SearchTab: FC<Props> = ({ handleArticleTypeTabChange }) => {
   const [tab, setTab] = useState(0);
-  const [articleTypes, setArticleTypes] = useState<
-    ArticleTypesOrderedTranslated[]
-  >([]);
+  const [articleTypes, setArticleTypes] = useState<ArticleInfo[]>([]);
 
   useEffect(() => {
-    setArticleTypes(articleTypeHelper.getArticleTypeTitlesTranslated());
+    setArticleTypes(configHelper.getArticleTypes());
   }, []);
 
   const handleTabChange = (clickedTab: number): void => {
@@ -46,7 +43,7 @@ const SearchTab: FC<Props> = ({ handleArticleTypeTabChange }) => {
         {articleTypes.length !== 0 && (
           <Tab value={tab} onChange={handleTabChange}>
             {articleTypes.map(value => (
-              <Tab.Item title={value.translation} key={value.articleType} />
+              <Tab.Item title={value.title} key={value.articleType} />
             ))}
           </Tab>
         )}
