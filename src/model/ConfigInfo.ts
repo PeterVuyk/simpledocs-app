@@ -10,6 +10,8 @@ export interface ArticleInfo {
   index: number;
   articleType: string;
   title: string;
+  showLevelsInList: string[];
+  showLevelsInIntermediateList: string[];
   subTitle?: string;
   iconFile?: string;
 }

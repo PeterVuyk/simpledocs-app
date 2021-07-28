@@ -28,8 +28,6 @@ const ArticlesList: FC<Props> = ({
   articleChapters,
   articleType,
 }) => {
-  const levelsForSeparateList = ['subHead', 'subSubSection'];
-
   const navigateArticleList = (chapters: string[]) => {
     if (configHelper.getTabByArticleType(articleType) === FIRST_ARTICLE_TAB) {
       navigation.navigate('FirstArticleTabStack', {
@@ -53,7 +51,11 @@ const ArticlesList: FC<Props> = ({
   };
 
   const clickHandler = (articleChapter: ArticleChapter) => {
-    if (levelsForSeparateList.includes(articleChapter.level)) {
+    const articleInfo = configHelper.getConfigByArticleType(articleType);
+    if (
+      showLevels === undefined ||
+      articleInfo?.showLevelsInIntermediateList.includes(articleChapter.level)
+    ) {
       navigateToDetailsScreen(articleChapter);
       return;
     }
@@ -61,7 +63,7 @@ const ArticlesList: FC<Props> = ({
     const nextChapter = articleChapters[index + 1];
     if (
       nextChapter === undefined ||
-      !levelsForSeparateList.includes(nextChapter.level)
+      !articleInfo?.showLevelsInIntermediateList.includes(nextChapter.level)
     ) {
       navigateToDetailsScreen(articleChapter);
       return;
@@ -70,7 +72,7 @@ const ArticlesList: FC<Props> = ({
     nextChapters.push(articleChapters[index]);
     // eslint-disable-next-line no-restricted-syntax
     for (const chapter of articleChapters.slice(index + 1)) {
-      if (!levelsForSeparateList.includes(chapter.level)) {
+      if (!articleInfo?.showLevelsInIntermediateList.includes(chapter.level)) {
         break;
       }
       nextChapters.push(chapter);

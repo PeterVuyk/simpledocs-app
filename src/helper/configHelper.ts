@@ -12,6 +12,12 @@ const getArticleTypes = (): ArticleInfo[] => {
   return [...articleTypesFirsTab, ...articleTypesSecondTab];
 };
 
+const getConfigByArticleType = (
+  articleType: string,
+): ArticleInfo | undefined => {
+  return getArticleTypes().find(value => value.articleType === articleType);
+};
+
 const getTabByArticleType = (articleType: string): string | null => {
   if (
     configDAO
@@ -33,6 +39,7 @@ const getTabByArticleType = (articleType: string): string | null => {
 const configHelper = {
   getTabByArticleType,
   getArticleTypes,
+  getConfigByArticleType,
 };
 
 export default configHelper;

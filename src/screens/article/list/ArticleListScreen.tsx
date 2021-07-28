@@ -45,13 +45,18 @@ const ArticleListScreen: FC<Props> = ({ navigation, route }) => {
     articleRepository.getChapters(currentArticleType, setArticleChapters);
   }, [currentArticleType, chapters]);
 
+  const getLevelsToShowInList = (): string[] | undefined =>
+    chapters
+      ? undefined
+      : tabInfo.articleTypes.find(
+          value => value.articleType === currentArticleType,
+        )?.showLevelsInList;
+
   return (
     <>
       {articleChapters && currentArticleType && (
         <ArticlesList
-          showLevels={
-            chapters ? undefined : ['chapter', 'section', 'subSection']
-          }
+          showLevels={getLevelsToShowInList()}
           navigation={navigation}
           articleChapters={articleChapters}
           articleType={currentArticleType}
