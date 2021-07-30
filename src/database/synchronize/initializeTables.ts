@@ -1,8 +1,30 @@
 import * as SQLite from 'expo-sqlite';
 import logger from '../../helper/logger';
 import collectConfig from '../firebase/collectConfig';
+import { ArticleInfo } from '../../model/ConfigInfo';
+import appConfigDAO from '../../fileSystem/appConfigDAO';
 
 const db = SQLite.openDatabase('db.db');
+
+async function initializeAndGetArticleTypes(): Promise<ArticleInfo[]> {
+  let appConfig;
+  if (appConfigDAO.hasAppConfigInFileStorage()) {
+    appConfig = appConfigDAO.getAppConfig();
+  } else {
+    appConfig = await collectConfig.getConfig();
+    if (appConfig) {
+      appConfigDAO.saveAppConfigToFileStorage(appConfig);
+    }
+  }
+  if (!appConfig) {
+    return [];
+  }
+  appConfigDAO.saveAppConfigToFileStorage(appConfig);
+  return [
+    ...appConfig.firstTab.articleTypes,
+    ...appConfig.secondTab.articleTypes,
+  ];
+}
 
 /**
  * If you add more rows to the 'versioning-table', then make sure you
@@ -33,8 +55,7 @@ function initialize(): Promise<any> {
         sqlTransaction.executeSql(
           'CREATE UNIQUE INDEX IF NOT EXISTS versioning_aggregate_uindex ON versioning (aggregate);',
         );
-        collectConfig
-          .getConfigs()
+        initializeAndGetArticleTypes()
           .then(articleTypes => {
             articleTypes.forEach(articleType => {
               sqlTransaction.executeSql(
@@ -51,6 +72,9 @@ function initialize(): Promise<any> {
           );
         sqlTransaction.executeSql(
           "INSERT OR IGNORE INTO versioning (aggregate, version) VALUES ('decisionTree', 'initial');",
+        );
+        sqlTransaction.executeSql(
+          "INSERT OR IGNORE INTO versioning (aggregate, version) VALUES ('appConfig', 'initial');",
         );
         sqlTransaction.executeSql(
           "INSERT OR IGNORE INTO versioning (aggregate, version) VALUES ('calculations', 'initial');",

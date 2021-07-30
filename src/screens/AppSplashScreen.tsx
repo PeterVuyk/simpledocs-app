@@ -30,7 +30,7 @@ const AppSplashScreen: FC = () => {
    * receive the latest updates.
    */
   useEffect(() => {
-    const MINIMUM_NUMBER_OF_VERSIONS = 4;
+    const MINIMUM_NUMBER_OF_VERSIONS = 5;
     if (versions !== null) {
       setStartupIsSuccessful(
         versions.length >= MINIMUM_NUMBER_OF_VERSIONS ||

@@ -10,7 +10,7 @@ import { ConfigInfo } from '../../model/ConfigInfo';
 import SecondArticleTabStackNavigator from '../StackNavigator/SecondArticleTabStackNavigator';
 import FirstArticleTabStackNavigator from '../StackNavigator/FirstArticleTabStackNavigator';
 import SearchStackNavigator from '../StackNavigator/SearchStackNavigator';
-import configDAO from '../../fileSystem/configDAO';
+import appConfigDAO from '../../fileSystem/appConfigDAO';
 
 const Tab = TabNavigator();
 
@@ -21,7 +21,7 @@ interface Props {
 const TabNavigation: FC<Props> = ({ navigation }) => {
   const [configInfo, setConfigInfo] = useState<ConfigInfo | null>(null);
   useEffect(() => {
-    setConfigInfo(configDAO.getConfig());
+    setConfigInfo(appConfigDAO.getAppConfig());
   }, []);
   const [progress, setProgress] = useState(new Animated.Value(0));
   const scale = Animated.interpolate(progress, {

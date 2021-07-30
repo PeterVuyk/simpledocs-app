@@ -55,7 +55,7 @@ function updateCalculation(
       sqlTransaction => {
         removeAllCalculationsInfo(sqlTransaction);
         createCalculationTable(sqlTransaction);
-        versioningRepository.updateVersioning(
+        versioningRepository.updateVersioningWithTransaction(
           sqlTransaction,
           AGGREGATE_CALCULATIONS,
           version,

@@ -4,7 +4,7 @@ import { Versioning } from '../../model/Versioning';
 
 const db = SQLite.openDatabase('db.db');
 
-function updateVersioning(
+function updateVersioningWithTransaction(
   sqlTransaction: SQLite.SQLTransaction,
   aggregate: string,
   version: string,
@@ -13,6 +13,27 @@ function updateVersioning(
     `UPDATE versioning SET version = ? WHERE aggregate = ?`,
     [version, aggregate],
   );
+}
+
+function updateVersioning(aggregate: string, version: string): Promise<void> {
+  return new Promise((resolve, reject) => {
+    db.transaction(
+      sqlTransaction => {
+        sqlTransaction.executeSql(
+          `UPDATE versioning SET version = ? WHERE aggregate = ?;`,
+          [version, aggregate],
+        );
+      },
+      error => {
+        logger.error(
+          'versioningRepository.updateVersioning failed',
+          error.message,
+        );
+        reject();
+      },
+      resolve,
+    );
+  });
 }
 
 async function getVersioning(
@@ -100,6 +121,7 @@ function removeVersion(versioning: Versioning): Promise<void> {
 const versioningRepository = {
   getVersioning,
   getAllVersions,
+  updateVersioningWithTransaction,
   updateVersioning,
   removeVersion,
 };

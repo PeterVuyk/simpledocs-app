@@ -3,7 +3,12 @@ import { ConfigInfo } from '../model/ConfigInfo';
 
 let config: ConfigInfo | undefined;
 
-const getConfigFromFileStorage = (): ConfigInfo => {
+const hasAppConfigInFileStorage = (): boolean => {
+  return false; // TODO
+};
+
+const getAppConfigFromFileStorage = (): ConfigInfo => {
+  // TODO
   return {
     defaultArticleTypeSearch: 'instructionManual',
     firstTab: {
@@ -88,9 +93,13 @@ const getConfigFromFileStorage = (): ConfigInfo => {
   };
 };
 
-const getConfig = (): ConfigInfo => {
+const saveAppConfigToFileStorage = (configInfo: ConfigInfo) => {
+  // TODO
+};
+
+const getAppConfig = (): ConfigInfo => {
   if (config === undefined) {
-    config = getConfigFromFileStorage();
+    config = getAppConfigFromFileStorage();
   }
   return config;
 };
@@ -124,8 +133,10 @@ export async function getConfiguration(configFile: string): Promise<string> {
   });
 }
 
-const configDAO = {
-  getConfig,
+const appConfigDAO = {
+  getAppConfig,
+  saveAppConfigToFileStorage,
+  hasAppConfigInFileStorage,
 };
 
-export default configDAO;
+export default appConfigDAO;

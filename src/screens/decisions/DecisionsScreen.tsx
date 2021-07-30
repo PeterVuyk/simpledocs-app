@@ -10,7 +10,7 @@ import {
   AGGREGATE_DECISION_TREE,
 } from '../../model/Versioning';
 import { DecisionTreeTitle } from '../../model/DecisionTreeTitle';
-import configDAO from '../../fileSystem/configDAO';
+import appConfigDAO from '../../fileSystem/appConfigDAO';
 
 interface Props {
   navigation: any;
@@ -30,7 +30,7 @@ const DecisionsScreen: FC<Props> = ({ navigation }) => {
     [],
   );
   const [decisionItems, setDecisionItems] = useState<DecisionItem[]>([]);
-  const configInfo = configDAO.getConfig();
+  const configInfo = appConfigDAO.getAppConfig();
 
   useEffect(() => {
     decisionTreeRepository.getDecisionTrees(setDecisionTreeTitles);

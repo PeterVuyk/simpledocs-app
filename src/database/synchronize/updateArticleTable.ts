@@ -52,7 +52,7 @@ function updateArticles(
     db.transaction(
       sqlTransaction => {
         removeArticlesByType(sqlTransaction, articleType);
-        versioningRepository.updateVersioning(
+        versioningRepository.updateVersioningWithTransaction(
           sqlTransaction,
           articleType,
           version,

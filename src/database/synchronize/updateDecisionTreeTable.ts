@@ -50,7 +50,7 @@ function updateDecisionTreeSteps(
       sqlTransaction => {
         removeAllDecisionTree(sqlTransaction);
         createDecisionTreeTable(sqlTransaction);
-        versioningRepository.updateVersioning(
+        versioningRepository.updateVersioningWithTransaction(
           sqlTransaction,
           AGGREGATE_DECISION_TREE,
           version,

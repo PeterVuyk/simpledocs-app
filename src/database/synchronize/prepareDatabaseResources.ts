@@ -8,6 +8,7 @@ import updateCalculationsTable from './updateCalculationsTable';
 import collectCalculations from '../firebase/collectCalculations';
 import internetConnectivity from '../../helper/internetConnectivity';
 import {
+  AGGREGATE_APP_CONFIG,
   AGGREGATE_CALCULATIONS,
   AGGREGATE_DECISION_TREE,
   Versioning,
@@ -16,18 +17,23 @@ import collectArticlesByType from '../firebase/collectArticlesByType';
 import updateArticleTable from './updateArticleTable';
 import { AggregateVersions } from '../../model/AggregateVersions';
 import configHelper from '../../helper/configHelper';
+import collectConfig from '../firebase/collectConfig';
+import appConfigDAO from '../../fileSystem/appConfigDAO';
 
-let versioning: Versioning | undefined;
-const setVersionCallback: any = (callback: Versioning) => {
-  versioning = callback;
+let aggregateVersions: Versioning[] | undefined;
+const setAggregateVersionsCallback: any = (callback: Versioning[]) => {
+  aggregateVersions = callback;
+};
+const getVersionFromAggregate = (aggregate: string): string | undefined => {
+  return aggregateVersions?.find(value => value.aggregate === aggregate)
+    ?.version;
 };
 
 const updateArticleIfNewVersion = async (
   articleType: string,
   versions: AggregateVersions,
 ) => {
-  await versioningRepository.getVersioning(articleType, setVersionCallback);
-  if (versioning?.version !== versions[articleType]) {
+  if (getVersionFromAggregate(articleType) !== versions[articleType]) {
     await collectArticlesByType
       .getArticles(articleType)
       .then(article =>
@@ -65,14 +71,11 @@ const updateArticlesIfNewVersion = async (versions: AggregateVersions[]) => {
 const updateDecisionTreeIfNewVersion = async (
   versions: AggregateVersions[],
 ) => {
-  await versioningRepository.getVersioning(
-    AGGREGATE_DECISION_TREE,
-    setVersionCallback,
-  );
   const aggregateVersion = versions.find(version => version.decisionTree);
   if (
     aggregateVersion !== undefined &&
-    versioning?.version !== aggregateVersion.decisionTree
+    getVersionFromAggregate(AGGREGATE_DECISION_TREE) !==
+      aggregateVersion.decisionTree
   ) {
     await collectDecisionTreeSteps
       .getDecisionTreeSteps()
@@ -88,14 +91,11 @@ const updateDecisionTreeIfNewVersion = async (
 const updateCalculationsIfNewVersion = async (
   versions: AggregateVersions[],
 ) => {
-  await versioningRepository.getVersioning(
-    AGGREGATE_CALCULATIONS,
-    setVersionCallback,
-  );
   const aggregateVersion = versions.find(version => version.calculations);
   if (
     aggregateVersion !== undefined &&
-    versioning?.version !== aggregateVersion.calculations
+    getVersionFromAggregate(AGGREGATE_CALCULATIONS) !==
+      aggregateVersion.calculations
   ) {
     await collectCalculations
       .getCalculationsInfo()
@@ -132,19 +132,49 @@ const cleanupRemovedArticleTypesFromVersioningTable = async (
     );
 };
 
+const updateAppConfigurations = async (versions: AggregateVersions[]) => {
+  const aggregateVersion = versions.find(version => version.appConfig);
+  if (
+    aggregateVersion === undefined ||
+    getVersionFromAggregate(AGGREGATE_APP_CONFIG) === aggregateVersion.appConfig
+  ) {
+    return;
+  }
+  const appConfig = await collectConfig.getConfig();
+  if (!appConfig) {
+    logger.errorFromMessage(
+      'Called collectConfig.getConfig from prepareDatabaseResources, expected appConfig as a response but no config received.',
+    );
+    return;
+  }
+
+  appConfigDAO.saveAppConfigToFileStorage(appConfig);
+  versioningRepository
+    .updateVersioning(AGGREGATE_APP_CONFIG, aggregateVersion.appConfig)
+    .catch(reason =>
+      logger.error(
+        'Update version for appConfig failed. By the next startup the appConfig will be fetched again, the update version will be tried to store again',
+        reason,
+      ),
+    );
+};
+
 const prepareDatabaseResources = async () => {
   await initializeTables.initialize();
   if (!(await internetConnectivity.hasInternetConnection())) {
     return;
   }
   const firebaseVersions = await collectVersions.getVersioning();
+  await versioningRepository.getAllVersions(setAggregateVersionsCallback);
   if (firebaseVersions === null) {
     return;
   }
 
-  await updateDecisionTreeIfNewVersion(firebaseVersions)
+  await updateAppConfigurations(firebaseVersions)
+    .then(() => updateDecisionTreeIfNewVersion(firebaseVersions))
     .then(() => updateArticlesIfNewVersion(firebaseVersions))
     .then(() => updateCalculationsIfNewVersion(firebaseVersions))
+    .then(() => updateAppConfigurations(firebaseVersions))
     .catch(reason =>
       logger.error('prepareDatabaseResources failed', reason.message),
     );

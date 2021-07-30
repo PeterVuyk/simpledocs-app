@@ -1,30 +1,24 @@
 import database from './database';
+import { ConfigInfo } from '../../model/ConfigInfo';
 import logger from '../../helper/logger';
-import configHelper from '../../helper/configHelper';
 
-// TODO: Mag deze weg?
-async function getConfigs(): Promise<string[]> {
-  return configHelper.getArticleTypes().map(value => value.articleType);
-}
-
-// eslint-disable-next-line @typescript-eslint/ban-types
-async function getConfig(): Promise<object> {
-  const config = await database()
+async function getConfig(): Promise<void | ConfigInfo> {
+  return database()
     .collection('config')
+    .doc('appConfig')
     .get()
+    .then(value => value.data() as ConfigInfo)
+    .then(value => value)
     .catch(reason =>
-      logger.error('collecting config from firebase in getConfig', reason),
+      logger.error(
+        'Failed collecting articles from config file to save in versioning table',
+        reason,
+      ),
     );
-  return config
-    ? config.docs.map(doc => {
-        return { id: doc.id, ...doc.data() };
-      })
-    : [];
 }
 
-const collectVersions = {
+const collectConfig = {
   getConfig,
-  getConfigs,
 };
 
-export default collectVersions;
+export default collectConfig;
