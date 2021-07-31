@@ -8,18 +8,24 @@ const db = SQLite.openDatabase('db.db');
 
 async function initializeAndGetArticleTypes(): Promise<ArticleInfo[]> {
   let appConfig;
-  if (appConfigDAO.hasAppConfigInFileStorage()) {
-    appConfig = appConfigDAO.getAppConfig();
+  if (await appConfigDAO.appConfigExistsInFileStorage()) {
+    appConfig = await appConfigDAO.getAppConfig();
   } else {
     appConfig = await collectConfig.getConfig();
     if (appConfig) {
-      appConfigDAO.saveAppConfigToFileStorage(appConfig);
+      await appConfigDAO
+        .saveAppConfigToFileStorage(appConfig)
+        .catch(reason =>
+          logger.error(
+            'Save appConfig to fileStorage failed by initialization app first use',
+            reason,
+          ),
+        );
     }
   }
   if (!appConfig) {
     return [];
   }
-  appConfigDAO.saveAppConfigToFileStorage(appConfig);
   return [
     ...appConfig.firstTab.articleTypes,
     ...appConfig.secondTab.articleTypes,

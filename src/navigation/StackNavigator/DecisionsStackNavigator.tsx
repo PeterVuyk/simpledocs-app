@@ -6,19 +6,26 @@ import Header from '../header/Header';
 import DecisionsScreen from '../../screens/decisions/DecisionsScreen';
 import CalculatorScreen from '../../screens/decisions/calculator/CalculatorScreen';
 import DocumentationScreen from '../../screens/decisions/DocumentationScreen';
+import { DecisionsTab, TabInfo } from '../../model/ConfigInfo';
+import { FIRST_ARTICLE_TAB } from '../../model/ArticleTab';
 
 const Stack = createStackNavigator();
 
 interface Props {
   navigation: DrawerNavigationHelpers;
+  decisionTabInfo: DecisionsTab;
 }
 
-const DecisionsStackNavigator: FC<Props> = ({ navigation }) => {
+const DecisionsStackNavigator: FC<Props> = ({
+  navigation,
+  decisionTabInfo,
+}) => {
   return (
     <Stack.Navigator>
       <Stack.Screen
         name="DecisionsScreen"
         component={DecisionsScreen}
+        initialParams={{ decisionTabInfo }}
         options={{
           header: () => <Header navigation={navigation} />,
         }}

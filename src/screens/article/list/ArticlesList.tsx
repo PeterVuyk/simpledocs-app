@@ -28,8 +28,11 @@ const ArticlesList: FC<Props> = ({
   articleChapters,
   articleType,
 }) => {
-  const navigateArticleList = (chapters: string[]) => {
-    if (configHelper.getTabByArticleType(articleType) === FIRST_ARTICLE_TAB) {
+  const navigateArticleList = async (chapters: string[]) => {
+    if (
+      (await configHelper.getTabByArticleType(articleType)) ===
+      FIRST_ARTICLE_TAB
+    ) {
       navigation.navigate('FirstArticleTabStack', {
         screen: 'FirstArticleTabIntermediateScreen',
         params: { articleType, chapters },
@@ -50,8 +53,8 @@ const ArticlesList: FC<Props> = ({
     );
   };
 
-  const clickHandler = (articleChapter: ArticleChapter) => {
-    const articleInfo = configHelper.getConfigByArticleType(articleType);
+  const clickHandler = async (articleChapter: ArticleChapter) => {
+    const articleInfo = await configHelper.getConfigByArticleType(articleType);
     if (
       showLevels === undefined ||
       articleInfo?.showLevelsInIntermediateList.includes(articleChapter.level)

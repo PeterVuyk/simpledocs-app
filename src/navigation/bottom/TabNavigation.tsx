@@ -21,7 +21,7 @@ interface Props {
 const TabNavigation: FC<Props> = ({ navigation }) => {
   const [configInfo, setConfigInfo] = useState<ConfigInfo | null>(null);
   useEffect(() => {
-    setConfigInfo(appConfigDAO.getAppConfig());
+    appConfigDAO.getAppConfig().then(value => setConfigInfo(value));
   }, []);
   const [progress, setProgress] = useState(new Animated.Value(0));
   const scale = Animated.interpolate(progress, {
@@ -87,7 +87,12 @@ const TabNavigation: FC<Props> = ({ navigation }) => {
           />
           <Tab.Screen
             name="DecisionsScreenStack"
-            component={DecisionsStackNavigator}
+            children={() => (
+              <DecisionsStackNavigator
+                navigation={navigation}
+                decisionTabInfo={configInfo.decisionsTab}
+              />
+            )}
             options={{
               title: configInfo.decisionsTab.bottomTab.title,
               icon: configInfo.decisionsTab.bottomTab.icon,

@@ -54,7 +54,7 @@ const updateArticleIfNewVersion = async (
 
 const updateArticlesIfNewVersion = async (versions: AggregateVersions[]) => {
   // eslint-disable-next-line no-restricted-syntax
-  for (const articleInfo of configHelper.getArticleTypes()) {
+  for (const articleInfo of await configHelper.getArticleTypes()) {
     const aggregateVersion = versions.find(
       version => version[articleInfo.articleType],
     );
@@ -148,12 +148,21 @@ const updateAppConfigurations = async (versions: AggregateVersions[]) => {
     return;
   }
 
-  appConfigDAO.saveAppConfigToFileStorage(appConfig);
-  versioningRepository
-    .updateVersioning(AGGREGATE_APP_CONFIG, aggregateVersion.appConfig)
+  await appConfigDAO
+    .saveAppConfigToFileStorage(appConfig)
+    .then(() =>
+      versioningRepository
+        .updateVersioning(AGGREGATE_APP_CONFIG, aggregateVersion.appConfig)
+        .catch(reason =>
+          logger.error(
+            'Update version for appConfig failed. By the next startup the appConfig will be fetched again, the update version will be tried to store again',
+            reason,
+          ),
+        ),
+    )
     .catch(reason =>
       logger.error(
-        'Update version for appConfig failed. By the next startup the appConfig will be fetched again, the update version will be tried to store again',
+        'Failed saving appConfig to file storage in prepareDatabaseResources, will be tried again by next startup app.',
         reason,
       ),
     );
@@ -174,7 +183,6 @@ const prepareDatabaseResources = async () => {
     .then(() => updateDecisionTreeIfNewVersion(firebaseVersions))
     .then(() => updateArticlesIfNewVersion(firebaseVersions))
     .then(() => updateCalculationsIfNewVersion(firebaseVersions))
-    .then(() => updateAppConfigurations(firebaseVersions))
     .catch(reason =>
       logger.error('prepareDatabaseResources failed', reason.message),
     );

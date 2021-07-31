@@ -27,9 +27,12 @@ const ArticleListOverlay: FC<Props> = ({ articleType, toggleOverlay }) => {
     articleRepository.getChapters(articleType, setChapters);
   }, [articleType, setChapters]);
 
-  const handleChapterClick = (item: ArticleChapter) => {
+  const handleChapterClick = async (item: ArticleChapter) => {
     toggleOverlay();
-    if (configHelper.getTabByArticleType(articleType) === SECOND_ARTICLE_TAB) {
+    if (
+      (await configHelper.getTabByArticleType(articleType)) ===
+      SECOND_ARTICLE_TAB
+    ) {
       navigation.push('SecondArticleTabDetailsScreen', {
         articleChapter: item.chapter,
         articleType,

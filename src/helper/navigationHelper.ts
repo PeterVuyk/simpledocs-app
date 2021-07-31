@@ -15,12 +15,12 @@ interface NavigationParams {
   };
 }
 
-const navigateToChapter = (
+const navigateToChapter = async (
   navigationParams: NavigationParams,
   articleType: string,
   navigation: StackNavigationProp<any> | DrawerNavigationProp<any>,
-): void => {
-  const currentTab = configHelper.getTabByArticleType(articleType);
+): Promise<void> => {
+  const currentTab = await configHelper.getTabByArticleType(articleType);
   if (currentTab === SECOND_ARTICLE_TAB) {
     navigation.navigate('SecondArticleTabStack', {
       screen: 'SecondArticleTabDetailsScreen',
@@ -36,14 +36,14 @@ const navigateToChapter = (
   }
 };
 
-const redirect = (
+const redirect = async (
   currentArticleType: string,
   targetArticleType: string,
   chapter: string,
   navigation: StackNavigationProp<any>,
-): void => {
-  const currentTab = configHelper.getTabByArticleType(currentArticleType);
-  const targetTab = configHelper.getTabByArticleType(targetArticleType);
+): Promise<void> => {
+  const currentTab = await configHelper.getTabByArticleType(currentArticleType);
+  const targetTab = await configHelper.getTabByArticleType(targetArticleType);
   if (targetTab === SECOND_ARTICLE_TAB) {
     if (currentTab === SECOND_ARTICLE_TAB) {
       navigation.push('SecondArticleTabDetailsScreen', {
@@ -89,7 +89,7 @@ const getChapterFromUrl = (url: string): string | null => {
   return path[path.length - 1];
 };
 
-const navigateFromHttpsUrlToChapter = (
+const navigateFromHttpsUrlToChapter = async (
   url: string,
   currentArticleType: string,
   navigation: StackNavigationProp<any>,
@@ -102,7 +102,7 @@ const navigateFromHttpsUrlToChapter = (
     );
     return;
   }
-  redirect(currentArticleType, articleType, chapter, navigation);
+  await redirect(currentArticleType, articleType, chapter, navigation);
 };
 
 const navigationHelper = {

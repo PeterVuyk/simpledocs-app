@@ -25,7 +25,7 @@ const SearchTab: FC<Props> = ({ handleArticleTypeTabChange }) => {
   const [articleTypes, setArticleTypes] = useState<ArticleInfo[]>([]);
 
   useEffect(() => {
-    setArticleTypes(configHelper.getArticleTypes());
+    configHelper.getArticleTypes().then(value => setArticleTypes(value));
   }, []);
 
   const handleTabChange = (clickedTab: number): void => {

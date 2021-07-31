@@ -3,122 +3,7 @@ import { ConfigInfo } from '../model/ConfigInfo';
 
 let config: ConfigInfo | undefined;
 
-const hasAppConfigInFileStorage = (): boolean => {
-  return false; // TODO
-};
-
-const getAppConfigFromFileStorage = (): ConfigInfo => {
-  // TODO
-  return {
-    defaultArticleTypeSearch: 'instructionManual',
-    firstTab: {
-      bottomTab: {
-        familyType: 'SimpleLineIcons',
-        icon: 'graduation',
-        title: 'Handboek',
-      },
-      articleTypes: [
-        {
-          index: 0,
-          articleType: 'instructionManual',
-          title: 'Handboek',
-          showLevelsInList: ['chapter', 'section', 'subSection'],
-          showLevelsInIntermediateList: ['subHead', 'subSubSection'],
-        },
-      ],
-    },
-    secondTab: {
-      bottomTab: {
-        familyType: 'MaterialCommunityIcons',
-        icon: 'book-open-outline',
-        title: 'Regelgeving',
-      },
-      title: 'Regelgevingen',
-      subTitle:
-        'Hieronder zie je een viertal opties met bla die we regelgevingen noemen, todo eddie graag mij doorgeven welke tekst je hier zou willen hebben staan.',
-      articleTypes: [
-        {
-          index: 0,
-          articleType: 'ontheffingGoedeTaakuitoefening',
-          title: 'Ontheffing goede taakuitoefening',
-          subTitle: 'Over bla en bla',
-          iconFile:
-            'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIGRhdGEtbmFtZT0iTGF5ZXIgMSIgdmlld0JveD0iMCAwIDMyIDMyIj48cGF0aCBmaWxsPSIjNTZhYWZmIiBkPSJNMjgsNUg0QTMsMywwLDAsMCwxLDhWMjNhMSwxLDAsMCwwLDEuNzQuNjdsOC4xNS05LjA4LDUuNiw4LjA5YTEsMSwwLDAsMCwxLjQzLjIybDYtNC41OSw1LjM4LDUuNDdBMSwxLDAsMCwwLDMxLDIzLjFWOEEzLDMsMCwwLDAsMjgsNVoiLz48cGF0aCBmaWxsPSIjMDQ3OGVkIiBkPSJNMzAuNzEsMjIuNGwtNi02LjFhMSwxLDAsMCwwLTEuMzItLjA5bC02LjY4LDUuMTNhMSwxLDAsMCwwLS4yMSwxLjM2bDIuNjgsMy44N0ExLDEsMCwwLDAsMjAsMjdoOGEzLDMsMCwwLDAsMy0zdi0uOUExLDEsMCwwLDAsMzAuNzEsMjIuNFoiLz48cGF0aCBmaWxsPSIjMDQ3OGVkIiBkPSJNMjAuODIsMjUuNDNsLTktMTNhMSwxLDAsMCwwLTEuNTctLjFsLTksMTBBMSwxLDAsMCwwLDEsMjN2MWEzLDMsMCwwLDAsMywzSDIwYTEsMSwwLDAsMCwuODItMS41N1oiLz48Y2lyY2xlIGN4PSIyMCIgY3k9IjEyIiByPSIyIiBmaWxsPSIjZmZmIi8+PC9zdmc+',
-          showLevelsInList: ['chapter', 'section', 'subSection'],
-          showLevelsInIntermediateList: ['subHead', 'subSubSection'],
-        },
-        {
-          index: 1,
-          articleType: 'brancherichtlijnMedischeHulpverlening',
-          title: 'Brancherichtlijn medische hulpverlening',
-          subTitle: 'Over bla die bla',
-          iconFile:
-            'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIGRhdGEtbmFtZT0iTGF5ZXIgMSIgdmlld0JveD0iMCAwIDMyIDMyIj48cGF0aCBmaWxsPSIjNTZhYWZmIiBkPSJNMjgsNUg0QTMsMywwLDAsMCwxLDhWMjNhMSwxLDAsMCwwLDEuNzQuNjdsOC4xNS05LjA4LDUuNiw4LjA5YTEsMSwwLDAsMCwxLjQzLjIybDYtNC41OSw1LjM4LDUuNDdBMSwxLDAsMCwwLDMxLDIzLjFWOEEzLDMsMCwwLDAsMjgsNVoiLz48cGF0aCBmaWxsPSIjMDQ3OGVkIiBkPSJNMzAuNzEsMjIuNGwtNi02LjFhMSwxLDAsMCwwLTEuMzItLjA5bC02LjY4LDUuMTNhMSwxLDAsMCwwLS4yMSwxLjM2bDIuNjgsMy44N0ExLDEsMCwwLDAsMjAsMjdoOGEzLDMsMCwwLDAsMy0zdi0uOUExLDEsMCwwLDAsMzAuNzEsMjIuNFoiLz48cGF0aCBmaWxsPSIjMDQ3OGVkIiBkPSJNMjAuODIsMjUuNDNsLTktMTNhMSwxLDAsMCwwLTEuNTctLjFsLTksMTBBMSwxLDAsMCwwLDEsMjN2MWEzLDMsMCwwLDAsMywzSDIwYTEsMSwwLDAsMCwuODItMS41N1oiLz48Y2lyY2xlIGN4PSIyMCIgY3k9IjEyIiByPSIyIiBmaWxsPSIjZmZmIi8+PC9zdmc+',
-          showLevelsInList: ['chapter', 'section', 'subSection'],
-          showLevelsInIntermediateList: ['subHead', 'subSubSection'],
-        },
-        {
-          index: 2,
-          articleType: 'regelingOGS2009',
-          title: 'Regeling OGS 2009',
-          subTitle: 'Over bla die bla',
-          iconFile:
-            'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIGRhdGEtbmFtZT0iTGF5ZXIgMSIgdmlld0JveD0iMCAwIDMyIDMyIj48cGF0aCBmaWxsPSIjNTZhYWZmIiBkPSJNMjgsNUg0QTMsMywwLDAsMCwxLDhWMjNhMSwxLDAsMCwwLDEuNzQuNjdsOC4xNS05LjA4LDUuNiw4LjA5YTEsMSwwLDAsMCwxLjQzLjIybDYtNC41OSw1LjM4LDUuNDdBMSwxLDAsMCwwLDMxLDIzLjFWOEEzLDMsMCwwLDAsMjgsNVoiLz48cGF0aCBmaWxsPSIjMDQ3OGVkIiBkPSJNMzAuNzEsMjIuNGwtNi02LjFhMSwxLDAsMCwwLTEuMzItLjA5bC02LjY4LDUuMTNhMSwxLDAsMCwwLS4yMSwxLjM2bDIuNjgsMy44N0ExLDEsMCwwLDAsMjAsMjdoOGEzLDMsMCwwLDAsMy0zdi0uOUExLDEsMCwwLDAsMzAuNzEsMjIuNFoiLz48cGF0aCBmaWxsPSIjMDQ3OGVkIiBkPSJNMjAuODIsMjUuNDNsLTktMTNhMSwxLDAsMCwwLTEuNTctLjFsLTksMTBBMSwxLDAsMCwwLDEsMjN2MWEzLDMsMCwwLDAsMywzSDIwYTEsMSwwLDAsMCwuODItMS41N1oiLz48Y2lyY2xlIGN4PSIyMCIgY3k9IjEyIiByPSIyIiBmaWxsPSIjZmZmIi8+PC9zdmc+',
-          showLevelsInList: ['chapter', 'section', 'subSection'],
-          showLevelsInIntermediateList: ['subHead', 'subSubSection'],
-        },
-        {
-          index: 3,
-          articleType: 'RVV1990',
-          title: 'RVV 1990',
-          subTitle: 'Ja bla die bla',
-          iconFile:
-            'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIGRhdGEtbmFtZT0iTGF5ZXIgMSIgdmlld0JveD0iMCAwIDMyIDMyIj48cGF0aCBmaWxsPSIjNTZhYWZmIiBkPSJNMjgsNUg0QTMsMywwLDAsMCwxLDhWMjNhMSwxLDAsMCwwLDEuNzQuNjdsOC4xNS05LjA4LDUuNiw4LjA5YTEsMSwwLDAsMCwxLjQzLjIybDYtNC41OSw1LjM4LDUuNDdBMSwxLDAsMCwwLDMxLDIzLjFWOEEzLDMsMCwwLDAsMjgsNVoiLz48cGF0aCBmaWxsPSIjMDQ3OGVkIiBkPSJNMzAuNzEsMjIuNGwtNi02LjFhMSwxLDAsMCwwLTEuMzItLjA5bC02LjY4LDUuMTNhMSwxLDAsMCwwLS4yMSwxLjM2bDIuNjgsMy44N0ExLDEsMCwwLDAsMjAsMjdoOGEzLDMsMCwwLDAsMy0zdi0uOUExLDEsMCwwLDAsMzAuNzEsMjIuNFoiLz48cGF0aCBmaWxsPSIjMDQ3OGVkIiBkPSJNMjAuODIsMjUuNDNsLTktMTNhMSwxLDAsMCwwLTEuNTctLjFsLTksMTBBMSwxLDAsMCwwLDEsMjN2MWEzLDMsMCwwLDAsMywzSDIwYTEsMSwwLDAsMCwuODItMS41N1oiLz48Y2lyY2xlIGN4PSIyMCIgY3k9IjEyIiByPSIyIiBmaWxsPSIjZmZmIi8+PC9zdmc+',
-          showLevelsInList: ['chapter', 'section', 'subSection'],
-          showLevelsInIntermediateList: ['subHead', 'subSubSection'],
-        },
-      ],
-    },
-    decisionsTab: {
-      bottomTab: {
-        familyType: 'MaterialCommunityIcons',
-        icon: 'arrow-decision',
-        title: 'Besluitvorming',
-      },
-      title: 'Besluitvormingsproces',
-      subTitle:
-        'Vergemakkelijk het maken van keuzes in het verkeer door verschillende opties in regelgevingen tegen elkaar af te wegen.',
-      indexDecisionType: ['decisionTree', 'calculations'],
-    },
-  };
-};
-
-const saveAppConfigToFileStorage = (configInfo: ConfigInfo) => {
-  // TODO
-};
-
-const getAppConfig = (): ConfigInfo => {
-  if (config === undefined) {
-    config = getAppConfigFromFileStorage();
-  }
-  return config;
-};
-
 const configDir = `${FileSystem.documentDirectory}/`;
-
-// TODO: Implement:
-// const example = async () => {
-
-//   await collectConfig
-//     .getConfig()
-//     .then(value => JSON.stringify(value))
-//     .then(value => saveConfiguration(value, 'appConfig.json'));
-
-//   await getConfiguration('appConfig.json')
-//     .then(r => console.log(JSON.parse(r)))
-//     .catch(console.log);
-
-// };
 
 export async function saveConfiguration(
   configFile: string,
@@ -133,10 +18,30 @@ export async function getConfiguration(configFile: string): Promise<string> {
   });
 }
 
+const appConfigExistsInFileStorage = async (): Promise<boolean> => {
+  const info = await FileSystem.getInfoAsync(`${configDir}appConfig.json`);
+  return info.exists;
+};
+
+const getAppConfigFromFileStorage = async (): Promise<ConfigInfo> => {
+  return JSON.parse(await getConfiguration('appConfig.json')) as ConfigInfo;
+};
+
+const saveAppConfigToFileStorage = (configInfo: ConfigInfo) => {
+  return saveConfiguration(JSON.stringify(configInfo), 'appConfig.json');
+};
+
+const getAppConfig = async (): Promise<ConfigInfo> => {
+  if (config === undefined) {
+    config = await getAppConfigFromFileStorage();
+  }
+  return config;
+};
+
 const appConfigDAO = {
   getAppConfig,
   saveAppConfigToFileStorage,
-  hasAppConfigInFileStorage,
+  appConfigExistsInFileStorage,
 };
 
 export default appConfigDAO;

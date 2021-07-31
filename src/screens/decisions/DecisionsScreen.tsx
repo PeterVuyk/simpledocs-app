@@ -1,5 +1,7 @@
 import React, { FC, useEffect, useState } from 'react';
 import { FlatList, View } from 'react-native';
+import { DrawerNavigationProp } from '@react-navigation/drawer/lib/typescript/src/types';
+import { RouteProp } from '@react-navigation/native';
 import decisionTreeRepository from '../../database/repository/decisionTreeRepository';
 import ListItem from '../../components/ListItem';
 import calculationsRepository from '../../database/repository/calculationsRepository';
@@ -10,10 +12,19 @@ import {
   AGGREGATE_DECISION_TREE,
 } from '../../model/Versioning';
 import { DecisionTreeTitle } from '../../model/DecisionTreeTitle';
-import appConfigDAO from '../../fileSystem/appConfigDAO';
+import { DecisionsTab, TabInfo } from '../../model/ConfigInfo';
 
 interface Props {
-  navigation: any;
+  navigation: DrawerNavigationProp<any>;
+  route: RouteProp<
+    {
+      params: {
+        tabInfo: TabInfo;
+        decisionTabInfo: DecisionsTab;
+      };
+    },
+    'params'
+  >;
 }
 
 interface DecisionItem {
@@ -22,7 +33,7 @@ interface DecisionItem {
   categorization: string;
 }
 
-const DecisionsScreen: FC<Props> = ({ navigation }) => {
+const DecisionsScreen: FC<Props> = ({ navigation, route }) => {
   const [decisionTreeTitles, setDecisionTreeTitles] = useState<
     DecisionTreeTitle[]
   >([]);
@@ -30,7 +41,7 @@ const DecisionsScreen: FC<Props> = ({ navigation }) => {
     [],
   );
   const [decisionItems, setDecisionItems] = useState<DecisionItem[]>([]);
-  const configInfo = appConfigDAO.getAppConfig();
+  const { decisionTabInfo } = route.params;
 
   useEffect(() => {
     decisionTreeRepository.getDecisionTrees(setDecisionTreeTitles);
@@ -55,14 +66,14 @@ const DecisionsScreen: FC<Props> = ({ navigation }) => {
       } as DecisionItem;
     });
     setDecisionItems(
-      configInfo.decisionsTab.indexDecisionType[0] === 'decisionTree'
+      decisionTabInfo.indexDecisionType[0] === 'decisionTree'
         ? [...decisionTrees, ...calculations]
         : [...calculations, ...decisionTrees],
     );
   }, [
     decisionTreeTitles,
     calculationTitles,
-    configInfo.decisionsTab.indexDecisionType,
+    decisionTabInfo.indexDecisionType,
   ]);
 
   const navigateDecisionItem = (decisionItem: DecisionItem) => {
@@ -83,8 +94,8 @@ const DecisionsScreen: FC<Props> = ({ navigation }) => {
     return (
       <View style={{ backgroundColor: '#fff' }}>
         <TitleBar
-          title={configInfo.decisionsTab.title}
-          subTitle={configInfo.decisionsTab.subTitle}
+          title={decisionTabInfo.title}
+          subTitle={decisionTabInfo.subTitle}
         />
       </View>
     );
