@@ -10,8 +10,6 @@ interface Props {
   route: RouteProp<
     {
       params: {
-        chapters: string[];
-        articleType: string;
         tabInfo: TabInfo;
       };
     },
@@ -20,37 +18,26 @@ interface Props {
 }
 
 const ArticleListScreen: FC<Props> = ({ navigation, route }) => {
-  const { articleType, chapters, tabInfo } = route.params;
+  const { tabInfo } = route.params;
   const [articleChapters, setArticleChapters] = useState<ArticleChapter[]>([]);
   const [currentArticleType, setCurrentArticleType] = useState<string | null>(
     null,
   );
 
   useEffect(() => {
-    setCurrentArticleType(articleType ?? tabInfo.articleTypes[0].articleType);
-  }, [tabInfo, articleType]);
+    setCurrentArticleType(tabInfo.articleTypes[0].articleType);
+  }, [tabInfo]);
 
   useEffect(() => {
     if (currentArticleType === null) {
       return;
     }
-    if (chapters) {
-      articleRepository.getChaptersByList(
-        currentArticleType,
-        chapters,
-        setArticleChapters,
-      );
-      return;
-    }
     articleRepository.getChapters(currentArticleType, setArticleChapters);
-  }, [currentArticleType, chapters]);
+  }, [currentArticleType]);
 
   const getLevelsToShowInList = (): string[] | undefined =>
-    chapters
-      ? undefined
-      : tabInfo.articleTypes.find(
-          value => value.articleType === currentArticleType,
-        )?.showLevelsInList;
+    tabInfo.articleTypes.find(value => value.articleType === currentArticleType)
+      ?.showLevelsInList;
 
   return (
     <>

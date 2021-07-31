@@ -7,6 +7,7 @@ import ArticleListScreen from '../../screens/article/list/ArticleListScreen';
 import { SECOND_ARTICLE_TAB } from '../../model/ArticleTab';
 import ArticlesOverviewScreen from '../../screens/article/ArticlesOverviewScreen';
 import { TabInfo } from '../../model/ConfigInfo';
+import ArticleIntermediateListScreen from '../../screens/article/list/ArticleIntermediateListScreen';
 
 const Stack = createStackNavigator();
 
@@ -46,12 +47,7 @@ const SecondArticleTabStackNavigator: FC<Props> = ({ navigation, tabInfo }) => {
       />
       <Stack.Screen
         name="SecondArticleTabIntermediateScreen"
-        component={ArticleListScreen}
-        initialParams={{
-          tabInfo,
-          chapters: null,
-          articleType: null,
-        }}
+        component={ArticleIntermediateListScreen}
         options={{
           header: () => <Header navigation={navigation} />,
         }}
