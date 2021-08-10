@@ -1,50 +1,42 @@
-import { FIRST_ARTICLE_TAB, SECOND_ARTICLE_TAB } from '../model/ArticleTab';
-import { ArticleInfo } from '../model/ConfigInfo';
+import { FIRST_BOOK_TAB, SECOND_BOOK_TAB } from '../model/BookTab';
+import { BookInfo } from '../model/ConfigInfo';
 import appConfigDAO from '../fileSystem/appConfigDAO';
 
-const getArticleTypes = async (): Promise<ArticleInfo[]> => {
+const getBookTypes = async (): Promise<BookInfo[]> => {
   const appConfig = await appConfigDAO.getAppConfig();
-  const articleTypesFirsTab = appConfig.firstTab.articleTypes.sort(
+  const bookTypesFirstTab = appConfig.firstTab.bookTypes.sort(
     (a, b) => a.index - b.index,
   );
-  const articleTypesSecondTab = appConfig.secondTab.articleTypes.sort(
+  const bookTypesSecondTab = appConfig.secondTab.bookTypes.sort(
     (a, b) => a.index - b.index,
   );
-  return [...articleTypesFirsTab, ...articleTypesSecondTab];
+  return [...bookTypesFirstTab, ...bookTypesSecondTab];
 };
 
-const getConfigByArticleType = async (
-  articleType: string,
-): Promise<ArticleInfo | undefined> => {
-  const articleTypes = await getArticleTypes();
-  return articleTypes.find(value => value.articleType === articleType);
+const getConfigByBookType = async (
+  bookType: string,
+): Promise<BookInfo | undefined> => {
+  const bookTypes = await getBookTypes();
+  return bookTypes.find(value => value.bookType === bookType);
 };
 
-const getTabByArticleType = async (
-  articleType: string,
-): Promise<string | null> => {
+const getTabByBookType = async (bookType: string): Promise<string | null> => {
   const appConfig = await appConfigDAO.getAppConfig();
-  if (
-    appConfig.firstTab.articleTypes.find(
-      value => value.articleType === articleType,
-    )
-  ) {
-    return FIRST_ARTICLE_TAB;
+  if (appConfig.firstTab.bookTypes.find(value => value.bookType === bookType)) {
+    return FIRST_BOOK_TAB;
   }
   if (
-    appConfig.secondTab.articleTypes.find(
-      value => value.articleType === articleType,
-    )
+    appConfig.secondTab.bookTypes.find(value => value.bookType === bookType)
   ) {
-    return SECOND_ARTICLE_TAB;
+    return SECOND_BOOK_TAB;
   }
   return null;
 };
 
 const configHelper = {
-  getTabByArticleType,
-  getArticleTypes,
-  getConfigByArticleType,
+  getTabByBookType,
+  getBookTypes,
+  getConfigByBookType,
 };
 
 export default configHelper;

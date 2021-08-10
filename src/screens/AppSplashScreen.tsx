@@ -23,8 +23,8 @@ const AppSplashScreen: FC = () => {
   >(null);
 
   /**
-   * After wait for startup we validate that all versions for aggregates/articleTypes are not initial
-   * and at least 4 versions are set: 2 for aggregate 'articleTypes' and 2 for the last tab.
+   * After wait for startup we validate that all versions for aggregates/bookTypes are not initial
+   * and at least 4 versions are set: 2 for aggregate 'bookTypes' and 2 for the last tab.
    * If this check fails then the user installed the app, turned off the internet and started the app.
    * Only the first time the user runs the app it requires internet. After it will be recommended to
    * receive the latest updates.

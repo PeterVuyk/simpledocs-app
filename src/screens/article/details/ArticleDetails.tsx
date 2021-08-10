@@ -8,14 +8,14 @@ import { NOTIFICATION_TYPE_HORIZONTAL_SCROLL_TIP } from '../../../model/Notifica
 
 interface Props {
   articleChapter: string;
-  articleType: string;
+  bookType: string;
   articleChapterList: ArticleChapter[];
 }
 
 const ArticleDetails: FC<Props> = ({
   articleChapter,
   articleChapterList,
-  articleType,
+  bookType,
 }) => {
   const { width } = Dimensions.get('window');
   const [currentIndex, setCurrentIndex] = useState<number>();
@@ -63,7 +63,7 @@ const ArticleDetails: FC<Props> = ({
             <View style={{ width, flex: 1 }}>
               <ArticleDetailItem
                 articleChapter={item.chapter}
-                articleType={articleType}
+                bookType={bookType}
               />
             </View>
           )}

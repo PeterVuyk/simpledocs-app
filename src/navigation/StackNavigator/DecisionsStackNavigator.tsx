@@ -6,8 +6,7 @@ import Header from '../header/Header';
 import DecisionsScreen from '../../screens/decisions/DecisionsScreen';
 import CalculatorScreen from '../../screens/decisions/calculator/CalculatorScreen';
 import DocumentationScreen from '../../screens/decisions/DocumentationScreen';
-import { DecisionsTab, TabInfo } from '../../model/ConfigInfo';
-import { FIRST_ARTICLE_TAB } from '../../model/ArticleTab';
+import { DecisionsTab } from '../../model/ConfigInfo';
 
 const Stack = createStackNavigator();
 

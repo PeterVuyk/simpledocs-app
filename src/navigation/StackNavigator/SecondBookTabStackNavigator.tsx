@@ -4,8 +4,8 @@ import { DrawerNavigationHelpers } from '@react-navigation/drawer/lib/typescript
 import Header from '../header/Header';
 import ArticleDetailsScreen from '../../screens/article/details/ArticleDetailsScreen';
 import ArticleListScreen from '../../screens/article/list/ArticleListScreen';
-import { SECOND_ARTICLE_TAB } from '../../model/ArticleTab';
-import ArticlesOverviewScreen from '../../screens/article/ArticlesOverviewScreen';
+import { SECOND_BOOK_TAB } from '../../model/BookTab';
+import BooksOverviewScreen from '../../screens/article/BooksOverviewScreen';
 import { TabInfo } from '../../model/ConfigInfo';
 import ArticleIntermediateListScreen from '../../screens/article/list/ArticleIntermediateListScreen';
 
@@ -16,14 +16,14 @@ interface Props {
   tabInfo: TabInfo;
 }
 
-const SecondArticleTabStackNavigator: FC<Props> = ({ navigation, tabInfo }) => {
+const SecondBookTabStackNavigator: FC<Props> = ({ navigation, tabInfo }) => {
   return (
     <Stack.Navigator headerMode="screen">
-      {tabInfo.articleTypes.length !== 1 && (
+      {tabInfo.bookTypes.length !== 1 && (
         <Stack.Screen
-          name="SecondArticleTabOverviewScreen"
-          component={ArticlesOverviewScreen}
-          initialParams={{ tabInfo, currentTab: SECOND_ARTICLE_TAB }}
+          name="SecondBookTabOverviewScreen"
+          component={BooksOverviewScreen}
+          initialParams={{ tabInfo, currentTab: SECOND_BOOK_TAB }}
           options={{
             header: () => <Header navigation={navigation} />,
           }}
@@ -31,29 +31,29 @@ const SecondArticleTabStackNavigator: FC<Props> = ({ navigation, tabInfo }) => {
       )}
       <Stack.Screen
         name={
-          tabInfo.articleTypes.length !== 1
-            ? 'SecondArticleTabArticleScreen'
-            : 'SecondArticleTabOverviewScreen'
+          tabInfo.bookTypes.length !== 1
+            ? 'SecondBookTabArticleScreen'
+            : 'SecondBookTabOverviewScreen'
         }
         component={ArticleListScreen}
         initialParams={{
           tabInfo,
           chapters: null,
-          articleType: null,
+          bookType: null,
         }}
         options={{
           header: () => <Header navigation={navigation} />,
         }}
       />
       <Stack.Screen
-        name="SecondArticleTabIntermediateScreen"
+        name="SecondBookTabIntermediateScreen"
         component={ArticleIntermediateListScreen}
         options={{
           header: () => <Header navigation={navigation} />,
         }}
       />
       <Stack.Screen
-        name="SecondArticleTabDetailsScreen"
+        name="SecondBookTabDetailsScreen"
         component={ArticleDetailsScreen}
         options={{ headerShown: false }}
       />
@@ -61,4 +61,4 @@ const SecondArticleTabStackNavigator: FC<Props> = ({ navigation, tabInfo }) => {
   );
 };
 
-export default SecondArticleTabStackNavigator;
+export default SecondBookTabStackNavigator;

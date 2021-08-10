@@ -16,7 +16,7 @@ interface Props {
 const DocumentationScreen: React.FC<Props> = ({ route }) => {
   const { htmlFile } = route.params;
 
-  return <HTMLViewer articleType="decisions" htmlFile={htmlFile} />;
+  return <HTMLViewer bookType="decisions" htmlFile={htmlFile} />;
 };
 
 export default DocumentationScreen;

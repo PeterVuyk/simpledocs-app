@@ -1,12 +1,12 @@
 import * as SQLite from 'expo-sqlite';
 import logger from '../../helper/logger';
 import collectConfig from '../firebase/collectConfig';
-import { ArticleInfo } from '../../model/ConfigInfo';
+import { BookInfo } from '../../model/ConfigInfo';
 import appConfigDAO from '../../fileSystem/appConfigDAO';
 
 const db = SQLite.openDatabase('db.db');
 
-async function initializeAndGetArticleTypes(): Promise<ArticleInfo[]> {
+async function initializeAndGetBookTypes(): Promise<BookInfo[]> {
   let appConfig;
   if (await appConfigDAO.appConfigExistsInFileStorage()) {
     appConfig = await appConfigDAO.getAppConfig();
@@ -26,10 +26,7 @@ async function initializeAndGetArticleTypes(): Promise<ArticleInfo[]> {
   if (!appConfig) {
     return [];
   }
-  return [
-    ...appConfig.firstTab.articleTypes,
-    ...appConfig.secondTab.articleTypes,
-  ];
+  return [...appConfig.firstTab.bookTypes, ...appConfig.secondTab.bookTypes];
 }
 
 /**
@@ -41,7 +38,7 @@ function initialize(): Promise<any> {
     db.transaction(
       sqlTransaction => {
         sqlTransaction.executeSql(
-          'create table if not exists articles (id integer not null constraint articles_pk primary key autoincrement, chapter varchar not null, pageIndex integer not null, title text not null, articleType text not null, subTitle text, htmlFile blob not null, searchText text not null, level varchar not null, iconFile blob);',
+          'create table if not exists articles (id integer not null constraint articles_pk primary key autoincrement, chapter varchar not null, pageIndex integer not null, title text not null, bookType text not null, subTitle text, htmlFile blob not null, searchText text not null, level varchar not null, iconFile blob);',
         );
         sqlTransaction.executeSql(
           'create table if not exists notifications (notificationType varchar not null, notificationEnabled NUMERIC default 1 not null);',
@@ -61,12 +58,12 @@ function initialize(): Promise<any> {
         sqlTransaction.executeSql(
           'CREATE UNIQUE INDEX IF NOT EXISTS versioning_aggregate_uindex ON versioning (aggregate);',
         );
-        initializeAndGetArticleTypes()
-          .then(articleTypes => {
-            articleTypes.forEach(articleType => {
+        initializeAndGetBookTypes()
+          .then(bookTypes => {
+            bookTypes.forEach(bookType => {
               sqlTransaction.executeSql(
                 "INSERT OR IGNORE INTO versioning (aggregate, version) VALUES (?, 'initial');",
-                [articleType],
+                [bookType],
               );
             });
           })

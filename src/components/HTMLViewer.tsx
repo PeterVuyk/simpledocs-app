@@ -7,15 +7,14 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import highlightWordsInHTMLFile from '../helper/highlightWordsInHTMLFile';
 import ScrollViewToggleBottomBar from './ScrollViewToggleBottomBar';
 import navigationHelper, { BLANK_WEBPAGE } from '../helper/navigationHelper';
-import { ConfigInfo } from '../model/ConfigInfo';
 
 interface Props {
   htmlFile: string;
   highlightText?: string;
-  articleType: string;
+  bookType: string;
 }
 
-const HTMLViewer: FC<Props> = ({ htmlFile, highlightText, articleType }) => {
+const HTMLViewer: FC<Props> = ({ htmlFile, highlightText, bookType }) => {
   const [webViewHeight, setWebViewHeight] = useState<number>(0);
   const [loading, setLoading] = useState<boolean>(false);
   const webview = createRef<WebView>();
@@ -56,7 +55,7 @@ const HTMLViewer: FC<Props> = ({ htmlFile, highlightText, articleType }) => {
    * - We hide the webview component while switching to the next screen.
    * - We use http:// instead of app:// to avoid UNKNOWN_URL_SCHEME (Webview doesn't work well with 'unofficial' URI schemes
    * - We use example.com instead of a local url to avoid ERR_CONNECTION_REFUSED
-   * (e.g. <a href="https://page-blank.firebaseapp.com/<articleType>/1.1">1.1</a> navigate to chapter 1.1)
+   * (e.g. <a href="https://page-blank.firebaseapp.com/<bookType>/1.1">1.1</a> navigate to chapter 1.1)
    *
    * If the user returns to this page the useEffect hook will enable the webview component whereupon the html file is loaded again.
    */
@@ -72,7 +71,7 @@ const HTMLViewer: FC<Props> = ({ htmlFile, highlightText, articleType }) => {
       setLoading(true);
       navigationHelper.navigateFromHttpsUrlToChapter(
         request.url,
-        articleType,
+        bookType,
         navigation,
       );
       return false;

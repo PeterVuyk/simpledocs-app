@@ -10,11 +10,11 @@ const styles = StyleSheet.create({
 });
 
 interface Props {
-  articleType: string;
+  bookType: string;
   articleButtonStyle: StyleProp<ViewStyle>;
 }
 
-const ArticleListButton: FC<Props> = ({ articleType, articleButtonStyle }) => {
+const ArticleListButton: FC<Props> = ({ bookType, articleButtonStyle }) => {
   const [visible, setVisible] = useState(false);
 
   const toggleOverlay = () => {
@@ -33,10 +33,7 @@ const ArticleListButton: FC<Props> = ({ articleType, articleButtonStyle }) => {
         />
       )}
       {visible && (
-        <ArticleListOverlay
-          articleType={articleType}
-          toggleOverlay={toggleOverlay}
-        />
+        <ArticleListOverlay bookType={bookType} toggleOverlay={toggleOverlay} />
       )}
     </View>
   );

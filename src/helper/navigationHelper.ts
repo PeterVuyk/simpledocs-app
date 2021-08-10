@@ -1,14 +1,14 @@
 import { StackNavigationProp } from '@react-navigation/stack';
 import { DrawerNavigationProp } from '@react-navigation/drawer/lib/typescript/src/types';
 import configHelper from './configHelper';
-import { FIRST_ARTICLE_TAB, SECOND_ARTICLE_TAB } from '../model/ArticleTab';
+import { FIRST_BOOK_TAB, SECOND_BOOK_TAB } from '../model/BookTab';
 import logger from './logger';
 
 export const BLANK_WEBPAGE = 'https://page-blank.firebaseapp.com/';
 
 interface NavigationParams {
   articleChapter: string;
-  articleType: string;
+  bookType: string;
   searchText?: {
     chapter: string;
     searchText: string;
@@ -17,62 +17,62 @@ interface NavigationParams {
 
 const navigateToChapter = async (
   navigationParams: NavigationParams,
-  articleType: string,
+  bookType: string,
   navigation: StackNavigationProp<any> | DrawerNavigationProp<any>,
 ): Promise<void> => {
-  const currentTab = await configHelper.getTabByArticleType(articleType);
-  if (currentTab === SECOND_ARTICLE_TAB) {
-    navigation.navigate('SecondArticleTabStack', {
-      screen: 'SecondArticleTabDetailsScreen',
+  const currentTab = await configHelper.getTabByBookType(bookType);
+  if (currentTab === SECOND_BOOK_TAB) {
+    navigation.navigate('SecondBookTabStack', {
+      screen: 'SecondBookTabDetailsScreen',
       params: navigationParams,
     });
     return;
   }
-  if (currentTab === FIRST_ARTICLE_TAB) {
-    navigation.navigate('FirstArticleTabStack', {
-      screen: 'FirstArticleTabDetailsScreen',
+  if (currentTab === FIRST_BOOK_TAB) {
+    navigation.navigate('FirstBookTabStack', {
+      screen: 'FirstBookTabDetailsScreen',
       params: navigationParams,
     });
   }
 };
 
 const redirect = async (
-  currentArticleType: string,
-  targetArticleType: string,
+  currentBookType: string,
+  targetBookType: string,
   chapter: string,
   navigation: StackNavigationProp<any>,
 ): Promise<void> => {
-  const currentTab = await configHelper.getTabByArticleType(currentArticleType);
-  const targetTab = await configHelper.getTabByArticleType(targetArticleType);
-  if (targetTab === SECOND_ARTICLE_TAB) {
-    if (currentTab === SECOND_ARTICLE_TAB) {
-      navigation.push('SecondArticleTabDetailsScreen', {
+  const currentTab = await configHelper.getTabByBookType(currentBookType);
+  const targetTab = await configHelper.getTabByBookType(targetBookType);
+  if (targetTab === SECOND_BOOK_TAB) {
+    if (currentTab === SECOND_BOOK_TAB) {
+      navigation.push('SecondBookTabDetailsScreen', {
         articleChapter: chapter,
-        articleType: targetArticleType,
+        bookType: targetBookType,
       });
       return;
     }
-    navigation.navigate('SecondArticleTabStack', {
-      screen: 'SecondArticleTabDetailsScreen',
-      params: { articleChapter: chapter, articleType: targetArticleType },
+    navigation.navigate('SecondBookTabStack', {
+      screen: 'SecondBookTabDetailsScreen',
+      params: { articleChapter: chapter, bookType: targetBookType },
     });
   }
-  if (targetTab === FIRST_ARTICLE_TAB) {
-    if (currentTab === FIRST_ARTICLE_TAB) {
-      navigation.push('FirstArticleTabDetailsScreen', {
+  if (targetTab === FIRST_BOOK_TAB) {
+    if (currentTab === FIRST_BOOK_TAB) {
+      navigation.push('FirstBookTabDetailsScreen', {
         articleChapter: chapter,
-        articleType: targetArticleType,
+        bookType: targetBookType,
       });
       return;
     }
-    navigation.navigate('FirstArticleTabStack', {
-      screen: 'FirstArticleTabDetailsScreen',
-      params: { articleChapter: chapter, articleType: targetArticleType },
+    navigation.navigate('FirstBookTabStack', {
+      screen: 'FirstBookTabDetailsScreen',
+      params: { articleChapter: chapter, bookType: targetBookType },
     });
   }
 };
 
-const getArticleTypeFromUrl = (url: string): string | null => {
+const getBookTypeFromUrl = (url: string): string | null => {
   const path = url.split(BLANK_WEBPAGE);
   if (path.length === 0) {
     return null;
@@ -91,18 +91,18 @@ const getChapterFromUrl = (url: string): string | null => {
 
 const navigateFromHttpsUrlToChapter = async (
   url: string,
-  currentArticleType: string,
+  currentBookType: string,
   navigation: StackNavigationProp<any>,
 ) => {
-  const articleType = getArticleTypeFromUrl(url);
+  const bookType = getBookTypeFromUrl(url);
   const chapter = getChapterFromUrl(url);
-  if (articleType === null || chapter === null) {
+  if (bookType === null || chapter === null) {
     logger.errorFromMessage(
-      `Navigation from link in html file to another chapter failed, url with link: ${url}, currentArticleType: ${currentArticleType}`,
+      `Navigation from link in html file to another chapter failed, url with link: ${url}, currentBookType: ${currentBookType}`,
     );
     return;
   }
-  await redirect(currentArticleType, articleType, chapter, navigation);
+  await redirect(currentBookType, bookType, chapter, navigation);
 };
 
 const navigationHelper = {

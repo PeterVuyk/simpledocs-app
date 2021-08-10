@@ -7,8 +7,8 @@ import DecisionsStackNavigator from '../StackNavigator/DecisionsStackNavigator';
 import AboutUsStackNavigator from '../StackNavigator/AboutUsStackNavigator';
 import CopyrightStackNavigator from '../StackNavigator/CopyrightStackNavigator';
 import { ConfigInfo } from '../../model/ConfigInfo';
-import SecondArticleTabStackNavigator from '../StackNavigator/SecondArticleTabStackNavigator';
-import FirstArticleTabStackNavigator from '../StackNavigator/FirstArticleTabStackNavigator';
+import SecondBookTabStackNavigator from '../StackNavigator/SecondBookTabStackNavigator';
+import FirstBookTabStackNavigator from '../StackNavigator/FirstBookTabStackNavigator';
 import SearchStackNavigator from '../StackNavigator/SearchStackNavigator';
 import appConfigDAO from '../../fileSystem/appConfigDAO';
 
@@ -40,95 +40,97 @@ const TabNavigation: FC<Props> = ({ navigation }) => {
     );
   }, []);
 
+  if (!configInfo) {
+    return null;
+  }
+
   return (
     <Animated.View style={[{ flex: 1, overflow: 'hidden' }, animatedStyle]}>
-      {configInfo && (
-        <Tab.Navigator
-          tabBarStyle={{
-            paddingBottom: 5,
-            paddingTop: 5,
-            height: 60,
-            backgroundColor: '#154594',
+      <Tab.Navigator
+        tabBarStyle={{
+          paddingBottom: 5,
+          paddingTop: 5,
+          height: 60,
+          backgroundColor: '#154594',
+        }}
+        contentStyle={{
+          height: 60,
+        }}
+        initialRouteName="SecondBookTabStack"
+      >
+        <Tab.Screen
+          name="FirstBookTabStack"
+          children={() => (
+            <FirstBookTabStackNavigator
+              navigation={navigation}
+              tabInfo={configInfo.firstTab}
+            />
+          )}
+          options={{
+            title: configInfo.firstTab.bottomTab.title,
+            icon: configInfo.firstTab.bottomTab.icon,
+            iconFamilyType: configInfo.firstTab.bottomTab.familyType,
+            showInBottomBar: true,
           }}
-          contentStyle={{
-            height: 60,
+        />
+        <Tab.Screen
+          name="SecondBookTabStack"
+          children={() => (
+            <SecondBookTabStackNavigator
+              navigation={navigation}
+              tabInfo={configInfo.secondTab}
+            />
+          )}
+          options={{
+            title: configInfo.secondTab.bottomTab.title,
+            icon: configInfo.secondTab.bottomTab.icon,
+            iconFamilyType: configInfo.secondTab.bottomTab.familyType,
+            showInBottomBar: true,
           }}
-          initialRouteName="SecondArticleTabStack"
-        >
-          <Tab.Screen
-            name="FirstArticleTabStack"
-            children={() => (
-              <FirstArticleTabStackNavigator
-                navigation={navigation}
-                tabInfo={configInfo.firstTab}
-              />
-            )}
-            options={{
-              title: configInfo.firstTab.bottomTab.title,
-              icon: configInfo.firstTab.bottomTab.icon,
-              iconFamilyType: configInfo.firstTab.bottomTab.familyType,
-              showInBottomBar: true,
-            }}
-          />
-          <Tab.Screen
-            name="SecondArticleTabStack"
-            children={() => (
-              <SecondArticleTabStackNavigator
-                navigation={navigation}
-                tabInfo={configInfo.secondTab}
-              />
-            )}
-            options={{
-              title: configInfo.secondTab.bottomTab.title,
-              icon: configInfo.secondTab.bottomTab.icon,
-              iconFamilyType: configInfo.secondTab.bottomTab.familyType,
-              showInBottomBar: true,
-            }}
-          />
-          <Tab.Screen
-            name="DecisionsScreenStack"
-            children={() => (
-              <DecisionsStackNavigator
-                navigation={navigation}
-                decisionTabInfo={configInfo.decisionsTab}
-              />
-            )}
-            options={{
-              title: configInfo.decisionsTab.bottomTab.title,
-              icon: configInfo.decisionsTab.bottomTab.icon,
-              iconFamilyType: configInfo.decisionsTab.bottomTab.familyType,
-              showInBottomBar: true,
-            }}
-          />
-          <Tab.Screen
-            name="SearchStack"
-            children={() => <SearchStackNavigator configInfo={configInfo} />}
-            options={{
-              title: 'Info',
-              icon: 'information-outline',
-              showInBottomBar: false,
-            }}
-          />
-          <Tab.Screen
-            name="AboutUsStack"
-            component={AboutUsStackNavigator}
-            options={{
-              title: 'Info',
-              icon: 'information-outline',
-              showInBottomBar: false,
-            }}
-          />
-          <Tab.Screen
-            name="CopyrightStack"
-            component={CopyrightStackNavigator}
-            options={{
-              title: 'Info',
-              icon: 'information-outline',
-              showInBottomBar: false,
-            }}
-          />
-        </Tab.Navigator>
-      )}
+        />
+        <Tab.Screen
+          name="DecisionsScreenStack"
+          children={() => (
+            <DecisionsStackNavigator
+              navigation={navigation}
+              decisionTabInfo={configInfo.decisionsTab}
+            />
+          )}
+          options={{
+            title: configInfo.decisionsTab.bottomTab.title,
+            icon: configInfo.decisionsTab.bottomTab.icon,
+            iconFamilyType: configInfo.decisionsTab.bottomTab.familyType,
+            showInBottomBar: true,
+          }}
+        />
+        <Tab.Screen
+          name="SearchStack"
+          children={() => <SearchStackNavigator configInfo={configInfo} />}
+          options={{
+            title: 'Info',
+            icon: 'information-outline',
+            showInBottomBar: false,
+          }}
+        />
+        <Tab.Screen
+          name="AboutUsStack"
+          component={AboutUsStackNavigator}
+          options={{
+            title: 'Info',
+            icon: 'information-outline',
+            showInBottomBar: false,
+          }}
+        />
+        <Tab.Screen
+          name="CopyrightStack"
+          component={CopyrightStackNavigator}
+          options={{
+            title: 'Info',
+            icon: 'information-outline',
+            showInBottomBar: false,
+          }}
+        />
+      </Tab.Navigator>
     </Animated.View>
   );
 };

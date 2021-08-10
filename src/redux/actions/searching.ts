@@ -3,7 +3,7 @@ import reduxTypes from './reduxTypes';
 export interface SearchText {
   chapter: string;
   searchText: string;
-  articleType: string | null;
+  bookType: string | null;
 }
 
 const setChapterSearchText = (searchText: SearchText) => ({
@@ -11,7 +11,7 @@ const setChapterSearchText = (searchText: SearchText) => ({
   data: {
     searchText: searchText.searchText,
     chapter: searchText.chapter,
-    articleType: searchText.articleType,
+    bookType: searchText.bookType,
   },
 });
 

@@ -30,40 +30,37 @@ const getVersionFromAggregate = (aggregate: string): string | undefined => {
 };
 
 const updateArticleIfNewVersion = async (
-  articleType: string,
+  bookType: string,
   versions: AggregateVersions,
 ) => {
-  if (getVersionFromAggregate(articleType) !== versions[articleType]) {
+  if (getVersionFromAggregate(bookType) !== versions[bookType]) {
     await collectArticlesByType
-      .getArticles(articleType)
+      .getArticles(bookType)
       .then(article =>
         updateArticleTable.updateArticles(
           article,
-          versions[articleType],
-          articleType,
+          versions[bookType],
+          bookType,
         ),
       )
       .catch(reason =>
         logger.error(
-          `failure in preparing database resources collecting articles from firebase articleType: ${updateArticleIfNewVersion}`,
+          `failure in preparing database resources collecting articles from firebase bookType: ${updateArticleIfNewVersion}`,
           reason,
         ),
       );
   }
 };
 
-const updateArticlesIfNewVersion = async (versions: AggregateVersions[]) => {
+const updateBooksIfNewVersion = async (versions: AggregateVersions[]) => {
   // eslint-disable-next-line no-restricted-syntax
-  for (const articleInfo of await configHelper.getArticleTypes()) {
+  for (const bookInfo of await configHelper.getBookTypes()) {
     const aggregateVersion = versions.find(
-      version => version[articleInfo.articleType],
+      version => version[bookInfo.bookType],
     );
     if (aggregateVersion !== undefined) {
       // eslint-disable-next-line no-await-in-loop
-      await updateArticleIfNewVersion(
-        articleInfo.articleType,
-        aggregateVersion,
-      );
+      await updateArticleIfNewVersion(bookInfo.bookType, aggregateVersion);
     }
   }
 };
@@ -108,7 +105,7 @@ const updateCalculationsIfNewVersion = async (
   }
 };
 
-const cleanupRemovedArticleTypesFromVersioningTable = async (
+const cleanupRemovedBookTypesFromVersioningTable = async (
   versions: AggregateVersions[],
 ) => {
   versioningRepository
@@ -124,7 +121,7 @@ const cleanupRemovedArticleTypesFromVersioningTable = async (
     })
     .catch(reason =>
       logger.error(
-        `failed cleanup (removing) removed articleTypes from versioning table, firebaseVersions: ${versions.map(
+        `failed cleanup (removing) removed bookTypes from versioning table, firebaseVersions: ${versions.map(
           value => Object.entries(value).join(', ').toString(),
         )}`,
         reason,
@@ -181,12 +178,12 @@ const prepareDatabaseResources = async () => {
 
   await updateAppConfigurations(firebaseVersions)
     .then(() => updateDecisionTreeIfNewVersion(firebaseVersions))
-    .then(() => updateArticlesIfNewVersion(firebaseVersions))
+    .then(() => updateBooksIfNewVersion(firebaseVersions))
     .then(() => updateCalculationsIfNewVersion(firebaseVersions))
     .catch(reason =>
       logger.error('prepareDatabaseResources failed', reason.message),
     );
-  cleanupRemovedArticleTypesFromVersioningTable(firebaseVersions);
+  cleanupRemovedBookTypesFromVersioningTable(firebaseVersions);
 };
 
 export default prepareDatabaseResources;

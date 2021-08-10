@@ -25,14 +25,14 @@ interface Props {
   children: ReactNode;
   searchText: string;
   handleSearchTextChange: (searchText: string) => void;
-  handleArticleTypeTabChange: (articleType: string) => void;
+  handleBookTypeTabChange: (bookType: string) => void;
 }
 
 const SearchHeader: FC<Props> = ({
   children,
   searchText,
   handleSearchTextChange,
-  handleArticleTypeTabChange,
+  handleBookTypeTabChange,
 }) => {
   let searchRef: null | SearchBar = null;
   const navigation = useNavigation<StackNavigationProp<any>>();
@@ -63,7 +63,7 @@ const SearchHeader: FC<Props> = ({
             onChangeText={typedText => handleSearchTextChange(typedText)}
             value={searchText}
           />
-          <SearchTab handleArticleTypeTabChange={handleArticleTypeTabChange} />
+          <SearchTab handleBookTypeTabChange={handleBookTypeTabChange} />
         </View>
       </View>
       {children}

@@ -32,10 +32,10 @@ const styles = StyleSheet.create({
 
 interface Props {
   navigation: DrawerNavigationHelpers;
-  showListButtonFromArticleType?: string;
+  showListButtonFromBookType?: string;
 }
 
-const Header: FC<Props> = ({ navigation, showListButtonFromArticleType }) => {
+const Header: FC<Props> = ({ navigation, showListButtonFromBookType }) => {
   const navigator = useNavigation<StackNavigationProp<any>>();
 
   return (
@@ -62,9 +62,9 @@ const Header: FC<Props> = ({ navigation, showListButtonFromArticleType }) => {
           />
         )}
         <SearchButton navigation={navigation} />
-        {showListButtonFromArticleType !== undefined && (
+        {showListButtonFromBookType !== undefined && (
           <ArticleListButton
-            articleType={showListButtonFromArticleType}
+            bookType={showListButtonFromBookType}
             articleButtonStyle={{
               marginRight: 20,
             }}

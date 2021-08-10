@@ -7,41 +7,38 @@ import articleRepository from '../database/repository/articleRepository';
 import SVGIcon from '../components/SVGIcon';
 import { ArticleChapter } from '../model/ArticleChapter';
 import configHelper from '../helper/configHelper';
-import { SECOND_ARTICLE_TAB } from '../model/ArticleTab';
+import { SECOND_BOOK_TAB } from '../model/BookTab';
 
 const styles = StyleSheet.create({
   buttonStyle: { backgroundColor: '#154594', borderRadius: 5 },
 });
 
 interface Props {
-  articleType: string;
+  bookType: string;
   toggleOverlay: () => void;
 }
 
-const ArticleListOverlay: FC<Props> = ({ articleType, toggleOverlay }) => {
+const ArticleListOverlay: FC<Props> = ({ bookType, toggleOverlay }) => {
   const [chapters, setChapters] = useState<ArticleChapter[]>([]);
 
   const navigation = useNavigation<StackNavigationProp<any>>();
 
   useEffect(() => {
-    articleRepository.getChapters(articleType, setChapters);
-  }, [articleType, setChapters]);
+    articleRepository.getChapters(bookType, setChapters);
+  }, [bookType, setChapters]);
 
   const handleChapterClick = async (item: ArticleChapter) => {
     toggleOverlay();
-    if (
-      (await configHelper.getTabByArticleType(articleType)) ===
-      SECOND_ARTICLE_TAB
-    ) {
-      navigation.push('SecondArticleTabDetailsScreen', {
+    if ((await configHelper.getTabByBookType(bookType)) === SECOND_BOOK_TAB) {
+      navigation.push('SecondBookTabDetailsScreen', {
         articleChapter: item.chapter,
-        articleType,
+        bookType,
       });
       return;
     }
-    navigation.push('FirstArticleTabDetailsScreen', {
+    navigation.push('FirstBookTabDetailsScreen', {
       articleChapter: item.chapter,
-      articleType,
+      bookType,
     });
   };
 

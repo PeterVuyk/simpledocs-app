@@ -5,7 +5,7 @@ import ListItem from '../../../components/ListItem';
 import navigationHelper from '../../../helper/navigationHelper';
 import { ArticleChapter } from '../../../model/ArticleChapter';
 import configHelper from '../../../helper/configHelper';
-import { FIRST_ARTICLE_TAB } from '../../../model/ArticleTab';
+import { FIRST_BOOK_TAB } from '../../../model/BookTab';
 
 const styles = StyleSheet.create({
   container: {
@@ -19,45 +19,42 @@ interface Props {
   showLevels?: string[];
   navigation: DrawerNavigationProp<any>;
   articleChapters: ArticleChapter[];
-  articleType: string;
+  bookType: string;
 }
 
 const ArticlesList: FC<Props> = ({
   showLevels,
   navigation,
   articleChapters,
-  articleType,
+  bookType,
 }) => {
   const navigateArticleList = async (chapters: string[]) => {
-    if (
-      (await configHelper.getTabByArticleType(articleType)) ===
-      FIRST_ARTICLE_TAB
-    ) {
-      navigation.navigate('FirstArticleTabStack', {
-        screen: 'FirstArticleTabIntermediateScreen',
-        params: { articleType, chapters },
+    if ((await configHelper.getTabByBookType(bookType)) === FIRST_BOOK_TAB) {
+      navigation.navigate('FirstBookTabStack', {
+        screen: 'FirstBookTabIntermediateScreen',
+        params: { bookType, chapters },
       });
       return;
     }
-    navigation.navigate('SecondArticleTabStack', {
-      screen: 'SecondArticleTabIntermediateScreen',
-      params: { articleType, chapters },
+    navigation.navigate('SecondBookTabStack', {
+      screen: 'SecondBookTabIntermediateScreen',
+      params: { bookType, chapters },
     });
   };
 
   const navigateToDetailsScreen = (articleChapter: ArticleChapter) => {
     navigationHelper.navigateToChapter(
-      { articleChapter: articleChapter.chapter, articleType },
-      articleType,
+      { articleChapter: articleChapter.chapter, bookType },
+      bookType,
       navigation,
     );
   };
 
   const clickHandler = async (articleChapter: ArticleChapter) => {
-    const articleInfo = await configHelper.getConfigByArticleType(articleType);
+    const bookInfo = await configHelper.getConfigByBookType(bookType);
     if (
       showLevels === undefined ||
-      articleInfo?.showLevelsInIntermediateList.includes(articleChapter.level)
+      bookInfo?.showLevelsInIntermediateList.includes(articleChapter.level)
     ) {
       navigateToDetailsScreen(articleChapter);
       return;
@@ -66,7 +63,7 @@ const ArticlesList: FC<Props> = ({
     const nextChapter = articleChapters[index + 1];
     if (
       nextChapter === undefined ||
-      !articleInfo?.showLevelsInIntermediateList.includes(nextChapter.level)
+      !bookInfo?.showLevelsInIntermediateList.includes(nextChapter.level)
     ) {
       navigateToDetailsScreen(articleChapter);
       return;
@@ -75,7 +72,7 @@ const ArticlesList: FC<Props> = ({
     nextChapters.push(articleChapters[index]);
     // eslint-disable-next-line no-restricted-syntax
     for (const chapter of articleChapters.slice(index + 1)) {
-      if (!articleInfo?.showLevelsInIntermediateList.includes(chapter.level)) {
+      if (!bookInfo?.showLevelsInIntermediateList.includes(chapter.level)) {
         break;
       }
       nextChapters.push(chapter);

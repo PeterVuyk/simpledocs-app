@@ -1,7 +1,7 @@
 import reduxTypes from '../actions/reduxTypes';
 
 const initialState = {
-  chapterSearchText: { searchText: '', chapter: '', articleType: null },
+  chapterSearchText: { searchText: '', chapter: '', bookType: null },
 };
 
 interface Action {

@@ -4,8 +4,8 @@ import { DrawerNavigationHelpers } from '@react-navigation/drawer/lib/typescript
 import Header from '../header/Header';
 import ArticleDetailsScreen from '../../screens/article/details/ArticleDetailsScreen';
 import ArticleListScreen from '../../screens/article/list/ArticleListScreen';
-import { FIRST_ARTICLE_TAB } from '../../model/ArticleTab';
-import ArticlesOverviewScreen from '../../screens/article/ArticlesOverviewScreen';
+import { FIRST_BOOK_TAB } from '../../model/BookTab';
+import BooksOverviewScreen from '../../screens/article/BooksOverviewScreen';
 import { TabInfo } from '../../model/ConfigInfo';
 import ArticleIntermediateListScreen from '../../screens/article/list/ArticleIntermediateListScreen';
 
@@ -16,14 +16,14 @@ interface Props {
   tabInfo: TabInfo;
 }
 
-const FirstArticleTabStackNavigator: FC<Props> = ({ navigation, tabInfo }) => {
+const FirstBookTabStackNavigator: FC<Props> = ({ navigation, tabInfo }) => {
   return (
     <Stack.Navigator headerMode="screen">
-      {tabInfo.articleTypes.length !== 1 && (
+      {tabInfo.bookTypes.length !== 1 && (
         <Stack.Screen
-          name="FirstArticleTabOverviewScreen"
-          component={ArticlesOverviewScreen}
-          initialParams={{ tabInfo, currentTab: FIRST_ARTICLE_TAB }}
+          name="FirstBookTabOverviewScreen"
+          component={BooksOverviewScreen}
+          initialParams={{ tabInfo, currentTab: FIRST_BOOK_TAB }}
           options={{
             header: () => <Header navigation={navigation} />,
           }}
@@ -31,29 +31,29 @@ const FirstArticleTabStackNavigator: FC<Props> = ({ navigation, tabInfo }) => {
       )}
       <Stack.Screen
         name={
-          tabInfo.articleTypes.length !== 1
-            ? 'FirstArticleTabArticleScreen'
-            : 'FirstArticleTabOverviewScreen'
+          tabInfo.bookTypes.length !== 1
+            ? 'FirstBookTabArticleScreen'
+            : 'FirstBookTabOverviewScreen'
         }
         component={ArticleListScreen}
         initialParams={{
           tabInfo,
           chapters: null,
-          articleType: null,
+          bookType: null,
         }}
         options={{
           header: () => <Header navigation={navigation} />,
         }}
       />
       <Stack.Screen
-        name="FirstArticleTabIntermediateScreen"
+        name="FirstBookTabIntermediateScreen"
         component={ArticleIntermediateListScreen}
         options={{
           header: () => <Header navigation={navigation} />,
         }}
       />
       <Stack.Screen
-        name="FirstArticleTabDetailsScreen"
+        name="FirstBookTabDetailsScreen"
         component={ArticleDetailsScreen}
         options={{ headerShown: false }}
       />
@@ -61,4 +61,4 @@ const FirstArticleTabStackNavigator: FC<Props> = ({ navigation, tabInfo }) => {
   );
 };
 
-export default FirstArticleTabStackNavigator;
+export default FirstBookTabStackNavigator;

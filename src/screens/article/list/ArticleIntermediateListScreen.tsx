@@ -10,7 +10,7 @@ interface Props {
     {
       params: {
         chapters: string[];
-        articleType: string;
+        bookType: string;
       };
     },
     'params'
@@ -18,16 +18,12 @@ interface Props {
 }
 
 const ArticleIntermediateListScreen: FC<Props> = ({ navigation, route }) => {
-  const { articleType, chapters } = route.params;
+  const { bookType, chapters } = route.params;
   const [articleChapters, setArticleChapters] = useState<ArticleChapter[]>([]);
 
   useEffect(() => {
-    articleRepository.getChaptersByList(
-      articleType,
-      chapters,
-      setArticleChapters,
-    );
-  }, [articleType, chapters]);
+    articleRepository.getChaptersByList(bookType, chapters, setArticleChapters);
+  }, [bookType, chapters]);
 
   if (!articleChapters) {
     return null;
@@ -37,7 +33,7 @@ const ArticleIntermediateListScreen: FC<Props> = ({ navigation, route }) => {
     <ArticlesList
       navigation={navigation}
       articleChapters={articleChapters}
-      articleType={articleType}
+      bookType={bookType}
     />
   );
 };

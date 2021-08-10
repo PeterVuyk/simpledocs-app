@@ -59,6 +59,8 @@ function TabNavigator({
   tabBarStyle,
   contentStyle,
 }: Props) {
+  const [isOpen, setIsOpen] = React.useState(false);
+
   const { state, navigation, descriptors } = useNavigationBuilder<
     TabNavigationState<ParamListBase>,
     TabRouterOptions,
@@ -72,16 +74,16 @@ function TabNavigator({
   });
 
   const onTabPress = route => {
-    if (route.name === 'SecondArticleTabStack') {
-      navigation.navigate('SecondArticleTabStack', {
-        screen: 'SecondArticleTabOverviewScreen',
+    if (route.name === 'SecondBookTabStack') {
+      navigation.navigate('SecondBookTabStack', {
+        screen: 'SecondBookTabOverviewScreen',
       });
       return;
     }
 
-    if (route.name === 'FirstArticleTabStack') {
-      navigation.navigate('FirstArticleTabStack', {
-        screen: 'FirstArticleTabOverviewScreen',
+    if (route.name === 'FirstBookTabStack') {
+      navigation.navigate('FirstBookTabStack', {
+        screen: 'FirstBookTabOverviewScreen',
       });
       return;
     }

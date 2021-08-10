@@ -20,33 +20,31 @@ interface Props {
 const ArticleListScreen: FC<Props> = ({ navigation, route }) => {
   const { tabInfo } = route.params;
   const [articleChapters, setArticleChapters] = useState<ArticleChapter[]>([]);
-  const [currentArticleType, setCurrentArticleType] = useState<string | null>(
-    null,
-  );
+  const [currentBookType, setCurrentBookType] = useState<string | null>(null);
 
   useEffect(() => {
-    setCurrentArticleType(tabInfo.articleTypes[0].articleType);
+    setCurrentBookType(tabInfo.bookTypes[0].bookType);
   }, [tabInfo]);
 
   useEffect(() => {
-    if (currentArticleType === null) {
+    if (currentBookType === null) {
       return;
     }
-    articleRepository.getChapters(currentArticleType, setArticleChapters);
-  }, [currentArticleType]);
+    articleRepository.getChapters(currentBookType, setArticleChapters);
+  }, [currentBookType]);
 
   const getLevelsToShowInList = (): string[] | undefined =>
-    tabInfo.articleTypes.find(value => value.articleType === currentArticleType)
+    tabInfo.bookTypes.find(value => value.bookType === currentBookType)
       ?.showLevelsInList;
 
   return (
     <>
-      {articleChapters && currentArticleType && (
+      {articleChapters && currentBookType && (
         <ArticlesList
           showLevels={getLevelsToShowInList()}
           navigation={navigation}
           articleChapters={articleChapters}
-          articleType={currentArticleType}
+          bookType={currentBookType}
         />
       )}
     </>

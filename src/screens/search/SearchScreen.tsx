@@ -39,8 +39,8 @@ interface Props {
 
 const SearchScreen: FC<Props> = ({ setChapterSearchText, route }) => {
   const { configInfo } = route.params;
-  const [articleType, setArticleType] = useState<string>(
-    configInfo.defaultArticleTypeSearch,
+  const [bookType, setBookType] = useState<string>(
+    configInfo.defaultBookTypeSearch,
   );
   const [articles, setArticles] = useState<Article[] | null>(null);
   const [searchText, setSearchText] = useState<string>('');
@@ -50,15 +50,15 @@ const SearchScreen: FC<Props> = ({ setChapterSearchText, route }) => {
       setArticles(null);
       return;
     }
-    articleRepository.searchArticles(articleType, searchText, setArticles);
-  }, [articleType, searchText]);
+    articleRepository.searchArticles(bookType, searchText, setArticles);
+  }, [bookType, searchText]);
 
   const handleSearchTextChange = (searchedText: string): void =>
     setSearchText(searchedText);
 
-  const handleArticleTypeTabChange = (type: string): void => {
+  const handleBookTypeTabChange = (type: string): void => {
     setArticles(null);
-    setArticleType(type);
+    setBookType(type);
   };
 
   const navigation = useNavigation<StackNavigationProp<any>>();
@@ -81,14 +81,18 @@ const SearchScreen: FC<Props> = ({ setChapterSearchText, route }) => {
   };
 
   const submitSearch = (item: Article) => {
-    setChapterSearchText({ chapter: item.chapter, searchText, articleType });
+    setChapterSearchText({
+      chapter: item.chapter,
+      searchText,
+      bookType,
+    });
     navigationHelper.navigateToChapter(
       {
         articleChapter: item.chapter,
-        articleType,
+        bookType,
         searchText: { chapter: item.chapter, searchText },
       },
-      articleType,
+      bookType,
       navigation,
     );
   };
@@ -115,7 +119,7 @@ const SearchScreen: FC<Props> = ({ setChapterSearchText, route }) => {
 
   return (
     <SearchHeader
-      handleArticleTypeTabChange={handleArticleTypeTabChange}
+      handleBookTypeTabChange={handleBookTypeTabChange}
       handleSearchTextChange={handleSearchTextChange}
       searchText={searchText}
     >

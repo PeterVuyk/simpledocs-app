@@ -12,7 +12,7 @@ interface Props {
     {
       params: {
         articleChapter: string;
-        articleType: string;
+        bookType: string;
       };
     },
     'params'
@@ -21,21 +21,18 @@ interface Props {
 
 const ArticleDetailsScreen: FC<Props> = ({ navigation, route }) => {
   const [chapters, setChapters] = useState<ArticleChapter[]>([]);
-  const { articleChapter, articleType } = route.params;
+  const { articleChapter, bookType } = route.params;
 
   useEffect(() => {
-    articleRepository.getChapters(articleType, setChapters);
-  }, [articleType, navigation]);
+    articleRepository.getChapters(bookType, setChapters);
+  }, [bookType, navigation]);
 
   return (
     <>
-      <Header
-        navigation={navigation}
-        showListButtonFromArticleType={articleType}
-      />
+      <Header navigation={navigation} showListButtonFromBookType={bookType} />
       {chapters.length !== 0 && (
         <ArticleDetails
-          articleType={articleType}
+          bookType={bookType}
           articleChapterList={chapters}
           articleChapter={articleChapter}
         />

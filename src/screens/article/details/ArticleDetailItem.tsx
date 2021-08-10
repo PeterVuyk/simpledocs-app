@@ -9,7 +9,7 @@ import ScrollAwareBottomButton from '../../../components/ScrollAwareBottomButton
 
 interface Props {
   articleChapter: string;
-  articleType: string;
+  bookType: string;
   chapterSearchText: SearchText;
   setChapterSearchText: (searchText: SearchText) => void;
 }
@@ -18,7 +18,7 @@ const ArticleDetailItem: FC<Props> = ({
   articleChapter,
   chapterSearchText,
   setChapterSearchText,
-  articleType,
+  bookType,
 }) => {
   const [article, setArticle] = useState<Article | null>();
   const [highlightText, setHighlightedText] = useState<string>('');
@@ -26,22 +26,18 @@ const ArticleDetailItem: FC<Props> = ({
   useEffect(() => {
     if (
       chapterSearchText.chapter === article?.chapter &&
-      chapterSearchText.articleType === articleType
+      chapterSearchText.bookType === bookType
     ) {
       setHighlightedText(chapterSearchText.searchText ?? '');
     }
-  }, [article, articleType, chapterSearchText]);
+  }, [article, bookType, chapterSearchText]);
 
   useEffect(() => {
-    articleRepository.getArticleByChapter(
-      articleType,
-      articleChapter,
-      setArticle,
-    );
-  }, [articleType, articleChapter]);
+    articleRepository.getArticleByChapter(bookType, articleChapter, setArticle);
+  }, [bookType, articleChapter]);
 
   const stopHighlightText = () => {
-    setChapterSearchText({ chapter: '', searchText: '', articleType: null });
+    setChapterSearchText({ chapter: '', searchText: '', bookType: null });
     setHighlightedText('');
   };
 
@@ -52,7 +48,7 @@ const ArticleDetailItem: FC<Props> = ({
           <HTMLViewer
             htmlFile={article?.htmlFile}
             highlightText={highlightText}
-            articleType={articleType}
+            bookType={bookType}
           />
           {highlightText !== '' && (
             <ScrollAwareBottomButton
