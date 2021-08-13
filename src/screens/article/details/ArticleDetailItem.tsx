@@ -32,8 +32,24 @@ const ArticleDetailItem: FC<Props> = ({
     }
   }, [article, bookType, chapterSearchText]);
 
+  /**
+   * To avoid the warning Can't perform a React state update on an unmounted component,
+   * we check if the component is already mounted before we set the article.
+   */
   useEffect(() => {
-    articleRepository.getArticleByChapter(bookType, articleChapter, setArticle);
+    let isMounted = true;
+    articleRepository.getArticleByChapter(
+      bookType,
+      articleChapter,
+      (articleResult: Article) => {
+        if (isMounted) {
+          setArticle(articleResult);
+        }
+      },
+    );
+    return () => {
+      isMounted = false;
+    };
   }, [bookType, articleChapter]);
 
   const stopHighlightText = () => {

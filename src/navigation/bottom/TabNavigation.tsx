@@ -40,7 +40,7 @@ const TabNavigation: FC<Props> = ({ navigation, setScrollDirection }) => {
   useEffect(() => {
     setTimeout(() => {
       setScrollDirection('up');
-    }, 1000);
+    }, 400);
   }, [setScrollDirection]);
 
   useEffect(() => {
