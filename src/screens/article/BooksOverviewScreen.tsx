@@ -11,7 +11,10 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
-    marginBottom: 60,
+  },
+  flatListContainer: {
+    flex: 1,
+    paddingBottom: 60,
   },
 });
 
@@ -47,19 +50,24 @@ const BooksOverviewScreen: FC<Props> = ({ navigation, route }) => {
 
   return (
     <View style={styles.container}>
-      <TitleBar title={tabInfo.title ?? ''} subTitle={tabInfo.subTitle ?? ''} />
-      <FlatList
-        keyExtractor={item => item.bookType.toString()}
-        data={tabInfo.bookTypes}
-        renderItem={({ item }) => (
-          <ListItem
-            title={item.title ?? ''}
-            subTitle={item.subTitle}
-            iconFile={item.iconFile ?? ''}
-            onSubmit={() => navigate(item.bookType)}
-          />
-        )}
-      />
+      <View style={styles.flatListContainer}>
+        <TitleBar
+          title={tabInfo.title ?? ''}
+          subTitle={tabInfo.subTitle ?? ''}
+        />
+        <FlatList
+          keyExtractor={item => item.bookType.toString()}
+          data={tabInfo.bookTypes}
+          renderItem={({ item }) => (
+            <ListItem
+              title={item.title ?? ''}
+              subTitle={item.subTitle}
+              iconFile={item.iconFile ?? ''}
+              onSubmit={() => navigate(item.bookType)}
+            />
+          )}
+        />
+      </View>
     </View>
   );
 };

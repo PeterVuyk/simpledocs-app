@@ -1,7 +1,7 @@
 import reduxTypes from '../actions/reduxTypes';
 
 const initialState = {
-  scrollDirection: 'up',
+  scrollDirection: 'down',
 };
 
 interface Action {

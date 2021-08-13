@@ -1,6 +1,7 @@
 import React, { FC, useEffect, useState } from 'react';
 import Animated from 'react-native-reanimated';
 import { DrawerNavigationHelpers } from '@react-navigation/drawer/lib/typescript/src/types';
+import { connect } from 'react-redux';
 import { setDrawerProgressListener } from '../drawer/onDrawerProgressListener';
 import TabNavigator from './TabNavigator';
 import DecisionsStackNavigator from '../StackNavigator/DecisionsStackNavigator';
@@ -11,14 +12,16 @@ import SecondBookTabStackNavigator from '../StackNavigator/SecondBookTabStackNav
 import FirstBookTabStackNavigator from '../StackNavigator/FirstBookTabStackNavigator';
 import SearchStackNavigator from '../StackNavigator/SearchStackNavigator';
 import appConfigDAO from '../../fileSystem/appConfigDAO';
+import scrolling from '../../redux/actions/scrolling';
 
 const Tab = TabNavigator();
 
 interface Props {
   navigation: DrawerNavigationHelpers;
+  setScrollDirection: (direction: string) => void;
 }
 
-const TabNavigation: FC<Props> = ({ navigation }) => {
+const TabNavigation: FC<Props> = ({ navigation, setScrollDirection }) => {
   const [configInfo, setConfigInfo] = useState<ConfigInfo | null>(null);
   useEffect(() => {
     appConfigDAO.getAppConfig().then(value => setConfigInfo(value));
@@ -33,6 +36,12 @@ const TabNavigation: FC<Props> = ({ navigation }) => {
     outputRange: [0, 16],
   });
   const animatedStyle = { borderRadius, transform: [{ scale }] };
+
+  useEffect(() => {
+    setTimeout(() => {
+      setScrollDirection('up');
+    }, 1000);
+  }, [setScrollDirection]);
 
   useEffect(() => {
     setDrawerProgressListener((updatedProgress: Animated.Value<0>) =>
@@ -135,4 +144,18 @@ const TabNavigation: FC<Props> = ({ navigation }) => {
   );
 };
 
-export default TabNavigation;
+const mapStateToProps = state => {
+  // maps the state van redux naar de props voor component.
+  return {
+    scrollDirection: state.scrolling.scrollDirection,
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  // maps the actions naar de props
+  return {
+    setScrollDirection: key => dispatch(scrolling.setScrollDirection(key)),
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(TabNavigation);

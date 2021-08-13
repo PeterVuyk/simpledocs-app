@@ -10,8 +10,11 @@ import { FIRST_BOOK_TAB } from '../../../model/BookTab';
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingBottom: 60,
     backgroundColor: '#fff',
+  },
+  flatListContainer: {
+    flex: 1,
+    paddingBottom: 60,
   },
 });
 
@@ -91,18 +94,20 @@ const ArticlesList: FC<Props> = ({
 
   return (
     <View style={styles.container}>
-      <FlatList
-        keyExtractor={item => item.chapter.toString()}
-        data={getChapters()}
-        renderItem={({ item }) => (
-          <ListItem
-            title={item.title}
-            subTitle={item.subTitle}
-            iconFile={item.iconFile}
-            onSubmit={() => clickHandler(item)}
-          />
-        )}
-      />
+      <View style={styles.flatListContainer}>
+        <FlatList
+          keyExtractor={item => item.chapter.toString()}
+          data={getChapters()}
+          renderItem={({ item }) => (
+            <ListItem
+              title={item.title}
+              subTitle={item.subTitle}
+              iconFile={item.iconFile}
+              onSubmit={() => clickHandler(item)}
+            />
+          )}
+        />
+      </View>
     </View>
   );
 };

@@ -59,8 +59,6 @@ function TabNavigator({
   tabBarStyle,
   contentStyle,
 }: Props) {
-  const [isOpen, setIsOpen] = React.useState(false);
-
   const { state, navigation, descriptors } = useNavigationBuilder<
     TabNavigationState<ParamListBase>,
     TabRouterOptions,

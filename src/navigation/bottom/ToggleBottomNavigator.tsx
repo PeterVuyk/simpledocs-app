@@ -21,7 +21,7 @@ const ToggleBottomNavigator: FC<Props> = ({ children, scrollDirection }) => {
   const showElement = useCallback(() => {
     Animated.timing(yValue, {
       useNativeDriver: false,
-      toValue: 0,
+      toValue: 60,
       duration: 300,
     }).start();
   }, [yValue]);
@@ -42,7 +42,7 @@ const ToggleBottomNavigator: FC<Props> = ({ children, scrollDirection }) => {
           flexDirection: 'row',
           justifyContent: 'space-around',
           position: 'absolute',
-          bottom: 0,
+          bottom: -60,
         }}
       >
         {children}
