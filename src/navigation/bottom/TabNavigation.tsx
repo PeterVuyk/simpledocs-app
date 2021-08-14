@@ -1,7 +1,7 @@
 import React, { FC, useEffect, useState } from 'react';
-import Animated from 'react-native-reanimated';
 import { DrawerNavigationHelpers } from '@react-navigation/drawer/lib/typescript/src/types';
 import { connect } from 'react-redux';
+import Animated, { interpolateNode } from 'react-native-reanimated';
 import { setDrawerProgressListener } from '../drawer/onDrawerProgressListener';
 import TabNavigator from './TabNavigator';
 import DecisionsStackNavigator from '../StackNavigator/DecisionsStackNavigator';
@@ -27,11 +27,11 @@ const TabNavigation: FC<Props> = ({ navigation, setScrollDirection }) => {
     appConfigDAO.getAppConfig().then(value => setConfigInfo(value));
   }, []);
   const [progress, setProgress] = useState(new Animated.Value(0));
-  const scale = Animated.interpolate(progress, {
+  const scale = interpolateNode(progress, {
     inputRange: [0, 1],
     outputRange: [1, 0.8],
   });
-  const borderRadius = Animated.interpolate(progress, {
+  const borderRadius = interpolateNode(progress, {
     inputRange: [0, 1],
     outputRange: [0, 16],
   });

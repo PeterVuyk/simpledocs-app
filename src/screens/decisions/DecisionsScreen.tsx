@@ -13,7 +13,6 @@ import {
 } from '../../model/Versioning';
 import { DecisionTreeTitle } from '../../model/DecisionTreeTitle';
 import { DecisionsTab, TabInfo } from '../../model/ConfigInfo';
-import { ArticleChapter } from '../../model/ArticleChapter';
 
 interface Props {
   navigation: DrawerNavigationProp<any>;
