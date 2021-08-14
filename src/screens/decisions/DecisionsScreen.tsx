@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC, useCallback, useEffect, useState } from 'react';
 import { FlatList, View } from 'react-native';
 import { DrawerNavigationProp } from '@react-navigation/drawer/lib/typescript/src/types';
 import { RouteProp } from '@react-navigation/native';
@@ -13,6 +13,7 @@ import {
 } from '../../model/Versioning';
 import { DecisionTreeTitle } from '../../model/DecisionTreeTitle';
 import { DecisionsTab, TabInfo } from '../../model/ConfigInfo';
+import { ArticleChapter } from '../../model/ArticleChapter';
 
 interface Props {
   navigation: DrawerNavigationProp<any>;
@@ -76,19 +77,22 @@ const DecisionsScreen: FC<Props> = ({ navigation, route }) => {
     decisionTabInfo.indexDecisionType,
   ]);
 
-  const navigateDecisionItem = (decisionItem: DecisionItem) => {
-    if (decisionItem.categorization === AGGREGATE_CALCULATIONS) {
+  const navigateDecisionItem = useCallback(
+    (decisionItem: DecisionItem) => {
+      if (decisionItem.categorization === AGGREGATE_CALCULATIONS) {
+        navigation.navigate('DecisionsScreenStack', {
+          screen: 'calculatorScreen',
+          params: { title: decisionItem.title },
+        });
+        return;
+      }
       navigation.navigate('DecisionsScreenStack', {
-        screen: 'calculatorScreen',
+        screen: 'DecisionTreeScreen',
         params: { title: decisionItem.title },
       });
-      return;
-    }
-    navigation.navigate('DecisionsScreenStack', {
-      screen: 'DecisionTreeScreen',
-      params: { title: decisionItem.title },
-    });
-  };
+    },
+    [navigation],
+  );
 
   const flatListHeader = () => {
     return (
@@ -112,6 +116,18 @@ const DecisionsScreen: FC<Props> = ({ navigation, route }) => {
     }
   };
 
+  const renderItem = useCallback(
+    (item: DecisionItem) => (
+      <ListItem
+        onSubmit={() => navigateDecisionItem(item)}
+        iconFile={item.iconFile}
+        title={item.title}
+        subTitle={getSubtitleFromCategorization(item.categorization)}
+      />
+    ),
+    [navigateDecisionItem],
+  );
+
   return (
     <View style={{ flex: 1, paddingBottom: 60, backgroundColor: '#fff' }}>
       {decisionItems.length !== 0 && (
@@ -119,14 +135,7 @@ const DecisionsScreen: FC<Props> = ({ navigation, route }) => {
           keyExtractor={item => item.title}
           data={decisionItems}
           ListHeaderComponent={flatListHeader}
-          renderItem={({ item }) => (
-            <ListItem
-              onSubmit={() => navigateDecisionItem(item)}
-              iconFile={item.iconFile}
-              title={item.title}
-              subTitle={getSubtitleFromCategorization(item.categorization)}
-            />
-          )}
+          renderItem={({ item }) => renderItem(item)}
         />
       )}
     </View>

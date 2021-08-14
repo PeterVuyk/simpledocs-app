@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC, useCallback, useEffect, useState } from 'react';
 import { Button, ListItem, Overlay } from 'react-native-elements';
 import { View, FlatList, Dimensions, StyleSheet } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
@@ -27,28 +27,34 @@ const ArticleListOverlay: FC<Props> = ({ bookType, toggleOverlay }) => {
     articleRepository.getChapters(bookType, setChapters);
   }, [bookType, setChapters]);
 
-  const handleChapterClick = async (item: ArticleChapter) => {
-    toggleOverlay();
-    if ((await configHelper.getTabByBookType(bookType)) === SECOND_BOOK_TAB) {
-      navigation.push('SecondBookTabDetailsScreen', {
+  const handleChapterClick = useCallback(
+    async (item: ArticleChapter) => {
+      toggleOverlay();
+      if ((await configHelper.getTabByBookType(bookType)) === SECOND_BOOK_TAB) {
+        navigation.push('SecondBookTabDetailsScreen', {
+          articleChapter: item.chapter,
+          bookType,
+        });
+        return;
+      }
+      navigation.push('FirstBookTabDetailsScreen', {
         articleChapter: item.chapter,
         bookType,
       });
-      return;
-    }
-    navigation.push('FirstBookTabDetailsScreen', {
-      articleChapter: item.chapter,
-      bookType,
-    });
-  };
+    },
+    [bookType, navigation, toggleOverlay],
+  );
 
-  const renderItem = (item: ArticleChapter) => (
-    <ListItem bottomDivider onPress={() => handleChapterClick(item)}>
-      <SVGIcon iconBlob={item.iconFile} />
-      <ListItem.Content>
-        <ListItem.Title>{item.title}</ListItem.Title>
-      </ListItem.Content>
-    </ListItem>
+  const renderItem = useCallback(
+    (item: ArticleChapter) => (
+      <ListItem bottomDivider onPress={() => handleChapterClick(item)}>
+        <SVGIcon iconBlob={item.iconFile} />
+        <ListItem.Content>
+          <ListItem.Title>{item.title}</ListItem.Title>
+        </ListItem.Content>
+      </ListItem>
+    ),
+    [handleChapterClick],
   );
 
   return (

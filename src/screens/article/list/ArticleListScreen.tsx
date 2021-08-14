@@ -1,5 +1,6 @@
 import React, { FC, useEffect, useState } from 'react';
 import { RouteProp } from '@react-navigation/native';
+import WebView from 'react-native-webview';
 import ArticlesList from './ArticlesList';
 import articleRepository from '../../../database/repository/articleRepository';
 import { ArticleChapter } from '../../../model/ArticleChapter';

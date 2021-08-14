@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC, useCallback, useEffect, useState } from 'react';
 import { View, FlatList, Dimensions } from 'react-native';
 import { useIsFocused } from '@react-navigation/native';
 import ArticleDetailItem from './ArticleDetailItem';
@@ -34,6 +34,18 @@ const ArticleDetails: FC<Props> = ({
     setCurrentIndex(Math.round(contentOffset.x / viewSize.width));
   };
 
+  const renderItem = useCallback(
+    (chapter: ArticleChapter) => (
+      <View style={{ width, flex: 1 }}>
+        <ArticleDetailItem
+          articleChapter={chapter.chapter}
+          bookType={bookType}
+        />
+      </View>
+    ),
+    [bookType, width],
+  );
+
   return (
     <View style={{ flex: 1 }}>
       <ShowNotification
@@ -59,14 +71,7 @@ const ArticleDetails: FC<Props> = ({
             index,
           })}
           keyExtractor={item => item.chapter.toString()}
-          renderItem={({ item }) => (
-            <View style={{ width, flex: 1 }}>
-              <ArticleDetailItem
-                articleChapter={item.chapter}
-                bookType={bookType}
-              />
-            </View>
-          )}
+          renderItem={({ item }) => renderItem(item)}
         />
       )}
     </View>

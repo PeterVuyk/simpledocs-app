@@ -1,11 +1,11 @@
-import React, { FC } from 'react';
+import React, { FC, useCallback } from 'react';
 import { DrawerNavigationProp } from '@react-navigation/drawer/lib/typescript/src/types';
 import { FlatList, StyleSheet, View } from 'react-native';
 import { RouteProp } from '@react-navigation/native';
 import { SECOND_BOOK_TAB } from '../../model/BookTab';
 import TitleBar from '../../components/TitleBar';
 import ListItem from '../../components/ListItem';
-import { TabInfo } from '../../model/ConfigInfo';
+import { BookInfo, TabInfo } from '../../model/ConfigInfo';
 
 const styles = StyleSheet.create({
   container: {
@@ -34,19 +34,34 @@ interface Props {
 const BooksOverviewScreen: FC<Props> = ({ navigation, route }) => {
   const { tabInfo, currentTab } = route.params;
 
-  const navigate = (bookType: string) => {
-    if (currentTab === SECOND_BOOK_TAB) {
-      navigation.navigate('SecondBookTabStack', {
-        screen: 'SecondBookTabArticleScreen',
+  const navigate = useCallback(
+    (bookType: string) => {
+      if (currentTab === SECOND_BOOK_TAB) {
+        navigation.navigate('SecondBookTabStack', {
+          screen: 'SecondBookTabArticleScreen',
+          params: { bookType, tabInfo },
+        });
+        return;
+      }
+      navigation.navigate('FirstBookTabStack', {
+        screen: 'FirstBookTabArticleScreen',
         params: { bookType, tabInfo },
       });
-      return;
-    }
-    navigation.navigate('FirstBookTabStack', {
-      screen: 'FirstBookTabArticleScreen',
-      params: { bookType, tabInfo },
-    });
-  };
+    },
+    [currentTab, navigation, tabInfo],
+  );
+
+  const renderItem = useCallback(
+    (item: BookInfo) => (
+      <ListItem
+        title={item.title ?? ''}
+        subTitle={item.subTitle}
+        iconFile={item.iconFile ?? ''}
+        onSubmit={() => navigate(item.bookType)}
+      />
+    ),
+    [navigate],
+  );
 
   return (
     <View style={styles.container}>
@@ -58,14 +73,7 @@ const BooksOverviewScreen: FC<Props> = ({ navigation, route }) => {
         <FlatList
           keyExtractor={item => item.bookType.toString()}
           data={tabInfo.bookTypes}
-          renderItem={({ item }) => (
-            <ListItem
-              title={item.title ?? ''}
-              subTitle={item.subTitle}
-              iconFile={item.iconFile ?? ''}
-              onSubmit={() => navigate(item.bookType)}
-            />
-          )}
+          renderItem={({ item }) => renderItem(item)}
         />
       </View>
     </View>
