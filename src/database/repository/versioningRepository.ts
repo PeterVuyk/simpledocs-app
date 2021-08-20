@@ -1,6 +1,7 @@
 import * as SQLite from 'expo-sqlite';
 import logger from '../../helper/logger';
 import { Versioning } from '../../model/Versioning';
+import { ConfigInfo } from '../../model/ConfigInfo';
 
 const db = SQLite.openDatabase('db.db');
 
@@ -15,7 +16,27 @@ function updateVersioningWithTransaction(
   );
 }
 
-function updateVersioning(aggregate: string, version: string): Promise<void> {
+function insertBookTypeVersions(
+  sqlTransaction: SQLite.SQLTransaction,
+  appConfig: ConfigInfo,
+): void {
+  const bookTypes = [
+    ...appConfig.firstTab.bookTypes,
+    ...appConfig.secondTab.bookTypes,
+  ];
+  bookTypes.forEach(bookType => {
+    sqlTransaction.executeSql(
+      "INSERT OR IGNORE INTO versioning (aggregate, version) VALUES (?, 'initial');",
+      [bookType.bookType],
+    );
+  });
+}
+
+function updateBookTypeVersioning(
+  aggregate: string,
+  version: string,
+  appConfig: ConfigInfo,
+): Promise<void> {
   return new Promise((resolve, reject) => {
     db.transaction(
       sqlTransaction => {
@@ -23,6 +44,7 @@ function updateVersioning(aggregate: string, version: string): Promise<void> {
           `UPDATE versioning SET version = ? WHERE aggregate = ?;`,
           [version, aggregate],
         );
+        insertBookTypeVersions(sqlTransaction, appConfig);
       },
       error => {
         logger.error(
@@ -87,7 +109,7 @@ function getAllVersions(
       },
       error => {
         logger.error(
-          'versioningRepository.getVersioning failed',
+          'versioningRepository.getAllVersions failed',
           error.message,
         );
         reject();
@@ -122,7 +144,7 @@ const versioningRepository = {
   getVersioning,
   getAllVersions,
   updateVersioningWithTransaction,
-  updateVersioning,
+  updateBookTypeVersioning,
   removeVersion,
 };
 

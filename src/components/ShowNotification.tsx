@@ -49,7 +49,7 @@ const ShowNotification: FC<Props> = ({ notificationType }) => {
   const showHorizontalScrollTip = useCallback(() => {
     Alert.alert(
       'Tip voor navigeren:',
-      'Scrol makkelijk horizontaal tussen de verschillende artikelen.',
+      'Swipe makkelijk horizontaal tussen de verschillende artikelen.',
       [
         {
           text: 'Niet meer melden',

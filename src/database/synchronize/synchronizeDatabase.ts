@@ -1,12 +1,10 @@
 import versioningRepository from '../repository/versioningRepository';
-import initializeTables from './initializeTables';
 import collectVersions from '../firebase/collectVersions';
 import updateDecisionTreeTable from './updateDecisionTreeTable';
 import collectDecisionTreeSteps from '../firebase/collectDecisionTreeSteps';
 import logger from '../../helper/logger';
 import updateCalculationsTable from './updateCalculationsTable';
 import collectCalculations from '../firebase/collectCalculations';
-import internetConnectivity from '../../helper/internetConnectivity';
 import {
   AGGREGATE_APP_CONFIG,
   AGGREGATE_CALCULATIONS,
@@ -149,7 +147,11 @@ const updateAppConfigurations = async (versions: AggregateVersions[]) => {
     .saveAppConfigToFileStorage(appConfig)
     .then(() =>
       versioningRepository
-        .updateVersioning(AGGREGATE_APP_CONFIG, aggregateVersion.appConfig)
+        .updateBookTypeVersioning(
+          AGGREGATE_APP_CONFIG,
+          aggregateVersion.appConfig,
+          appConfig,
+        )
         .catch(reason =>
           logger.error(
             'Update version for appConfig failed. By the next startup the appConfig will be fetched again, the update version will be tried to store again',
@@ -159,17 +161,13 @@ const updateAppConfigurations = async (versions: AggregateVersions[]) => {
     )
     .catch(reason =>
       logger.error(
-        'Failed saving appConfig to file storage in prepareDatabaseResources, will be tried again by next startup app.',
+        'Failed saving appConfig to file storage in prepareDatabaseResources, using old config. Will be tried again by next startup app.',
         reason,
       ),
     );
 };
 
-const prepareDatabaseResources = async () => {
-  await initializeTables.initialize();
-  if (!(await internetConnectivity.hasInternetConnection())) {
-    return;
-  }
+const synchronizeDatabase = async (): Promise<void> => {
   const firebaseVersions = await collectVersions.getVersioning();
   await versioningRepository.getAllVersions(setAggregateVersionsCallback);
   if (firebaseVersions === null) {
@@ -186,4 +184,4 @@ const prepareDatabaseResources = async () => {
   cleanupRemovedBookTypesFromVersioningTable(firebaseVersions);
 };
 
-export default prepareDatabaseResources;
+export default synchronizeDatabase;

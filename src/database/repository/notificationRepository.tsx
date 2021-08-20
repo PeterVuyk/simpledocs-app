@@ -14,10 +14,13 @@ function getNotification(
       sqlTransaction => {
         sqlTransaction.executeSql(
           `SELECT *
-           FROM notifications WHERE notificationType = ? LIMIT 1;`,
+           FROM notification WHERE notificationType = ? LIMIT 1;`,
           [notificationType],
           // @ts-ignore
           (_, { rows: { _array } }) => {
+            logger.errorFromMessage(
+              `RESULT getNotification limit 1: ${JSON.stringify(_array)}`,
+            );
             if (_array.length === 1) {
               callback({
                 notificationType: _array[0].notificationType,
@@ -29,7 +32,7 @@ function getNotification(
       },
       error => {
         logger.error(
-          'notificationRepository.getNotifications failed',
+          'notificationRepository.getNotification failed',
           error.message,
         );
         reject();
@@ -42,7 +45,7 @@ function getNotification(
 function updateNotification(notification: Notification): void {
   db.transaction(sqlTransaction => {
     sqlTransaction.executeSql(
-      `UPDATE notifications
+      `UPDATE notification
          SET notificationEnabled = ?
          WHERE notificationType = ?`,
       [notification.notificationEnabled ? 1 : 0, notification.notificationType],

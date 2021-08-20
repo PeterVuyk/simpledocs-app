@@ -8,7 +8,6 @@ async function getConfig(): Promise<void | ConfigInfo> {
     .doc('appConfig')
     .get()
     .then(value => value.data() as ConfigInfo)
-    .then(value => value)
     .catch(reason =>
       logger.error(
         'Failed collecting articles from config file to save in versioning table',

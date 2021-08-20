@@ -1,7 +1,7 @@
-import React, { FC } from 'react';
+import React, { FC, useState } from 'react';
 import { Button, Overlay } from 'react-native-elements';
 import { StyleSheet, View } from 'react-native';
-import TitleBar from '../components/TitleBar';
+import TitleBar from '../../components/TitleBar';
 
 const styles = StyleSheet.create({
   messageContainer: { flex: 1, marginTop: 200 },
@@ -14,6 +14,8 @@ interface Props {
 }
 
 const NoInternetConnectionOverlay: FC<Props> = ({ retryButtonHandler }) => {
+  const [buttonDisabled, setButtonDisabled] = useState<boolean>(false);
+
   return (
     <View style={{ flex: 1 }}>
       <Overlay fullScreen isVisible>
@@ -25,8 +27,13 @@ const NoInternetConnectionOverlay: FC<Props> = ({ retryButtonHandler }) => {
         </View>
         <View style={styles.buttonContainer}>
           <Button
+            disabled={buttonDisabled}
             title="Probeer opnieuw"
-            onPress={() => retryButtonHandler()}
+            onPress={() => {
+              setButtonDisabled(true);
+              retryButtonHandler();
+              setButtonDisabled(false);
+            }}
             buttonStyle={styles.buttonStyle}
           />
         </View>

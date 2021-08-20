@@ -32,13 +32,7 @@ function addDecisionTreeSteps(
 }
 
 function removeAllDecisionTree(sqlTransaction: SQLite.SQLTransaction): void {
-  sqlTransaction.executeSql(`DROP TABLE IF EXISTS decisionTree`, []);
-}
-
-function createDecisionTreeTable(sqlTransaction: SQLite.SQLTransaction): void {
-  sqlTransaction.executeSql(
-    'create table if not exists decisionTree (id int not null, title text, label text not null, lineLabel varchar, parentId int, htmlFile blob, iconFile blob);',
-  );
+  sqlTransaction.executeSql(`DELETE FROM decisionTree`, []);
 }
 
 function updateDecisionTreeSteps(
@@ -49,7 +43,6 @@ function updateDecisionTreeSteps(
     db.transaction(
       sqlTransaction => {
         removeAllDecisionTree(sqlTransaction);
-        createDecisionTreeTable(sqlTransaction);
         versioningRepository.updateVersioningWithTransaction(
           sqlTransaction,
           AGGREGATE_DECISION_TREE,

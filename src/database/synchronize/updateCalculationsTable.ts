@@ -37,13 +37,7 @@ function addCalculations(
 function removeAllCalculationsInfo(
   sqlTransaction: SQLite.SQLTransaction,
 ): void {
-  sqlTransaction.executeSql(`DROP TABLE IF EXISTS calculations`, []);
-}
-
-function createCalculationTable(sqlTransaction: SQLite.SQLTransaction): void {
-  sqlTransaction.executeSql(
-    'create table if not exists calculations (calculationType text not null constraint calculations_pk primary key, listIndex integer not null, title text not null, explanation text not null, articleButtonText varchar not null, calculationImage blob not null, htmlFile blob not null, iconFile blob not null);',
-  );
+  sqlTransaction.executeSql(`DELETE FROM calculations`, []);
 }
 
 function updateCalculation(
@@ -54,7 +48,6 @@ function updateCalculation(
     db.transaction(
       sqlTransaction => {
         removeAllCalculationsInfo(sqlTransaction);
-        createCalculationTable(sqlTransaction);
         versioningRepository.updateVersioningWithTransaction(
           sqlTransaction,
           AGGREGATE_CALCULATIONS,
