@@ -37,7 +37,6 @@ function initializeInitialBookTypes(configInfo: ConfigInfo): Promise<void> {
   });
 }
 function initializeInitialTables(): Promise<void> {
-  logger.errorFromMessage('INITIALISING CALLED 1 TIME!!');
   return new Promise((resolve, reject) => {
     db.transaction(
       sqlTransaction => {

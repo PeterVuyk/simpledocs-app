@@ -24,7 +24,6 @@ const styles = StyleSheet.create({
   rightContainer: {
     alignSelf: 'center',
     flexDirection: 'row-reverse',
-    marginLeft: 10,
     marginRight: 20,
     marginBottom: 10,
   },
@@ -47,7 +46,6 @@ const Header: FC<Props> = ({ navigation, showListButtonFromBookType }) => {
         <DrawerButton
           iconName="menu"
           iconType="MaterialCommunityIcons"
-          drawerStyle={{ marginLeft: 10 }}
           navigation={navigation}
         />
       )}
@@ -57,18 +55,12 @@ const Header: FC<Props> = ({ navigation, showListButtonFromBookType }) => {
           <DrawerButton
             iconName="dots-vertical"
             iconType="MaterialCommunityIcons"
-            drawerStyle={{ marginLeft: 10 }}
             navigation={navigation}
           />
         )}
         <SearchButton navigation={navigation} />
         {showListButtonFromBookType !== undefined && (
-          <ArticleListButton
-            bookType={showListButtonFromBookType}
-            articleButtonStyle={{
-              marginRight: 20,
-            }}
-          />
+          <ArticleListButton bookType={showListButtonFromBookType} />
         )}
       </View>
     </SafeAreaView>

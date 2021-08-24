@@ -18,9 +18,6 @@ function getNotification(
           [notificationType],
           // @ts-ignore
           (_, { rows: { _array } }) => {
-            logger.errorFromMessage(
-              `RESULT getNotification limit 1: ${JSON.stringify(_array)}`,
-            );
             if (_array.length === 1) {
               callback({
                 notificationType: _array[0].notificationType,

@@ -1,20 +1,20 @@
 import React, { FC, useState } from 'react';
-import { StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { Icon } from 'native-base';
 import ArticleListOverlay from '../../overlay/ArticleListOverlay';
 
 const styles = StyleSheet.create({
   buttonColor: {
     color: '#154594',
+    padding: 10,
   },
 });
 
 interface Props {
   bookType: string;
-  articleButtonStyle: StyleProp<ViewStyle>;
 }
 
-const ArticleListButton: FC<Props> = ({ bookType, articleButtonStyle }) => {
+const ArticleListButton: FC<Props> = ({ bookType }) => {
   const [visible, setVisible] = useState(false);
 
   const toggleOverlay = () => {
@@ -25,7 +25,7 @@ const ArticleListButton: FC<Props> = ({ bookType, articleButtonStyle }) => {
     <View>
       {!visible && (
         <Icon
-          style={[styles.buttonColor, articleButtonStyle]}
+          style={styles.buttonColor}
           name="book-open-variant"
           type="MaterialCommunityIcons"
           fontSize={26}

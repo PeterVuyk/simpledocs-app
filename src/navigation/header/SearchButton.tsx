@@ -6,6 +6,7 @@ import { Icon } from 'native-base';
 const styles = StyleSheet.create({
   buttonColor: {
     color: '#154594',
+    padding: 10,
   },
 });
 
