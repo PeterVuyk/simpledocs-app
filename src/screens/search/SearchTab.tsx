@@ -21,7 +21,7 @@ const theme = {
 };
 
 const SearchTab: FC<Props> = ({ handleBookTypeTabChange }) => {
-  const [tab, setTab] = useState(0);
+  const [tab, setTab] = useState<number>(0);
   const [bookTypes, setBookTypes] = useState<BookInfo[]>([]);
 
   useEffect(() => {
@@ -29,12 +29,16 @@ const SearchTab: FC<Props> = ({ handleBookTypeTabChange }) => {
   }, []);
 
   const handleTabChange = (clickedTab: number): void => {
-    const result = bookTypes.find(value => value.index === clickedTab);
-    if (result === undefined || tab === result.index) {
+    const bookIndex = bookTypes.findIndex(
+      (value, index) => index === clickedTab,
+    );
+    if (bookIndex === undefined || tab === bookIndex) {
       return;
     }
     setTab(clickedTab);
-    handleBookTypeTabChange(result ? result.bookType : '');
+    handleBookTypeTabChange(
+      bookTypes[bookIndex] ? bookTypes[bookIndex].bookType : '',
+    );
   };
 
   return (

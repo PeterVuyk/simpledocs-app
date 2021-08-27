@@ -21,16 +21,6 @@ const ArticleDetailItem: FC<Props> = ({
   bookType,
 }) => {
   const [article, setArticle] = useState<Article | null>();
-  const [highlightText, setHighlightedText] = useState<string>('');
-
-  useEffect(() => {
-    if (
-      chapterSearchText.chapter === article?.chapter &&
-      chapterSearchText.bookType === bookType
-    ) {
-      setHighlightedText(chapterSearchText.searchText ?? '');
-    }
-  }, [article, bookType, chapterSearchText]);
 
   /**
    * To avoid the warning Can't perform a React state update on an unmounted component,
@@ -54,25 +44,24 @@ const ArticleDetailItem: FC<Props> = ({
 
   const stopHighlightText = () => {
     setChapterSearchText({ chapter: '', searchText: '', bookType: null });
-    setHighlightedText('');
   };
+
+  if (!article) {
+    return null;
+  }
 
   return (
     <View style={{ flex: 1 }}>
-      {article && (
-        <>
-          <HTMLViewer
-            htmlFile={article?.htmlFile}
-            highlightText={highlightText}
-            bookType={bookType}
-          />
-          {highlightText !== '' && (
-            <ScrollAwareBottomButton
-              title="Verwijder markering"
-              onPress={stopHighlightText}
-            />
-          )}
-        </>
+      <HTMLViewer
+        htmlFile={article?.htmlFile}
+        highlightText={chapterSearchText.searchText}
+        bookType={bookType}
+      />
+      {chapterSearchText.searchText !== '' && (
+        <ScrollAwareBottomButton
+          title="Verwijder markering"
+          onPress={stopHighlightText}
+        />
       )}
     </View>
   );
