@@ -12,6 +12,7 @@ interface Props {
     {
       params: {
         tabInfo: TabInfo;
+        bookType?: string;
       };
     },
     'params'
@@ -19,36 +20,36 @@ interface Props {
 }
 
 const ArticleListScreen: FC<Props> = ({ navigation, route }) => {
-  const { tabInfo } = route.params;
+  const { tabInfo, bookType } = route.params;
   const [articleChapters, setArticleChapters] = useState<ArticleChapter[]>([]);
   const [currentBookType, setCurrentBookType] = useState<string | null>(null);
 
   useEffect(() => {
-    setCurrentBookType(tabInfo.bookTypes[0].bookType);
-  }, [tabInfo]);
+    setCurrentBookType(null);
+    setCurrentBookType(bookType ?? tabInfo.bookTypes[0].bookType);
+  }, [bookType, tabInfo]);
 
   useEffect(() => {
     if (currentBookType === null) {
       return;
     }
     articleRepository.getChapters(currentBookType, setArticleChapters);
-  }, [currentBookType]);
+  }, [bookType, currentBookType]);
 
   const getLevelsToShowInList = (): string[] | undefined =>
     tabInfo.bookTypes.find(value => value.bookType === currentBookType)
       ?.showLevelsInList;
 
+  if (!currentBookType || !articleChapters) {
+    return null;
+  }
   return (
-    <>
-      {articleChapters && currentBookType && (
-        <ArticlesList
-          showLevels={getLevelsToShowInList()}
-          navigation={navigation}
-          articleChapters={articleChapters}
-          bookType={currentBookType}
-        />
-      )}
-    </>
+    <ArticlesList
+      showLevels={getLevelsToShowInList()}
+      navigation={navigation}
+      articleChapters={articleChapters}
+      bookType={currentBookType}
+    />
   );
 };
 

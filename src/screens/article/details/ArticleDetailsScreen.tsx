@@ -24,6 +24,7 @@ const ArticleDetailsScreen: FC<Props> = ({ navigation, route }) => {
   const { articleChapter, bookType } = route.params;
 
   useEffect(() => {
+    setChapters([]);
     articleRepository.getChapters(bookType, setChapters);
   }, [bookType, navigation]);
 

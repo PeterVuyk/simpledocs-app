@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC, useCallback, useEffect, useState } from 'react';
 import { View } from 'react-native';
 import { connect } from 'react-redux';
 import searching, { SearchText } from '../../../redux/actions/searching';
@@ -46,6 +46,13 @@ const ArticleDetailItem: FC<Props> = ({
     setChapterSearchText({ chapter: '', searchText: '', bookType: null });
   };
 
+  const getChapterSearchText = useCallback(() => {
+    if (chapterSearchText.chapter === article?.chapter) {
+      return chapterSearchText.searchText;
+    }
+    return '';
+  }, [article, chapterSearchText]);
+
   if (!article) {
     return null;
   }
@@ -54,10 +61,10 @@ const ArticleDetailItem: FC<Props> = ({
     <View style={{ flex: 1 }}>
       <HTMLViewer
         htmlFile={article?.htmlFile}
-        highlightText={chapterSearchText.searchText}
+        highlightText={getChapterSearchText()}
         bookType={bookType}
       />
-      {chapterSearchText.searchText !== '' && (
+      {getChapterSearchText() !== '' && (
         <ScrollAwareBottomButton
           title="Verwijder markering"
           onPress={stopHighlightText}
