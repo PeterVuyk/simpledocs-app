@@ -59,7 +59,7 @@ const ArticlesList: FC<Props> = ({
     [bookType, navigation],
   );
 
-  const clickHandler = useCallback(
+  const handleItemClick = useCallback(
     async (articleChapter: ArticleChapter) => {
       const bookInfo = await configHelper.getConfigByBookType(bookType);
       if (
@@ -113,10 +113,10 @@ const ArticlesList: FC<Props> = ({
         title={item.title}
         subTitle={item.subTitle}
         iconFile={item.iconFile}
-        onSubmit={() => clickHandler(item)}
+        onSubmit={() => handleItemClick(item)}
       />
     ),
-    [clickHandler],
+    [handleItemClick],
   );
 
   return (

@@ -5,7 +5,7 @@ import configHelper from '../../helper/configHelper';
 import { BookInfo } from '../../model/ConfigInfo';
 
 interface Props {
-  handleBookTypeTabChange: (bookType: string) => void;
+  onBookTypeTabChange: (bookType: string) => void;
 }
 
 const theme = {
@@ -20,7 +20,7 @@ const theme = {
   },
 };
 
-const SearchTab: FC<Props> = ({ handleBookTypeTabChange }) => {
+const SearchTab: FC<Props> = ({ onBookTypeTabChange }) => {
   const [tab, setTab] = useState<number>(0);
   const [bookTypes, setBookTypes] = useState<BookInfo[]>([]);
 
@@ -36,7 +36,7 @@ const SearchTab: FC<Props> = ({ handleBookTypeTabChange }) => {
       return;
     }
     setTab(clickedTab);
-    handleBookTypeTabChange(
+    onBookTypeTabChange(
       bookTypes[bookIndex] ? bookTypes[bookIndex].bookType : '',
     );
   };

@@ -11,12 +11,8 @@ import InitializationAppFailureOverlay from './InitializationAppFailureOverlay';
 import usePrepareResources from './usePrepareResources';
 
 const AppSplashScreen: FC = () => {
-  const {
-    initialStartupFailed,
-    internetRequired,
-    internetSuggested,
-    retryHandler,
-  } = usePrepareResources();
+  const { initialStartupFailed, internetRequired, internetSuggested, onRetry } =
+    usePrepareResources();
   const [appIsReady, setAppReady] = useState<boolean | null>(null);
 
   const loadFonts = async () => {
@@ -64,9 +60,9 @@ const AppSplashScreen: FC = () => {
     return (
       <View style={{ flex: 1 }} onLayout={onLayoutRootView}>
         <NoInternetConnectionOverlay
-          retryButtonHandler={() => {
+          onRetryButtonAction={() => {
             setAppReady(false);
-            retryHandler();
+            onRetry();
             setAppReady(true);
           }}
         />

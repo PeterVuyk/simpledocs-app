@@ -14,7 +14,7 @@ const usePrepareResources: () => {
   initialStartupFailed: null | boolean;
   internetRequired: null | boolean;
   internetSuggested: null | boolean;
-  retryHandler: () => void;
+  onRetry: () => void;
 } = () => {
   const [initialStartupFailed, setInitialStartupFailed] = useState<
     boolean | null
@@ -82,7 +82,7 @@ const usePrepareResources: () => {
     await initialize();
   }, []);
 
-  const retryHandler = useCallback(async () => {
+  const handleRetry = useCallback(async () => {
     setInternetRequired(null);
     setInternetSuggested(null);
     setInitialStartupFailed(null);
@@ -108,7 +108,7 @@ const usePrepareResources: () => {
     initialStartupFailed,
     internetRequired,
     internetSuggested,
-    retryHandler,
+    onRetry: handleRetry,
   };
 };
 

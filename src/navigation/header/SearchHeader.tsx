@@ -4,7 +4,6 @@ import { SearchBar } from 'react-native-elements';
 import { useIsFocused, useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import SearchTab from '../../screens/search/SearchTab';
-import { ConfigInfo } from '../../model/ConfigInfo';
 
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: '#fff' },
@@ -60,10 +59,10 @@ const SearchHeader: FC<Props> = ({
             platform={Platform.OS === 'ios' ? 'ios' : 'android'}
             placeholder="Zoek op titel of trefwoord..."
             onCancel={() => (Platform.OS === 'ios' ? navigation.pop() : '')}
-            onChangeText={typedText => handleSearchTextChange(typedText)}
+            onChangeText={handleSearchTextChange}
             value={searchText}
           />
-          <SearchTab handleBookTypeTabChange={handleBookTypeTabChange} />
+          <SearchTab onBookTypeTabChange={handleBookTypeTabChange} />
         </View>
       </View>
       {children}

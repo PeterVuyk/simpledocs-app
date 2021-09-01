@@ -10,10 +10,10 @@ const styles = StyleSheet.create({
 });
 
 interface Props {
-  retryButtonHandler: () => void;
+  onRetryButtonAction: () => void;
 }
 
-const NoInternetConnectionOverlay: FC<Props> = ({ retryButtonHandler }) => {
+const NoInternetConnectionOverlay: FC<Props> = ({ onRetryButtonAction }) => {
   const [buttonDisabled, setButtonDisabled] = useState<boolean>(false);
 
   return (
@@ -31,7 +31,7 @@ const NoInternetConnectionOverlay: FC<Props> = ({ retryButtonHandler }) => {
             title="Probeer opnieuw"
             onPress={() => {
               setButtonDisabled(true);
-              retryButtonHandler();
+              onRetryButtonAction();
               setButtonDisabled(false);
             }}
             buttonStyle={styles.buttonStyle}
