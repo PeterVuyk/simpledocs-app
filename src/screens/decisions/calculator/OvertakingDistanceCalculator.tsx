@@ -15,8 +15,9 @@ const styles = StyleSheet.create({
 
 const OvertakingDistanceCalculator: FC = () => {
   const [ownSpeed, setOwnSpeed] = useState<number | undefined>();
-  const [vehicleInFrontSpeed, setVehicleInFrontSpeed] =
-    useState<number | undefined>();
+  const [vehicleInFrontSpeed, setVehicleInFrontSpeed] = useState<
+    number | undefined
+  >();
 
   const getOwnSpeed = () =>
     ownSpeed === undefined ? '' : ownSpeed?.toString();
@@ -29,10 +30,10 @@ const OvertakingDistanceCalculator: FC = () => {
     vehicleInFrontSpeedVal: number,
   ): string => {
     if (
-      ownSpeedVal < 60 ||
-      ownSpeedVal > 150 ||
-      vehicleInFrontSpeedVal < 50 ||
-      vehicleInFrontSpeedVal > 140
+      ownSpeedVal < 30 ||
+      ownSpeedVal > 160 ||
+      vehicleInFrontSpeedVal < 20 ||
+      vehicleInFrontSpeedVal > 150
     ) {
       return '';
     }
@@ -59,7 +60,7 @@ const OvertakingDistanceCalculator: FC = () => {
         {calculateOvertakingDistance(ownSpeed ?? 0, vehicleInFrontSpeed ?? 0)}
       </Text>
       <TextInput
-        label="Eigen snelheid in KM (60 t/m 150)"
+        label="Eigen snelheid in KM (30 t/m 160)"
         value={getOwnSpeed()}
         keyboardType="numeric"
         mode="outlined"
@@ -75,7 +76,7 @@ const OvertakingDistanceCalculator: FC = () => {
       />
       <TextInput
         style={{ marginTop: 5 }}
-        label="Snelheid voorligger in KM (50 t/m 140)"
+        label="Snelheid voorligger in KM (20 t/m 150)"
         value={getVehicleInFrontSpeed()}
         keyboardType="numeric"
         mode="outlined"

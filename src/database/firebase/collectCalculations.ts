@@ -5,6 +5,7 @@ import { AGGREGATE_CALCULATIONS } from '../../model/Versioning';
 async function getCalculationsInfo(): Promise<CalculationInfo[]> {
   const querySnapshot = await database()
     .collection(AGGREGATE_CALCULATIONS)
+    .where('isDraft', '==', false)
     .get();
   return querySnapshot.docs.map(doc => doc.data() as CalculationInfo);
 }
