@@ -11,7 +11,7 @@ function addCalculationInfo(
   calculationInfo: CalculationInfo,
 ): void {
   sqlTransaction.executeSql(
-    'INSERT INTO calculations (listIndex, calculationType, title, explanation, articleButtonText, calculationImage, htmlFile, iconFile) VALUES (?, ?, ?, ?, ?, ?, ?, ?)',
+    'INSERT INTO calculations (listIndex, calculationType, title, explanation, articleButtonText, calculationImage, content, contentType, iconFile) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)',
     [
       calculationInfo.listIndex,
       calculationInfo.calculationType,
@@ -19,7 +19,8 @@ function addCalculationInfo(
       calculationInfo.explanation,
       calculationInfo.articleButtonText,
       calculationInfo.calculationImage,
-      calculationInfo.htmlFile,
+      calculationInfo.content,
+      calculationInfo.contentType,
       calculationInfo.iconFile,
     ],
   );

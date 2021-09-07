@@ -101,7 +101,7 @@ const DecisionTreeScreen: FC<Props> = ({ route, navigation }) => {
   const navigateToArticle = (step: DecisionTreeStep) => {
     navigation.navigate('DecisionsScreenStack', {
       screen: 'DocumentationScreen',
-      params: { htmlFile: step.htmlFile },
+      params: { content: step.content, contentType: step.contentType },
     });
   };
 
@@ -133,7 +133,7 @@ const DecisionTreeScreen: FC<Props> = ({ route, navigation }) => {
               />
             </View>
           )}
-          {currentStep !== undefined && currentStep.htmlFile && (
+          {currentStep !== undefined && currentStep.content && (
             <View style={[{ bottom: 60 }, styles.buttonContainer]}>
               <Button
                 buttonStyle={[styles.articleButtonsStyle]}

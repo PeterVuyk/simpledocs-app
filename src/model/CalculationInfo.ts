@@ -1,3 +1,5 @@
+import { ContentType } from './ContentType';
+
 export interface CalculationInfo {
   listIndex: number;
   calculationType: string;
@@ -5,6 +7,7 @@ export interface CalculationInfo {
   explanation: string;
   calculationImage: string;
   articleButtonText: string;
-  htmlFile: string;
+  content: string;
+  contentType: ContentType;
   iconFile: string;
 }

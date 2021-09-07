@@ -1,11 +1,16 @@
 import React, { FC, useCallback, useEffect, useState } from 'react';
-import { View } from 'react-native';
+import { ScrollView, View } from 'react-native';
 import { connect } from 'react-redux';
+import Markdown from 'react-native-markdown-display';
 import searching, { SearchText } from '../../../redux/actions/searching';
 import { Article } from '../../../model/Article';
 import articleRepository from '../../../database/repository/articleRepository';
 import HTMLViewer from '../../../components/HTMLViewer';
 import ScrollAwareBottomButton from '../../../components/ScrollAwareBottomButton';
+import {
+  CONTENT_TYPE_HTML,
+  CONTENT_TYPE_MARKDOWN,
+} from '../../../model/ContentType';
 
 interface Props {
   articleChapter: string;
@@ -59,11 +64,21 @@ const ArticleDetailItem: FC<Props> = ({
 
   return (
     <View style={{ flex: 1 }}>
-      <HTMLViewer
-        htmlFile={article?.htmlFile}
-        highlightText={getChapterSearchText()}
-        bookType={bookType}
-      />
+      {article.contentType === CONTENT_TYPE_HTML && (
+        <HTMLViewer
+          htmlFile={article?.content}
+          highlightText={getChapterSearchText()}
+          bookType={bookType}
+        />
+      )}
+      {article.contentType === CONTENT_TYPE_MARKDOWN && (
+        <ScrollView
+          contentInsetAdjustmentBehavior="automatic"
+          style={{ height: '100%' }}
+        >
+          <Markdown>{article?.content}</Markdown>
+        </ScrollView>
+      )}
       {getChapterSearchText() !== '' && (
         <ScrollAwareBottomButton
           title="Verwijder markering"

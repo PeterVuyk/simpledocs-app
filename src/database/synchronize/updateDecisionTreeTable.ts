@@ -11,14 +11,15 @@ function addDecisionTreeStep(
   decisionTreeStep: DecisionTreeStep,
 ): void {
   sqlTransaction.executeSql(
-    'INSERT INTO decisionTree (id, title, label, lineLabel, parentId, htmlFile, iconFile) VALUES (?, ?, ?, ?, ?, ?, ?)',
+    'INSERT INTO decisionTree (id, title, label, lineLabel, parentId, content, contentType, iconFile) VALUES (?, ?, ?, ?, ?, ?, ?, ?)',
     [
       `${decisionTreeStep.id}`,
       decisionTreeStep.title,
       decisionTreeStep.label,
       decisionTreeStep.lineLabel,
       `${decisionTreeStep.parentId}`,
-      decisionTreeStep.htmlFile,
+      decisionTreeStep.content,
+      decisionTreeStep.contentType,
       decisionTreeStep.iconFile,
     ],
   );

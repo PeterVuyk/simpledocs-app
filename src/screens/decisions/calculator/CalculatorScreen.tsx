@@ -51,7 +51,7 @@ const CalculatorScreen: FC<Props> = ({ route }) => {
   const navigateDecisionTree = (info: CalculationInfo) => {
     navigation.navigate('DecisionsScreenStack', {
       screen: 'DocumentationScreen',
-      params: { htmlFile: info.htmlFile },
+      params: { content: info.content, contentType: info.contentType },
     });
   };
 
