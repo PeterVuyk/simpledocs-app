@@ -68,7 +68,7 @@ function initializeInitialTables(): Promise<void> {
           "INSERT OR IGNORE INTO versioning (aggregate, version) VALUES ('decisionTree', 'initial');",
         );
         sqlTransaction.executeSql(
-          "INSERT OR IGNORE INTO versioning (aggregate, version) VALUES ('appConfig', 'initial');",
+          "INSERT OR IGNORE INTO versioning (aggregate, version) VALUES ('configurations', 'initial');",
         );
         sqlTransaction.executeSql(
           "INSERT OR IGNORE INTO versioning (aggregate, version) VALUES ('calculations', 'initial');",

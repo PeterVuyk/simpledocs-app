@@ -4,7 +4,7 @@ import logger from '../../helper/logger';
 
 async function getConfig(): Promise<void | ConfigInfo> {
   return database()
-    .collection('config')
+    .collection('configurations')
     .doc('appConfig')
     .get()
     .then(value => value.data() as ConfigInfo)

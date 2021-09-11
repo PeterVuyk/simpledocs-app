@@ -49,7 +49,7 @@ const highlightSearchWords = (
       result = `${text.substr(
         0,
         index,
-      )}<mark>${searchSubstring}</mark>${result.substr(
+      )}<mark style="background-color: yellow; color: black">${searchSubstring}</mark>${result.substr(
         index + searchText.length,
         result.length,
       )}`;

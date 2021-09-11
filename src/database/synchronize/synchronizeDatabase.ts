@@ -6,7 +6,7 @@ import logger from '../../helper/logger';
 import updateCalculationsTable from './updateCalculationsTable';
 import collectCalculations from '../firebase/collectCalculations';
 import {
-  AGGREGATE_APP_CONFIG,
+  AGGREGATE_CONFIGURATIONS,
   AGGREGATE_CALCULATIONS,
   AGGREGATE_DECISION_TREE,
   Versioning,
@@ -131,7 +131,8 @@ const updateAppConfigurations = async (versions: AggregateVersions[]) => {
   const aggregateVersion = versions.find(version => version.appConfig);
   if (
     aggregateVersion === undefined ||
-    getVersionFromAggregate(AGGREGATE_APP_CONFIG) === aggregateVersion.appConfig
+    getVersionFromAggregate(AGGREGATE_CONFIGURATIONS) ===
+      aggregateVersion.appConfig
   ) {
     return;
   }
@@ -148,7 +149,7 @@ const updateAppConfigurations = async (versions: AggregateVersions[]) => {
     .then(() =>
       versioningRepository
         .updateBookTypeVersioning(
-          AGGREGATE_APP_CONFIG,
+          AGGREGATE_CONFIGURATIONS,
           aggregateVersion.appConfig,
           appConfig,
         )
