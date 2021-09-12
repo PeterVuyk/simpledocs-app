@@ -2,10 +2,10 @@ import React, { FC, useCallback } from 'react';
 import { FlatList, StyleSheet, View } from 'react-native';
 import { DrawerNavigationProp } from '@react-navigation/drawer/lib/typescript/src/types';
 import ListItem from '../../../components/ListItem';
-import navigationHelper from '../../../helper/navigationHelper';
 import { ArticleChapter } from '../../../model/ArticleChapter';
 import configHelper from '../../../helper/configHelper';
 import { FIRST_BOOK_TAB } from '../../../model/BookTab';
+import useContentNavigator from '../../../components/hooks/useContentNavigator';
 
 const styles = StyleSheet.create({
   container: {
@@ -31,6 +31,7 @@ const ArticlesList: FC<Props> = ({
   articleChapters,
   bookType,
 }) => {
+  const { navigateToChapter } = useContentNavigator();
   const navigateArticleList = useCallback(
     async (chapters: string[]) => {
       if ((await configHelper.getTabByBookType(bookType)) === FIRST_BOOK_TAB) {
@@ -50,13 +51,12 @@ const ArticlesList: FC<Props> = ({
 
   const navigateToDetailsScreen = useCallback(
     (articleChapter: ArticleChapter) => {
-      navigationHelper.navigateToChapter(
+      navigateToChapter(
         { articleChapter: articleChapter.chapter, bookType },
         bookType,
-        navigation,
       );
     },
-    [bookType, navigation],
+    [bookType, navigateToChapter],
   );
 
   const handleItemClick = useCallback(

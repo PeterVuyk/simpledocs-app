@@ -11,8 +11,8 @@ import SVGIcon from '../../components/SVGIcon';
 import HighlightWords from '../../components/HighlightWords';
 import SearchHeader from '../../navigation/header/SearchHeader';
 import KeyboardAwareView from '../../components/keyboard/KeyboardAwareView';
-import navigationHelper from '../../helper/navigationHelper';
 import { ConfigInfo } from '../../model/ConfigInfo';
+import useContentNavigator from '../../components/hooks/useContentNavigator';
 
 const styles = StyleSheet.create({
   findPlaceholderImage: {
@@ -44,6 +44,7 @@ const SearchScreen: FC<Props> = ({ setChapterSearchText, route }) => {
   );
   const [articles, setArticles] = useState<Article[] | null>(null);
   const [searchText, setSearchText] = useState<string>('');
+  const { navigateToChapter } = useContentNavigator();
 
   useEffect(() => {
     if (searchText === '') {
@@ -60,8 +61,6 @@ const SearchScreen: FC<Props> = ({ setChapterSearchText, route }) => {
     setArticles(null);
     setBookType(type);
   };
-
-  const navigation = useNavigation<StackNavigationProp<any>>();
 
   const getShortenedBody = (fullBody: string): string => {
     const firstOccurrence: number = fullBody
@@ -86,14 +85,13 @@ const SearchScreen: FC<Props> = ({ setChapterSearchText, route }) => {
       searchText,
       bookType,
     });
-    navigationHelper.navigateToChapter(
+    navigateToChapter(
       {
         articleChapter: item.chapter,
         bookType,
         searchText: { chapter: item.chapter, searchText },
       },
       bookType,
-      navigation,
     );
   };
 

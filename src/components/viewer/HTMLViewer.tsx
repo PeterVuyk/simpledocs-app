@@ -2,11 +2,10 @@ import React, { createRef, FC, useEffect, useState } from 'react';
 import WebView, { WebViewMessageEvent } from 'react-native-webview';
 import { ShouldStartLoadRequest } from 'react-native-webview/lib/WebViewTypes';
 import { Linking, Platform, View } from 'react-native';
-import { useIsFocused, useNavigation } from '@react-navigation/native';
-import { StackNavigationProp } from '@react-navigation/stack';
+import { useIsFocused } from '@react-navigation/native';
 import highlightWordsInHTMLFile from '../../helper/highlightWordsInHTMLFile';
 import ScrollViewToggleBottomBar from '../ScrollViewToggleBottomBar';
-import navigationHelper, { BLANK_WEBPAGE } from '../../helper/navigationHelper';
+import useContentNavigator from '../hooks/useContentNavigator';
 
 interface Props {
   htmlFile: string;
@@ -18,8 +17,8 @@ const HTMLViewer: FC<Props> = ({ htmlFile, highlightText, bookType }) => {
   const [webViewHeight, setWebViewHeight] = useState<number>(0);
   const [loading, setLoading] = useState<boolean>(false);
   const webview = createRef<WebView>();
-  const navigation = useNavigation<StackNavigationProp<any>>();
   const isFocused = useIsFocused();
+  const { blankWebpage, navigateFromHttpsUrlToChapter } = useContentNavigator();
 
   useEffect(() => {
     if (loading && !isFocused) {
@@ -67,13 +66,9 @@ const HTMLViewer: FC<Props> = ({ htmlFile, highlightText, bookType }) => {
     }
 
     webview?.current?.stopLoading();
-    if (request.url.search(BLANK_WEBPAGE) !== -1) {
+    if (request.url.search(blankWebpage) !== -1) {
       setLoading(true);
-      navigationHelper.navigateFromHttpsUrlToChapter(
-        request.url,
-        bookType,
-        navigation,
-      );
+      navigateFromHttpsUrlToChapter(request.url, bookType);
       return false;
     }
 
