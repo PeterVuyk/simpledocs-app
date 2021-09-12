@@ -5,7 +5,7 @@ import scrolling from '../redux/actions/scrolling';
 
 interface Props {
   children: ReactNode;
-  pageHeight: number;
+  pageHeight?: number;
   setScrollDirection: (scrollDirection: string) => void;
 }
 
@@ -37,6 +37,13 @@ const ScrollViewToggleBottomBar: FC<Props> = ({
     }
   };
 
+  const getContentContainerStyle = pageHeight
+    ? {
+        flexGrow: 1,
+        height: pageHeight,
+      }
+    : {};
+
   return (
     <ScrollView
       style={{ backgroundColor: '#fff' }}
@@ -45,10 +52,7 @@ const ScrollViewToggleBottomBar: FC<Props> = ({
         handleScroll(event.nativeEvent.contentOffset.y);
       }}
       scrollEventThrottle={1}
-      contentContainerStyle={{
-        flexGrow: 1,
-        height: pageHeight,
-      }}
+      contentContainerStyle={getContentContainerStyle}
     >
       {children}
     </ScrollView>

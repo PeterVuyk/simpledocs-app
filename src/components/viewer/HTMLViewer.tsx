@@ -4,9 +4,9 @@ import { ShouldStartLoadRequest } from 'react-native-webview/lib/WebViewTypes';
 import { Linking, Platform, View } from 'react-native';
 import { useIsFocused, useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
-import highlightWordsInHTMLFile from '../helper/highlightWordsInHTMLFile';
-import ScrollViewToggleBottomBar from './ScrollViewToggleBottomBar';
-import navigationHelper, { BLANK_WEBPAGE } from '../helper/navigationHelper';
+import highlightWordsInHTMLFile from '../../helper/highlightWordsInHTMLFile';
+import ScrollViewToggleBottomBar from '../ScrollViewToggleBottomBar';
+import navigationHelper, { BLANK_WEBPAGE } from '../../helper/navigationHelper';
 
 interface Props {
   htmlFile: string;

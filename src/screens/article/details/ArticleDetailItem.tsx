@@ -1,16 +1,16 @@
 import React, { FC, useCallback, useEffect, useState } from 'react';
-import { ScrollView, View } from 'react-native';
+import { View } from 'react-native';
 import { connect } from 'react-redux';
-import Markdown from 'react-native-markdown-display';
 import searching, { SearchText } from '../../../redux/actions/searching';
 import { Article } from '../../../model/Article';
 import articleRepository from '../../../database/repository/articleRepository';
-import HTMLViewer from '../../../components/HTMLViewer';
+import HTMLViewer from '../../../components/viewer/HTMLViewer';
 import ScrollAwareBottomButton from '../../../components/ScrollAwareBottomButton';
 import {
   CONTENT_TYPE_HTML,
   CONTENT_TYPE_MARKDOWN,
 } from '../../../model/ContentType';
+import MarkdownViewer from '../../../components/viewer/MarkdownViewer';
 
 interface Props {
   articleChapter: string;
@@ -72,12 +72,7 @@ const ArticleDetailItem: FC<Props> = ({
         />
       )}
       {article.contentType === CONTENT_TYPE_MARKDOWN && (
-        <ScrollView
-          contentInsetAdjustmentBehavior="automatic"
-          style={{ height: '100%' }}
-        >
-          <Markdown>{article?.content}</Markdown>
-        </ScrollView>
+        <MarkdownViewer markdownFile={article.content} bookType={bookType} />
       )}
       {getChapterSearchText() !== '' && (
         <ScrollAwareBottomButton
