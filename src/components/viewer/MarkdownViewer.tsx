@@ -1,10 +1,23 @@
 import React, { FC, ReactNode, useEffect, useState } from 'react';
-import { Linking, View, Text } from 'react-native';
+import { Linking, View, Text, StyleSheet } from 'react-native';
 import { useIsFocused } from '@react-navigation/native';
 import Markdown from 'react-native-markdown-display';
 import ScrollViewToggleBottomBar from '../ScrollViewToggleBottomBar';
 import useContentNavigator from '../hooks/useContentNavigator';
 import highlightWordsInMarkdownFile from '../../helper/highlightWordsInMarkdownFile';
+
+const styles = StyleSheet.create({
+  viewContainer: {
+    flex: 1,
+    paddingRight: 10,
+    paddingLeft: 10,
+    backgroundColor: 'white',
+  },
+  highlightBlock: {
+    backgroundColor: 'yellow',
+    color: 'black',
+  },
+});
 
 interface Props {
   markdownFile: string;
@@ -42,9 +55,12 @@ const MarkdownViewer: FC<Props> = ({
 
   const getDocumentation = (): string => {
     if (highlightText === undefined || highlightText === '') {
-      return markdownFile;
+      return `#\n${markdownFile}#\n#\n#\n#`;
     }
-    return highlightWordsInMarkdownFile(markdownFile, highlightText ?? '');
+    return `#\n${highlightWordsInMarkdownFile(
+      markdownFile,
+      highlightText ?? '',
+    )}#\n#\n#\n#`;
   };
 
   /**
@@ -69,13 +85,7 @@ const MarkdownViewer: FC<Props> = ({
         );
       }
       return (
-        <Text
-          key={node.key}
-          style={[
-            inheritedStyles,
-            { backgroundColor: 'yellow', color: 'black' },
-          ]}
-        >
+        <Text key={node.key} style={[inheritedStyles, styles.highlightBlock]}>
           {node.content}
         </Text>
       );
@@ -83,7 +93,7 @@ const MarkdownViewer: FC<Props> = ({
   };
 
   return (
-    <View style={{ flex: 1 }}>
+    <View style={styles.viewContainer}>
       {!loading && (
         <ScrollViewToggleBottomBar>
           <Markdown onLinkPress={onLinkPress} rules={rules}>

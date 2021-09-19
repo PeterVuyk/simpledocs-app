@@ -1,8 +1,7 @@
 import React, { FC, useEffect, useState } from 'react';
 import { FlatList, Image, StyleSheet, View, Text } from 'react-native';
 import { ListItem } from 'react-native-elements';
-import { RouteProp, useNavigation } from '@react-navigation/native';
-import { StackNavigationProp } from '@react-navigation/stack';
+import { RouteProp } from '@react-navigation/native';
 import { connect } from 'react-redux';
 import articleRepository from '../../database/repository/articleRepository';
 import { Article } from '../../model/Article';
