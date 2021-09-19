@@ -72,7 +72,11 @@ const ArticleDetailItem: FC<Props> = ({
         />
       )}
       {article.contentType === CONTENT_TYPE_MARKDOWN && (
-        <MarkdownViewer markdownFile={article.content} bookType={bookType} />
+        <MarkdownViewer
+          markdownFile={article.content}
+          bookType={bookType}
+          highlightText={getChapterSearchText()}
+        />
       )}
       {getChapterSearchText() !== '' && (
         <ScrollAwareBottomButton

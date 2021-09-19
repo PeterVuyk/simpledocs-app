@@ -1,9 +1,10 @@
-import React, { FC, useEffect, useState } from 'react';
-import { Linking, View } from 'react-native';
+import React, { FC, ReactNode, useEffect, useState } from 'react';
+import { Linking, View, Text } from 'react-native';
 import { useIsFocused } from '@react-navigation/native';
 import Markdown from 'react-native-markdown-display';
 import ScrollViewToggleBottomBar from '../ScrollViewToggleBottomBar';
 import useContentNavigator from '../hooks/useContentNavigator';
+import highlightWordsInMarkdownFile from '../../helper/highlightWordsInMarkdownFile';
 
 interface Props {
   markdownFile: string;
@@ -39,11 +40,55 @@ const MarkdownViewer: FC<Props> = ({
     return false;
   };
 
+  const getDocumentation = (): string => {
+    if (highlightText === undefined || highlightText === '') {
+      return markdownFile;
+    }
+    return highlightWordsInMarkdownFile(markdownFile, highlightText ?? '');
+  };
+
+  /**
+   * Highlighting parts of text with markdown is not supported (yet) by the markdown plugin. Looked for alternatives but for markdown
+   * this library is for now the way to go. For the search we need to highlight words search. Since markdown doesn't support it
+   * and the user don't need inline code for the documentation, I added a workaround to use the inline code for marking search text.
+   * In the future we need to check if highlighting is supported or other possibly better tools are available.
+   */
+  const rules = {
+    code_inline: (
+      node: any,
+      children: ReactNode,
+      parent: any,
+      styles: any,
+      inheritedStyles = {},
+    ) => {
+      if (node.markup === '```') {
+        return (
+          <Text key={node.key} style={[inheritedStyles, styles.code_inline]}>
+            {node.content}
+          </Text>
+        );
+      }
+      return (
+        <Text
+          key={node.key}
+          style={[
+            inheritedStyles,
+            { backgroundColor: 'yellow', color: 'black' },
+          ]}
+        >
+          {node.content}
+        </Text>
+      );
+    },
+  };
+
   return (
     <View style={{ flex: 1 }}>
       {!loading && (
         <ScrollViewToggleBottomBar>
-          <Markdown onLinkPress={onLinkPress}>{markdownFile}</Markdown>
+          <Markdown onLinkPress={onLinkPress} rules={rules}>
+            {getDocumentation()}
+          </Markdown>
         </ScrollViewToggleBottomBar>
       )}
     </View>

@@ -22,7 +22,6 @@ export default class SQLiteClient {
       if (
         migrationChangelog.find(value => value.filename === migration.getId())
       ) {
-        // eslint-disable-next-line no-continue
         continue;
       }
       try {
