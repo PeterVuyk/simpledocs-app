@@ -13,10 +13,6 @@ const styles = StyleSheet.create({
     paddingLeft: 10,
     backgroundColor: 'white',
   },
-  highlightBlock: {
-    backgroundColor: 'yellow',
-    color: 'black',
-  },
 });
 
 interface Props {
@@ -85,7 +81,13 @@ const MarkdownViewer: FC<Props> = ({
         );
       }
       return (
-        <Text key={node.key} style={[inheritedStyles, styles.highlightBlock]}>
+        <Text
+          key={node.key}
+          style={[
+            inheritedStyles,
+            { backgroundColor: 'yellow', color: 'black' },
+          ]}
+        >
           {node.content}
         </Text>
       );

@@ -1,3 +1,10 @@
-import Migration20210815InsertScrollTipNotification from './Migration20210815InsertScrollTipNotification';
+import Migration20210815InitializeTablesWithInitialData from './Migration20210815InitializeTablesWithInitialData';
+import Migration20210920InsertScrollTipNotification from './Migration20210920InsertScrollTipNotification';
+import { Migration } from './Migration';
 
-export default [new Migration20210815InsertScrollTipNotification()];
+const migrations: Migration[] = [
+  new Migration20210920InsertScrollTipNotification(),
+  new Migration20210815InitializeTablesWithInitialData(),
+];
+
+export default migrations;

@@ -1,5 +1,4 @@
 import versioningRepository from '../repository/versioningRepository';
-import collectVersions from '../firebase/collectVersions';
 import updateDecisionTreeTable from './updateDecisionTreeTable';
 import collectDecisionTreeSteps from '../firebase/collectDecisionTreeSteps';
 import logger from '../../helper/logger';
@@ -12,17 +11,16 @@ import {
   Versioning,
 } from '../../model/Versioning';
 import collectArticlesByType from '../firebase/collectArticlesByType';
-import updateArticleTable from './updateArticleTable';
+import updateArticleTable from '../synchronize/updateArticleTable';
 import { AggregateVersions } from '../../model/AggregateVersions';
 import configHelper from '../../helper/configHelper';
 import collectConfig from '../firebase/collectConfig';
 import appConfigDAO from '../../fileSystem/appConfigDAO';
 
-let aggregateVersions: Versioning[] | undefined;
-const setAggregateVersionsCallback: any = (callback: Versioning[]) => {
-  aggregateVersions = callback;
-};
-const getVersionFromAggregate = (aggregate: string): string | undefined => {
+const getVersionFromAggregate = (
+  aggregateVersions: Versioning[],
+  aggregate: string,
+): string | undefined => {
   return aggregateVersions?.find(value => value.aggregate === aggregate)
     ?.version;
 };
@@ -30,8 +28,11 @@ const getVersionFromAggregate = (aggregate: string): string | undefined => {
 const updateArticleIfNewVersion = async (
   bookType: string,
   versions: AggregateVersions,
+  aggregateVersions: Versioning[],
 ) => {
-  if (getVersionFromAggregate(bookType) !== versions[bookType]) {
+  if (
+    getVersionFromAggregate(aggregateVersions, bookType) !== versions[bookType]
+  ) {
     await collectArticlesByType
       .getArticles(bookType)
       .then(article =>
@@ -50,7 +51,10 @@ const updateArticleIfNewVersion = async (
   }
 };
 
-const updateBooksIfNewVersion = async (versions: AggregateVersions[]) => {
+const updateBooksIfNewVersion = async (
+  versions: AggregateVersions[],
+  aggregateVersions: Versioning[],
+) => {
   // eslint-disable-next-line no-restricted-syntax
   for (const bookInfo of await configHelper.getBookTypes()) {
     const aggregateVersion = versions.find(
@@ -58,18 +62,23 @@ const updateBooksIfNewVersion = async (versions: AggregateVersions[]) => {
     );
     if (aggregateVersion !== undefined) {
       // eslint-disable-next-line no-await-in-loop
-      await updateArticleIfNewVersion(bookInfo.bookType, aggregateVersion);
+      await updateArticleIfNewVersion(
+        bookInfo.bookType,
+        aggregateVersion,
+        aggregateVersions,
+      );
     }
   }
 };
 
 const updateDecisionTreeIfNewVersion = async (
   versions: AggregateVersions[],
+  aggregateVersions: Versioning[],
 ) => {
   const aggregateVersion = versions.find(version => version.decisionTree);
   if (
     aggregateVersion !== undefined &&
-    getVersionFromAggregate(AGGREGATE_DECISION_TREE) !==
+    getVersionFromAggregate(aggregateVersions, AGGREGATE_DECISION_TREE) !==
       aggregateVersion.decisionTree
   ) {
     await collectDecisionTreeSteps
@@ -85,11 +94,12 @@ const updateDecisionTreeIfNewVersion = async (
 
 const updateCalculationsIfNewVersion = async (
   versions: AggregateVersions[],
+  aggregateVersions: Versioning[],
 ) => {
   const aggregateVersion = versions.find(version => version.calculations);
   if (
     aggregateVersion !== undefined &&
-    getVersionFromAggregate(AGGREGATE_CALCULATIONS) !==
+    getVersionFromAggregate(aggregateVersions, AGGREGATE_CALCULATIONS) !==
       aggregateVersion.calculations
   ) {
     await collectCalculations
@@ -127,11 +137,14 @@ const cleanupRemovedBookTypesFromVersioningTable = async (
     );
 };
 
-const updateAppConfigurations = async (versions: AggregateVersions[]) => {
+const updateAppConfigurations = async (
+  versions: AggregateVersions[],
+  aggregateVersions: Versioning[],
+) => {
   const aggregateVersion = versions.find(version => version.appConfig);
   if (
     aggregateVersion === undefined ||
-    getVersionFromAggregate(AGGREGATE_CONFIGURATIONS) ===
+    getVersionFromAggregate(aggregateVersions, AGGREGATE_CONFIGURATIONS) ===
       aggregateVersion.appConfig
   ) {
     return;
@@ -168,21 +181,12 @@ const updateAppConfigurations = async (versions: AggregateVersions[]) => {
     );
 };
 
-const synchronizeDatabase = async (): Promise<void> => {
-  const firebaseVersions = await collectVersions.getVersioning();
-  await versioningRepository.getAllVersions(setAggregateVersionsCallback);
-  if (firebaseVersions === null) {
-    return;
-  }
-
-  await updateAppConfigurations(firebaseVersions)
-    .then(() => updateDecisionTreeIfNewVersion(firebaseVersions))
-    .then(() => updateBooksIfNewVersion(firebaseVersions))
-    .then(() => updateCalculationsIfNewVersion(firebaseVersions))
-    .catch(reason =>
-      logger.error('prepareDatabaseResources failed', reason.message),
-    );
-  cleanupRemovedBookTypesFromVersioningTable(firebaseVersions);
+const synchronizeDatabase = {
+  updateAppConfigurations,
+  updateDecisionTreeIfNewVersion,
+  updateBooksIfNewVersion,
+  updateCalculationsIfNewVersion,
+  cleanupRemovedBookTypesFromVersioningTable,
 };
 
 export default synchronizeDatabase;

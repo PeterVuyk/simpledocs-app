@@ -23,6 +23,8 @@
     "import/no-unresolved": 0,
     "no-plusplus": 0,
     "no-continue": 0,
+    "no-await-in-loop": 0,
+    "no-restricted-syntax": 0,
     "@typescript-eslint/no-var-requires": 0,
     "@typescript-eslint/ban-ts-comment": 0,
     "react/no-children-prop": 0,

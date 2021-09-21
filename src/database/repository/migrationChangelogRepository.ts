@@ -20,13 +20,7 @@ function getMigrationChangelog(
           },
         );
       },
-      error => {
-        logger.error(
-          'migrationChangelogRepository.getMigrationChangelog failed',
-          error.message,
-        );
-        reject();
-      },
+      reject,
       resolve,
     );
   });

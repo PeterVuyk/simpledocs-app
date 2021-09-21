@@ -11,7 +11,7 @@ function addDecisionTreeStep(
   decisionTreeStep: DecisionTreeStep,
 ): void {
   sqlTransaction.executeSql(
-    'INSERT INTO decisionTree (id, title, label, lineLabel, parentId, content, contentType, iconFile) VALUES (?, ?, ?, ?, ?, ?, ?, ?)',
+    'INSERT INTO decisionTrees (id, title, label, lineLabel, parentId, content, contentType, iconFile) VALUES (?, ?, ?, ?, ?, ?, ?, ?)',
     [
       `${decisionTreeStep.id}`,
       decisionTreeStep.title,
@@ -33,7 +33,7 @@ function addDecisionTreeSteps(
 }
 
 function removeAllDecisionTree(sqlTransaction: SQLite.SQLTransaction): void {
-  sqlTransaction.executeSql(`DELETE FROM decisionTree`, []);
+  sqlTransaction.executeSql(`DELETE FROM decisionTrees`, []);
 }
 
 function updateDecisionTreeSteps(

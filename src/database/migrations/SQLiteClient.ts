@@ -11,7 +11,7 @@ export default class SQLiteClient {
   private readonly migrations: Migration[];
 
   constructor() {
-    this.migrations = master;
+    this.migrations = master.sort((a, b) => a.getId().localeCompare(b.getId()));
   }
 
   public async runMigrations(

@@ -1,14 +1,8 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import appConfigDAO from '../../fileSystem/appConfigDAO';
 import internetConnectivity from '../../helper/internetConnectivity';
-import initializeApp from '../../database/synchronize/initializeApp';
-import logger from '../../helper/logger';
-import synchronizeDatabase from '../../database/synchronize/synchronizeDatabase';
-import { Versioning } from '../../model/Versioning';
-import versioningRepository from '../../database/repository/versioningRepository';
-import migrationChangelogRepository from '../../database/repository/migrationChangelogRepository';
-import { MigrationChangelog } from '../../model/migrationChangelog';
-import SQLiteClient from '../../database/migrations/SQLiteClient';
+import useUpdateAggregates from '../../database/synchronize/useUpdateAggregates';
+import useInitializeDatabase from '../../database/synchronize/useInitializeDatabase';
 
 const usePrepareResources: () => {
   initialStartupFailed: null | boolean;
@@ -25,10 +19,11 @@ const usePrepareResources: () => {
   const [internetSuggested, setInternetSuggested] = useState<boolean | null>(
     null,
   );
-  const [versions, setVersions] = useState<Versioning[] | null>(null);
-  const [migrationChangelog, setMigrationChangelog] = useState<
-    MigrationChangelog[] | null
-  >(null);
+  const { initializeDatabase, initializationDatabaseSuccessful } =
+    useInitializeDatabase();
+  const { databaseVersions, updateAggregates } = useUpdateAggregates(
+    initializationDatabaseSuccessful ?? false,
+  );
 
   const isFirstStartup = async (): Promise<boolean> => {
     return !(await appConfigDAO.appConfigExistsInFileStorage());
@@ -39,23 +34,15 @@ const usePrepareResources: () => {
     return connection;
   };
 
-  const initializeApplication = async (): Promise<void> => {
-    await initializeApp.initialize().catch(reason => {
-      logger.error('Failed initializing app by startup', reason);
-      setInitialStartupFailed(true);
-      throw reason;
-    });
-  };
-
   useEffect(() => {
     const MINIMUM_NUMBER_OF_VERSIONS = 5;
-    if (versions !== null) {
+    if (databaseVersions !== null) {
       setInitialStartupFailed(
-        versions.length <= MINIMUM_NUMBER_OF_VERSIONS ||
-          versions.some(version => version.version === 'initial'),
+        databaseVersions.length <= MINIMUM_NUMBER_OF_VERSIONS ||
+          databaseVersions.some(version => version.version === 'initial'),
       );
     }
-  }, [versions]);
+  }, [databaseVersions]);
 
   const init = useCallback(async () => {
     async function initialize() {
@@ -73,32 +60,26 @@ const usePrepareResources: () => {
       }
       setInternetSuggested(false);
 
-      initializeApplication().then(() =>
-        migrationChangelogRepository.getMigrationChangelog(
-          setMigrationChangelog,
-        ),
-      );
+      await initializeDatabase();
     }
     await initialize();
-  }, []);
+  }, [initializeDatabase]);
 
   const handleRetry = useCallback(async () => {
     setInternetRequired(null);
     setInternetSuggested(null);
     setInitialStartupFailed(null);
-    setMigrationChangelog(null);
     await init();
   }, [init]);
 
   useEffect(() => {
-    if (migrationChangelog === null) {
-      return;
+    if (initializationDatabaseSuccessful === false) {
+      setInitialStartupFailed(true);
     }
-    new SQLiteClient()
-      .runMigrations(migrationChangelog)
-      .then(synchronizeDatabase)
-      .then(() => versioningRepository.getAllVersions(setVersions));
-  }, [migrationChangelog]);
+    if (initializationDatabaseSuccessful === true) {
+      updateAggregates().then(() => setInitialStartupFailed(false));
+    }
+  }, [initializationDatabaseSuccessful, updateAggregates]);
 
   useEffect(() => {
     init();

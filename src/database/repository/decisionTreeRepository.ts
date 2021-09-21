@@ -12,7 +12,7 @@ function getDecisionTreeByTitle(
   db.transaction(
     sqlTransaction => {
       sqlTransaction.executeSql(
-        `SELECT * FROM decisionTree WHERE title = ? ORDER BY id ASC;`,
+        `SELECT * FROM decisionTrees WHERE title = ? ORDER BY id ASC;`,
         [title],
         // @ts-ignore
         (_, { rows: { _array } }) => {
@@ -34,7 +34,7 @@ function getDecisionTrees(
   db.transaction(
     sqlTransaction => {
       sqlTransaction.executeSql(
-        `SELECT title, iconFile FROM decisionTree WHERE iconFile IS NOT NULL;`,
+        `SELECT title, iconFile FROM decisionTrees WHERE iconFile IS NOT NULL;`,
         [],
         // @ts-ignore
         (_, { rows: { _array } }) => {

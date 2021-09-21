@@ -1,11 +1,11 @@
 import { SQLTransaction } from 'expo-sqlite';
 import { Migration } from './Migration';
 
-export default class Migration20210815InsertScrollTipNotification
+export default class Migration20210920InsertScrollTipNotification
   implements Migration
 {
   public getId(): string {
-    return 'Migration20210815InsertScrollTipNotification';
+    return 'Migration20210920InsertScrollTipNotification';
   }
 
   public up(sqlTransaction: SQLTransaction): void {
