@@ -145,7 +145,7 @@ const updateAppConfigurations = async (
   if (
     aggregateVersion === undefined ||
     getVersionFromAggregate(aggregateVersions, AGGREGATE_CONFIGURATIONS) ===
-      aggregateVersion.appConfig
+      aggregateVersion.configurations
   ) {
     return;
   }
@@ -158,7 +158,7 @@ const updateAppConfigurations = async (
   }
 
   await appConfigDAO
-    .saveAppConfigToFileStorage(appConfig)
+    .storeAppConfiguration(appConfig)
     .then(() =>
       versioningRepository
         .updateBookTypeVersioning(

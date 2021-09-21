@@ -26,7 +26,7 @@ const usePrepareResources: () => {
   );
 
   const isFirstStartup = async (): Promise<boolean> => {
-    return !(await appConfigDAO.appConfigExistsInFileStorage());
+    return !(await appConfigDAO.getAppConfig());
   };
 
   const hasInternetConnection = async (): Promise<boolean> => {

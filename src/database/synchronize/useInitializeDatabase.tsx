@@ -55,7 +55,7 @@ function useInitializeDatabase() {
               'Failed to collect ConfigInfo, initialization for migration failed',
             );
           }
-          await appConfigDAO.saveAppConfigToFileStorage(appConfig);
+          await appConfigDAO.storeAppConfiguration(appConfig);
           return appConfig;
         })
         // Then we get all the bookTypes from the configuration and add it as aggregate versions to the database

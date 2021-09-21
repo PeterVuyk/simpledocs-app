@@ -1,5 +1,4 @@
 import { StackNavigationProp } from '@react-navigation/stack';
-import { DrawerNavigationProp } from '@react-navigation/drawer/lib/typescript/src/types';
 import { useNavigation } from '@react-navigation/native';
 import configHelper from '../../helper/configHelper';
 import { FIRST_BOOK_TAB, SECOND_BOOK_TAB } from '../../model/BookTab';

@@ -1,47 +1,35 @@
-import * as FileSystem from 'expo-file-system';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { ConfigInfo } from '../model/ConfigInfo';
+import logger from '../helper/logger';
 
 let config: ConfigInfo | undefined;
 
-const configDir = `${FileSystem.documentDirectory}/`;
-
-export async function saveConfiguration(
-  configFile: string,
-  configFilename: string,
-): Promise<void> {
-  await FileSystem.writeAsStringAsync(configDir + configFilename, configFile);
-}
-
-export async function getConfiguration(configFile: string): Promise<string> {
-  return FileSystem.readAsStringAsync(configDir + configFile, {
-    encoding: FileSystem.EncodingType.UTF8,
-  });
-}
-
-const appConfigExistsInFileStorage = async (): Promise<boolean> => {
-  const info = await FileSystem.getInfoAsync(`${configDir}appConfig.json`);
-  return info.exists;
+const storeAppConfiguration = async (appConfig: ConfigInfo) => {
+  const jsonValue = JSON.stringify(appConfig);
+  config = appConfig;
+  await AsyncStorage.setItem('appConfig.json', jsonValue).catch(reason =>
+    logger.error('Failed to store the appConfig to the fileStorage', reason),
+  );
 };
 
-const getAppConfigFromFileStorage = async (): Promise<ConfigInfo> => {
-  return JSON.parse(await getConfiguration('appConfig.json')) as ConfigInfo;
-};
-
-const saveAppConfigToFileStorage = (configInfo: ConfigInfo) => {
-  return saveConfiguration(JSON.stringify(configInfo), 'appConfig.json');
-};
-
-const getAppConfig = async (): Promise<ConfigInfo> => {
-  if (config === undefined) {
-    config = await getAppConfigFromFileStorage();
+const getAppConfig = async () => {
+  if (config !== undefined) {
+    return config;
   }
+  await AsyncStorage.getItem('appConfig.json')
+    .then(jsonValue => (jsonValue != null ? JSON.parse(jsonValue) : null))
+    .then(appConfig => {
+      config = appConfig;
+    })
+    .catch(reason =>
+      logger.error('Failed to get appConfig from storage', reason),
+    );
   return config;
 };
 
 const appConfigDAO = {
   getAppConfig,
-  saveAppConfigToFileStorage,
-  appConfigExistsInFileStorage,
+  storeAppConfiguration,
 };
 
 export default appConfigDAO;

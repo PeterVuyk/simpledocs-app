@@ -4,13 +4,8 @@ import { connect } from 'react-redux';
 import searching, { SearchText } from '../../../redux/actions/searching';
 import { Article } from '../../../model/Article';
 import articleRepository from '../../../database/repository/articleRepository';
-import HTMLViewer from '../../../components/viewer/HTMLViewer';
 import ScrollAwareBottomButton from '../../../components/ScrollAwareBottomButton';
-import {
-  CONTENT_TYPE_HTML,
-  CONTENT_TYPE_MARKDOWN,
-} from '../../../model/ContentType';
-import MarkdownViewer from '../../../components/viewer/MarkdownViewer';
+import ContentViewer from '../../../components/viewer/ContentViewer';
 
 interface Props {
   articleChapter: string;
@@ -64,20 +59,12 @@ const ArticleDetailItem: FC<Props> = ({
 
   return (
     <View style={{ flex: 1 }}>
-      {article.contentType === CONTENT_TYPE_HTML && (
-        <HTMLViewer
-          htmlFile={article?.content}
-          highlightText={getChapterSearchText()}
-          bookType={bookType}
-        />
-      )}
-      {article.contentType === CONTENT_TYPE_MARKDOWN && (
-        <MarkdownViewer
-          markdownFile={article.content}
-          bookType={bookType}
-          highlightText={getChapterSearchText()}
-        />
-      )}
+      <ContentViewer
+        content={article.content}
+        contentType={article.contentType}
+        bookType={bookType}
+        highlightText={getChapterSearchText()}
+      />
       {getChapterSearchText() !== '' && (
         <ScrollAwareBottomButton
           title="Verwijder markering"

@@ -24,7 +24,7 @@ interface Props {
 const TabNavigation: FC<Props> = ({ navigation, setScrollDirection }) => {
   const [configInfo, setConfigInfo] = useState<ConfigInfo | null>(null);
   useEffect(() => {
-    appConfigDAO.getAppConfig().then(value => setConfigInfo(value));
+    appConfigDAO.getAppConfig().then(value => setConfigInfo(value!));
   }, []);
   const [progress, setProgress] = useState(new Animated.Value(0));
   const scale = interpolateNode(progress, {
