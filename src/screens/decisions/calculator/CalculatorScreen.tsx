@@ -1,9 +1,7 @@
 import React, { FC, useEffect, useState } from 'react';
-import { Image, StyleSheet, ScrollView } from 'react-native';
-import { RouteProp, useNavigation } from '@react-navigation/native';
-import { StackNavigationProp } from '@react-navigation/stack';
+import { ScrollView, StyleSheet } from 'react-native';
+import { RouteProp } from '@react-navigation/native';
 import calculationsRepository from '../../../database/repository/calculationsRepository';
-import ListItem from '../../../components/ListItem';
 import TitleBar from '../../../components/TitleBar';
 import OvertakingDistanceCalculator from './OvertakingDistanceCalculator';
 import KeyboardAwareView from '../../../components/keyboard/KeyboardAwareView';
@@ -13,15 +11,12 @@ import {
   STOPPING_DISTANCE,
 } from '../../../model/CalculationType';
 import StoppingDistanceCalculator from './StoppingDistanceCalculator';
+import ContentViewer from '../../../components/viewer/ContentViewer';
 
 const styles = StyleSheet.create({
-  image: {
+  container: {
     flex: 1,
-    width: 'auto',
-    aspectRatio: 4 / 3,
-    resizeMode: 'center',
-    marginLeft: 10,
-    marginRight: 10,
+    backgroundColor: 'white',
   },
 });
 
@@ -42,45 +37,31 @@ const CalculatorScreen: FC<Props> = ({ route }) => {
   const [calculationInfo, setCalculationInfo] =
     useState<CalculationInfo | null>(null);
 
-  const navigation = useNavigation<StackNavigationProp<any>>();
-
   useEffect(() => {
     calculationsRepository.getCalculationInfoByTitle(title, setCalculationInfo);
   }, [title]);
 
-  const navigateDecisionTree = (info: CalculationInfo) => {
-    navigation.navigate('DecisionsScreenStack', {
-      screen: 'DocumentationScreen',
-      params: { content: info.content, contentType: info.contentType },
-    });
-  };
-
+  if (!calculationInfo) {
+    return null;
+  }
   return (
-    <ScrollView style={{ flex: 1 }}>
+    <ScrollView style={styles.container}>
       <KeyboardAwareView>
-        {calculationInfo && (
-          <>
-            <TitleBar
-              title={calculationInfo.title}
-              subTitle={calculationInfo.explanation}
-            />
-            {calculationInfo.calculationType === OVERTAKING_DISTANCE && (
-              <OvertakingDistanceCalculator />
-            )}
-            {calculationInfo.calculationType === STOPPING_DISTANCE && (
-              <StoppingDistanceCalculator />
-            )}
-            <ListItem
-              onSubmit={() => navigateDecisionTree(calculationInfo)}
-              iconFile={calculationInfo.iconFile}
-              title={calculationInfo.articleButtonText}
-            />
-            <Image
-              style={styles.image}
-              source={{ uri: calculationInfo.calculationImage }}
-            />
-          </>
+        <TitleBar
+          title={calculationInfo.title}
+          subTitle={calculationInfo.explanation}
+        />
+        {calculationInfo.calculationType === OVERTAKING_DISTANCE && (
+          <OvertakingDistanceCalculator />
         )}
+        {calculationInfo.calculationType === STOPPING_DISTANCE && (
+          <StoppingDistanceCalculator />
+        )}
+        <ContentViewer
+          content={calculationInfo.content}
+          contentType={calculationInfo.contentType}
+          bookType="calculations"
+        />
       </KeyboardAwareView>
     </ScrollView>
   );

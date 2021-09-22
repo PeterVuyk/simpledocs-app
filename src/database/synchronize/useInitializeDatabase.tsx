@@ -62,11 +62,17 @@ function useInitializeDatabase() {
         .then(initializeApp.initializeInitialBookTypes);
     }
 
+    // TODO: Only run migrations for existing apps. If a new app is installed run a database init script to speed up the initial startup.
+
+    // Now we run all migrations
     new SQLiteClient()
       .runMigrations(migrations)
-      .catch(reason =>
-        logger.error('Failed running the migrations by startup', reason),
-      )
+      // If an error occurs with the migrations, something really went wrong and app is not usable
+      .catch(reason => {
+        logger.error('Failed running the migrations by startup', reason);
+        setInitializationDatabaseSuccessful(false);
+      })
+      // if migrations are successful
       .then(() => setInitializationDatabaseSuccessful(true));
   }, [migrations, startInitializing]);
 

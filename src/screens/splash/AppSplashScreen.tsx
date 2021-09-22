@@ -11,8 +11,13 @@ import InitializationAppFailureOverlay from './InitializationAppFailureOverlay';
 import usePrepareResources from './usePrepareResources';
 
 const AppSplashScreen: FC = () => {
-  const { initialStartupFailed, internetRequired, internetSuggested, onRetry } =
-    usePrepareResources();
+  const {
+    isAggregatesUpdated,
+    initialStartupFailed,
+    internetRequired,
+    internetSuggested,
+    onRetry,
+  } = usePrepareResources();
   const [appIsReady, setAppReady] = useState<boolean | null>(null);
 
   const loadFonts = async () => {
@@ -78,7 +83,11 @@ const AppSplashScreen: FC = () => {
     );
   }
 
-  if (initialStartupFailed === false && internetRequired === false) {
+  if (
+    initialStartupFailed === false &&
+    internetRequired === false &&
+    (isAggregatesUpdated || internetSuggested)
+  ) {
     return (
       <View style={{ flex: 1 }} onLayout={onLayoutRootView}>
         <Drawer />

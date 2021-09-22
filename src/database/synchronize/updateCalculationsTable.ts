@@ -11,14 +11,12 @@ function addCalculationInfo(
   calculationInfo: CalculationInfo,
 ): void {
   sqlTransaction.executeSql(
-    'INSERT INTO calculations (listIndex, calculationType, title, explanation, articleButtonText, calculationImage, content, contentType, iconFile) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)',
+    'INSERT INTO calculations (listIndex, calculationType, title, explanation, content, contentType, iconFile) VALUES (?, ?, ?, ?, ?, ?, ?)',
     [
       calculationInfo.listIndex,
       calculationInfo.calculationType,
       calculationInfo.title,
       calculationInfo.explanation,
-      calculationInfo.articleButtonText,
-      calculationInfo.calculationImage,
       calculationInfo.content,
       calculationInfo.contentType,
       calculationInfo.iconFile,

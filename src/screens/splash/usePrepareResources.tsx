@@ -8,6 +8,7 @@ const usePrepareResources: () => {
   initialStartupFailed: null | boolean;
   internetRequired: null | boolean;
   internetSuggested: null | boolean;
+  isAggregatesUpdated: null | boolean;
   onRetry: () => void;
 } = () => {
   const [initialStartupFailed, setInitialStartupFailed] = useState<
@@ -21,9 +22,8 @@ const usePrepareResources: () => {
   );
   const { initializeDatabase, initializationDatabaseSuccessful } =
     useInitializeDatabase();
-  const { databaseVersions, updateAggregates } = useUpdateAggregates(
-    initializationDatabaseSuccessful ?? false,
-  );
+  const { isAggregatesUpdated, databaseVersions, updateAggregates } =
+    useUpdateAggregates(initializationDatabaseSuccessful ?? false);
 
   const isFirstStartup = async (): Promise<boolean> => {
     return !(await appConfigDAO.getAppConfig());
@@ -86,6 +86,7 @@ const usePrepareResources: () => {
   }, [init]);
 
   return {
+    isAggregatesUpdated,
     initialStartupFailed,
     internetRequired,
     internetSuggested,

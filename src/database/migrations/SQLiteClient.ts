@@ -1,5 +1,5 @@
 import * as SQLite from 'expo-sqlite';
-import master from './master';
+import migrations from './migrations';
 import { Migration } from './Migration';
 import migrationChangelogRepository from '../repository/migrationChangelogRepository';
 import { MigrationChangelog } from '../../model/migrationChangelog';
@@ -11,7 +11,9 @@ export default class SQLiteClient {
   private readonly migrations: Migration[];
 
   constructor() {
-    this.migrations = master.sort((a, b) => a.getId().localeCompare(b.getId()));
+    this.migrations = migrations.sort((a, b) =>
+      a.getId().localeCompare(b.getId()),
+    );
   }
 
   public async runMigrations(

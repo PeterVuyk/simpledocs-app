@@ -4,18 +4,19 @@ import synchronizeDatabase from './synchronizeDatabase';
 
 function useUpdateAggregates(isInitialized: boolean) {
   const { databaseVersions, serverVersions } = useVersions(isInitialized);
-  const [isAggregatesUpdated, setIsAggregatesUpdated] =
-    useState<boolean>(false);
+  const [isAggregatesUpdated, setIsAggregatesUpdated] = useState<
+    null | boolean
+  >(null);
 
   const updateAggregates = async () => {
     if (
-      isAggregatesUpdated ||
+      isAggregatesUpdated !== null ||
       serverVersions === null ||
       databaseVersions === null
     ) {
       return;
     }
-    setIsAggregatesUpdated(true);
+    setIsAggregatesUpdated(false);
     await synchronizeDatabase
       .updateAppConfigurations(serverVersions, databaseVersions)
       .then(() =>
@@ -41,8 +42,9 @@ function useUpdateAggregates(isInitialized: boolean) {
           serverVersions,
         ),
       );
+    setIsAggregatesUpdated(true);
   };
-  return { databaseVersions, updateAggregates };
+  return { isAggregatesUpdated, databaseVersions, updateAggregates };
 }
 
 export default useUpdateAggregates;

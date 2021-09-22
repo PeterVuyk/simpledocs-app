@@ -5,7 +5,6 @@ export interface CalculationInfo {
   calculationType: string;
   title: string;
   explanation: string;
-  calculationImage: string;
   articleButtonText: string;
   content: string;
   contentType: ContentType;
