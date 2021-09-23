@@ -121,7 +121,7 @@ const highlightLine = (text: string, highLightText: string): string => {
 };
 
 /**
- * Usually I'm a big fan of smaller functions, easier to read and with the function names you can say
+ * I'm not a big fan of bigger functions, smaller are easier to read and with the function names you can say
  * explicit what you are doing. I tried to break it up in multiple functions but it didn't help the
  * readability because all the params I've to pass through each function, continue in certain circumstances.
  * I decided (for now) to keep it here in this function, parts of the code can later always
@@ -149,7 +149,7 @@ const highlightWordsInMarkdownFile = (text: string, highLightText: string) => {
         continue;
       }
       // if the search word is found in the line, add the first block line index to an array
-      for (let iterator = lineIndex - 1; ; lineIndex--) {
+      for (let iterator = lineIndex - 1; ; iterator--) {
         if (lines[iterator].includes('```')) {
           codeBlockLineIndexes.push(iterator);
           break;

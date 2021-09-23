@@ -48,20 +48,22 @@ const SearchHeader: FC<Props> = ({
     <SafeAreaView style={styles.container}>
       <View style={styles.searchInputContainer}>
         <View style={styles.container}>
-          <SearchBar
-            ref={search => {
-              searchRef = search;
-            }}
-            containerStyle={{ backgroundColor: '#fff' }}
-            inputContainerStyle={{
-              backgroundColor: Platform.OS === 'ios' ? '#ddd' : '#fff',
-            }}
-            platform={Platform.OS === 'ios' ? 'ios' : 'android'}
-            placeholder="Zoek op titel of trefwoord..."
-            onCancel={() => (Platform.OS === 'ios' ? navigation.pop() : '')}
-            onChangeText={handleSearchTextChange}
-            value={searchText}
-          />
+          {isFocused && (
+            <SearchBar
+              ref={search => {
+                searchRef = search;
+              }}
+              containerStyle={{ backgroundColor: '#fff' }}
+              inputContainerStyle={{
+                backgroundColor: Platform.OS === 'ios' ? '#ddd' : '#fff',
+              }}
+              platform={Platform.OS === 'ios' ? 'ios' : 'android'}
+              placeholder="Zoek op titel of trefwoord..."
+              onCancel={() => (Platform.OS === 'ios' ? navigation.pop() : '')}
+              onChangeText={handleSearchTextChange}
+              value={searchText}
+            />
+          )}
           <SearchTab onBookTypeTabChange={handleBookTypeTabChange} />
         </View>
       </View>
