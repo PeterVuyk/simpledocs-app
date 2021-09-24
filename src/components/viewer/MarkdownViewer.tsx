@@ -1,5 +1,5 @@
 import React, { FC, ReactNode, useEffect, useState } from 'react';
-import { Linking, View, Text, StyleSheet } from 'react-native';
+import { Linking, View, Text, StyleSheet, Platform } from 'react-native';
 import { useIsFocused } from '@react-navigation/native';
 import Markdown from 'react-native-markdown-display';
 import ScrollViewToggleBottomBar from '../ScrollViewToggleBottomBar';
@@ -98,7 +98,15 @@ const MarkdownViewer: FC<Props> = ({
     <View style={styles.viewContainer}>
       {!loading && (
         <ScrollViewToggleBottomBar>
-          <Markdown onLinkPress={onLinkPress} rules={rules}>
+          <Markdown
+            style={{
+              body: {
+                fontFamily: Platform.OS === 'ios' ? 'San Francisco' : 'Roboto',
+              },
+            }}
+            onLinkPress={onLinkPress}
+            rules={rules}
+          >
             {getDocumentation()}
           </Markdown>
         </ScrollViewToggleBottomBar>

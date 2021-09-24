@@ -1,6 +1,6 @@
 import matchAll from 'string.prototype.matchall';
 
-const searchHitText = '`Zoekhit: `';
+const searchHitText = '`Zoek-hit: `';
 const reservedCharacters = [
   '!',
   '\\',
