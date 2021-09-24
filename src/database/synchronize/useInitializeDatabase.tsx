@@ -21,7 +21,7 @@ function useInitializeDatabase() {
     async function init() {
       // First we make sure the initial migration table exists
       await initializeApp
-        .initializeInitialTables()
+        .initializeChangelogTable()
         .then(() =>
           // Then we get all migrations that are already migrated
           migrationChangelogRepository.getMigrationChangelog(setMigrations),
@@ -39,6 +39,23 @@ function useInitializeDatabase() {
     setStartInitializing(true);
   }, []);
 
+  const initFirstStartupApp = useCallback(async () => {
+    // we get the configurations file from firebase and save it to the fileStorage
+    await collectConfig
+      .getConfig()
+      .then(async appConfig => {
+        if (!appConfig) {
+          throw Error(
+            'Failed to collect ConfigInfo, initialization for migration failed',
+          );
+        }
+        await appConfigDAO.storeAppConfiguration(appConfig);
+        return appConfig;
+      })
+      // Then we add the initial tables. This way we skip the migrations by first startup to speed up the first startup
+      .then(initializeApp.initializeInitialTables);
+  }, []);
+
   useEffect(() => {
     if (!startInitializing || migrations === null) {
       return;
@@ -46,23 +63,13 @@ function useInitializeDatabase() {
 
     // If no migrations are executed yet, then this was the first startup
     if (migrations.length === 0) {
-      // we get the configurations file from firebase and save it to the fileStorage
-      collectConfig
-        .getConfig()
-        .then(async appConfig => {
-          if (!appConfig) {
-            throw Error(
-              'Failed to collect ConfigInfo, initialization for migration failed',
-            );
-          }
-          await appConfigDAO.storeAppConfiguration(appConfig);
-          return appConfig;
-        })
-        // Then we get all the bookTypes from the configuration and add it as aggregate versions to the database
-        .then(initializeApp.initializeInitialBookTypes);
+      initFirstStartupApp().catch(reason => {
+        logger.error('Failed first startup of the app', reason);
+        setInitializationDatabaseSuccessful(false);
+      });
+      setInitializationDatabaseSuccessful(true);
+      return;
     }
-
-    // TODO: Only run migrations for existing apps. If a new app is installed run a database init script to speed up the initial startup.
 
     // Now we run all migrations
     new SQLiteClient()
@@ -74,7 +81,7 @@ function useInitializeDatabase() {
       })
       // if migrations are successful
       .then(() => setInitializationDatabaseSuccessful(true));
-  }, [migrations, startInitializing]);
+  }, [initFirstStartupApp, migrations, startInitializing]);
 
   return { initializeDatabase, initializationDatabaseSuccessful };
 }
