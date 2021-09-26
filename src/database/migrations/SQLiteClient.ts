@@ -19,7 +19,6 @@ export default class SQLiteClient {
   public async runMigrations(
     migrationChangelog: MigrationChangelog[],
   ): Promise<void> {
-    // eslint-disable-next-line no-restricted-syntax
     for (const migration of this.migrations) {
       if (
         migrationChangelog.find(value => value.filename === migration.getId())
@@ -27,7 +26,6 @@ export default class SQLiteClient {
         continue;
       }
       try {
-        // eslint-disable-next-line no-await-in-loop
         await this.migrate(migration);
       } catch (e) {
         logger.error(

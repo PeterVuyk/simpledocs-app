@@ -3,7 +3,7 @@
 The App is ment for (student) paramedics. The app contains a driving instruction manual with regulations and helpful decision trees, calculators and references to ambulancezorg.nl.
 
 The app is build in React Native Javascript, with help of Expo we can make it universal for Android and IOS. 
-It makes use of a local database (SQLite) and is connected to a Firebase database from Firestore.
+It makes use of a local database (SQLite) and is connected to the application server api.
 
 ## Available Scripts
 

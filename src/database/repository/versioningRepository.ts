@@ -48,7 +48,7 @@ function updateBookTypeVersioning(
       },
       error => {
         logger.error(
-          'versioningRepository.updateVersioning failed',
+          'versioningRepository.updateBookTypeVersioning failed',
           error.message,
         );
         reject();

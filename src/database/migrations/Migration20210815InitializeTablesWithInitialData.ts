@@ -31,7 +31,7 @@ export default class Migration20210815InitializeTablesWithInitialData
       "INSERT or ignore INTO notification (notificationType) VALUES ('noInternetConnection');",
     );
     sqlTransaction.executeSql(
-      "INSERT or ignore INTO versioning (aggregate, version) VALUES ('decisionTrees', 'initial');",
+      "INSERT or ignore INTO versioning (aggregate, version) VALUES ('decisionTree', 'initial');",
     );
     sqlTransaction.executeSql(
       "INSERT or ignore INTO versioning (aggregate, version) VALUES ('configurations', 'initial');",

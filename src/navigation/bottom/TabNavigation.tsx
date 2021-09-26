@@ -11,7 +11,7 @@ import { ConfigInfo } from '../../model/ConfigInfo';
 import SecondBookTabStackNavigator from '../StackNavigator/SecondBookTabStackNavigator';
 import FirstBookTabStackNavigator from '../StackNavigator/FirstBookTabStackNavigator';
 import SearchStackNavigator from '../StackNavigator/SearchStackNavigator';
-import appConfigDAO from '../../fileSystem/appConfigDAO';
+import configurationsDAO from '../../fileSystem/ConfigurationsDAO';
 import scrolling from '../../redux/actions/scrolling';
 
 const Tab = TabNavigator();
@@ -24,7 +24,7 @@ interface Props {
 const TabNavigation: FC<Props> = ({ navigation, setScrollDirection }) => {
   const [configInfo, setConfigInfo] = useState<ConfigInfo | null>(null);
   useEffect(() => {
-    appConfigDAO.getAppConfig().then(value => setConfigInfo(value!));
+    configurationsDAO.getAppConfig().then(value => setConfigInfo(value!));
   }, []);
   const [progress, setProgress] = useState(new Animated.Value(0));
   const scale = interpolateNode(progress, {

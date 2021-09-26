@@ -4,32 +4,35 @@ import logger from '../helper/logger';
 
 let config: ConfigInfo | undefined;
 
-const storeAppConfiguration = async (appConfig: ConfigInfo) => {
-  const jsonValue = JSON.stringify(appConfig);
-  config = appConfig;
+const storeAppConfiguration = async (configurations: ConfigInfo) => {
+  const jsonValue = JSON.stringify(configurations);
+  config = configurations;
   await AsyncStorage.setItem('appConfig.json', jsonValue).catch(reason =>
-    logger.error('Failed to store the appConfig to the fileStorage', reason),
+    logger.error(
+      'Failed to store the configurations to the fileStorage',
+      reason,
+    ),
   );
 };
 
-const getAppConfig = async () => {
+const getAppConfiguration = async () => {
   if (config !== undefined) {
     return config;
   }
   await AsyncStorage.getItem('appConfig.json')
     .then(jsonValue => (jsonValue != null ? JSON.parse(jsonValue) : null))
-    .then(appConfig => {
-      config = appConfig;
+    .then(configuration => {
+      config = configuration;
     })
     .catch(reason =>
-      logger.error('Failed to get appConfig from storage', reason),
+      logger.error('Failed to get configurations from storage', reason),
     );
   return config;
 };
 
-const appConfigDAO = {
-  getAppConfig,
+const configurationsDAO = {
+  getAppConfig: getAppConfiguration,
   storeAppConfiguration,
 };
 
-export default appConfigDAO;
+export default configurationsDAO;

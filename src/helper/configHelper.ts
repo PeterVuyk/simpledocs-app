@@ -1,9 +1,9 @@
 import { FIRST_BOOK_TAB, SECOND_BOOK_TAB } from '../model/BookTab';
 import { BookInfo } from '../model/ConfigInfo';
-import appConfigDAO from '../fileSystem/appConfigDAO';
+import configurationsDAO from '../fileSystem/ConfigurationsDAO';
 
 const getBookTypes = async (): Promise<BookInfo[]> => {
-  const appConfig = await appConfigDAO.getAppConfig();
+  const appConfig = await configurationsDAO.getAppConfig();
   const bookTypesFirstTab = appConfig!.firstTab.bookTypes.sort(
     (a, b) => a.index - b.index,
   );
@@ -21,7 +21,7 @@ const getConfigByBookType = async (
 };
 
 const getTabByBookType = async (bookType: string): Promise<string | null> => {
-  const appConfig = await appConfigDAO.getAppConfig();
+  const appConfig = await configurationsDAO.getAppConfig();
   if (
     appConfig?.firstTab.bookTypes.find(value => value.bookType === bookType)
   ) {

@@ -46,7 +46,7 @@ function initializeChangelogTable(): Promise<void> {
       },
       error => {
         logger.error(
-          'initializeInitialTables has failed, rolled back',
+          'initializeChangelogTable has failed, rolled back',
           error.message,
         );
         reject();
@@ -60,7 +60,6 @@ function initializeInitialTables(configInfo: ConfigInfo): Promise<void> {
   return new Promise((resolve, reject) => {
     db.transaction(
       sqlTransaction => {
-        sqlTransaction.executeSql('');
         sqlTransaction.executeSql(
           'create table if not exists versioning (aggregate varchar not null, version varchar not null);',
         );
@@ -83,7 +82,7 @@ function initializeInitialTables(configInfo: ConfigInfo): Promise<void> {
           "INSERT or ignore INTO notification (notificationType) VALUES ('noInternetConnection');",
         );
         sqlTransaction.executeSql(
-          "INSERT or ignore INTO versioning (aggregate, version) VALUES ('decisionTrees', 'initial');",
+          "INSERT or ignore INTO versioning (aggregate, version) VALUES ('decisionTree', 'initial');",
         );
         sqlTransaction.executeSql(
           "INSERT or ignore INTO versioning (aggregate, version) VALUES ('configurations', 'initial');",

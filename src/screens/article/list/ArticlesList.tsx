@@ -80,7 +80,6 @@ const ArticlesList: FC<Props> = ({
       }
       const nextChapters: ArticleChapter[] = [];
       nextChapters.push(articleChapters[index]);
-      // eslint-disable-next-line no-restricted-syntax
       for (const chapter of articleChapters.slice(index + 1)) {
         if (!bookInfo?.showLevelsInIntermediateList.includes(chapter.level)) {
           break;

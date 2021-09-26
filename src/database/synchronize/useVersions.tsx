@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
 import { Versioning } from '../../model/Versioning';
 import versioningRepository from '../repository/versioningRepository';
-import collectVersions from '../firebase/collectVersions';
 import { AggregateVersions } from '../../model/AggregateVersions';
+import versioningClient from '../../api/versioningClient';
 
 function useVersions(isInitialized: boolean) {
   const [databaseVersions, setDatabaseVersions] = useState<Versioning[] | null>(
@@ -15,7 +15,7 @@ function useVersions(isInitialized: boolean) {
   useEffect(() => {
     if (isInitialized) {
       versioningRepository.getAllVersions(setDatabaseVersions);
-      collectVersions.getVersioning().then(setServerVersions);
+      versioningClient.getVersioning().then(setServerVersions);
     }
   }, [isInitialized]);
 

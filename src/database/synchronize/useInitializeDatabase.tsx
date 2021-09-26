@@ -4,8 +4,8 @@ import { MigrationChangelog } from '../../model/migrationChangelog';
 import initializeApp from '../synchronize/initializeApp';
 import logger from '../../helper/logger';
 import SQLiteClient from '../migrations/SQLiteClient';
-import collectConfig from '../firebase/collectConfig';
-import appConfigDAO from '../../fileSystem/appConfigDAO';
+import configurationsDAO from '../../fileSystem/ConfigurationsDAO';
+import configurationsClient from '../../api/configurationsClient';
 
 function useInitializeDatabase() {
   const [migrations, setMigrations] = useState<MigrationChangelog[] | null>(
@@ -40,16 +40,16 @@ function useInitializeDatabase() {
   }, []);
 
   const initFirstStartupApp = useCallback(async () => {
-    // we get the configurations file from firebase and save it to the fileStorage
-    await collectConfig
-      .getConfig()
+    // we get the configurations file from the API and save it to the fileStorage
+    await configurationsClient
+      .getConfigInfo()
       .then(async appConfig => {
         if (!appConfig) {
           throw Error(
             'Failed to collect ConfigInfo, initialization for migration failed',
           );
         }
-        await appConfigDAO.storeAppConfiguration(appConfig);
+        await configurationsDAO.storeAppConfiguration(appConfig);
         return appConfig;
       })
       // Then we add the initial tables. This way we skip the migrations by first startup to speed up the first startup
@@ -57,30 +57,33 @@ function useInitializeDatabase() {
   }, []);
 
   useEffect(() => {
-    if (!startInitializing || migrations === null) {
-      return;
-    }
+    async function runMigrations() {
+      if (!startInitializing || migrations === null) {
+        return;
+      }
 
-    // If no migrations are executed yet, then this was the first startup
-    if (migrations.length === 0) {
-      initFirstStartupApp().catch(reason => {
-        logger.error('Failed first startup of the app', reason);
-        setInitializationDatabaseSuccessful(false);
-      });
-      setInitializationDatabaseSuccessful(true);
-      return;
-    }
+      // If no migrations are executed yet, then this was the first startup
+      if (migrations.length === 0) {
+        await initFirstStartupApp().catch(reason => {
+          logger.error('Failed first startup of the app', reason);
+          setInitializationDatabaseSuccessful(false);
+        });
+        setInitializationDatabaseSuccessful(true);
+        return;
+      }
 
-    // Now we run all migrations
-    new SQLiteClient()
-      .runMigrations(migrations)
-      // If an error occurs with the migrations, something really went wrong and app is not usable
-      .catch(reason => {
-        logger.error('Failed running the migrations by startup', reason);
-        setInitializationDatabaseSuccessful(false);
-      })
-      // if migrations are successful
-      .then(() => setInitializationDatabaseSuccessful(true));
+      // Now we run all migrations
+      new SQLiteClient()
+        .runMigrations(migrations)
+        // If an error occurs with the migrations, something really went wrong and app is not usable
+        .catch(reason => {
+          logger.error('Failed running the migrations by startup', reason);
+          setInitializationDatabaseSuccessful(false);
+        })
+        // if migrations are successful
+        .then(() => setInitializationDatabaseSuccessful(true));
+    }
+    runMigrations();
   }, [initFirstStartupApp, migrations, startInitializing]);
 
   return { initializeDatabase, initializationDatabaseSuccessful };
