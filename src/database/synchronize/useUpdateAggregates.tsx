@@ -16,6 +16,11 @@ function useUpdateAggregates(isInitialized: boolean) {
     ) {
       return;
     }
+    // If the app can not get the versions from the server, return.
+    if (serverVersions.length === 0) {
+      setIsAggregatesUpdated(true);
+      return;
+    }
     setIsAggregatesUpdated(false);
     await synchronizeDatabase
       .updateAppConfigurations(serverVersions, databaseVersions)

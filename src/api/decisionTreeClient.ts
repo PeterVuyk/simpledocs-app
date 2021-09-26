@@ -5,7 +5,11 @@ import { DecisionTreeStep } from '../model/DecisionTreeStep';
 async function getDecisionTreeSteps(): Promise<DecisionTreeStep[]> {
   const decisionTreeResponse = await fetch(
     new URL('getDecisionTree', process.env.APP_SERVER_API_URL).toString(),
-    { headers: { api_version: Constants.manifest?.version ?? '1.0.0' } },
+    {
+      headers: {
+        Accept: `application/json;api-version=${Constants.manifest?.version}`,
+      },
+    },
   ).then(response => response.json() as Promise<DecisionTreeResponse>);
 
   if (!decisionTreeResponse.success) {

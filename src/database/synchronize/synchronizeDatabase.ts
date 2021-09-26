@@ -159,11 +159,15 @@ const updateAppConfigurations = async (
   ) {
     return;
   }
-  const configurations = await configurationsClient.getConfigInfo();
-  if (!configurations) {
-    logger.errorFromMessage(
-      'Called configurationsClient.getConfigInfo from prepareDatabaseResources, expected configurations as a response but no config received.',
+  const configurations = await configurationsClient
+    .getConfigInfo()
+    .catch(reason =>
+      logger.error(
+        'Update version for configurations failed. By the next startup the configurations will be fetched again, the update version will be tried to store again',
+        reason,
+      ),
     );
+  if (!configurations) {
     return;
   }
 

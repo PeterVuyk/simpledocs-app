@@ -6,7 +6,9 @@ async function getArticles(bookType: string): Promise<Article[]> {
   const url = new URL('getArticles', process.env.APP_SERVER_API_URL);
   url.searchParams.append('bookType', bookType);
   const articlesResponse = await fetch(url.toString(), {
-    headers: { api_version: Constants.manifest?.version ?? '1.0.0' },
+    headers: {
+      Accept: `application/json;api-version=${Constants.manifest?.version}`,
+    },
   }).then(response => response.json() as Promise<ArticlesResponse>);
 
   if (!articlesResponse.success) {

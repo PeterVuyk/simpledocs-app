@@ -43,12 +43,12 @@ function useInitializeDatabase() {
     // we get the configurations file from the API and save it to the fileStorage
     await configurationsClient
       .getConfigInfo()
+      .catch(reason => {
+        throw Error(
+          `Failed to collect ConfigInfo, initialization for migration failed, reason: ${reason}`,
+        );
+      })
       .then(async appConfig => {
-        if (!appConfig) {
-          throw Error(
-            'Failed to collect ConfigInfo, initialization for migration failed',
-          );
-        }
         await configurationsDAO.storeAppConfiguration(appConfig);
         return appConfig;
       })

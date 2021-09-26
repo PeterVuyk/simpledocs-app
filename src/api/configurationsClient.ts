@@ -2,18 +2,26 @@ import Constants from 'expo-constants';
 import { ConfigInfoResponse } from '../model/ApiResponse';
 import { ConfigInfo } from '../model/ConfigInfo';
 
-async function getConfigInfo(): Promise<null | ConfigInfo> {
+async function getConfigInfo(): Promise<ConfigInfo> {
   const configInfoResponse = await fetch(
     new URL('getConfigurations', process.env.APP_SERVER_API_URL).toString(),
-    { headers: { api_version: Constants.manifest?.version ?? '1.0.0' } },
+    {
+      headers: {
+        Accept: `application/json;api-version=${Constants.manifest?.version}`,
+      },
+    },
   ).then(response => response.json() as Promise<ConfigInfoResponse>);
 
-  if (!configInfoResponse.success) {
-    throw new Error(
-      `Failed collecting configurations from server, message server: ${configInfoResponse.message}`,
-    );
-  }
-  return configInfoResponse.result;
+  return new Promise((resolve, reject) => {
+    if (!configInfoResponse.success) {
+      reject(
+        new Error(
+          `Failed collecting configurations from server, message server: ${configInfoResponse.message}`,
+        ),
+      );
+    }
+    resolve(configInfoResponse.result!);
+  });
 }
 
 const configurationsClient = {

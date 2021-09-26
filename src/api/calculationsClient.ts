@@ -5,7 +5,11 @@ import { CalculationInfo } from '../model/CalculationInfo';
 async function getCalculationsInfo(): Promise<CalculationInfo[]> {
   const calculationResponse = await fetch(
     new URL('getCalculations', process.env.APP_SERVER_API_URL).toString(),
-    { headers: { api_version: Constants.manifest?.version ?? '1.0.0' } },
+    {
+      headers: {
+        Accept: `application/json;api-version=${Constants.manifest?.version}`,
+      },
+    },
   ).then(response => response.json() as Promise<CalculationResponse>);
 
   if (!calculationResponse.success) {
