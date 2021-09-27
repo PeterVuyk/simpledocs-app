@@ -31,7 +31,7 @@ const getAppConfiguration = async () => {
 };
 
 const configurationsDAO = {
-  getAppConfig: getAppConfiguration,
+  getAppConfiguration,
   storeAppConfiguration,
 };
 

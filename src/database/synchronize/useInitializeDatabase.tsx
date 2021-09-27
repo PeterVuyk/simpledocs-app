@@ -4,7 +4,7 @@ import { MigrationChangelog } from '../../model/migrationChangelog';
 import initializeApp from '../synchronize/initializeApp';
 import logger from '../../helper/logger';
 import SQLiteClient from '../migrations/SQLiteClient';
-import configurationsDAO from '../../fileSystem/ConfigurationsDAO';
+import configurationsDAO from '../../fileSystem/configurationsDAO';
 import configurationsClient from '../../api/configurationsClient';
 
 function useInitializeDatabase() {

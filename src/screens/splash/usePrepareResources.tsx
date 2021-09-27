@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from 'react';
-import configurationsDAO from '../../fileSystem/ConfigurationsDAO';
+import configurationsDAO from '../../fileSystem/configurationsDAO';
 import internetConnectivity from '../../helper/internetConnectivity';
 import useUpdateAggregates from '../../database/synchronize/useUpdateAggregates';
 import useInitializeDatabase from '../../database/synchronize/useInitializeDatabase';
@@ -26,7 +26,7 @@ const usePrepareResources: () => {
     useUpdateAggregates(initializationDatabaseSuccessful ?? false);
 
   const isFirstStartup = async (): Promise<boolean> => {
-    return !(await configurationsDAO.getAppConfig());
+    return !(await configurationsDAO.getAppConfiguration());
   };
 
   const hasInternetConnection = async (): Promise<boolean> => {

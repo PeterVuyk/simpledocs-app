@@ -11,7 +11,7 @@ import {
 import updateArticleTable from '../synchronize/updateArticleTable';
 import { AggregateVersions } from '../../model/AggregateVersions';
 import configHelper from '../../helper/configHelper';
-import configurationsDAO from '../../fileSystem/ConfigurationsDAO';
+import configurationsDAO from '../../fileSystem/configurationsDAO';
 import calculationsClient from '../../api/calculationsClient';
 import decisionTreeClient from '../../api/decisionTreeClient';
 import configurationsClient from '../../api/configurationsClient';
