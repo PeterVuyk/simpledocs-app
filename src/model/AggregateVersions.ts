@@ -1,3 +1,5 @@
 export interface AggregateVersions {
-  [key: string]: string;
+  aggregate: string;
+  status: string;
+  version: string;
 }

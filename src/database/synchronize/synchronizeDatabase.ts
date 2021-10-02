@@ -31,16 +31,12 @@ const updateArticleIfNewVersion = async (
   aggregateVersions: Versioning[],
 ) => {
   if (
-    getVersionFromAggregate(aggregateVersions, bookType) !== versions[bookType]
+    getVersionFromAggregate(aggregateVersions, bookType) !== versions.version
   ) {
     await articlesClient
       .getArticles(bookType)
       .then(article =>
-        updateArticleTable.updateArticles(
-          article,
-          versions[bookType],
-          bookType,
-        ),
+        updateArticleTable.updateArticles(article, versions.version, bookType),
       )
       .catch(reason =>
         logger.error(
@@ -57,7 +53,7 @@ const updateBooksIfNewVersion = async (
 ): Promise<void> => {
   for (const bookInfo of await configHelper.getBookTypes()) {
     const aggregateVersion = versions.find(
-      version => version[bookInfo.bookType],
+      version => version.aggregate === bookInfo.bookType,
     );
     if (aggregateVersion !== undefined) {
       await updateArticleIfNewVersion(
@@ -73,18 +69,20 @@ const updateDecisionTreeIfNewVersion = async (
   versions: AggregateVersions[],
   aggregateVersions: Versioning[],
 ): Promise<void> => {
-  const aggregateVersion = versions.find(version => version.decisionTree);
+  const aggregateVersion = versions.find(
+    version => version.aggregate === AGGREGATE_DECISION_TREE,
+  );
   if (
     aggregateVersion !== undefined &&
     getVersionFromAggregate(aggregateVersions, AGGREGATE_DECISION_TREE) !==
-      aggregateVersion.decisionTree
+      aggregateVersion.version
   ) {
     await decisionTreeClient
       .getDecisionTreeSteps()
       .then(steps =>
         updateDecisionTreeTable.updateDecisionTreeSteps(
           steps,
-          aggregateVersion.decisionTree,
+          aggregateVersion.version,
         ),
       )
       .catch(reason =>
@@ -100,18 +98,20 @@ const updateCalculationsIfNewVersion = async (
   versions: AggregateVersions[],
   aggregateVersions: Versioning[],
 ): Promise<void> => {
-  const aggregateVersion = versions.find(version => version.calculations);
+  const aggregateVersion = versions.find(
+    version => version.aggregate === AGGREGATE_CALCULATIONS,
+  );
   if (
     aggregateVersion !== undefined &&
     getVersionFromAggregate(aggregateVersions, AGGREGATE_CALCULATIONS) !==
-      aggregateVersion.calculations
+      aggregateVersion.version
   ) {
     await calculationsClient
       .getCalculationsInfo()
       .then(calculationsInfo =>
         updateCalculationsTable.updateCalculation(
           calculationsInfo,
-          aggregateVersion.calculations,
+          aggregateVersion.version,
         ),
       )
       .catch(reason =>
@@ -134,7 +134,10 @@ const cleanupRemovedBookTypesFromVersioningTable = async (
             version.aggregate !== AGGREGATE_CALCULATIONS &&
             version.aggregate !== AGGREGATE_DECISION_TREE,
         )
-        .filter(version => !versions.find(value => value[version.aggregate]))
+        .filter(
+          version =>
+            !versions.find(value => value.aggregate === version.aggregate),
+        )
         .forEach(value => versioningRepository.removeVersion(value));
     })
     .catch(reason =>
@@ -151,11 +154,13 @@ const updateAppConfigurations = async (
   versions: AggregateVersions[],
   aggregateVersions: Versioning[],
 ): Promise<void> => {
-  const aggregateVersion = versions.find(version => version.configurations);
+  const aggregateVersion = versions.find(
+    version => version.aggregate === AGGREGATE_APP_CONFIGURATIONS,
+  );
   if (
     aggregateVersion === undefined ||
     getVersionFromAggregate(aggregateVersions, AGGREGATE_APP_CONFIGURATIONS) ===
-      aggregateVersion.configurations
+      aggregateVersion.version
   ) {
     return;
   }
@@ -177,7 +182,7 @@ const updateAppConfigurations = async (
       versioningRepository
         .updateBookTypeVersioning(
           AGGREGATE_APP_CONFIGURATIONS,
-          aggregateVersion.configurations,
+          aggregateVersion.version,
           configurations,
         )
         .catch(reason =>

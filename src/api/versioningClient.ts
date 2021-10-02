@@ -26,15 +26,7 @@ async function getVersioning(): Promise<AggregateVersions[]> {
       }`,
     );
   }
-
-  const result = [];
-  for (const [key, value] of Object.entries(
-    // eslint-disable-next-line @typescript-eslint/ban-types
-    versioningResponse.result as object,
-  )) {
-    result.push({ [key]: value });
-  }
-  return result as AggregateVersions[];
+  return versioningResponse.result as AggregateVersions[];
 }
 
 const versioningClient = {
