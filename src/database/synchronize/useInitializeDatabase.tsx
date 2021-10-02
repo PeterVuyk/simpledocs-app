@@ -5,7 +5,7 @@ import initializeApp from '../synchronize/initializeApp';
 import logger from '../../helper/logger';
 import SQLiteClient from '../migrations/SQLiteClient';
 import configurationsDAO from '../../fileSystem/configurationsDAO';
-import configurationsClient from '../../api/configurationsClient';
+import appConfigurationsClient from '../../api/appConfigurationsClient';
 
 function useInitializeDatabase() {
   const [migrations, setMigrations] = useState<MigrationChangelog[] | null>(
@@ -41,16 +41,16 @@ function useInitializeDatabase() {
 
   const initFirstStartupApp = useCallback(async () => {
     // we get the configurations file from the API and save it to the fileStorage
-    await configurationsClient
-      .getConfigInfo()
+    await appConfigurationsClient
+      .getAppConfigurations()
       .catch(reason => {
         throw Error(
-          `Failed to collect ConfigInfo, initialization for migration failed, reason: ${reason}`,
+          `Failed to collect AppConfigurations, initialization for migration failed, reason: ${reason}`,
         );
       })
-      .then(async appConfig => {
-        await configurationsDAO.storeAppConfiguration(appConfig);
-        return appConfig;
+      .then(async appConfigurations => {
+        await configurationsDAO.storeAppConfiguration(appConfigurations);
+        return appConfigurations;
       })
       // Then we add the initial tables. This way we skip the migrations by first startup to speed up the first startup
       .then(initializeApp.initializeInitialTables);

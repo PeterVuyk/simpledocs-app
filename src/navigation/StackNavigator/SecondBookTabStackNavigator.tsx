@@ -6,7 +6,7 @@ import ArticleDetailsScreen from '../../screens/article/details/ArticleDetailsSc
 import ArticleListScreen from '../../screens/article/list/ArticleListScreen';
 import { SECOND_BOOK_TAB } from '../../model/BookTab';
 import BooksOverviewScreen from '../../screens/article/BooksOverviewScreen';
-import { TabInfo } from '../../model/ConfigInfo';
+import { TabInfo } from '../../model/AppConfigurations';
 import ArticleIntermediateListScreen from '../../screens/article/list/ArticleIntermediateListScreen';
 
 const Stack = createStackNavigator();

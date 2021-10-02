@@ -10,7 +10,7 @@ import SVGIcon from '../../components/SVGIcon';
 import HighlightWords from '../../components/HighlightWords';
 import SearchHeader from '../../navigation/header/SearchHeader';
 import KeyboardAwareView from '../../components/keyboard/KeyboardAwareView';
-import { ConfigInfo } from '../../model/ConfigInfo';
+import { AppConfigurations } from '../../model/AppConfigurations';
 import useContentNavigator from '../../components/hooks/useContentNavigator';
 
 const styles = StyleSheet.create({
@@ -29,7 +29,7 @@ interface Props {
   route: RouteProp<
     {
       params: {
-        configInfo: ConfigInfo;
+        appConfigurations: AppConfigurations;
       };
     },
     'params'
@@ -37,9 +37,9 @@ interface Props {
 }
 
 const SearchScreen: FC<Props> = ({ setChapterSearchText, route }) => {
-  const { configInfo } = route.params;
+  const { appConfigurations } = route.params;
   const [bookType, setBookType] = useState<string>(
-    configInfo.defaultBookTypeSearch,
+    appConfigurations.defaultBookTypeSearch,
   );
   const [articles, setArticles] = useState<Article[] | null>(null);
   const [searchText, setSearchText] = useState<string>('');

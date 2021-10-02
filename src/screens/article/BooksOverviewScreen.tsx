@@ -5,7 +5,7 @@ import { RouteProp } from '@react-navigation/native';
 import { SECOND_BOOK_TAB } from '../../model/BookTab';
 import TitleBar from '../../components/TitleBar';
 import ListItem from '../../components/ListItem';
-import { BookInfo, TabInfo } from '../../model/ConfigInfo';
+import { BookInfo, TabInfo } from '../../model/AppConfigurations';
 
 const styles = StyleSheet.create({
   container: {

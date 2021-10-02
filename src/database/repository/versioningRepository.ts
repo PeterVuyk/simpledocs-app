@@ -1,7 +1,7 @@
 import * as SQLite from 'expo-sqlite';
 import logger from '../../helper/logger';
 import { Versioning } from '../../model/Versioning';
-import { ConfigInfo } from '../../model/ConfigInfo';
+import { AppConfigurations } from '../../model/AppConfigurations';
 
 const db = SQLite.openDatabase('db.db');
 
@@ -18,11 +18,11 @@ function updateVersioningWithTransaction(
 
 function insertBookTypeVersions(
   sqlTransaction: SQLite.SQLTransaction,
-  appConfig: ConfigInfo,
+  appConfigurations: AppConfigurations,
 ): void {
   const bookTypes = [
-    ...appConfig.firstTab.bookTypes,
-    ...appConfig.secondTab.bookTypes,
+    ...appConfigurations.firstTab.bookTypes,
+    ...appConfigurations.secondTab.bookTypes,
   ];
   bookTypes.forEach(bookType => {
     sqlTransaction.executeSql(
@@ -35,7 +35,7 @@ function insertBookTypeVersions(
 function updateBookTypeVersioning(
   aggregate: string,
   version: string,
-  appConfig: ConfigInfo,
+  appConfigurations: AppConfigurations,
 ): Promise<void> {
   return new Promise((resolve, reject) => {
     db.transaction(
@@ -44,7 +44,7 @@ function updateBookTypeVersioning(
           `UPDATE versioning SET version = ? WHERE aggregate = ?;`,
           [version, aggregate],
         );
-        insertBookTypeVersions(sqlTransaction, appConfig);
+        insertBookTypeVersions(sqlTransaction, appConfigurations);
       },
       error => {
         logger.error(

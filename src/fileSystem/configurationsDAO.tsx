@@ -1,33 +1,34 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { ConfigInfo } from '../model/ConfigInfo';
+import { AppConfigurations } from '../model/AppConfigurations';
 import logger from '../helper/logger';
 
-let config: ConfigInfo | undefined;
+let appConfigurations: AppConfigurations | undefined;
 
-const storeAppConfiguration = async (configurations: ConfigInfo) => {
+const storeAppConfiguration = async (configurations: AppConfigurations) => {
   const jsonValue = JSON.stringify(configurations);
-  config = configurations;
-  await AsyncStorage.setItem('appConfig.json', jsonValue).catch(reason =>
-    logger.error(
-      'Failed to store the configurations to the fileStorage',
-      reason,
-    ),
+  appConfigurations = configurations;
+  await AsyncStorage.setItem('appConfigurations.json', jsonValue).catch(
+    reason =>
+      logger.error(
+        'Failed to store the appConfigurations to the fileStorage',
+        reason,
+      ),
   );
 };
 
 const getAppConfiguration = async () => {
-  if (config !== undefined) {
-    return config;
+  if (appConfigurations !== undefined) {
+    return appConfigurations;
   }
-  await AsyncStorage.getItem('appConfig.json')
+  await AsyncStorage.getItem('appConfigurations.json')
     .then(jsonValue => (jsonValue != null ? JSON.parse(jsonValue) : null))
     .then(configuration => {
-      config = configuration;
+      appConfigurations = configuration;
     })
     .catch(reason =>
       logger.error('Failed to get configurations from storage', reason),
     );
-  return config;
+  return appConfigurations;
 };
 
 const configurationsDAO = {

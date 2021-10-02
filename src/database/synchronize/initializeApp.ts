@@ -1,7 +1,7 @@
 import * as SQLite from 'expo-sqlite';
 import { SQLTransaction } from 'expo-sqlite';
 import logger from '../../helper/logger';
-import { ConfigInfo } from '../../model/ConfigInfo';
+import { AppConfigurations } from '../../model/AppConfigurations';
 import migrations from '../migrations/migrations';
 import migrationChangelogRepository from '../repository/migrationChangelogRepository';
 
@@ -12,12 +12,12 @@ const db = SQLite.openDatabase('db.db');
  * update the minimum number of expected versions in the AppSplashScreen.
  */
 function initializeInitialBookTypes(
-  configInfo: ConfigInfo,
+  appConfigurations: AppConfigurations,
   sqlTransaction: SQLTransaction,
 ): void {
   const bookTypes = [
-    ...configInfo.firstTab.bookTypes,
-    ...configInfo.secondTab.bookTypes,
+    ...appConfigurations.firstTab.bookTypes,
+    ...appConfigurations.secondTab.bookTypes,
   ];
   bookTypes.forEach(bookType => {
     sqlTransaction.executeSql(
@@ -56,7 +56,9 @@ function initializeChangelogTable(): Promise<void> {
   });
 }
 
-function initializeInitialTables(configInfo: ConfigInfo): Promise<void> {
+function initializeInitialTables(
+  appConfigurations: AppConfigurations,
+): Promise<void> {
   return new Promise((resolve, reject) => {
     db.transaction(
       sqlTransaction => {
@@ -93,7 +95,7 @@ function initializeInitialTables(configInfo: ConfigInfo): Promise<void> {
         sqlTransaction.executeSql(
           "INSERT or ignore INTO notification (notificationType) VALUES ('horizontalScrollTip');",
         );
-        initializeInitialBookTypes(configInfo, sqlTransaction);
+        initializeInitialBookTypes(appConfigurations, sqlTransaction);
         addMigrationsChangelog(sqlTransaction);
       },
       error => {

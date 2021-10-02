@@ -1,5 +1,5 @@
 import { CalculationInfo } from './CalculationInfo';
-import { ConfigInfo } from './ConfigInfo';
+import { AppConfigurations } from './AppConfigurations';
 import { DecisionTreeStep } from './DecisionTreeStep';
 import { Article } from './Article';
 import { AggregateVersions } from './AggregateVersions';
@@ -10,9 +10,9 @@ export interface CalculationResponse {
   message: string | null;
 }
 
-export interface ConfigInfoResponse {
+export interface AppConfigurationsResponse {
   success: boolean;
-  result: ConfigInfo | null;
+  result: AppConfigurations | null;
   message: string | null;
 }
 

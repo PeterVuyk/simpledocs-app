@@ -12,7 +12,7 @@ import {
   AGGREGATE_DECISION_TREE,
 } from '../../model/Versioning';
 import { DecisionTreeTitle } from '../../model/DecisionTreeTitle';
-import { DecisionsTab, TabInfo } from '../../model/ConfigInfo';
+import { DecisionsTab, TabInfo } from '../../model/AppConfigurations';
 
 interface Props {
   navigation: DrawerNavigationProp<any>;

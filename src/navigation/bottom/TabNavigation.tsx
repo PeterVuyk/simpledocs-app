@@ -7,7 +7,7 @@ import TabNavigator from './TabNavigator';
 import DecisionsStackNavigator from '../StackNavigator/DecisionsStackNavigator';
 import AboutUsStackNavigator from '../StackNavigator/AboutUsStackNavigator';
 import CopyrightStackNavigator from '../StackNavigator/CopyrightStackNavigator';
-import { ConfigInfo } from '../../model/ConfigInfo';
+import { AppConfigurations } from '../../model/AppConfigurations';
 import SecondBookTabStackNavigator from '../StackNavigator/SecondBookTabStackNavigator';
 import FirstBookTabStackNavigator from '../StackNavigator/FirstBookTabStackNavigator';
 import SearchStackNavigator from '../StackNavigator/SearchStackNavigator';
@@ -22,11 +22,12 @@ interface Props {
 }
 
 const TabNavigation: FC<Props> = ({ navigation, setScrollDirection }) => {
-  const [configInfo, setConfigInfo] = useState<ConfigInfo | null>(null);
+  const [appConfigurations, setAppConfigurations] =
+    useState<AppConfigurations | null>(null);
   useEffect(() => {
     configurationsDAO
       .getAppConfiguration()
-      .then(value => setConfigInfo(value!));
+      .then(value => setAppConfigurations(value!));
   }, []);
   const [progress, setProgress] = useState(new Animated.Value(0));
   const scale = interpolateNode(progress, {
@@ -51,7 +52,7 @@ const TabNavigation: FC<Props> = ({ navigation, setScrollDirection }) => {
     );
   }, []);
 
-  if (!configInfo) {
+  if (!appConfigurations) {
     return null;
   }
 
@@ -74,13 +75,13 @@ const TabNavigation: FC<Props> = ({ navigation, setScrollDirection }) => {
           children={() => (
             <FirstBookTabStackNavigator
               navigation={navigation}
-              tabInfo={configInfo.firstTab}
+              tabInfo={appConfigurations.firstTab}
             />
           )}
           options={{
-            title: configInfo.firstTab.bottomTab.title,
-            icon: configInfo.firstTab.bottomTab.icon,
-            iconFamilyType: configInfo.firstTab.bottomTab.familyType,
+            title: appConfigurations.firstTab.bottomTab.title,
+            icon: appConfigurations.firstTab.bottomTab.icon,
+            iconFamilyType: appConfigurations.firstTab.bottomTab.familyType,
             showInBottomBar: true,
           }}
         />
@@ -89,13 +90,13 @@ const TabNavigation: FC<Props> = ({ navigation, setScrollDirection }) => {
           children={() => (
             <SecondBookTabStackNavigator
               navigation={navigation}
-              tabInfo={configInfo.secondTab}
+              tabInfo={appConfigurations.secondTab}
             />
           )}
           options={{
-            title: configInfo.secondTab.bottomTab.title,
-            icon: configInfo.secondTab.bottomTab.icon,
-            iconFamilyType: configInfo.secondTab.bottomTab.familyType,
+            title: appConfigurations.secondTab.bottomTab.title,
+            icon: appConfigurations.secondTab.bottomTab.icon,
+            iconFamilyType: appConfigurations.secondTab.bottomTab.familyType,
             showInBottomBar: true,
           }}
         />
@@ -104,19 +105,21 @@ const TabNavigation: FC<Props> = ({ navigation, setScrollDirection }) => {
           children={() => (
             <DecisionsStackNavigator
               navigation={navigation}
-              decisionTabInfo={configInfo.decisionsTab}
+              decisionTabInfo={appConfigurations.decisionsTab}
             />
           )}
           options={{
-            title: configInfo.decisionsTab.bottomTab.title,
-            icon: configInfo.decisionsTab.bottomTab.icon,
-            iconFamilyType: configInfo.decisionsTab.bottomTab.familyType,
+            title: appConfigurations.decisionsTab.bottomTab.title,
+            icon: appConfigurations.decisionsTab.bottomTab.icon,
+            iconFamilyType: appConfigurations.decisionsTab.bottomTab.familyType,
             showInBottomBar: true,
           }}
         />
         <Tab.Screen
           name="SearchStack"
-          children={() => <SearchStackNavigator configInfo={configInfo} />}
+          children={() => (
+            <SearchStackNavigator appConfigurations={appConfigurations} />
+          )}
           options={{
             title: 'Info',
             icon: 'information-outline',

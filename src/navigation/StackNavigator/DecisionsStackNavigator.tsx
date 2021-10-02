@@ -6,7 +6,7 @@ import Header from '../header/Header';
 import DecisionsScreen from '../../screens/decisions/DecisionsScreen';
 import CalculatorScreen from '../../screens/decisions/calculator/CalculatorScreen';
 import DocumentationScreen from '../../screens/decisions/DocumentationScreen';
-import { DecisionsTab } from '../../model/ConfigInfo';
+import { DecisionsTab } from '../../model/AppConfigurations';
 
 const Stack = createStackNavigator();
 

@@ -2,7 +2,7 @@ import React, { FC, useEffect, useState } from 'react';
 import { Tab, ThemeProvider } from 'react-native-elements';
 import { ScrollView } from 'react-native';
 import configHelper from '../../helper/configHelper';
-import { BookInfo } from '../../model/ConfigInfo';
+import { BookInfo } from '../../model/AppConfigurations';
 
 interface Props {
   onBookTypeTabChange: (bookType: string) => void;

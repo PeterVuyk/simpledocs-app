@@ -1,13 +1,13 @@
 import { FIRST_BOOK_TAB, SECOND_BOOK_TAB } from '../model/BookTab';
-import { BookInfo } from '../model/ConfigInfo';
+import { BookInfo } from '../model/AppConfigurations';
 import configurationsDAO from '../fileSystem/configurationsDAO';
 
 const getBookTypes = async (): Promise<BookInfo[]> => {
-  const appConfig = await configurationsDAO.getAppConfiguration();
-  const bookTypesFirstTab = appConfig!.firstTab.bookTypes.sort(
+  const appConfigurations = await configurationsDAO.getAppConfiguration();
+  const bookTypesFirstTab = appConfigurations!.firstTab.bookTypes.sort(
     (a, b) => a.index - b.index,
   );
-  const bookTypesSecondTab = appConfig!.secondTab.bookTypes.sort(
+  const bookTypesSecondTab = appConfigurations!.secondTab.bookTypes.sort(
     (a, b) => a.index - b.index,
   );
   return [...bookTypesFirstTab, ...bookTypesSecondTab];
@@ -21,14 +21,18 @@ const getConfigByBookType = async (
 };
 
 const getTabByBookType = async (bookType: string): Promise<string | null> => {
-  const appConfig = await configurationsDAO.getAppConfiguration();
+  const appConfigurations = await configurationsDAO.getAppConfiguration();
   if (
-    appConfig?.firstTab.bookTypes.find(value => value.bookType === bookType)
+    appConfigurations?.firstTab.bookTypes.find(
+      value => value.bookType === bookType,
+    )
   ) {
     return FIRST_BOOK_TAB;
   }
   if (
-    appConfig?.secondTab.bookTypes.find(value => value.bookType === bookType)
+    appConfigurations?.secondTab.bookTypes.find(
+      value => value.bookType === bookType,
+    )
   ) {
     return SECOND_BOOK_TAB;
   }

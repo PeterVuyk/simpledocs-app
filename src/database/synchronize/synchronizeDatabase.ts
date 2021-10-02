@@ -3,7 +3,7 @@ import updateDecisionTreeTable from './updateDecisionTreeTable';
 import logger from '../../helper/logger';
 import updateCalculationsTable from './updateCalculationsTable';
 import {
-  AGGREGATE_CONFIGURATIONS,
+  AGGREGATE_APP_CONFIGURATIONS,
   AGGREGATE_CALCULATIONS,
   AGGREGATE_DECISION_TREE,
   Versioning,
@@ -14,7 +14,7 @@ import configHelper from '../../helper/configHelper';
 import configurationsDAO from '../../fileSystem/configurationsDAO';
 import calculationsClient from '../../api/calculationsClient';
 import decisionTreeClient from '../../api/decisionTreeClient';
-import configurationsClient from '../../api/configurationsClient';
+import appConfigurationsClient from '../../api/appConfigurationsClient';
 import articlesClient from '../../api/articlesClient';
 
 const getVersionFromAggregate = (
@@ -154,13 +154,13 @@ const updateAppConfigurations = async (
   const aggregateVersion = versions.find(version => version.configurations);
   if (
     aggregateVersion === undefined ||
-    getVersionFromAggregate(aggregateVersions, AGGREGATE_CONFIGURATIONS) ===
+    getVersionFromAggregate(aggregateVersions, AGGREGATE_APP_CONFIGURATIONS) ===
       aggregateVersion.configurations
   ) {
     return;
   }
-  const configurations = await configurationsClient
-    .getConfigInfo()
+  const configurations = await appConfigurationsClient
+    .getAppConfigurations()
     .catch(reason =>
       logger.error(
         'Update version for configurations failed. By the next startup the configurations will be fetched again, the update version will be tried to store again',
@@ -176,13 +176,13 @@ const updateAppConfigurations = async (
     .then(() =>
       versioningRepository
         .updateBookTypeVersioning(
-          AGGREGATE_CONFIGURATIONS,
+          AGGREGATE_APP_CONFIGURATIONS,
           aggregateVersion.configurations,
           configurations,
         )
         .catch(reason =>
           logger.error(
-            'Update version for configurations failed. By the next startup the configurations will be fetched again, the update version will be tried to store again',
+            'Update version for configurations failed. By the next startup the appConfigurations will be fetched again, the update version will be tried to store again',
             reason,
           ),
         ),
