@@ -22,12 +22,6 @@ export interface DecisionTreeResponse {
   message: string | null;
 }
 
-export interface VersioningResponse {
-  success: boolean;
-  result: AggregateVersions[];
-  message: string | null;
-}
-
 export interface ArticlesResponse {
   success: boolean;
   result: Article[];

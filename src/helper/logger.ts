@@ -18,9 +18,16 @@ const errorFromMessage = (errorMessage: string) => {
   Bugsnag.notify(new Error(`errorMessage: ${errorMessage}`));
 };
 
+const debugMessage = (errorMessage: string) => {
+  if (__DEV__) {
+    console.debug('warningMessage', errorMessage);
+  }
+};
+
 const logger = {
   error,
   errorFromMessage,
+  debugMessage,
 };
 
 export default logger;

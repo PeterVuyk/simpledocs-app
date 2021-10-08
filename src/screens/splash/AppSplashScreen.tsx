@@ -13,7 +13,7 @@ import usePrepareResources from './usePrepareResources';
 const AppSplashScreen: FC = () => {
   const {
     isAggregatesUpdated,
-    initialStartupFailed,
+    initialStartupSuccessful,
     internetRequired,
     internetSuggested,
     onRetry,
@@ -39,7 +39,7 @@ const AppSplashScreen: FC = () => {
   const onLayoutRootView = useCallback(async () => {
     if (
       appIsReady &&
-      initialStartupFailed !== null &&
+      initialStartupSuccessful !== null &&
       internetRequired !== null &&
       internetSuggested !== null
     ) {
@@ -50,11 +50,16 @@ const AppSplashScreen: FC = () => {
       // performed layout.
       await SplashScreen.hideAsync();
     }
-  }, [appIsReady, initialStartupFailed, internetRequired, internetSuggested]);
+  }, [
+    appIsReady,
+    initialStartupSuccessful,
+    internetRequired,
+    internetSuggested,
+  ]);
 
   if (
     !appIsReady ||
-    initialStartupFailed === null ||
+    initialStartupSuccessful === null ||
     internetRequired === null ||
     internetSuggested === null
   ) {
@@ -75,7 +80,7 @@ const AppSplashScreen: FC = () => {
     );
   }
 
-  if (initialStartupFailed) {
+  if (!initialStartupSuccessful) {
     return (
       <View style={{ flex: 1 }} onLayout={onLayoutRootView}>
         <InitializationAppFailureOverlay />
@@ -84,7 +89,7 @@ const AppSplashScreen: FC = () => {
   }
 
   if (
-    initialStartupFailed === false &&
+    initialStartupSuccessful &&
     internetRequired === false &&
     (isAggregatesUpdated || internetSuggested)
   ) {

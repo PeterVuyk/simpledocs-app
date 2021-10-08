@@ -46,7 +46,9 @@ function describeTable(tableName: string): Promise<void> {
           [tableName],
           // @ts-ignore
           (_, { rows: { _array } }) => {
-            console.log(`_array for ${tableName}: ${JSON.stringify(_array)}`);
+            logger.debugMessage(
+              `_array for ${tableName}: ${JSON.stringify(_array)}`,
+            );
           },
         );
       },
@@ -55,7 +57,7 @@ function describeTable(tableName: string): Promise<void> {
         reject();
       },
       () => {
-        console.log('successCallback', tableName);
+        logger.debugMessage('successCallback', tableName);
         resolve();
       },
     );
@@ -65,7 +67,6 @@ function describeTable(tableName: string): Promise<void> {
 async function describeTables(): Promise<void> {
   await describeTable('articles')
     .then(() => describeTable('notification'))
-    .then(() => describeTable('versioning'))
     .then(() => describeTable('calculations'))
     .then(() => describeTable('decisionTrees'))
     .then(() => describeTable('migrationChangelog'));

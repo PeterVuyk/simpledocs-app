@@ -4,8 +4,6 @@ import { MigrationChangelog } from '../../model/migrationChangelog';
 import initializeApp from '../synchronize/initializeApp';
 import logger from '../../helper/logger';
 import SQLiteClient from '../migrations/SQLiteClient';
-import configurationsDAO from '../../fileSystem/configurationsDAO';
-import appConfigurationsClient from '../../api/appConfigurationsClient';
 
 function useInitializeDatabase() {
   const [migrations, setMigrations] = useState<MigrationChangelog[] | null>(
@@ -39,32 +37,15 @@ function useInitializeDatabase() {
     setStartInitializing(true);
   }, []);
 
-  const initFirstStartupApp = useCallback(async () => {
-    // we get the configurations file from the API and save it to the fileStorage
-    await appConfigurationsClient
-      .getAppConfigurations()
-      .catch(reason => {
-        throw Error(
-          `Failed to collect AppConfigurations, initialization for migration failed, reason: ${reason}`,
-        );
-      })
-      .then(async appConfigurations => {
-        await configurationsDAO.storeAppConfiguration(appConfigurations);
-        return appConfigurations;
-      })
-      // Then we add the initial tables. This way we skip the migrations by first startup to speed up the first startup
-      .then(initializeApp.initializeInitialTables);
-  }, []);
-
   useEffect(() => {
     async function runMigrations() {
       if (!startInitializing || migrations === null) {
         return;
       }
 
-      // If no migrations are executed yet, then this was the first startup
+      // If no migrations are executed yet, then we initialize all tables instead of running the migrations to speedup the first startup
       if (migrations.length === 0) {
-        await initFirstStartupApp().catch(reason => {
+        await initializeApp.initializeInitialTables().catch(reason => {
           logger.error('Failed first startup of the app', reason);
           setInitializationDatabaseSuccessful(false);
         });
@@ -84,7 +65,7 @@ function useInitializeDatabase() {
         .then(() => setInitializationDatabaseSuccessful(true));
     }
     runMigrations();
-  }, [initFirstStartupApp, migrations, startInitializing]);
+  }, [migrations, startInitializing]);
 
   return { initializeDatabase, initializationDatabaseSuccessful };
 }

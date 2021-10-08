@@ -1,55 +1,82 @@
 import { useState } from 'react';
-import useVersions from './useVersions';
 import synchronizeDatabase from './synchronizeDatabase';
+import {
+  AGGREGATE_CALCULATIONS,
+  AGGREGATE_DECISION_TREE,
+} from '../../model/aggregate';
+import logger from '../../helper/logger';
+import { SystemConfigurations } from '../../model/SystemConfigurations';
+import configurationsDAO from '../../configurations/configurationsDAO';
+import appConfigurationsClient from '../../api/appConfigurationsClient';
 
-function useUpdateAggregates(isInitialized: boolean) {
-  const { databaseVersions, serverVersions } = useVersions(isInitialized);
+function useUpdateAggregates() {
   const [isAggregatesUpdated, setIsAggregatesUpdated] = useState<
     null | boolean
   >(null);
+  const updateCalculations = async (
+    systemConfig: SystemConfigurations,
+  ): Promise<void> => {
+    if (
+      Object.keys(systemConfig.appConfigurations!.versioning).includes(
+        AGGREGATE_CALCULATIONS,
+      )
+    ) {
+      await synchronizeDatabase.updateCalculationsIfNewVersion(
+        systemConfig.appConfigurations!.versioning[AGGREGATE_CALCULATIONS]
+          .version,
+        systemConfig,
+      );
+    }
+  };
+
+  const updateDecisionTree = async (
+    systemConfig: SystemConfigurations,
+  ): Promise<void> => {
+    if (
+      Object.keys(systemConfig.appConfigurations!.versioning).includes(
+        AGGREGATE_DECISION_TREE,
+      )
+    ) {
+      await synchronizeDatabase.updateDecisionTreeIfNewVersion(
+        systemConfig.appConfigurations!.versioning[AGGREGATE_DECISION_TREE]
+          .version,
+        systemConfig,
+      );
+    }
+  };
 
   const updateAggregates = async () => {
-    if (
-      isAggregatesUpdated !== null ||
-      serverVersions === null ||
-      databaseVersions === null
-    ) {
+    if (isAggregatesUpdated !== null) {
       return;
     }
-    // If the app can not get the versions from the server, return.
-    if (serverVersions.length === 0) {
+    const appConfig = await appConfigurationsClient
+      .getAppConfigurations()
+      .catch(reason =>
+        logger.error(
+          'Tried to get appConfigurations from the server api but failed, updateAggretas skipped',
+          reason,
+        ),
+      );
+    if (!appConfig) {
       setIsAggregatesUpdated(true);
       return;
     }
+
     setIsAggregatesUpdated(false);
-    await synchronizeDatabase
-      .updateAppConfigurations(serverVersions, databaseVersions)
-      .then(() =>
-        synchronizeDatabase.updateDecisionTreeIfNewVersion(
-          serverVersions,
-          databaseVersions,
-        ),
-      )
-      .then(() =>
-        synchronizeDatabase.updateBooksIfNewVersion(
-          serverVersions,
-          databaseVersions,
-        ),
-      )
-      .then(() =>
-        synchronizeDatabase.updateCalculationsIfNewVersion(
-          serverVersions,
-          databaseVersions,
-        ),
-      )
-      .then(() =>
-        synchronizeDatabase.cleanupRemovedBookTypesFromVersioningTable(
-          serverVersions,
-        ),
-      );
+    const configurations = await configurationsDAO.getConfigurations(appConfig);
+    await updateDecisionTree(configurations)
+      .then(() => updateCalculations(configurations))
+      .then(() => synchronizeDatabase.updateBooksIfNewVersion(configurations))
+      .then(configurationsDAO.createSessionConfiguration)
+      .catch(reason => {
+        logger.error(
+          'something when wrong by update aggregates, some or all updates may be skipped',
+          reason,
+        );
+      });
     setIsAggregatesUpdated(true);
   };
-  return { isAggregatesUpdated, databaseVersions, updateAggregates };
+  return { isAggregatesUpdated, updateAggregates };
 }
 
 export default useUpdateAggregates;

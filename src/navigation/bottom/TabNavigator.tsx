@@ -88,7 +88,7 @@ function TabNavigator({
 
     if (route.name === 'DecisionsScreenStack') {
       navigation.navigate('DecisionsScreenStack', {
-        screen: 'DecisionsScreen',
+        screen: 'DecisionsOverviewScreen',
       });
       return;
     }

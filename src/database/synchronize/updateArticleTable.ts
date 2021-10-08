@@ -1,5 +1,4 @@
 import * as SQLite from 'expo-sqlite';
-import versioningRepository from '../repository/versioningRepository';
 import logger from '../../helper/logger';
 import { Article } from '../../model/Article';
 
@@ -53,11 +52,6 @@ function updateArticles(
     db.transaction(
       sqlTransaction => {
         removeArticlesByType(sqlTransaction, bookType);
-        versioningRepository.updateVersioningWithTransaction(
-          sqlTransaction,
-          bookType,
-          version,
-        );
         addArticles(sqlTransaction, articles, bookType);
       },
       error => {

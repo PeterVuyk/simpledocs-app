@@ -30,9 +30,19 @@ export interface TabInfo {
   subTitle?: string;
 }
 
+export interface VersionInfo {
+  isBookType: boolean;
+  version: string;
+}
+
+export interface Versions {
+  [key: string]: VersionInfo;
+}
+
 export interface AppConfigurations {
   firstTab: TabInfo;
   secondTab: TabInfo;
   decisionsTab: DecisionsTab;
   defaultBookTypeSearch: string;
+  versioning: Versions;
 }

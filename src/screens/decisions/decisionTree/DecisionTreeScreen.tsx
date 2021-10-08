@@ -1,21 +1,8 @@
 import React, { FC, useEffect, useState } from 'react';
 import { StyleSheet, View, Text } from 'react-native';
 import { Button, Icon } from 'react-native-elements';
-import { RouteProp } from '@react-navigation/native';
 import decisionTreeRepository from '../../../database/repository/decisionTreeRepository';
 import { DecisionTreeStep } from '../../../model/DecisionTreeStep';
-
-interface Props {
-  navigation: any;
-  route: RouteProp<
-    {
-      params: {
-        title: string;
-      };
-    },
-    'params'
-  >;
-}
 
 const styles = StyleSheet.create({
   question: {
@@ -61,7 +48,12 @@ const styles = StyleSheet.create({
   },
 });
 
-const DecisionTreeScreen: FC<Props> = ({ route, navigation }) => {
+interface Props {
+  title: string;
+  navigation: any;
+}
+
+const DecisionTreeScreen: FC<Props> = ({ title, navigation }) => {
   const [isRootQuestion, setRootQuestion] = useState<boolean>(true);
   const [currentStep, setCurrentStep] = useState<
     DecisionTreeStep | undefined
@@ -73,9 +65,8 @@ const DecisionTreeScreen: FC<Props> = ({ route, navigation }) => {
   >([]);
 
   useEffect(() => {
-    const { title } = route.params;
     decisionTreeRepository.getDecisionTreeByTitle(title, setDecisionTreeSteps);
-  }, [route]);
+  }, [title]);
 
   useEffect(() => {
     if (currentStep === undefined) {

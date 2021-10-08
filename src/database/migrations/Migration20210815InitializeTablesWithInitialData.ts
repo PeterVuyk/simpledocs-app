@@ -10,12 +10,6 @@ export default class Migration20210815InitializeTablesWithInitialData
 
   public up(sqlTransaction: SQLTransaction): void {
     sqlTransaction.executeSql(
-      'create table if not exists versioning (aggregate varchar not null, version varchar not null);',
-    );
-    sqlTransaction.executeSql(
-      'CREATE UNIQUE INDEX if not exists versioning_aggregate_uindex ON versioning (aggregate);',
-    );
-    sqlTransaction.executeSql(
       'create table if not exists notification (id integer not null constraint notification_pk primary key autoincrement, notificationType varchar not null, notificationEnabled integer default 1 not null)',
     );
     sqlTransaction.executeSql(
@@ -29,15 +23,6 @@ export default class Migration20210815InitializeTablesWithInitialData
     );
     sqlTransaction.executeSql(
       "INSERT or ignore INTO notification (notificationType) VALUES ('noInternetConnection');",
-    );
-    sqlTransaction.executeSql(
-      "INSERT or ignore INTO versioning (aggregate, version) VALUES ('decisionTree', 'initial');",
-    );
-    sqlTransaction.executeSql(
-      "INSERT or ignore INTO versioning (aggregate, version) VALUES ('configurations', 'initial');",
-    );
-    sqlTransaction.executeSql(
-      "INSERT or ignore INTO versioning (aggregate, version) VALUES ('calculations', 'initial');",
     );
   }
 }

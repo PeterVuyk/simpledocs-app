@@ -1,12 +1,11 @@
 import React, { FC } from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 import { DrawerNavigationHelpers } from '@react-navigation/drawer/lib/typescript/src/types';
-import DecisionTreeScreen from '../../screens/decisions/decisionTree/DecisionTreeScreen';
 import Header from '../header/Header';
-import DecisionsScreen from '../../screens/decisions/DecisionsScreen';
-import CalculatorScreen from '../../screens/decisions/calculator/CalculatorScreen';
+import DecisionsOverviewScreen from '../../screens/decisions/DecisionsOverviewScreen';
 import DocumentationScreen from '../../screens/decisions/DocumentationScreen';
 import { DecisionsTab } from '../../model/AppConfigurations';
+import DecisionScreen from '../../screens/decisions/DecisionScreen';
 
 const Stack = createStackNavigator();
 
@@ -22,23 +21,16 @@ const DecisionsStackNavigator: FC<Props> = ({
   return (
     <Stack.Navigator>
       <Stack.Screen
-        name="DecisionsScreen"
-        component={DecisionsScreen}
+        name="DecisionsOverviewScreen"
+        component={DecisionsOverviewScreen}
         initialParams={{ decisionTabInfo }}
         options={{
           header: () => <Header navigation={navigation} />,
         }}
       />
       <Stack.Screen
-        name="calculatorScreen"
-        component={CalculatorScreen}
-        options={{
-          header: () => <Header navigation={navigation} />,
-        }}
-      />
-      <Stack.Screen
-        name="DecisionTreeScreen"
-        component={DecisionTreeScreen}
+        name="DecisionScreen"
+        component={DecisionScreen}
         options={{
           header: () => <Header navigation={navigation} />,
         }}

@@ -1,31 +1,10 @@
 import * as SQLite from 'expo-sqlite';
 import { SQLTransaction } from 'expo-sqlite';
 import logger from '../../helper/logger';
-import { AppConfigurations } from '../../model/AppConfigurations';
 import migrations from '../migrations/migrations';
 import migrationChangelogRepository from '../repository/migrationChangelogRepository';
 
 const db = SQLite.openDatabase('db.db');
-
-/**
- * If you add more rows to the 'versioning-table', then make sure you
- * update the minimum number of expected versions in the AppSplashScreen.
- */
-function initializeInitialBookTypes(
-  appConfigurations: AppConfigurations,
-  sqlTransaction: SQLTransaction,
-): void {
-  const bookTypes = [
-    ...appConfigurations.firstTab.bookTypes,
-    ...appConfigurations.secondTab.bookTypes,
-  ];
-  bookTypes.forEach(bookType => {
-    sqlTransaction.executeSql(
-      "INSERT OR IGNORE INTO versioning (aggregate, version) VALUES (?, 'initial');",
-      [bookType.bookType],
-    );
-  });
-}
 
 function addMigrationsChangelog(sqlTransaction: SQLTransaction): void {
   migrations.forEach(migration =>
@@ -56,18 +35,10 @@ function initializeChangelogTable(): Promise<void> {
   });
 }
 
-function initializeInitialTables(
-  appConfigurations: AppConfigurations,
-): Promise<void> {
+function initializeInitialTables(): Promise<void> {
   return new Promise((resolve, reject) => {
     db.transaction(
       sqlTransaction => {
-        sqlTransaction.executeSql(
-          'create table if not exists versioning (aggregate varchar not null, version varchar not null);',
-        );
-        sqlTransaction.executeSql(
-          'CREATE UNIQUE INDEX if not exists versioning_aggregate_uindex ON versioning (aggregate);',
-        );
         sqlTransaction.executeSql(
           'create table if not exists notification (id integer not null constraint notification_pk primary key autoincrement, notificationType varchar not null, notificationEnabled integer default 1 not null)',
         );
@@ -84,18 +55,8 @@ function initializeInitialTables(
           "INSERT or ignore INTO notification (notificationType) VALUES ('noInternetConnection');",
         );
         sqlTransaction.executeSql(
-          "INSERT or ignore INTO versioning (aggregate, version) VALUES ('decisionTree', 'initial');",
-        );
-        sqlTransaction.executeSql(
-          "INSERT or ignore INTO versioning (aggregate, version) VALUES ('configurations', 'initial');",
-        );
-        sqlTransaction.executeSql(
-          "INSERT or ignore INTO versioning (aggregate, version) VALUES ('calculations', 'initial');",
-        );
-        sqlTransaction.executeSql(
           "INSERT or ignore INTO notification (notificationType) VALUES ('horizontalScrollTip');",
         );
-        initializeInitialBookTypes(appConfigurations, sqlTransaction);
         addMigrationsChangelog(sqlTransaction);
       },
       error => {

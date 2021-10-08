@@ -1,8 +1,6 @@
 import * as SQLite from 'expo-sqlite';
-import versioningRepository from '../repository/versioningRepository';
 import logger from '../../helper/logger';
 import { CalculationInfo } from '../../model/CalculationInfo';
-import { AGGREGATE_CALCULATIONS } from '../../model/Versioning';
 
 const db = SQLite.openDatabase('db.db');
 
@@ -39,19 +37,11 @@ function removeAllCalculationsInfo(
   sqlTransaction.executeSql(`DELETE FROM calculations`, []);
 }
 
-function updateCalculation(
-  calculationInfo: CalculationInfo[],
-  version: string,
-): Promise<void> {
+function updateCalculation(calculationInfo: CalculationInfo[]): Promise<void> {
   return new Promise((resolve, reject) => {
     db.transaction(
       sqlTransaction => {
         removeAllCalculationsInfo(sqlTransaction);
-        versioningRepository.updateVersioningWithTransaction(
-          sqlTransaction,
-          AGGREGATE_CALCULATIONS,
-          version,
-        );
         addCalculations(sqlTransaction, calculationInfo);
       },
       error => {

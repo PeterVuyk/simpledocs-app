@@ -1,17 +1,18 @@
 import { useCallback, useEffect, useState } from 'react';
-import configurationsDAO from '../../fileSystem/configurationsDAO';
 import internetConnectivity from '../../helper/internetConnectivity';
 import useUpdateAggregates from '../../database/synchronize/useUpdateAggregates';
 import useInitializeDatabase from '../../database/synchronize/useInitializeDatabase';
+import configurationsStorage from '../../configurations/configurationsStorage';
+import configurationsDAO from '../../configurations/configurationsDAO';
 
 const usePrepareResources: () => {
-  initialStartupFailed: null | boolean;
+  initialStartupSuccessful: null | boolean;
   internetRequired: null | boolean;
   internetSuggested: null | boolean;
   isAggregatesUpdated: null | boolean;
   onRetry: () => void;
 } = () => {
-  const [initialStartupFailed, setInitialStartupFailed] = useState<
+  const [initialStartupSuccessful, setInitialStartupSuccessful] = useState<
     boolean | null
   >(null);
   const [internetRequired, setInternetRequired] = useState<boolean | null>(
@@ -22,40 +23,31 @@ const usePrepareResources: () => {
   );
   const { initializeDatabase, initializationDatabaseSuccessful } =
     useInitializeDatabase();
-  const { isAggregatesUpdated, databaseVersions, updateAggregates } =
-    useUpdateAggregates(initializationDatabaseSuccessful ?? false);
+  const { isAggregatesUpdated, updateAggregates } = useUpdateAggregates();
 
   const isFirstStartup = async (): Promise<boolean> => {
-    return !(await configurationsDAO.getAppConfiguration());
+    return !(await configurationsStorage.getSystemConfiguration());
   };
 
   const hasInternetConnection = async (): Promise<boolean> => {
-    const connection = await internetConnectivity.hasInternetConnection();
-    return connection;
+    return internetConnectivity.hasInternetConnection();
   };
-
-  useEffect(() => {
-    const MINIMUM_NUMBER_OF_VERSIONS = 5;
-    if (databaseVersions !== null) {
-      setInitialStartupFailed(
-        databaseVersions.length <= MINIMUM_NUMBER_OF_VERSIONS ||
-          databaseVersions.some(version => version.version === 'initial'),
-      );
-    }
-  }, [databaseVersions]);
 
   const init = useCallback(async () => {
     async function initialize() {
       if ((await isFirstStartup()) && !(await hasInternetConnection())) {
         setInternetRequired(true);
         setInternetSuggested(false);
-        setInitialStartupFailed(false);
+        setInitialStartupSuccessful(true);
         return;
       }
       setInternetRequired(false);
       if (!(await hasInternetConnection())) {
-        setInternetSuggested(true);
-        setInitialStartupFailed(false);
+        setInitialStartupSuccessful(false);
+        configurationsDAO.isStartupSuccessful().then(success => {
+          setInternetSuggested(success ?? false);
+          setInitialStartupSuccessful(success);
+        });
         return;
       }
       setInternetSuggested(false);
@@ -68,26 +60,28 @@ const usePrepareResources: () => {
   const handleRetry = useCallback(async () => {
     setInternetRequired(null);
     setInternetSuggested(null);
-    setInitialStartupFailed(null);
+    setInitialStartupSuccessful(null);
     await init();
   }, [init]);
-
-  useEffect(() => {
-    if (initializationDatabaseSuccessful === false) {
-      setInitialStartupFailed(true);
-    }
-    if (initializationDatabaseSuccessful === true) {
-      updateAggregates().then(() => setInitialStartupFailed(false));
-    }
-  }, [initializationDatabaseSuccessful, updateAggregates]);
 
   useEffect(() => {
     init();
   }, [init]);
 
+  useEffect(() => {
+    if (initializationDatabaseSuccessful === false) {
+      setInitialStartupSuccessful(false);
+    }
+    if (initializationDatabaseSuccessful === true) {
+      updateAggregates().then(() => {
+        setInitialStartupSuccessful(true);
+      });
+    }
+  }, [initializationDatabaseSuccessful, updateAggregates]);
+
   return {
     isAggregatesUpdated,
-    initialStartupFailed,
+    initialStartupSuccessful,
     internetRequired,
     internetSuggested,
     onRetry: handleRetry,

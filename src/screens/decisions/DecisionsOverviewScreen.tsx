@@ -10,9 +10,10 @@ import { CalculationInfo } from '../../model/CalculationInfo';
 import {
   AGGREGATE_CALCULATIONS,
   AGGREGATE_DECISION_TREE,
-} from '../../model/Versioning';
+} from '../../model/aggregate';
 import { DecisionTreeTitle } from '../../model/DecisionTreeTitle';
 import { DecisionsTab, TabInfo } from '../../model/AppConfigurations';
+import logger from '../../helper/logger';
 
 interface Props {
   navigation: DrawerNavigationProp<any>;
@@ -30,64 +31,91 @@ interface Props {
 interface DecisionItem {
   title: string;
   iconFile: string;
-  categorization: string;
+  aggregate: string;
 }
 
-const DecisionsScreen: FC<Props> = ({ navigation, route }) => {
+const DecisionsOverviewScreen: FC<Props> = ({ navigation, route }) => {
   const [decisionTreeTitles, setDecisionTreeTitles] = useState<
-    DecisionTreeTitle[]
-  >([]);
-  const [calculationTitles, setCalculationTitles] = useState<CalculationInfo[]>(
-    [],
-  );
+    DecisionTreeTitle[] | null
+  >(null);
+  const [calculationTitles, setCalculationTitles] = useState<
+    CalculationInfo[] | null
+  >(null);
   const [decisionItems, setDecisionItems] = useState<DecisionItem[]>([]);
   const { decisionTabInfo } = route.params;
 
   useEffect(() => {
-    decisionTreeRepository.getDecisionTrees(setDecisionTreeTitles);
-    calculationsRepository.getCalculationsInfo(setCalculationTitles);
-  }, []);
+    // Only add decision tree if enabled
+    if (decisionTabInfo.indexDecisionType.includes(AGGREGATE_DECISION_TREE)) {
+      decisionTreeRepository.getDecisionTrees(setDecisionTreeTitles);
+    } else {
+      setDecisionTreeTitles([]);
+    }
+    // Only add calculations if enabled
+    if (decisionTabInfo.indexDecisionType.includes(AGGREGATE_DECISION_TREE)) {
+      calculationsRepository.getCalculationsInfo(setCalculationTitles);
+    } else {
+      setCalculationTitles([]);
+    }
+  }, [decisionTabInfo.indexDecisionType]);
 
   useEffect(() => {
-    if (decisionTreeTitles.length === 0 || calculationTitles.length === 0) {
+    if (decisionTreeTitles === null || calculationTitles === null) {
       return;
     }
-    const decisionTrees = decisionTreeTitles.map(title => {
-      return {
-        categorization: AGGREGATE_DECISION_TREE,
-        ...title,
-      } as DecisionItem;
-    });
-    const calculations = calculationTitles.map(calculation => {
-      return {
-        title: calculation.title,
-        iconFile: calculation.iconFile,
-        categorization: AGGREGATE_CALCULATIONS,
-      } as DecisionItem;
-    });
-    setDecisionItems(
-      decisionTabInfo.indexDecisionType[0] === 'decisionTree'
-        ? [...decisionTrees, ...calculations]
-        : [...calculations, ...decisionTrees],
-    );
+    let result: DecisionItem[] = [];
+    for (const shiftKey of decisionTabInfo.indexDecisionType) {
+      if (
+        shiftKey === AGGREGATE_DECISION_TREE &&
+        decisionTreeTitles.length !== 0
+      ) {
+        result = result.concat(
+          decisionTreeTitles.map(title => {
+            return {
+              aggregate: AGGREGATE_DECISION_TREE,
+              ...title,
+            } as DecisionItem;
+          }),
+        );
+      }
+      if (
+        shiftKey === AGGREGATE_CALCULATIONS &&
+        calculationTitles.length !== 0
+      ) {
+        result = result.concat(
+          calculationTitles.map(calculation => {
+            return {
+              title: calculation.title,
+              iconFile: calculation.iconFile,
+              aggregate: AGGREGATE_CALCULATIONS,
+            } as DecisionItem;
+          }),
+        );
+      }
+    }
+    if (result.length === 0) {
+      logger.errorFromMessage(
+        `No pages are configured for the decision tab, config: ${JSON.stringify(
+          decisionTabInfo.indexDecisionType,
+        )}`,
+      );
+    }
+    setDecisionItems(result);
   }, [
     decisionTreeTitles,
     calculationTitles,
     decisionTabInfo.indexDecisionType,
+    decisionTabInfo,
   ]);
 
   const navigateDecisionItem = useCallback(
     (decisionItem: DecisionItem) => {
-      if (decisionItem.categorization === AGGREGATE_CALCULATIONS) {
-        navigation.navigate('DecisionsScreenStack', {
-          screen: 'calculatorScreen',
-          params: { title: decisionItem.title },
-        });
-        return;
-      }
       navigation.navigate('DecisionsScreenStack', {
-        screen: 'DecisionTreeScreen',
-        params: { title: decisionItem.title },
+        screen: 'DecisionScreen',
+        params: {
+          title: decisionItem.title,
+          aggregate: decisionItem.aggregate,
+        },
       });
     },
     [navigation],
@@ -104,7 +132,7 @@ const DecisionsScreen: FC<Props> = ({ navigation, route }) => {
     );
   };
 
-  const getSubtitleFromCategorization = (category: string) => {
+  const getSubtitleFromAggregate = (category: string) => {
     switch (category) {
       case AGGREGATE_DECISION_TREE:
         return 'Beslisboom';
@@ -121,7 +149,7 @@ const DecisionsScreen: FC<Props> = ({ navigation, route }) => {
         onSubmit={() => navigateDecisionItem(item)}
         iconFile={item.iconFile}
         title={item.title}
-        subTitle={getSubtitleFromCategorization(item.categorization)}
+        subTitle={getSubtitleFromAggregate(item.aggregate)}
       />
     ),
     [navigateDecisionItem],
@@ -141,4 +169,4 @@ const DecisionsScreen: FC<Props> = ({ navigation, route }) => {
   );
 };
 
-export default DecisionsScreen;
+export default DecisionsOverviewScreen;

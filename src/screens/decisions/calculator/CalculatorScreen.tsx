@@ -1,6 +1,5 @@
 import React, { FC, useEffect, useState } from 'react';
 import { ScrollView, StyleSheet } from 'react-native';
-import { RouteProp } from '@react-navigation/native';
 import calculationsRepository from '../../../database/repository/calculationsRepository';
 import TitleBar from '../../../components/TitleBar';
 import OvertakingDistanceCalculator from './OvertakingDistanceCalculator';
@@ -21,19 +20,10 @@ const styles = StyleSheet.create({
 });
 
 interface Props {
-  route: RouteProp<
-    {
-      params: {
-        title: string;
-      };
-    },
-    'params'
-  >;
+  title: string;
 }
 
-const CalculatorScreen: FC<Props> = ({ route }) => {
-  const { title } = route.params;
-
+const CalculatorScreen: FC<Props> = ({ title }) => {
   const [calculationInfo, setCalculationInfo] =
     useState<CalculationInfo | null>(null);
 
