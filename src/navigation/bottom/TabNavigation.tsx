@@ -56,6 +56,18 @@ const TabNavigation: FC<Props> = ({ navigation, setScrollDirection }) => {
     return null;
   }
 
+  const getInitialRoute = () => {
+    switch (appConfigurations.defaultInitialTab) {
+      case 'secondTab':
+        return 'SecondBookTabStack';
+      case 'decisionTab':
+        return 'DecisionsScreenStack';
+      case 'firstTab':
+      default:
+        return 'FirstBookTabStack';
+    }
+  };
+
   return (
     <Animated.View style={[{ flex: 1, overflow: 'hidden' }, animatedStyle]}>
       <Tab.Navigator
@@ -68,53 +80,60 @@ const TabNavigation: FC<Props> = ({ navigation, setScrollDirection }) => {
         contentStyle={{
           height: 60,
         }}
-        initialRouteName="SecondBookTabStack"
+        initialRouteName={getInitialRoute()}
       >
-        <Tab.Screen
-          name="FirstBookTabStack"
-          children={() => (
-            <FirstBookTabStackNavigator
-              navigation={navigation}
-              tabInfo={appConfigurations.firstTab}
-            />
-          )}
-          options={{
-            title: appConfigurations.firstTab.bottomTab.title,
-            icon: appConfigurations.firstTab.bottomTab.icon,
-            iconFamilyType: appConfigurations.firstTab.bottomTab.familyType,
-            showInBottomBar: true,
-          }}
-        />
-        <Tab.Screen
-          name="SecondBookTabStack"
-          children={() => (
-            <SecondBookTabStackNavigator
-              navigation={navigation}
-              tabInfo={appConfigurations.secondTab}
-            />
-          )}
-          options={{
-            title: appConfigurations.secondTab.bottomTab.title,
-            icon: appConfigurations.secondTab.bottomTab.icon,
-            iconFamilyType: appConfigurations.secondTab.bottomTab.familyType,
-            showInBottomBar: true,
-          }}
-        />
-        <Tab.Screen
-          name="DecisionsScreenStack"
-          children={() => (
-            <DecisionsStackNavigator
-              navigation={navigation}
-              decisionTabInfo={appConfigurations.decisionsTab}
-            />
-          )}
-          options={{
-            title: appConfigurations.decisionsTab.bottomTab.title,
-            icon: appConfigurations.decisionsTab.bottomTab.icon,
-            iconFamilyType: appConfigurations.decisionsTab.bottomTab.familyType,
-            showInBottomBar: true,
-          }}
-        />
+        {appConfigurations.firstTab.bookTypes.length !== 0 && (
+          <Tab.Screen
+            name="FirstBookTabStack"
+            children={() => (
+              <FirstBookTabStackNavigator
+                navigation={navigation}
+                tabInfo={appConfigurations.firstTab}
+              />
+            )}
+            options={{
+              title: appConfigurations.firstTab.bottomTab.title,
+              icon: appConfigurations.firstTab.bottomTab.icon,
+              iconFamilyType: appConfigurations.firstTab.bottomTab.familyType,
+              showInBottomBar: true,
+            }}
+          />
+        )}
+        {appConfigurations.secondTab.bookTypes.length !== 0 && (
+          <Tab.Screen
+            name="SecondBookTabStack"
+            children={() => (
+              <SecondBookTabStackNavigator
+                navigation={navigation}
+                tabInfo={appConfigurations.secondTab}
+              />
+            )}
+            options={{
+              title: appConfigurations.secondTab.bottomTab.title,
+              icon: appConfigurations.secondTab.bottomTab.icon,
+              iconFamilyType: appConfigurations.secondTab.bottomTab.familyType,
+              showInBottomBar: true,
+            }}
+          />
+        )}
+        {appConfigurations.decisionsTab.indexDecisionType.length !== 0 && (
+          <Tab.Screen
+            name="DecisionsScreenStack"
+            children={() => (
+              <DecisionsStackNavigator
+                navigation={navigation}
+                decisionTabInfo={appConfigurations.decisionsTab}
+              />
+            )}
+            options={{
+              title: appConfigurations.decisionsTab.bottomTab.title,
+              icon: appConfigurations.decisionsTab.bottomTab.icon,
+              iconFamilyType:
+                appConfigurations.decisionsTab.bottomTab.familyType,
+              showInBottomBar: true,
+            }}
+          />
+        )}
         <Tab.Screen
           name="SearchStack"
           children={() => (

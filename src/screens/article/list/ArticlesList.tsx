@@ -6,6 +6,8 @@ import { ArticleChapter } from '../../../model/ArticleChapter';
 import configHelper from '../../../helper/configHelper';
 import { FIRST_BOOK_TAB } from '../../../model/BookTab';
 import useContentNavigator from '../../../components/hooks/useContentNavigator';
+import TitleBar from '../../../components/TitleBar';
+import { TabInfo } from '../../../model/AppConfigurations';
 
 const styles = StyleSheet.create({
   container: {
@@ -19,6 +21,8 @@ const styles = StyleSheet.create({
 });
 
 interface Props {
+  tabInfo: TabInfo;
+  showHeader: boolean;
   showLevels?: string[];
   navigation: DrawerNavigationProp<any>;
   articleChapters: ArticleChapter[];
@@ -26,6 +30,8 @@ interface Props {
 }
 
 const ArticlesList: FC<Props> = ({
+  tabInfo,
+  showHeader,
   showLevels,
   navigation,
   articleChapters,
@@ -118,10 +124,26 @@ const ArticlesList: FC<Props> = ({
     [handleItemClick],
   );
 
+  const getHeader = () => {
+    if (!showHeader) {
+      return <></>;
+    }
+    const bookInfo = tabInfo.bookTypes.find(
+      value => value.bookType === bookType,
+    );
+    if (!bookInfo) {
+      return <></>;
+    }
+    return (
+      <TitleBar title={bookInfo.title} subTitle={bookInfo.subTitle ?? ''} />
+    );
+  };
+
   return (
     <View style={styles.container}>
       <View style={styles.flatListContainer}>
         <FlatList
+          ListHeaderComponent={getHeader}
           keyExtractor={item => item.chapter.toString()}
           data={getChapters()}
           renderItem={({ item }) => renderItem(item)}

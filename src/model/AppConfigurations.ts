@@ -44,5 +44,6 @@ export interface AppConfigurations {
   secondTab: TabInfo;
   decisionsTab: DecisionsTab;
   defaultBookTypeSearch: string;
+  defaultInitialTab: string;
   versioning: Versions;
 }

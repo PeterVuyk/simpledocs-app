@@ -7,6 +7,7 @@ const styles = StyleSheet.create({
     margin: 20,
   },
   headerTitle: {
+    textAlign: 'center',
     fontSize: 21,
     fontWeight: 'bold',
     color: '#154594',
@@ -21,14 +22,16 @@ const styles = StyleSheet.create({
 
 interface Props {
   title: string;
-  subTitle: string;
+  subTitle?: string;
 }
 
 const TitleBar: FC<Props> = ({ title, subTitle }) => {
   return (
     <View onTouchStart={Keyboard.dismiss} style={styles.container}>
       <Text style={styles.headerTitle}>{title}</Text>
-      <Text style={styles.headerSubTitle}>{subTitle}</Text>
+      {subTitle !== undefined && (
+        <Text style={styles.headerSubTitle}>{subTitle}</Text>
+      )}
     </View>
   );
 };

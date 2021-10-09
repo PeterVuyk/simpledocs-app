@@ -48,6 +48,9 @@ const SecondBookTabStackNavigator: FC<Props> = ({ navigation, tabInfo }) => {
       <Stack.Screen
         name="SecondBookTabIntermediateScreen"
         component={ArticleIntermediateListScreen}
+        initialParams={{
+          tabInfo,
+        }}
         options={{
           header: () => <Header navigation={navigation} />,
         }}

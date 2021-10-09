@@ -87,12 +87,12 @@ const isStartupSuccessful = async (): Promise<boolean> => {
   const numberOfAggregatesDecisionTab =
     systemConfig.appConfigurations.decisionsTab.indexDecisionType.length;
   if (
-    numberOfAggregatesFirstTab === 0 ||
-    numberOfAggregatesSecondTab === 0 ||
+    numberOfAggregatesFirstTab === 0 &&
+    numberOfAggregatesSecondTab === 0 &&
     numberOfAggregatesDecisionTab === 0
   ) {
     logger.errorFromMessage(
-      `isStartupSuccessful called but returned 'failed' because 1 or more of the tabs is empty. numberOfAggregatesFirstTab: ${numberOfAggregatesFirstTab}, numberOfAggregatesSecondTab: ${numberOfAggregatesSecondTab}, numberOfAggregatesDecisionTab: ${numberOfAggregatesDecisionTab}`,
+      `isStartupSuccessful called but returned 'failed' because all tabs are empty. numberOfAggregatesFirstTab: ${numberOfAggregatesFirstTab}, numberOfAggregatesSecondTab: ${numberOfAggregatesSecondTab}, numberOfAggregatesDecisionTab: ${numberOfAggregatesDecisionTab}`,
     );
     return false;
   }

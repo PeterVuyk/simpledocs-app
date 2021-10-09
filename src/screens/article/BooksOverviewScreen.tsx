@@ -63,14 +63,17 @@ const BooksOverviewScreen: FC<Props> = ({ navigation, route }) => {
     [navigate],
   );
 
+  const getHeader = () => {
+    return (
+      <TitleBar title={tabInfo.title ?? ''} subTitle={tabInfo.subTitle ?? ''} />
+    );
+  };
+
   return (
     <View style={styles.container}>
       <View style={styles.flatListContainer}>
-        <TitleBar
-          title={tabInfo.title ?? ''}
-          subTitle={tabInfo.subTitle ?? ''}
-        />
         <FlatList
+          ListHeaderComponent={getHeader}
           keyExtractor={item => item.bookType.toString()}
           data={tabInfo.bookTypes}
           renderItem={({ item }) => renderItem(item)}

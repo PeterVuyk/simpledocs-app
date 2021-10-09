@@ -3,12 +3,14 @@ import { RouteProp } from '@react-navigation/native';
 import ArticlesList from './ArticlesList';
 import articleRepository from '../../../database/repository/articleRepository';
 import { ArticleChapter } from '../../../model/ArticleChapter';
+import { TabInfo } from '../../../model/AppConfigurations';
 
 interface Props {
   navigation: any;
   route: RouteProp<
     {
       params: {
+        tabInfo: TabInfo;
         chapters: string[];
         bookType: string;
       };
@@ -18,7 +20,7 @@ interface Props {
 }
 
 const ArticleIntermediateListScreen: FC<Props> = ({ navigation, route }) => {
-  const { bookType, chapters } = route.params;
+  const { bookType, chapters, tabInfo } = route.params;
   const [articleChapters, setArticleChapters] = useState<ArticleChapter[]>([]);
 
   useEffect(() => {
@@ -31,6 +33,8 @@ const ArticleIntermediateListScreen: FC<Props> = ({ navigation, route }) => {
 
   return (
     <ArticlesList
+      tabInfo={tabInfo}
+      showHeader={false}
       navigation={navigation}
       articleChapters={articleChapters}
       bookType={bookType}

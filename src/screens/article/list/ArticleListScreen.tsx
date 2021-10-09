@@ -44,6 +44,8 @@ const ArticleListScreen: FC<Props> = ({ navigation, route }) => {
   }
   return (
     <ArticlesList
+      showHeader
+      tabInfo={tabInfo}
       showLevels={getLevelsToShowInList()}
       navigation={navigation}
       articleChapters={articleChapters}
