@@ -104,7 +104,7 @@ const SearchScreen: FC<Props> = ({ setChapterSearchText, route }) => {
             textToHighlight={item.title}
           />
         </ListItem.Title>
-        <ListItem.Subtitle>
+        <ListItem.Subtitle style={{ color: 'grey' }}>
           <HighlightWords
             searchText={searchText}
             textToHighlight={getShortenedBody(item.searchText)}

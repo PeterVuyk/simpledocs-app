@@ -1,5 +1,5 @@
 import React, { FC, ReactNode, useEffect, useState } from 'react';
-import { Linking, View, Text, StyleSheet, Platform } from 'react-native';
+import { Linking, View, Text, StyleSheet } from 'react-native';
 import { useIsFocused } from '@react-navigation/native';
 import Markdown from 'react-native-markdown-display';
 import ScrollViewToggleBottomBar from '../ScrollViewToggleBottomBar';
@@ -51,12 +51,12 @@ const MarkdownViewer: FC<Props> = ({
 
   const getDocumentation = (): string => {
     if (highlightText === undefined || highlightText === '') {
-      return `#\n${markdownFile}#\n#\n#\n#`;
+      return `#\n${markdownFile}\n#\n#\n#\n#\n#`;
     }
     return `#\n${highlightWordsInMarkdownFile(
       markdownFile,
       highlightText ?? '',
-    )}#\n#\n#\n#`;
+    )}\n#\n#\n#\n#\n#`;
   };
 
   /**
@@ -98,15 +98,7 @@ const MarkdownViewer: FC<Props> = ({
     <View style={styles.viewContainer}>
       {!loading && (
         <ScrollViewToggleBottomBar>
-          <Markdown
-            style={{
-              body: {
-                fontFamily: Platform.OS === 'ios' ? 'San Francisco' : 'Roboto',
-              },
-            }}
-            onLinkPress={onLinkPress}
-            rules={rules}
-          >
+          <Markdown onLinkPress={onLinkPress} rules={rules}>
             {getDocumentation()}
           </Markdown>
         </ScrollViewToggleBottomBar>
