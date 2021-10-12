@@ -15,9 +15,10 @@ const ListItem: FC<Props> = ({ onSubmit, iconFile, title, subTitle }) => {
       <SVGIcon iconBlob={iconFile} />
       <Item.Content>
         <Item.Title>{title}</Item.Title>
-        {subTitle !== undefined && (
-          <Item.Subtitle style={{ color: 'grey' }}>{subTitle}</Item.Subtitle>
-        )}
+        {subTitle !== undefined ||
+          (subTitle === '' && (
+            <Item.Subtitle style={{ color: 'grey' }}>{subTitle}</Item.Subtitle>
+          ))}
       </Item.Content>
       <Item.Chevron />
     </Item>

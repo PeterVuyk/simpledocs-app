@@ -11,7 +11,7 @@ const SVGIcon: FC<Props> = ({ iconBlob }) => {
     return atob(base64String);
   };
 
-  return <SvgXml width={40} height={40} xml={getIconFromBlob()} />;
+  return <SvgXml width={50} height={50} xml={getIconFromBlob()} />;
 };
 
 export default SVGIcon;
