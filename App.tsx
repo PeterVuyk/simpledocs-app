@@ -2,6 +2,8 @@ import Bugsnag from '@bugsnag/expo';
 import React, { FC } from 'react';
 import { Provider } from 'react-redux';
 import { decode, encode } from 'base-64';
+import { Platform } from 'react-native';
+import Constants from 'expo-constants';
 import configureStore from './src/redux/configureStore';
 import AppSplashScreen from './src/screens/splash/AppSplashScreen';
 
@@ -18,7 +20,14 @@ if (!global.atob) {
   global.atob = decode;
 }
 
-Bugsnag.start();
+Bugsnag.start({
+  appVersion: Constants.manifest?.version ?? 'unknown-version',
+  onError(event) {
+    event.addMetadata(Constants.manifest?.name ?? 'unknown-app', {
+      platformOS: Platform.OS,
+    });
+  },
+});
 const store = configureStore();
 
 const App: FC = () => {
