@@ -11,6 +11,8 @@ import { DrawerNavigationHelpers } from '@react-navigation/drawer/lib/typescript
 import Animated from 'react-native-reanimated';
 import DrawerItem from './DrawerItem';
 import { getDrawerProgressListener } from './onDrawerProgressListener';
+import { IconFamilyType } from '../../model/IconFamilyType';
+import { AppConfigurations } from '../../model/AppConfigurations';
 
 const styles = StyleSheet.create({
   drawerImageContainer: {
@@ -28,9 +30,14 @@ const styles = StyleSheet.create({
 interface Props {
   progress: Animated.Node<number>;
   navigation: DrawerNavigationHelpers;
+  appConfigurations: AppConfigurations;
 }
 
-const DrawerContent: FC<Props> = ({ progress, navigation }) => {
+const DrawerContent: FC<Props> = ({
+  progress,
+  navigation,
+  appConfigurations,
+}) => {
   useEffect(() => {
     if (getDrawerProgressListener()) {
       getDrawerProgressListener()(progress);
@@ -41,16 +48,20 @@ const DrawerContent: FC<Props> = ({ progress, navigation }) => {
     <View style={{ flex: 1 }}>
       <View style={styles.drawerImageContainer}>
         <Image
-          source={require('../../../assets/images/azn.png')}
+          source={require('../../../assets/images/company-logo.png')}
           style={styles.drawerImage}
         />
       </View>
-      <DrawerItem
-        label="Ambulancezorg.nl"
-        onSubmit={() => Linking.openURL('https://www.ambulancezorg.nl/')}
-        iconName="exit-to-app"
-        iconType="MaterialCommunityIcons"
-      />
+      {appConfigurations.drawer.links?.map(link => (
+        <DrawerItem
+          isExternalLink
+          key={link.title}
+          label={link.title}
+          onSubmit={() => Linking.openURL(link.url)}
+          iconName={link.iconName}
+          iconType={link.iconType as IconFamilyType}
+        />
+      ))}
       <DrawerItem
         label="Over de maker"
         onSubmit={() => {

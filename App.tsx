@@ -22,12 +22,9 @@ if (!global.atob) {
 
 Bugsnag.start({
   appVersion: Constants.manifest?.version ?? 'unknown-version',
-  onError(event) {
-    event.addMetadata(Constants.manifest?.name ?? 'unknown-app', {
-      platformOS: Platform.OS,
-    });
-  },
+  metadata: { company: Constants.manifest?.name ?? 'unknown-app' },
 });
+
 const store = configureStore();
 
 const App: FC = () => {

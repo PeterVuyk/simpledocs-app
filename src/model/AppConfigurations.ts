@@ -35,6 +35,18 @@ export interface VersionInfo {
   version: string;
 }
 
+export interface LinkItem {
+  title: string;
+  url: string;
+  index: 0;
+  iconName: string;
+  iconType: string;
+}
+
+export interface Drawer {
+  links: LinkItem[];
+}
+
 export interface Versions {
   [key: string]: VersionInfo;
 }
@@ -43,6 +55,7 @@ export interface AppConfigurations {
   firstTab: TabInfo;
   secondTab: TabInfo;
   decisionsTab: DecisionsTab;
+  drawer: Drawer;
   defaultBookTypeSearch: string;
   defaultInitialTab: string;
   versioning: Versions;

@@ -14,7 +14,7 @@ const HeaderLogo: FC = () => {
     <View style={{ flex: 1 }}>
       <Image
         style={styles.headerLogo}
-        source={require('../../../assets/images/azn.png')}
+        source={require('../../../assets/images/company-logo.png')}
       />
     </View>
   );

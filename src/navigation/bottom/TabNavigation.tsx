@@ -12,23 +12,20 @@ import SecondBookTabStackNavigator from '../StackNavigator/SecondBookTabStackNav
 import FirstBookTabStackNavigator from '../StackNavigator/FirstBookTabStackNavigator';
 import SearchStackNavigator from '../StackNavigator/SearchStackNavigator';
 import scrolling from '../../redux/actions/scrolling';
-import configurationsStorage from '../../configurations/configurationsStorage';
 
 const Tab = TabNavigator();
 
 interface Props {
+  appConfigurations: AppConfigurations;
   navigation: DrawerNavigationHelpers;
   setScrollDirection: (direction: string) => void;
 }
 
-const TabNavigation: FC<Props> = ({ navigation, setScrollDirection }) => {
-  const [appConfigurations, setAppConfigurations] =
-    useState<AppConfigurations | null>(null);
-  useEffect(() => {
-    configurationsStorage.getSystemConfiguration().then(config => {
-      setAppConfigurations(config!.appConfigurations!);
-    });
-  }, []);
+const TabNavigation: FC<Props> = ({
+  navigation,
+  setScrollDirection,
+  appConfigurations,
+}) => {
   const [progress, setProgress] = useState(new Animated.Value(0));
   const scale = interpolateNode(progress, {
     inputRange: [0, 1],
@@ -51,10 +48,6 @@ const TabNavigation: FC<Props> = ({ navigation, setScrollDirection }) => {
       setProgress(updatedProgress),
     );
   }, []);
-
-  if (!appConfigurations) {
-    return null;
-  }
 
   const getInitialRoute = () => {
     switch (appConfigurations.defaultInitialTab) {
