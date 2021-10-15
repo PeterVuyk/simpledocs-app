@@ -3,9 +3,11 @@ import WebView, { WebViewMessageEvent } from 'react-native-webview';
 import { ShouldStartLoadRequest } from 'react-native-webview/lib/WebViewTypes';
 import { Linking, Platform, View } from 'react-native';
 import { useIsFocused } from '@react-navigation/native';
+import ContentLoader, { List, Rect } from 'react-content-loader/native';
 import highlightWordsInHTMLFile from '../../helper/highlightWordsInHTMLFile';
 import ScrollViewToggleBottomBar from '../ScrollViewToggleBottomBar';
 import useContentNavigator from '../hooks/useContentNavigator';
+import ContentViewLoader from './ContentViewLoader';
 
 interface Props {
   htmlFile: string;
@@ -84,7 +86,6 @@ const HTMLViewer: FC<Props> = ({ htmlFile, highlightText, bookType }) => {
         <ScrollViewToggleBottomBar pageHeight={webViewHeight ?? 0}>
           <WebView
             ref={webview}
-            startInLoadingState
             originWhitelist={['https://*']}
             scalesPageToFit={false}
             onShouldStartLoadWithRequest={openExternalLink}
@@ -93,6 +94,8 @@ const HTMLViewer: FC<Props> = ({ htmlFile, highlightText, bookType }) => {
             domStorageEnabled
             injectedJavaScript={injectedJavaScript}
             source={{ html: getDocumentation() }}
+            startInLoadingState
+            renderLoading={() => <ContentViewLoader />}
           />
         </ScrollViewToggleBottomBar>
       )}

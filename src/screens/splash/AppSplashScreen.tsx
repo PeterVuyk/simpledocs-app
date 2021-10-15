@@ -9,6 +9,7 @@ import ShowNotification from '../../components/ShowNotification';
 import { NOTIFICATION_TYPE_NO_INTERNET_CONNECTION } from '../../model/NotificationType';
 import InitializationAppFailureOverlay from './InitializationAppFailureOverlay';
 import usePrepareResources from './usePrepareResources';
+import SynchronizationSplashScreen from './SynchronizationSplashScreen';
 
 const AppSplashScreen: FC = () => {
   const {
@@ -37,12 +38,7 @@ const AppSplashScreen: FC = () => {
   }, []);
 
   const onLayoutRootView = useCallback(async () => {
-    if (
-      appIsReady &&
-      initialStartupSuccessful !== null &&
-      internetRequired !== null &&
-      internetSuggested !== null
-    ) {
+    if (appIsReady) {
       // This tells the splash screen to hide immediately! If we call this after
       // `setAppIsReady`, then we may see a blank screen while the app is
       // loading its initial state and rendering its first pixels. So instead,
@@ -50,23 +46,13 @@ const AppSplashScreen: FC = () => {
       // performed layout.
       await SplashScreen.hideAsync();
     }
-  }, [
-    appIsReady,
-    initialStartupSuccessful,
-    internetRequired,
-    internetSuggested,
-  ]);
+  }, [appIsReady]);
 
-  if (
-    !appIsReady ||
-    initialStartupSuccessful === null ||
-    internetRequired === null ||
-    internetSuggested === null
-  ) {
+  if (!appIsReady) {
     return null;
   }
 
-  if (internetRequired) {
+  if (internetRequired === true) {
     return (
       <View style={{ flex: 1 }} onLayout={onLayoutRootView}>
         <NoInternetConnectionOverlay
@@ -80,7 +66,7 @@ const AppSplashScreen: FC = () => {
     );
   }
 
-  if (!initialStartupSuccessful) {
+  if (initialStartupSuccessful === false) {
     return (
       <View style={{ flex: 1 }} onLayout={onLayoutRootView}>
         <InitializationAppFailureOverlay />
@@ -89,7 +75,7 @@ const AppSplashScreen: FC = () => {
   }
 
   if (
-    initialStartupSuccessful &&
+    initialStartupSuccessful === true &&
     internetRequired === false &&
     (isAggregatesUpdated || internetSuggested)
   ) {
@@ -105,7 +91,11 @@ const AppSplashScreen: FC = () => {
     );
   }
 
-  return <></>;
+  return (
+    <View style={{ flex: 1 }} onLayout={onLayoutRootView}>
+      <SynchronizationSplashScreen />
+    </View>
+  );
 };
 
 export default AppSplashScreen;

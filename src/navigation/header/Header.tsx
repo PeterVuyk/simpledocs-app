@@ -8,7 +8,7 @@ import SearchButton from './SearchButton';
 import ArticleListButton from './ArticleListButton';
 import HeaderLogo from './HeaderLogo';
 
-const styles = StyleSheet.create({
+export const headerStyles = StyleSheet.create({
   container: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -38,7 +38,7 @@ const Header: FC<Props> = ({ navigation, showListButtonFromBookType }) => {
   const navigator = useNavigation<StackNavigationProp<any>>();
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={headerStyles.container}>
       {Platform.OS === 'ios' && navigator.canGoBack() && (
         <HeaderBackButton onPress={navigator.goBack} />
       )}
@@ -50,7 +50,7 @@ const Header: FC<Props> = ({ navigation, showListButtonFromBookType }) => {
         />
       )}
       <HeaderLogo />
-      <View style={styles.rightContainer}>
+      <View style={headerStyles.rightContainer}>
         {Platform.OS === 'ios' && (
           <DrawerButton
             iconName="dots-vertical"

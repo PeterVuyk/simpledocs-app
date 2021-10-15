@@ -9,10 +9,14 @@ const styles = StyleSheet.create({
     color: '#154594',
     padding: 10,
   },
+  buttonColorDisabled: {
+    color: '#b7b7b7',
+    padding: 10,
+  },
 });
 
 interface Props {
-  navigation: DrawerNavigationHelpers;
+  navigation?: DrawerNavigationHelpers;
   iconName: string;
   iconType: IconFamilyType;
 }
@@ -20,11 +24,15 @@ interface Props {
 const DrawerButton: FC<Props> = ({ navigation, iconType, iconName }) => {
   return (
     <Icon
-      style={styles.buttonColor}
+      style={[navigation ? styles.buttonColor : styles.buttonColorDisabled]}
       name={iconName}
       type={iconType}
       fontSize={26}
-      onPress={() => navigation.openDrawer()}
+      onPress={() => {
+        if (navigation) {
+          navigation.openDrawer();
+        }
+      }}
     />
   );
 };

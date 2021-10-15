@@ -8,10 +8,14 @@ const styles = StyleSheet.create({
     color: '#154594',
     padding: 10,
   },
+  buttonColorDisabled: {
+    color: '#b7b7b7',
+    padding: 10,
+  },
 });
 
 interface Props {
-  navigation: DrawerNavigationHelpers;
+  navigation?: DrawerNavigationHelpers;
 }
 
 const SearchButton: FC<Props> = ({ navigation }) => {
@@ -20,12 +24,14 @@ const SearchButton: FC<Props> = ({ navigation }) => {
       <Icon
         name="magnify"
         fontSize={26}
-        style={styles.buttonColor}
+        style={[navigation ? styles.buttonColor : styles.buttonColorDisabled]}
         type="MaterialCommunityIcons"
         onPress={() => {
-          navigation.navigate('SearchStack', {
-            screen: 'SearchScreen',
-          });
+          if (navigation) {
+            navigation.navigate('SearchStack', {
+              screen: 'SearchScreen',
+            });
+          }
         }}
       />
     </View>
