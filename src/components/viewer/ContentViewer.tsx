@@ -11,31 +11,17 @@ import MarkdownViewer from './MarkdownViewer';
 interface Props {
   content: string;
   contentType: ContentType;
-  highlightText?: string;
   bookType: string;
 }
 
-const ContentViewer: FC<Props> = ({
-  content,
-  contentType,
-  highlightText,
-  bookType,
-}) => {
+const ContentViewer: FC<Props> = ({ content, contentType, bookType }) => {
   return (
     <View style={{ flex: 1 }}>
       {contentType === CONTENT_TYPE_HTML && (
-        <HTMLViewer
-          htmlFile={content}
-          highlightText={highlightText}
-          bookType={bookType}
-        />
+        <HTMLViewer htmlFile={content} bookType={bookType} />
       )}
       {contentType === CONTENT_TYPE_MARKDOWN && (
-        <MarkdownViewer
-          markdownFile={content}
-          bookType={bookType}
-          highlightText={highlightText}
-        />
+        <MarkdownViewer markdownFile={content} bookType={bookType} />
       )}
     </View>
   );

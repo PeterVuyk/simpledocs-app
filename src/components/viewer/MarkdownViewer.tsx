@@ -4,7 +4,6 @@ import { useIsFocused } from '@react-navigation/native';
 import Markdown from 'react-native-markdown-display';
 import ScrollViewToggleBottomBar from '../ScrollViewToggleBottomBar';
 import useContentNavigator from '../hooks/useContentNavigator';
-import highlightWordsInMarkdownFile from '../../helper/highlightWordsInMarkdownFile';
 
 const styles = StyleSheet.create({
   viewContainer: {
@@ -17,15 +16,10 @@ const styles = StyleSheet.create({
 
 interface Props {
   markdownFile: string;
-  highlightText?: string;
   bookType: string;
 }
 
-const MarkdownViewer: FC<Props> = ({
-  markdownFile,
-  highlightText,
-  bookType,
-}) => {
+const MarkdownViewer: FC<Props> = ({ markdownFile, bookType }) => {
   const [loading, setLoading] = useState<boolean>(false);
   const isFocused = useIsFocused();
   const { blankWebpage, navigateFromHttpsUrlToChapter } = useContentNavigator();
@@ -47,16 +41,6 @@ const MarkdownViewer: FC<Props> = ({
       Linking.openURL(url);
     }
     return false;
-  };
-
-  const getDocumentation = (): string => {
-    if (highlightText === undefined || highlightText === '') {
-      return `#\n${markdownFile}\n#\n#\n#\n#\n#`;
-    }
-    return `#\n${highlightWordsInMarkdownFile(
-      markdownFile,
-      highlightText ?? '',
-    )}\n#\n#\n#\n#\n#`;
   };
 
   /**
@@ -99,7 +83,7 @@ const MarkdownViewer: FC<Props> = ({
       {!loading && (
         <ScrollViewToggleBottomBar>
           <Markdown onLinkPress={onLinkPress} rules={rules}>
-            {getDocumentation()}
+            {`#\n${markdownFile}\n#\n#\n#\n#`}
           </Markdown>
         </ScrollViewToggleBottomBar>
       )}

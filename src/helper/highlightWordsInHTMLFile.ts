@@ -65,7 +65,7 @@ const highlightSearchWords = (
 const highlightWordsInHTMLFile = (
   text: string,
   highLightText: string,
-): string => {
+): ContentView => {
   let textToHighlight = highLightText.replace('<', '&lt;');
   textToHighlight = textToHighlight.replace('>', '&gt;');
 
@@ -75,11 +75,14 @@ const highlightWordsInHTMLFile = (
   );
   indexOfAllMatches = filterIndexFromTagsBeforeMatch(text, indexOfAllMatches);
   indexOfAllMatches = filterIndexFromTagsAfterMatch(text, indexOfAllMatches);
-  return highlightSearchWords(
-    text,
-    textToHighlight.toLowerCase(),
-    indexOfAllMatches,
-  );
+  return {
+    hasHighlightedText: indexOfAllMatches.length !== 0,
+    content: highlightSearchWords(
+      text,
+      textToHighlight.toLowerCase(),
+      indexOfAllMatches,
+    ),
+  };
 };
 
 export default highlightWordsInHTMLFile;

@@ -3,19 +3,16 @@ import WebView, { WebViewMessageEvent } from 'react-native-webview';
 import { ShouldStartLoadRequest } from 'react-native-webview/lib/WebViewTypes';
 import { Linking, Platform, View } from 'react-native';
 import { useIsFocused } from '@react-navigation/native';
-import ContentLoader, { List, Rect } from 'react-content-loader/native';
-import highlightWordsInHTMLFile from '../../helper/highlightWordsInHTMLFile';
 import ScrollViewToggleBottomBar from '../ScrollViewToggleBottomBar';
 import useContentNavigator from '../hooks/useContentNavigator';
 import ContentViewLoader from './ContentViewLoader';
 
 interface Props {
   htmlFile: string;
-  highlightText?: string;
   bookType: string;
 }
 
-const HTMLViewer: FC<Props> = ({ htmlFile, highlightText, bookType }) => {
+const HTMLViewer: FC<Props> = ({ htmlFile, bookType }) => {
   const [webViewHeight, setWebViewHeight] = useState<number>(0);
   const [loading, setLoading] = useState<boolean>(false);
   const webview = createRef<WebView>();
@@ -40,13 +37,6 @@ const HTMLViewer: FC<Props> = ({ htmlFile, highlightText, bookType }) => {
 
   const onMessage = (event: WebViewMessageEvent) => {
     setWebViewHeight(Number(event.nativeEvent.data));
-  };
-
-  const getDocumentation = (): string => {
-    if (highlightText === undefined || highlightText === '') {
-      return htmlFile;
-    }
-    return highlightWordsInHTMLFile(htmlFile, highlightText ?? '');
   };
 
   /**
@@ -93,7 +83,7 @@ const HTMLViewer: FC<Props> = ({ htmlFile, highlightText, bookType }) => {
             javaScriptEnabled
             domStorageEnabled
             injectedJavaScript={injectedJavaScript}
-            source={{ html: getDocumentation() }}
+            source={{ html: htmlFile }}
             startInLoadingState
             renderLoading={() => <ContentViewLoader />}
           />

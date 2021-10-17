@@ -129,9 +129,12 @@ const highlightLine = (text: string, highLightText: string): string => {
  *
  * The search doesn't support the following syntax because the viewer doesn't support it: footnote, definition List and html tags.
  */
-const highlightWordsInMarkdownFile = (text: string, highLightText: string) => {
+const highlightWordsInMarkdownFile = (
+  text: string,
+  highLightText: string,
+): ContentView => {
   if (reservedCharacters.some(character => highLightText.includes(character))) {
-    return text;
+    return { hasHighlightedText: false, content: text };
   }
   const lines = text.split('\n');
   const updatedLines: string[] = [];
@@ -213,7 +216,11 @@ const highlightWordsInMarkdownFile = (text: string, highLightText: string) => {
   });
 
   // join the lines and add a spacing for side by side matches
-  return updatedLines.join('\n').replace(/\b`{2}\b/g, '` `');
+  const content = updatedLines.join('\n').replace(/\b`{2}\b/g, '` `');
+  return {
+    hasHighlightedText: content.replace(/```/g, '').includes('`'),
+    content,
+  };
 };
 
 export default highlightWordsInMarkdownFile;

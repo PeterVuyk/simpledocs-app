@@ -6,6 +6,12 @@ import { Article } from '../../../model/Article';
 import articleRepository from '../../../database/repository/articleRepository';
 import ScrollAwareBottomButton from '../../../components/ScrollAwareBottomButton';
 import ContentViewer from '../../../components/viewer/ContentViewer';
+import {
+  CONTENT_TYPE_HTML,
+  CONTENT_TYPE_MARKDOWN,
+} from '../../../model/ContentType';
+import highlightWordsInMarkdownFile from '../../../helper/highlightWordsInMarkdownFile';
+import highlightWordsInHTMLFile from '../../../helper/highlightWordsInHTMLFile';
 
 interface Props {
   articleChapter: string;
@@ -21,6 +27,7 @@ const ArticleDetailItem: FC<Props> = ({
   bookType,
 }) => {
   const [article, setArticle] = useState<Article | null>();
+  const [contentView, setContentView] = useState<ContentView | null>();
 
   /**
    * To avoid the warning Can't perform a React state update on an unmounted component,
@@ -43,6 +50,7 @@ const ArticleDetailItem: FC<Props> = ({
   }, [bookType, articleChapter]);
 
   const stopHighlightText = () => {
+    setContentView(null);
     setChapterSearchText({ chapter: '', searchText: '', bookType: null });
   };
 
@@ -53,19 +61,43 @@ const ArticleDetailItem: FC<Props> = ({
     return '';
   }, [article, chapterSearchText]);
 
-  if (!article) {
+  const getContent2 = useCallback((): ContentView => {
+    if (chapterSearchText.chapter === article?.chapter) {
+      if (article.contentType === CONTENT_TYPE_HTML) {
+        return highlightWordsInHTMLFile(
+          article.content,
+          getChapterSearchText(),
+        );
+      }
+      if (article.contentType === CONTENT_TYPE_MARKDOWN) {
+        return highlightWordsInMarkdownFile(
+          article.content,
+          getChapterSearchText(),
+        );
+      }
+      return { content: article.content, hasHighlightedText: false };
+    }
+    return { content: article?.content ?? '', hasHighlightedText: false };
+  }, [article, chapterSearchText.chapter, getChapterSearchText]);
+
+  useEffect(() => {
+    if (article) {
+      setContentView(getContent2());
+    }
+  }, [article, getContent2]);
+
+  if (!article || !contentView) {
     return null;
   }
 
   return (
     <View style={{ flex: 1 }}>
       <ContentViewer
-        content={article.content}
+        content={contentView.content}
         contentType={article.contentType}
         bookType={bookType}
-        highlightText={getChapterSearchText()}
       />
-      {getChapterSearchText() !== '' && (
+      {contentView.hasHighlightedText && getChapterSearchText() !== '' && (
         <ScrollAwareBottomButton
           title="Verwijder markering"
           onPress={stopHighlightText}
