@@ -1,10 +1,11 @@
-import React, { FC, useCallback, useEffect, useState } from 'react';
+import React, { FC, useCallback, useEffect, useRef, useState } from 'react';
 import { View, FlatList, Dimensions } from 'react-native';
 import { useIsFocused } from '@react-navigation/native';
 import ArticleDetailItem from './ArticleDetailItem';
 import { ArticleChapter } from '../../../model/ArticleChapter';
 import ShowNotification from '../../../components/ShowNotification';
 import { NOTIFICATION_TYPE_HORIZONTAL_SCROLL_TIP } from '../../../model/NotificationType';
+import BookChapterNavigator from '../BookChapterNavigator';
 
 interface Props {
   articleChapter: string;
@@ -17,16 +18,31 @@ const ArticleDetails: FC<Props> = ({
   articleChapterList,
   bookType,
 }) => {
-  const { width } = Dimensions.get('window');
+  const flatListRef = useRef<FlatList<ArticleChapter> | null>(null);
   const [currentIndex, setCurrentIndex] = useState<number>();
+  const { width } = Dimensions.get('window');
   const isFocused = useIsFocused();
+
+  const handleArticleNavigation = useCallback(
+    (chapter: string) => {
+      const index = articleChapterList
+        .map(value => value.chapter)
+        .indexOf(chapter);
+      setCurrentIndex(index === -1 ? 1 : index);
+      flatListRef.current?.scrollToIndex({
+        animated: false,
+        index: index === -1 ? 1 : index,
+      });
+    },
+    [articleChapterList],
+  );
 
   useEffect(() => {
     const index = articleChapterList
-      .map(chapter => chapter.chapter)
+      .map(value => value.chapter)
       .indexOf(articleChapter);
     setCurrentIndex(index === -1 ? 1 : index);
-  }, [articleChapter, articleChapterList]);
+  }, [articleChapter, articleChapterList, handleArticleNavigation]);
 
   const onScrollEnd = e => {
     const { contentOffset } = e.nativeEvent;
@@ -52,27 +68,35 @@ const ArticleDetails: FC<Props> = ({
         notificationType={NOTIFICATION_TYPE_HORIZONTAL_SCROLL_TIP}
       />
       {isFocused && currentIndex !== undefined && (
-        <FlatList
-          style={{ flex: 1 }}
-          nestedScrollEnabled
-          horizontal
-          pagingEnabled
-          bounces={false}
-          showsHorizontalScrollIndicator={false}
-          maxToRenderPerBatch={3}
-          initialNumToRender={3}
-          onMomentumScrollEnd={onScrollEnd}
-          windowSize={3}
-          data={articleChapterList}
-          initialScrollIndex={currentIndex}
-          getItemLayout={(data, index) => ({
-            length: width,
-            offset: width * index,
-            index,
-          })}
-          keyExtractor={item => item.chapter.toString()}
-          renderItem={({ item }) => renderItem(item)}
-        />
+        <>
+          <BookChapterNavigator
+            onArticleNavigation={handleArticleNavigation}
+            articleChapterList={articleChapterList}
+            currentChapter={articleChapterList[currentIndex].chapter}
+          />
+          <FlatList
+            ref={flatListRef}
+            style={{ flex: 1 }}
+            nestedScrollEnabled
+            horizontal
+            pagingEnabled
+            bounces={false}
+            showsHorizontalScrollIndicator={false}
+            maxToRenderPerBatch={1}
+            initialNumToRender={3}
+            windowSize={3}
+            onMomentumScrollEnd={onScrollEnd}
+            data={articleChapterList}
+            initialScrollIndex={currentIndex}
+            getItemLayout={(data, index) => ({
+              length: width,
+              offset: width * index,
+              index,
+            })}
+            keyExtractor={item => item.chapter.toString()}
+            renderItem={({ item }) => renderItem(item)}
+          />
+        </>
       )}
     </View>
   );

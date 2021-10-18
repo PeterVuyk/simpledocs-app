@@ -30,7 +30,9 @@ const ArticleDetailsScreen: FC<Props> = ({ navigation, route }) => {
 
   return (
     <>
-      <Header navigation={navigation} showListButtonFromBookType={bookType} />
+      <Header navigation={navigation} />
+      {/* TODO: kept it here for reference later when we replace it with button to article favorites */}
+      {/* <Header navigation={navigation} showListButtonFromBookType={bookType} /> */}
       {chapters.length !== 0 && (
         <ArticleDetails
           bookType={bookType}
