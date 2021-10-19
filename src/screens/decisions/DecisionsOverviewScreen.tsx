@@ -133,7 +133,6 @@ const DecisionsOverviewScreen: FC<Props> = ({ navigation, route }) => {
   };
 
   const getSubtitleFromAggregate = (category: string) => {
-    console.log('category', category);
     switch (category) {
       case AGGREGATE_DECISION_TREE:
         return 'Beslisboom';

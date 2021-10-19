@@ -119,6 +119,7 @@ const SearchScreen: FC<Props> = ({ setChapterSearchText, route }) => {
       handleBookTypeTabChange={handleBookTypeTabChange}
       handleSearchTextChange={handleSearchTextChange}
       searchText={searchText}
+      bookType={bookType}
     >
       <KeyboardAwareView>
         {!articles && searchText === '' && (
