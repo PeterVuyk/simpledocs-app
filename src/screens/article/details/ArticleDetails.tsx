@@ -1,5 +1,5 @@
 import React, { FC, useCallback, useEffect, useRef, useState } from 'react';
-import { View, FlatList, Dimensions } from 'react-native';
+import { View, FlatList, ScaledSize } from 'react-native';
 import { useIsFocused } from '@react-navigation/native';
 import ArticleDetailItem from './ArticleDetailItem';
 import { ArticleChapter } from '../../../model/ArticleChapter';
@@ -11,16 +11,17 @@ interface Props {
   articleChapter: string;
   bookType: string;
   articleChapterList: ArticleChapter[];
+  windowWidth: ScaledSize;
 }
 
 const ArticleDetails: FC<Props> = ({
   articleChapter,
   articleChapterList,
   bookType,
+  windowWidth,
 }) => {
   const flatListRef = useRef<FlatList<ArticleChapter> | null>(null);
   const [currentIndex, setCurrentIndex] = useState<number>();
-  const { width } = Dimensions.get('window');
   const isFocused = useIsFocused();
 
   const handleArticleNavigation = useCallback(
@@ -52,14 +53,14 @@ const ArticleDetails: FC<Props> = ({
 
   const renderItem = useCallback(
     (chapter: ArticleChapter) => (
-      <View style={{ width, flex: 1 }}>
+      <View style={{ width: windowWidth.width, flex: 1 }}>
         <ArticleDetailItem
           articleChapter={chapter.chapter}
           bookType={bookType}
         />
       </View>
     ),
-    [bookType, width],
+    [bookType, windowWidth],
   );
 
   return (
@@ -89,8 +90,8 @@ const ArticleDetails: FC<Props> = ({
             data={articleChapterList}
             initialScrollIndex={currentIndex}
             getItemLayout={(data, index) => ({
-              length: width,
-              offset: width * index,
+              length: windowWidth.width,
+              offset: windowWidth.width * index,
               index,
             })}
             keyExtractor={item => item.chapter.toString()}

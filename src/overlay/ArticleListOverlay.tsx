@@ -1,6 +1,6 @@
 import React, { FC, useCallback, useEffect, useState } from 'react';
 import { Button, ListItem, Overlay } from 'react-native-elements';
-import { View, FlatList, Dimensions, StyleSheet } from 'react-native';
+import { View, FlatList, StyleSheet } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import articleRepository from '../database/repository/articleRepository';
@@ -60,7 +60,7 @@ const ArticleListOverlay: FC<Props> = ({ bookType, toggleOverlay }) => {
   return (
     <View
       style={{
-        width: Dimensions.get('window').width,
+        width: 100,
       }}
     >
       <Overlay fullScreen isVisible onBackdropPress={toggleOverlay}>
