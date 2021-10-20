@@ -3,7 +3,6 @@ import { Platform, SafeAreaView, StyleSheet, View } from 'react-native';
 import { SearchBar } from 'react-native-elements';
 import { useIsFocused, useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
-import SearchScreenBookTypeNavigator from '../../screens/search/SearchScreenBookTypeNavigator';
 
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: '#fff' },
@@ -24,16 +23,12 @@ interface Props {
   children: ReactNode;
   searchText: string;
   handleSearchTextChange: (searchText: string) => void;
-  handleBookTypeTabChange: (bookType: string) => void;
-  bookType: string;
 }
 
 const SearchHeader: FC<Props> = ({
   children,
   searchText,
   handleSearchTextChange,
-  handleBookTypeTabChange,
-  bookType,
 }) => {
   let searchRef: null | SearchBar = null;
   const navigation = useNavigation<StackNavigationProp<any>>();
@@ -66,10 +61,6 @@ const SearchHeader: FC<Props> = ({
               value={searchText}
             />
           )}
-          <SearchScreenBookTypeNavigator
-            onBookTypeTabChange={handleBookTypeTabChange}
-            bookType={bookType}
-          />
         </View>
       </View>
       {children}

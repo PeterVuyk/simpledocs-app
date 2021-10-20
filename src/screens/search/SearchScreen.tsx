@@ -12,6 +12,7 @@ import SearchHeader from '../../navigation/header/SearchHeader';
 import KeyboardAwareView from '../../components/keyboard/KeyboardAwareView';
 import { AppConfigurations } from '../../model/AppConfigurations';
 import useContentNavigator from '../../components/hooks/useContentNavigator';
+import SearchScreenBookTypeNavigator from './SearchScreenBookTypeNavigator';
 
 const styles = StyleSheet.create({
   findPlaceholderImage: {
@@ -116,11 +117,15 @@ const SearchScreen: FC<Props> = ({ setChapterSearchText, route }) => {
 
   return (
     <SearchHeader
-      handleBookTypeTabChange={handleBookTypeTabChange}
       handleSearchTextChange={handleSearchTextChange}
       searchText={searchText}
-      bookType={bookType}
     >
+      <View>
+        <SearchScreenBookTypeNavigator
+          onBookTypeTabChange={handleBookTypeTabChange}
+          bookType={bookType}
+        />
+      </View>
       <KeyboardAwareView>
         {!articles && searchText === '' && (
           <Image
