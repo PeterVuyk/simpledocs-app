@@ -1,9 +1,10 @@
 import React, { FC, useCallback, useEffect, useRef, useState } from 'react';
-import { Chip, ThemeProvider } from 'react-native-elements';
-import { FlatList, StyleSheet, View } from 'react-native';
+import { FlatList, StyleSheet } from 'react-native';
 import { useIsFocused } from '@react-navigation/native';
+import getWidth from 'string-pixel-width';
 import configHelper from '../../helper/configHelper';
 import { BookInfo } from '../../model/AppConfigurations';
+import NavigatorChip from '../../components/NavigatorChip';
 
 interface BookInfoItem {
   index: number;
@@ -11,12 +12,6 @@ interface BookInfoItem {
   title: string;
   bookType: string;
 }
-
-const theme = {
-  Chip: {
-    theme: { colors: { primary: '#154594' } },
-  },
-};
 
 const styles = StyleSheet.create({
   navigationBorder: {
@@ -46,18 +41,11 @@ const SearchScreenBookTypeNavigator: FC<Props> = ({
   const mapBookInfoToItem = useCallback((books: BookInfo[]) => {
     let index = 0;
     return books.map(value => {
-      let width = 0;
-      if (value.title.length < 6) {
-        width = (value.title.length + 3) * 11;
-      } else if (value.title.length < 12) {
-        width = value.title.length * 11;
-      } else {
-        width = value.title.length * 9;
-      }
+      const width = getWidth(value.title, { bold: true, size: 14 });
       return {
         bookType: value.bookType,
         title: value.title,
-        width,
+        width: width + 35,
         index: index++,
       } as BookInfoItem;
     });
@@ -85,17 +73,14 @@ const SearchScreenBookTypeNavigator: FC<Props> = ({
   }, [mapBookInfoToItem]);
 
   const getItem = (bookInfo: BookInfoItem) => {
-    const isSelected = bookInfo.bookType === bookType;
     return (
-      <View style={{ padding: 2 }}>
-        <Chip
-          title={bookInfo.title}
-          titleStyle={[isSelected ? { color: '#fff' } : { color: '#154594' }]}
-          type={isSelected ? 'solid' : 'outline'}
-          onPress={() => onBookTypeTabChange(bookInfo.bookType)}
-          buttonStyle={{ width: bookInfo.width }}
-        />
-      </View>
+      <NavigatorChip
+        id={bookInfo.bookType}
+        title={bookInfo.title}
+        isSelected={bookInfo.bookType === bookType}
+        onPress={onBookTypeTabChange}
+        width={bookInfo.width}
+      />
     );
   };
 
@@ -125,15 +110,13 @@ const SearchScreenBookTypeNavigator: FC<Props> = ({
         return {
           length:
             bookInfoItems.find(value => value.index === index)?.width ?? 0,
-          offset: width,
+          offset: width + index * 4,
           index,
         };
       }}
       bounces={false}
       showsHorizontalScrollIndicator={false}
-      renderItem={({ item }) => (
-        <ThemeProvider theme={theme}>{getItem(item)}</ThemeProvider>
-      )}
+      renderItem={({ item }) => getItem(item)}
     />
   );
 };

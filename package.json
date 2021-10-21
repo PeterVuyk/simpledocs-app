@@ -19,6 +19,7 @@
     "@react-navigation/stack": "^5.14.4",
     "@reduxjs/toolkit": "^1.5.1",
     "@types/highlight-words-core": "^1.2.0",
+    "@types/string-pixel-width": "^1.7.2",
     "@types/string.prototype.matchall": "^4.0.0",
     "babel-plugin-inline-dotenv": "^1.6.0",
     "base-64": "^1.0.0",
@@ -52,6 +53,7 @@
     "react-navigation-header-buttons": "^6.2.1",
     "react-redux": "^7.2.3",
     "redux": "^4.0.5",
+    "string-pixel-width": "^1.10.0",
     "string.prototype.matchall": "^4.0.6"
   },
   "devDependencies": {

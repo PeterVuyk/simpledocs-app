@@ -1,7 +1,8 @@
 import React, { FC, useCallback, useEffect, useMemo, useRef } from 'react';
 import { FlatList, StyleSheet, View } from 'react-native';
-import { Chip, ThemeProvider } from 'react-native-elements';
+import getWidth from 'string-pixel-width';
 import { ArticleChapter } from '../../model/ArticleChapter';
+import NavigatorChip from '../../components/NavigatorChip';
 
 interface Props {
   onArticleNavigation: (chapter: string) => void;
@@ -21,12 +22,6 @@ const styles = StyleSheet.create({
   },
 });
 
-const theme = {
-  Chip: {
-    theme: { colors: { primary: '#154594' } },
-  },
-};
-
 const BookChapterNavigator: FC<Props> = ({
   onArticleNavigation,
   currentChapter,
@@ -34,11 +29,11 @@ const BookChapterNavigator: FC<Props> = ({
 }) => {
   const flatListRef = useRef<FlatList<ArticleChapter> | null>(null);
 
-  const ITEM_LENGTH = useMemo(() => {
+  const chipWidth = useMemo(() => {
     const maxCharacters = Math.max(
       ...articleChapterList.map(value => value.chapter.length),
     );
-    return maxCharacters < 6 ? (maxCharacters + 3) * 11 : maxCharacters * 11;
+    return getWidth('W'.repeat(maxCharacters), { bold: true, size: 14 }) + 35;
   }, [articleChapterList]);
 
   const firstUpdate = useRef(true);
@@ -62,20 +57,17 @@ const BookChapterNavigator: FC<Props> = ({
 
   const renderItem = useCallback(
     (item: ArticleChapter) => {
-      const isSelected = item.chapter === currentChapter;
       return (
-        <View key={item.chapter} style={{ padding: 2 }}>
-          <Chip
-            title={item.chapter}
-            titleStyle={[isSelected ? { color: '#fff' } : { color: '#154594' }]}
-            type={isSelected ? 'solid' : 'outline'}
-            onPress={() => onArticleNavigation(item.chapter)}
-            buttonStyle={{ width: ITEM_LENGTH }}
-          />
-        </View>
+        <NavigatorChip
+          id={item.chapter}
+          title={item.chapter}
+          isSelected={item.chapter === currentChapter}
+          onPress={onArticleNavigation}
+          width={chipWidth}
+        />
       );
     },
-    [ITEM_LENGTH, currentChapter, onArticleNavigation],
+    [chipWidth, currentChapter, onArticleNavigation],
   );
 
   return (
@@ -93,15 +85,13 @@ const BookChapterNavigator: FC<Props> = ({
         data={articleChapterList}
         getItemLayout={(data, index) => {
           return {
-            length: ITEM_LENGTH + 4,
+            length: chipWidth + 4,
             // offset is width item times the index, then we want to show the previous chapter also in the list. Finally we add the padding around the Chips
-            offset: ITEM_LENGTH * index - ITEM_LENGTH + index * 4 - 2,
+            offset: chipWidth * index - chipWidth + index * 4 - 2,
             index,
           };
         }}
-        renderItem={({ item }) => (
-          <ThemeProvider theme={theme}>{renderItem(item)}</ThemeProvider>
-        )}
+        renderItem={({ item }) => renderItem(item)}
       />
     </View>
   );
