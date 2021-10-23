@@ -1,23 +1,20 @@
 import Constants from 'expo-constants';
 import { DecisionTreeResponse } from '../model/ApiResponse';
 import { DecisionTreeStep } from '../model/DecisionTreeStep';
+import Firebase from '../authentication/firebase';
 
 async function getDecisionTreeSteps(): Promise<DecisionTreeStep[]> {
-  const decisionTreeResponse = await fetch(
-    new URL('getDecisionTree', process.env.APP_SERVER_API_URL).toString(),
-    {
-      headers: {
-        Accept: `application/json;api-version=${Constants.manifest?.version}`,
-      },
-    },
-  ).then(response => response.json() as Promise<DecisionTreeResponse>);
-
-  if (!decisionTreeResponse.success) {
+  const response = await Firebase.functions(process.env.FIREBASE_REGION)
+    .httpsCallable('getDecisionTree')({
+      appVersion: Constants.manifest?.version,
+    })
+    .then(value => value.data as DecisionTreeResponse);
+  if (!response.success) {
     throw new Error(
-      `Failed collecting decisionTree from server, message server: ${decisionTreeResponse.message}`,
+      `Failed collecting DecisionTree from server, message server: ${response.message}`,
     );
   }
-  return decisionTreeResponse.result;
+  return response.result!;
 }
 
 const decisionTreeClient = {

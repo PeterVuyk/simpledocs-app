@@ -2,6 +2,7 @@ import Constants from 'expo-constants';
 import { LogBox } from 'react-native';
 import { AppConfigurationsResponse } from '../model/ApiResponse';
 import { AppConfigurations } from '../model/AppConfigurations';
+import Firebase from '../authentication/firebase';
 
 /**
  * We disable the warning below because it always pops-up but we don't use it. Later when we use sdk 44 we can remove this LogBox
@@ -11,25 +12,17 @@ LogBox.ignoreLogs([
 ]);
 
 async function getAppConfigurations(): Promise<AppConfigurations> {
-  const appConfigurationsResponse = await fetch(
-    new URL('getConfigurations', process.env.APP_SERVER_API_URL).toString(),
-    {
-      headers: {
-        Accept: `application/json;api-version=${Constants.manifest?.version}`,
-      },
-    },
-  ).then(response => response.json() as Promise<AppConfigurationsResponse>);
-
-  return new Promise((resolve, reject) => {
-    if (!appConfigurationsResponse.success) {
-      reject(
-        new Error(
-          `Failed collecting configurations from server, message server: ${appConfigurationsResponse.message}`,
-        ),
-      );
-    }
-    resolve(appConfigurationsResponse.result!);
-  });
+  const response = await Firebase.functions(process.env.FIREBASE_REGION)
+    .httpsCallable('getConfigurations')({
+      appVersion: Constants.manifest?.version,
+    })
+    .then(value => value.data as AppConfigurationsResponse);
+  if (!response.success) {
+    throw new Error(
+      `Failed collecting configurations from server, message server: ${response.message}`,
+    );
+  }
+  return response.result!;
 }
 
 const appConfigurationsClient = {

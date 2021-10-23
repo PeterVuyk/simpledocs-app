@@ -1,23 +1,20 @@
 import Constants from 'expo-constants';
 import { CalculationResponse } from '../model/ApiResponse';
 import { CalculationInfo } from '../model/CalculationInfo';
+import Firebase from '../authentication/firebase';
 
 async function getCalculationsInfo(): Promise<CalculationInfo[]> {
-  const calculationResponse = await fetch(
-    new URL('getCalculations', process.env.APP_SERVER_API_URL).toString(),
-    {
-      headers: {
-        Accept: `application/json;api-version=${Constants.manifest?.version}`,
-      },
-    },
-  ).then(response => response.json() as Promise<CalculationResponse>);
-
-  if (!calculationResponse.success) {
+  const response = await Firebase.functions(process.env.FIREBASE_REGION)
+    .httpsCallable('getCalculations')({
+      appVersion: Constants.manifest?.version,
+    })
+    .then(value => value.data as CalculationResponse);
+  if (!response.success) {
     throw new Error(
-      `Failed collecting calculations from server, message server: ${calculationResponse.message}`,
+      `Failed collecting calculations from server, message server: ${response.message}`,
     );
   }
-  return calculationResponse.result;
+  return response.result!;
 }
 
 const calculationsClient = {

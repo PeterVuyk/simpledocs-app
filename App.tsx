@@ -6,6 +6,7 @@ import Constants from 'expo-constants';
 import { ThemeProvider } from 'react-native-elements';
 import configureStore from './src/redux/configureStore';
 import AppSplashScreen from './src/screens/splash/AppSplashScreen';
+import AuthProvider from './src/authentication/AuthProvider';
 
 const theme = {
   Chip: {
@@ -36,9 +37,12 @@ const store = configureStore();
 const App: FC = () => {
   return (
     <Provider store={store}>
-      <ThemeProvider theme={theme}>
-        <AppSplashScreen />
-      </ThemeProvider>
+      <AuthProvider>
+        {/* TODO: add init db and migrations here */}
+        <ThemeProvider theme={theme}>
+          <AppSplashScreen />
+        </ThemeProvider>
+      </AuthProvider>
     </Provider>
   );
 };

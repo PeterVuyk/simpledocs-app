@@ -53,7 +53,7 @@ function useUpdateAggregates() {
       .getAppConfigurations()
       .catch(reason =>
         logger.error(
-          'Tried to get appConfigurations from the server api but failed, updateAggretas skipped',
+          'Tried to get appConfigurations from the server api but failed, updateAggregates skipped',
           reason,
         ),
       );
