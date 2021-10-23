@@ -38,7 +38,6 @@ const App: FC = () => {
   return (
     <Provider store={store}>
       <AuthProvider>
-        {/* TODO: add init db and migrations here */}
         <ThemeProvider theme={theme}>
           <AppSplashScreen />
         </ThemeProvider>

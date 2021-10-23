@@ -3,7 +3,6 @@ import {
   Linking,
   Image,
   View,
-  BackHandler,
   Platform,
   StyleSheet,
 } from 'react-native';
@@ -84,12 +83,12 @@ const DrawerContent: FC<Props> = ({
       />
       {Platform.OS !== 'ios' && (
         <DrawerItem
-          label="Afsluiten"
+          label="Terug"
           onSubmit={(): void => {
-            BackHandler.exitApp();
+            navigation.closeDrawer();
           }}
-          iconName="close"
-          iconType="MaterialCommunityIcons"
+          iconName="arrow-back"
+          iconType="Ionicons"
         />
       )}
     </View>

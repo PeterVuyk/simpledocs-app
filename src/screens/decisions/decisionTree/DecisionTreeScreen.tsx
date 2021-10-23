@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC, useCallback, useEffect, useState } from 'react';
 import { StyleSheet, View, Text } from 'react-native';
 import { Button, Icon } from 'react-native-elements';
 import decisionTreeRepository from '../../../database/repository/decisionTreeRepository';
@@ -85,9 +85,9 @@ const DecisionTreeScreen: FC<Props> = ({ title, navigation }) => {
     setRootQuestion(currentStep?.parentId === null);
   }, [currentStep, decisionTreeSteps]);
 
-  const getPreviousQuestion = (): DecisionTreeStep | undefined => {
+  const getPreviousQuestion = useCallback((): DecisionTreeStep | undefined => {
     return decisionTreeSteps.find(step => step.id === currentStep?.parentId);
-  };
+  }, [currentStep, decisionTreeSteps]);
 
   const navigateToArticle = (step: DecisionTreeStep) => {
     navigation.navigate('DecisionsScreenStack', {
@@ -112,6 +112,7 @@ const DecisionTreeScreen: FC<Props> = ({ title, navigation }) => {
                 color="#154594"
                 name="keyboard-backspace"
                 type="MaterialCommunityIcons"
+                disabled={getPreviousQuestion() === undefined}
                 onPress={() => setCurrentStep(getPreviousQuestion())}
                 reverse
               />
@@ -119,6 +120,7 @@ const DecisionTreeScreen: FC<Props> = ({ title, navigation }) => {
                 color="#154594"
                 name="restore"
                 type="MaterialCommunityIcons"
+                disabled={getPreviousQuestion() === undefined}
                 onPress={() => setCurrentStep(undefined)}
                 reverse
               />
