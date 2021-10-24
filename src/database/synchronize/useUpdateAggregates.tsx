@@ -8,6 +8,9 @@ import logger from '../../helper/logger';
 import { SystemConfigurations } from '../../model/SystemConfigurations';
 import configurationsDAO from '../../configurations/configurationsDAO';
 import appConfigurationsClient from '../../api/appConfigurationsClient';
+import environment from '../../util/environment';
+import configHelper from '../../helper/configHelper';
+import { STAGING_ENVIRONMENT } from '../../model/Environment';
 
 function useUpdateAggregates() {
   const [isAggregatesUpdated, setIsAggregatesUpdated] = useState<
@@ -49,7 +52,7 @@ function useUpdateAggregates() {
     if (isAggregatesUpdated !== null) {
       return;
     }
-    const appConfig = await appConfigurationsClient
+    let appConfig = await appConfigurationsClient
       .getAppConfigurations()
       .catch(reason =>
         logger.error(
@@ -62,6 +65,9 @@ function useUpdateAggregates() {
       return;
     }
 
+    if (environment.getEnvironment().envName === STAGING_ENVIRONMENT) {
+      appConfig = configHelper.overWriteVersions(appConfig);
+    }
     setIsAggregatesUpdated(false);
     const configurations = await configurationsDAO.getConfigurations(appConfig);
     await updateDecisionTree(configurations)

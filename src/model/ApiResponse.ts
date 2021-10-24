@@ -2,7 +2,6 @@ import { CalculationInfo } from './CalculationInfo';
 import { AppConfigurations } from './AppConfigurations';
 import { DecisionTreeStep } from './DecisionTreeStep';
 import { Article } from './Article';
-import { AggregateVersions } from './AggregateVersions';
 
 export interface CalculationResponse {
   success: boolean;

@@ -2,10 +2,12 @@ import Constants from 'expo-constants';
 import { ArticlesResponse } from '../model/ApiResponse';
 import { Article } from '../model/Article';
 import Firebase from '../authentication/firebase';
+import environment from '../util/environment';
 
 async function getArticles(bookType: string): Promise<Article[]> {
   const response = await Firebase.functions(process.env.FIREBASE_REGION)
     .httpsCallable('getArticles')({
+      environment: environment.getEnvironment().envName,
       appVersion: Constants.manifest?.version,
       bookType,
     })

@@ -1,5 +1,5 @@
 import { FIRST_BOOK_TAB, SECOND_BOOK_TAB } from '../model/BookTab';
-import { BookInfo } from '../model/AppConfigurations';
+import { AppConfigurations, BookInfo } from '../model/AppConfigurations';
 import configurationsStorage from '../configurations/configurationsStorage';
 
 const getBookTypes = async (): Promise<BookInfo[]> => {
@@ -40,10 +40,19 @@ const getTabByBookType = async (bookType: string): Promise<string | null> => {
   return null;
 };
 
+const overWriteVersions = (appConfigurations: AppConfigurations) => {
+  const config = appConfigurations;
+  for (const version of Object.keys(appConfigurations.versioning)) {
+    config.versioning[version].version = new Date().getTime().toString();
+  }
+  return config;
+};
+
 const configHelper = {
   getTabByBookType,
   getBookTypes,
   getConfigByBookType,
+  overWriteVersions,
 };
 
 export default configHelper;

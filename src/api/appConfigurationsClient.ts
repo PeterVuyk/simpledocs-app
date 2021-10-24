@@ -3,6 +3,7 @@ import { LogBox } from 'react-native';
 import { AppConfigurationsResponse } from '../model/ApiResponse';
 import { AppConfigurations } from '../model/AppConfigurations';
 import Firebase from '../authentication/firebase';
+import environment from '../util/environment';
 
 /**
  * We disable the warning below because it always pops-up but we don't use it. Later when we use sdk 44 we can remove this LogBox
@@ -14,6 +15,7 @@ LogBox.ignoreLogs([
 async function getAppConfigurations(): Promise<AppConfigurations> {
   const response = await Firebase.functions(process.env.FIREBASE_REGION)
     .httpsCallable('getConfigurations')({
+      environment: environment.getEnvironment().envName,
       appVersion: Constants.manifest?.version,
     })
     .then(value => value.data as AppConfigurationsResponse);

@@ -6,6 +6,7 @@ import { SECOND_BOOK_TAB } from '../../model/BookTab';
 import TitleBar from '../../components/TitleBar';
 import ListItem from '../../components/ListItem';
 import { BookInfo, TabInfo } from '../../model/AppConfigurations';
+import environment from '../../util/environment';
 
 const styles = StyleSheet.create({
   container: {
@@ -65,7 +66,12 @@ const BooksOverviewScreen: FC<Props> = ({ navigation, route }) => {
 
   const getHeader = () => {
     return (
-      <TitleBar title={tabInfo.title ?? ''} subTitle={tabInfo.subTitle ?? ''} />
+      <TitleBar
+        title={`${tabInfo.title ?? ''}, ${
+          environment.getEnvironment().envName
+        }`}
+        subTitle={tabInfo.subTitle ?? ''}
+      />
     );
   };
 
