@@ -1,9 +1,9 @@
 import React, { FC, ReactNode, useEffect, useState } from 'react';
 import { View } from 'react-native';
-import Firebase from './firebase';
-import logger from '../helper/logger';
-import NoInternetConnectionOverlay from '../screens/splash/NoInternetConnectionOverlay';
-import internetConnectivity from '../helper/internetConnectivity';
+import Firebase from '../firebase';
+import logger from '../../util/logger';
+import NoInternetConnectionOverlay from '../../screens/splash/NoInternetConnectionOverlay';
+import internetConnectivity from '../../helper/internetConnectivity';
 
 interface Props {
   children: ReactNode;

@@ -1,6 +1,5 @@
 import * as SQLite from 'expo-sqlite';
 import { SQLTransaction } from 'expo-sqlite';
-import logger from '../../helper/logger';
 import { MigrationChangelog } from '../../model/migrationChangelog';
 
 const db = SQLite.openDatabase('db.db');

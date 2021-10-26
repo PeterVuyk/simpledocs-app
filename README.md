@@ -20,5 +20,11 @@ It starts a webpage with instructions how to develop the app in the development 
 
 When you are done with the code changes you can run the following command to build an artifact. 
 
-    expo build:android
-    expo build:ios
+    expo build:android --release-channel staging | prod
+    expo build:ios --release-channel staging | prod
+
+You can see everything that you’ve published or see a detailed view with:
+
+    expo publish:history
+    expo publish:details --publish-id=6d011971-dfff-406a-83fe-23323fcf8964
+

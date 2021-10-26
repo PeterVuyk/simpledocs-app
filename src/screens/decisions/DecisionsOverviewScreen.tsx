@@ -13,7 +13,7 @@ import {
 } from '../../model/aggregate';
 import { DecisionTreeTitle } from '../../model/DecisionTreeTitle';
 import { DecisionsTab, TabInfo } from '../../model/AppConfigurations';
-import logger from '../../helper/logger';
+import logger from '../../util/logger';
 
 interface Props {
   navigation: DrawerNavigationProp<any>;

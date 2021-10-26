@@ -1,5 +1,5 @@
 import * as SQLite from 'expo-sqlite';
-import logger from '../../helper/logger';
+import logger from '../../util/logger';
 import { CalculationInfo } from '../../model/CalculationInfo';
 import {
   OVERTAKING_DISTANCE,

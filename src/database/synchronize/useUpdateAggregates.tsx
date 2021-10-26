@@ -4,13 +4,14 @@ import {
   AGGREGATE_CALCULATIONS,
   AGGREGATE_DECISION_TREE,
 } from '../../model/aggregate';
-import logger from '../../helper/logger';
+import logger from '../../util/logger';
 import { SystemConfigurations } from '../../model/SystemConfigurations';
 import configurationsDAO from '../../configurations/configurationsDAO';
-import appConfigurationsClient from '../../api/appConfigurationsClient';
+import appConfigurationsClient from '../../firebase/api/appConfigurationsClient';
 import environment from '../../util/environment';
 import configHelper from '../../helper/configHelper';
 import { STAGING_ENVIRONMENT } from '../../model/Environment';
+import debugHandler from '../../debug/debugHandler';
 
 function useUpdateAggregates() {
   const [isAggregatesUpdated, setIsAggregatesUpdated] = useState<
@@ -79,6 +80,7 @@ function useUpdateAggregates() {
           'something when wrong by update aggregates, some or all updates may be skipped',
           reason,
         );
+        debugHandler.dumpConfigToStorage();
       });
     setIsAggregatesUpdated(true);
   };

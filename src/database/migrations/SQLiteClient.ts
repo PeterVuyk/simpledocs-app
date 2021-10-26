@@ -3,7 +3,7 @@ import migrations from './migrations';
 import { Migration } from './Migration';
 import migrationChangelogRepository from '../repository/migrationChangelogRepository';
 import { MigrationChangelog } from '../../model/migrationChangelog';
-import logger from '../../helper/logger';
+import logger from '../../util/logger';
 
 const db = SQLite.openDatabase('db.db');
 

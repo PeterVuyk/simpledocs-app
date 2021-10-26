@@ -1,5 +1,12 @@
 import * as SQLite from 'expo-sqlite';
-import logger from '../../helper/logger';
+import logger from '../../util/logger';
+import {
+  ARTICLES,
+  CALCULATIONS,
+  DECISION_TREE,
+  MIGRATION_CHANGELOG,
+  NOTIFICATION,
+} from '../tableNames';
 
 /**
  * Unfortunately it is not possible to access the database with expo.
@@ -35,7 +42,10 @@ function resetDatabase(): Promise<void> {
   });
 }
 
-function describeTable(tableName: string): Promise<void> {
+function describeTable(
+  tableName: string,
+  callback: (tableName: string, data: JSON[]) => void,
+): Promise<void> {
   return new Promise((resolve, reject) => {
     db.transaction(
       sqlTransaction => {
@@ -46,30 +56,28 @@ function describeTable(tableName: string): Promise<void> {
           [tableName],
           // @ts-ignore
           (_, { rows: { _array } }) => {
-            logger.debugMessage(
-              `_array for ${tableName}: ${JSON.stringify(_array)}`,
-            );
+            callback(tableName, _array);
           },
         );
       },
       () => {
-        logger.error('errorCallback', tableName);
         reject();
       },
       () => {
-        logger.debugMessage('successCallback', tableName);
         resolve();
       },
     );
   });
 }
 
-async function describeTables(): Promise<void> {
-  await describeTable('articles')
-    .then(() => describeTable('notification'))
-    .then(() => describeTable('calculations'))
-    .then(() => describeTable('decisionTrees'))
-    .then(() => describeTable('migrationChangelog'));
+async function describeTables(
+  callback: (tableName: string, data: JSON[]) => void,
+): Promise<void> {
+  await describeTable(ARTICLES, callback)
+    .then(() => describeTable(NOTIFICATION, callback))
+    .then(() => describeTable(CALCULATIONS, callback))
+    .then(() => describeTable(DECISION_TREE, callback))
+    .then(() => describeTable(MIGRATION_CHANGELOG, callback));
 }
 
 const debugRepository = {

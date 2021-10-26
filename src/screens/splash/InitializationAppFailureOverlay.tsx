@@ -1,7 +1,8 @@
-import React, { FC } from 'react';
+import React, { FC, useEffect } from 'react';
 import { Overlay } from 'react-native-elements';
 import { StyleSheet, View } from 'react-native';
 import TitleBar from '../../components/TitleBar';
+import debugHandler from '../../debug/debugHandler';
 
 const styles = StyleSheet.create({
   messageContainer: { flex: 1, marginTop: 200 },
@@ -14,6 +15,10 @@ const styles = StyleSheet.create({
  * This error can only occur by a developer error that is not spotted during testing.
  */
 const InitializationAppFailureOverlay: FC = () => {
+  useEffect(() => {
+    debugHandler.dumpConfigToStorage();
+  }, []);
+
   return (
     <View style={{ flex: 1 }}>
       <Overlay fullScreen isVisible>

@@ -1,8 +1,8 @@
 import Constants from 'expo-constants';
-import { CalculationResponse } from '../model/ApiResponse';
-import { CalculationInfo } from '../model/CalculationInfo';
-import Firebase from '../authentication/firebase';
-import environment from '../util/environment';
+import { CalculationResponse } from '../../model/ApiResponse';
+import { CalculationInfo } from '../../model/CalculationInfo';
+import Firebase from '../firebase';
+import environment from '../../util/environment';
 
 async function getCalculationsInfo(): Promise<CalculationInfo[]> {
   const response = await Firebase.functions(process.env.FIREBASE_REGION)

@@ -2,7 +2,7 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import { useNavigation } from '@react-navigation/native';
 import configHelper from '../../helper/configHelper';
 import { FIRST_BOOK_TAB, SECOND_BOOK_TAB } from '../../model/BookTab';
-import logger from '../../helper/logger';
+import logger from '../../util/logger';
 
 export const BLANK_WEBPAGE = 'https://page-blank.firebaseapp.com/';
 

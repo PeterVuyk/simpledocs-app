@@ -7,7 +7,7 @@ import {
 } from '../model/NotificationType';
 import notificationRepository from '../database/repository/notificationRepository';
 import { Notification } from '../model/Notification';
-import logger from '../helper/logger';
+import logger from '../util/logger';
 
 interface Props {
   notificationType: NotificationType;

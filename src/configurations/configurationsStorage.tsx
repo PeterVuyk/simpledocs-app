@@ -1,5 +1,5 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import logger from '../helper/logger';
+import logger from '../util/logger';
 import { SystemConfigurations } from '../model/SystemConfigurations';
 
 let systemConfigurations: SystemConfigurations | undefined;

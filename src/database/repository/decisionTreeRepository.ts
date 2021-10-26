@@ -1,5 +1,5 @@
 import * as SQLite from 'expo-sqlite';
-import logger from '../../helper/logger';
+import logger from '../../util/logger';
 import { DecisionTreeStep } from '../../model/DecisionTreeStep';
 import { DecisionTreeTitle } from '../../model/DecisionTreeTitle';
 

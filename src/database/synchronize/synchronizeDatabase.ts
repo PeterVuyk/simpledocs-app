@@ -1,14 +1,14 @@
 import updateDecisionTreeTable from './updateDecisionTreeTable';
-import logger from '../../helper/logger';
+import logger from '../../util/logger';
 import updateCalculationsTable from './updateCalculationsTable';
 import {
   AGGREGATE_CALCULATIONS,
   AGGREGATE_DECISION_TREE,
 } from '../../model/aggregate';
 import updateArticleTable from '../synchronize/updateArticleTable';
-import calculationsClient from '../../api/calculationsClient';
-import decisionTreeClient from '../../api/decisionTreeClient';
-import articlesClient from '../../api/articlesClient';
+import calculationsClient from '../../firebase/api/calculationsClient';
+import decisionTreeClient from '../../firebase/api/decisionTreeClient';
+import articlesClient from '../../firebase/api/articlesClient';
 import { SystemConfigurations } from '../../model/SystemConfigurations';
 import configurationsDAO from '../../configurations/configurationsDAO';
 

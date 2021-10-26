@@ -1,9 +1,31 @@
 import * as SQLite from 'expo-sqlite';
-import logger from '../../helper/logger';
+import logger from '../../util/logger';
 import { Notification } from '../../model/Notification';
 import { NotificationType } from '../../model/NotificationType';
 
 const db = SQLite.openDatabase('db.db');
+
+function getNotifications(
+  callback: (notification: Notification[]) => void,
+): void {
+  db.transaction(
+    sqlTransaction => {
+      sqlTransaction.executeSql(
+        `SELECT * FROM notification;`,
+        [],
+        // @ts-ignore
+        (_, { rows: { _array } }) => {
+          callback(_array as Notification[]);
+        },
+      );
+    },
+    error =>
+      logger.error(
+        'notificationRepository.getNotifications failed',
+        error.message,
+      ),
+  );
+}
 
 function getNotification(
   callback: (notification: Notification) => void,
@@ -52,6 +74,7 @@ function updateNotification(notification: Notification): void {
 
 const notificationRepository = {
   getNotification,
+  getNotifications,
   updateNotification,
 };
 

@@ -6,7 +6,8 @@ import Constants from 'expo-constants';
 import { ThemeProvider } from 'react-native-elements';
 import configureStore from './src/redux/configureStore';
 import AppSplashScreen from './src/screens/splash/AppSplashScreen';
-import AuthProvider from './src/authentication/AuthProvider';
+import AuthProvider from './src/firebase/authentication/AuthProvider';
+import environment from './src/util/environment';
 
 const theme = {
   Chip: {
@@ -28,6 +29,7 @@ if (!global.atob) {
 }
 
 Bugsnag.start({
+  releaseStage: environment.getEnvironment().envName,
   appVersion: Constants.manifest?.version ?? 'unknown-version',
   metadata: { company: Constants.manifest?.name ?? 'unknown-app' },
 });

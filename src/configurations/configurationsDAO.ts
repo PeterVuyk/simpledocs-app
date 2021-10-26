@@ -1,7 +1,7 @@
 import { Versioning } from '../model/SystemConfigurations';
 import configurationsStorage from './configurationsStorage';
 import { AppConfigurations } from '../model/AppConfigurations';
-import logger from '../helper/logger';
+import logger from '../util/logger';
 
 const updateVersioning = async (aggregate: string, versioning: Versioning) => {
   const config = await configurationsStorage.getSystemConfiguration();

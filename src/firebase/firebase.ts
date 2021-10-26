@@ -1,5 +1,6 @@
 import firebase from 'firebase';
 import 'firebase/functions';
+import 'firebase/storage';
 import { LogBox } from 'react-native';
 import environment from '../util/environment';
 

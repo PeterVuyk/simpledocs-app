@@ -1,9 +1,29 @@
 import * as SQLite from 'expo-sqlite';
-import logger from '../../helper/logger';
+import logger from '../../util/logger';
 import { Article } from '../../model/Article';
 import { ArticleChapter } from '../../model/ArticleChapter';
 
 const db = SQLite.openDatabase('db.db');
+
+function getArticles(callback: (article: Article[]) => void): void {
+  db.transaction(
+    sqlTransaction => {
+      sqlTransaction.executeSql(
+        `SELECT * FROM articles;`,
+        [],
+        // @ts-ignore
+        (_, { rows: { _array } }) => {
+          callback(_array as Article[]);
+        },
+      );
+    },
+    error =>
+      logger.error(
+        'articleRepository.getArticleByChapter failed',
+        error.message,
+      ),
+  );
+}
 
 function getArticleByChapter(
   bookType: string,
@@ -102,6 +122,7 @@ function getChaptersByList(
 }
 
 const articleRepository = {
+  getArticles,
   getArticleByChapter,
   searchArticles,
   getChapters,

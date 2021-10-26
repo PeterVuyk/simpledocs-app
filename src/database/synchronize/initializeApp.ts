@@ -1,6 +1,6 @@
 import * as SQLite from 'expo-sqlite';
 import { SQLTransaction } from 'expo-sqlite';
-import logger from '../../helper/logger';
+import logger from '../../util/logger';
 import migrations from '../migrations/migrations';
 import migrationChangelogRepository from '../repository/migrationChangelogRepository';
 
