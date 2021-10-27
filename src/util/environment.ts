@@ -31,6 +31,12 @@ function getEnvironment(): Environment {
   }; // dev env settings
 }
 
-const environment = { getEnvironment };
+function isProduction(): boolean {
+  return ![STAGING_ENVIRONMENT, DEVELOPMENT_ENVIRONMENT].includes(
+    getEnvironment().envName,
+  );
+}
+
+const environment = { getEnvironment, isProduction };
 
 export default environment;

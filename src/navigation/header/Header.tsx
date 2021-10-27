@@ -3,10 +3,12 @@ import { Platform, SafeAreaView, StyleSheet, View } from 'react-native';
 import { DrawerNavigationHelpers } from '@react-navigation/drawer/lib/typescript/src/types';
 import { HeaderBackButton, StackNavigationProp } from '@react-navigation/stack';
 import { useNavigation } from '@react-navigation/native';
+import { Icon } from 'native-base';
 import DrawerButton from './DrawerButton';
 import SearchButton from './SearchButton';
 import ArticleListButton from './ArticleListButton';
 import HeaderLogo from './HeaderLogo';
+import environment from '../../util/environment';
 
 export const headerStyles = StyleSheet.create({
   container: {
@@ -26,6 +28,9 @@ export const headerStyles = StyleSheet.create({
     flexDirection: 'row-reverse',
     marginRight: 20,
     marginBottom: 10,
+  },
+  editIndicator: {
+    color: 'grey',
   },
 });
 
@@ -50,6 +55,14 @@ const Header: FC<Props> = ({ navigation, showListButtonFromBookType }) => {
         />
       )}
       <HeaderLogo />
+      {!environment.isProduction() && (
+        <Icon
+          name="edit-3"
+          style={headerStyles.editIndicator}
+          type="Feather"
+          fontSize={20}
+        />
+      )}
       <View style={headerStyles.rightContainer}>
         {Platform.OS === 'ios' && (
           <DrawerButton
