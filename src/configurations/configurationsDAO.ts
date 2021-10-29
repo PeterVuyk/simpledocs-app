@@ -16,7 +16,7 @@ const updateVersioning = async (aggregate: string, versioning: Versioning) => {
     );
 };
 
-const getConfigurations = async (appConfig: AppConfigurations) => {
+const updateConfigurations = async (appConfig: AppConfigurations) => {
   let systemConfig = await configurationsStorage.getSystemConfiguration();
   if (!systemConfig) {
     systemConfig = {
@@ -101,7 +101,7 @@ const isStartupSuccessful = async (): Promise<boolean> => {
 
 const configurationsDAO = {
   updateVersioning,
-  getConfigurations,
+  updateConfigurations,
   createSessionConfiguration,
   isStartupSuccessful,
 };
