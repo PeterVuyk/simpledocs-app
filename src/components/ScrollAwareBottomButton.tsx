@@ -1,20 +1,19 @@
 import React, { FC, useCallback, useEffect, useRef } from 'react';
 import { Animated } from 'react-native';
 import { Button } from 'react-native-elements';
-import { connect } from 'react-redux';
 import HideWithKeyboardView from './keyboard/HideWithKeyboardView';
+import { useAppSelector } from '../redux/hooks';
 
 interface Props {
   title: string;
-  scrollDirection: string;
   onPress: () => void;
 }
 
-const ScrollAwareBottomButton: FC<Props> = ({
-  title,
-  scrollDirection,
-  onPress,
-}) => {
+const ScrollAwareBottomButton: FC<Props> = ({ title, onPress }) => {
+  const scrollDirection = useAppSelector(
+    state => state.scrolling.scrollDirection,
+  );
+
   const yValue = useRef(new Animated.Value(0)).current;
 
   const hideElement = useCallback(() => {
@@ -62,10 +61,4 @@ const ScrollAwareBottomButton: FC<Props> = ({
   );
 };
 
-const mapStateToProps = state => {
-  return {
-    scrollDirection: state.scrolling.scrollDirection,
-  };
-};
-
-export default connect(mapStateToProps)(ScrollAwareBottomButton);
+export default ScrollAwareBottomButton;

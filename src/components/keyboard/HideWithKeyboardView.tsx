@@ -1,27 +1,26 @@
 import React, { FC, ReactNode, useCallback, useEffect } from 'react';
 import { View, Keyboard, StyleProp, ViewStyle } from 'react-native';
-import { connect } from 'react-redux';
-import keyboard from '../../redux/actions/keyboard';
+import { useAppDispatch, useAppSelector } from '../../redux/hooks';
+import { hideKeyboard, showKeyboard } from '../../redux/slice/keyboardSlice';
 
 interface Props {
   style?: StyleProp<ViewStyle>;
   children: ReactNode;
-  isKeyboardOpen: boolean;
-  setIsKeyboardOpen: (isKeyboardOpen: boolean) => void;
 }
 
-const HideWithKeyboardView: FC<Props> = ({
-  style,
-  children,
-  isKeyboardOpen,
-  setIsKeyboardOpen,
-}) => {
+const HideWithKeyboardView: FC<Props> = ({ style, children }) => {
+  const isKeyboardVisible = useAppSelector(
+    state => state.keyboard.isKeyboardVisible,
+  );
+  const dispatch = useAppDispatch();
+
   const keyboardDidShow = useCallback(() => {
-    setIsKeyboardOpen(true);
-  }, [setIsKeyboardOpen]);
+    dispatch(showKeyboard());
+  }, [dispatch]);
+
   const keyboardDidHide = useCallback(() => {
-    setIsKeyboardOpen(false);
-  }, [setIsKeyboardOpen]);
+    dispatch(hideKeyboard());
+  }, [dispatch]);
 
   useEffect(() => {
     Keyboard.addListener('keyboardDidShow', keyboardDidShow);
@@ -31,26 +30,9 @@ const HideWithKeyboardView: FC<Props> = ({
       Keyboard.removeListener('keyboardDidShow', keyboardDidShow);
       Keyboard.removeListener('keyboardDidHide', keyboardDidHide);
     };
-  }, [isKeyboardOpen, keyboardDidHide, keyboardDidShow]);
+  }, [keyboardDidHide, keyboardDidShow]);
 
-  return <View style={style}>{!isKeyboardOpen && children}</View>;
+  return <View style={style}>{!isKeyboardVisible && children}</View>;
 };
 
-const mapStateToProps = state => {
-  // maps the state van redux naar de props voor component.
-  return {
-    isKeyboardOpen: state.keyboard.isKeyboardOpen,
-  };
-};
-
-const mapDispatchToProps = dispatch => {
-  // maps the actions naar de props
-  return {
-    setIsKeyboardOpen: key => dispatch(keyboard.setIsKeyboardOpen(key)),
-  };
-};
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(HideWithKeyboardView);
+export default HideWithKeyboardView;

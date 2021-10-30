@@ -2,10 +2,8 @@ import React, { FC, useEffect, useState } from 'react';
 import { FlatList, Image, StyleSheet, View, Text } from 'react-native';
 import { ListItem } from 'react-native-elements';
 import { RouteProp } from '@react-navigation/native';
-import { connect } from 'react-redux';
 import articleRepository from '../../database/repository/articleRepository';
 import { Article } from '../../model/Article';
-import searching, { SearchText } from '../../redux/actions/searching';
 import SVGIcon from '../../components/SVGIcon';
 import HighlightWords from '../../components/HighlightWords';
 import SearchHeader from '../../navigation/header/SearchHeader';
@@ -13,6 +11,8 @@ import KeyboardAwareView from '../../components/keyboard/KeyboardAwareView';
 import { AppConfigurations } from '../../model/AppConfigurations';
 import useContentNavigator from '../../components/hooks/useContentNavigator';
 import SearchScreenBookTypeNavigator from './SearchScreenBookTypeNavigator';
+import { useAppDispatch } from '../../redux/hooks';
+import { setSearchText as setReduxSearchText } from '../../redux/slice/searchTextSlice';
 
 const styles = StyleSheet.create({
   findPlaceholderImage: {
@@ -26,7 +26,6 @@ const styles = StyleSheet.create({
 });
 
 interface Props {
-  setChapterSearchText: (searchText: SearchText) => void;
   route: RouteProp<
     {
       params: {
@@ -37,7 +36,7 @@ interface Props {
   >;
 }
 
-const SearchScreen: FC<Props> = ({ setChapterSearchText, route }) => {
+const SearchScreen: FC<Props> = ({ route }) => {
   const { appConfigurations } = route.params;
   const [bookType, setBookType] = useState<string>(
     appConfigurations.defaultBookTypeSearch,
@@ -45,6 +44,7 @@ const SearchScreen: FC<Props> = ({ setChapterSearchText, route }) => {
   const [articles, setArticles] = useState<Article[] | null>(null);
   const [searchText, setSearchText] = useState<string>('');
   const { navigateToChapter } = useContentNavigator();
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
     if (searchText === '') {
@@ -80,11 +80,13 @@ const SearchScreen: FC<Props> = ({ setChapterSearchText, route }) => {
   };
 
   const submitSearch = (item: Article) => {
-    setChapterSearchText({
-      chapter: item.chapter,
-      searchText,
-      bookType,
-    });
+    dispatch(
+      setReduxSearchText({
+        chapter: item.chapter,
+        searchText,
+        bookType,
+      }),
+    );
     navigateToChapter(
       {
         articleChapter: item.chapter,
@@ -105,7 +107,7 @@ const SearchScreen: FC<Props> = ({ setChapterSearchText, route }) => {
             textToHighlight={item.title}
           />
         </ListItem.Title>
-        <ListItem.Subtitle style={{ color: 'grey' }}>
+        <ListItem.Subtitle style={{ color: '#616161' }}>
           <HighlightWords
             searchText={searchText}
             textToHighlight={getShortenedBody(item.searchText)}
@@ -158,17 +160,4 @@ const SearchScreen: FC<Props> = ({ setChapterSearchText, route }) => {
   );
 };
 
-const mapStateToProps = state => {
-  return {
-    chapterSearchText: state.searching.chapterSearchText,
-  };
-};
-
-const mapDispatchToProps = dispatch => {
-  return {
-    setChapterSearchText: (searchText: SearchText) =>
-      dispatch(searching.setChapterSearchText(searchText)),
-  };
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(SearchScreen);
+export default SearchScreen;

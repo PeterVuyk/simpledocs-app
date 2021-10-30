@@ -15,7 +15,7 @@ const styles = StyleSheet.create({
     bottom: 10,
   },
   editIndicator: {
-    color: 'grey',
+    color: '#616161',
   },
 });
 

@@ -1,7 +1,5 @@
 import React, { FC, useCallback, useEffect, useState } from 'react';
 import { View } from 'react-native';
-import { connect } from 'react-redux';
-import searching, { SearchText } from '../../../redux/actions/searching';
 import { Article } from '../../../model/Article';
 import articleRepository from '../../../database/repository/articleRepository';
 import ScrollAwareBottomButton from '../../../components/ScrollAwareBottomButton';
@@ -12,22 +10,20 @@ import {
 } from '../../../model/ContentType';
 import highlightWordsInMarkdownFile from '../../../helper/highlightWordsInMarkdownFile';
 import highlightWordsInHTMLFile from '../../../helper/highlightWordsInHTMLFile';
+import { useAppSelector, useAppDispatch } from '../../../redux/hooks';
+import { setSearchText } from '../../../redux/slice/searchTextSlice';
 
 interface Props {
   articleChapter: string;
   bookType: string;
-  chapterSearchText: SearchText;
-  setChapterSearchText: (searchText: SearchText) => void;
 }
 
-const ArticleDetailItem: FC<Props> = ({
-  articleChapter,
-  chapterSearchText,
-  setChapterSearchText,
-  bookType,
-}) => {
+const ArticleDetailItem: FC<Props> = ({ articleChapter, bookType }) => {
   const [article, setArticle] = useState<Article | null>();
   const [contentView, setContentView] = useState<ContentView | null>();
+
+  const searchText = useAppSelector(state => state.searchText);
+  const dispatch = useAppDispatch();
 
   /**
    * To avoid the warning Can't perform a React state update on an unmounted component,
@@ -51,40 +47,34 @@ const ArticleDetailItem: FC<Props> = ({
 
   const stopHighlightText = () => {
     setContentView(null);
-    setChapterSearchText({ chapter: '', searchText: '', bookType: null });
+    dispatch(setSearchText({ chapter: '', searchText: '', bookType: null }));
   };
 
-  const getChapterSearchText = useCallback(() => {
-    if (chapterSearchText.chapter === article?.chapter) {
-      return chapterSearchText.searchText;
+  const getSearchText = useCallback(() => {
+    if (searchText.chapter === article?.chapter) {
+      return searchText.searchText;
     }
     return '';
-  }, [article, chapterSearchText]);
+  }, [article, searchText]);
 
-  const getContent2 = useCallback((): ContentView => {
-    if (chapterSearchText.chapter === article?.chapter) {
+  const getContent = useCallback((): ContentView => {
+    if (searchText.chapter === article?.chapter) {
       if (article.contentType === CONTENT_TYPE_HTML) {
-        return highlightWordsInHTMLFile(
-          article.content,
-          getChapterSearchText(),
-        );
+        return highlightWordsInHTMLFile(article.content, getSearchText());
       }
       if (article.contentType === CONTENT_TYPE_MARKDOWN) {
-        return highlightWordsInMarkdownFile(
-          article.content,
-          getChapterSearchText(),
-        );
+        return highlightWordsInMarkdownFile(article.content, getSearchText());
       }
       return { content: article.content, hasHighlightedText: false };
     }
     return { content: article?.content ?? '', hasHighlightedText: false };
-  }, [article, chapterSearchText.chapter, getChapterSearchText]);
+  }, [article, searchText.chapter, getSearchText]);
 
   useEffect(() => {
     if (article) {
-      setContentView(getContent2());
+      setContentView(getContent());
     }
-  }, [article, getContent2]);
+  }, [article, getContent]);
 
   if (!article || !contentView) {
     return null;
@@ -97,7 +87,7 @@ const ArticleDetailItem: FC<Props> = ({
         contentType={article.contentType}
         bookType={bookType}
       />
-      {contentView.hasHighlightedText && getChapterSearchText() !== '' && (
+      {contentView.hasHighlightedText && getSearchText() !== '' && (
         <ScrollAwareBottomButton
           title="Verwijder markering"
           onPress={stopHighlightText}
@@ -107,17 +97,4 @@ const ArticleDetailItem: FC<Props> = ({
   );
 };
 
-const mapStateToProps = state => {
-  return {
-    chapterSearchText: state.searching.chapterSearchText,
-  };
-};
-
-const mapDispatchToProps = dispatch => {
-  return {
-    setChapterSearchText: (searchText: SearchText) =>
-      dispatch(searching.setChapterSearchText(searchText)),
-  };
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(ArticleDetailItem);
+export default ArticleDetailItem;

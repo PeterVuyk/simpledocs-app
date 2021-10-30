@@ -142,7 +142,7 @@ function TabNavigator({
                   <Icon
                     style={{
                       textAlign: 'center',
-                      color: state.index === index ? '#fff' : '#4bb1fc',
+                      color: state.index === index ? '#fff' : '#5bb5f6',
                     }}
                     name={descriptors[route.key].options.icon}
                     type={
@@ -154,7 +154,7 @@ function TabNavigator({
                   <Text
                     style={{
                       textAlign: 'center',
-                      color: state.index === index ? '#fff' : '#4bb1fc',
+                      color: state.index === index ? '#fff' : '#5bb5f6',
                     }}
                   >
                     {descriptors[route.key].options.title}

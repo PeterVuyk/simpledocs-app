@@ -4,10 +4,10 @@ import { Provider } from 'react-redux';
 import { decode, encode } from 'base-64';
 import Constants from 'expo-constants';
 import { ThemeProvider } from 'react-native-elements';
-import configureStore from './src/redux/configureStore';
 import AppSplashScreen from './src/screens/splash/AppSplashScreen';
 import AuthProvider from './src/firebase/authentication/AuthProvider';
 import environment from './src/util/environment';
+import { store } from './src/redux/store';
 
 const theme = {
   Chip: {
@@ -33,8 +33,6 @@ Bugsnag.start({
   appVersion: Constants.manifest?.version ?? 'unknown-version',
   metadata: { company: Constants.manifest?.name ?? 'unknown-app' },
 });
-
-const store = configureStore();
 
 const App: FC = () => {
   return (

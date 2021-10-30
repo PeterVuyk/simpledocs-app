@@ -1,38 +1,34 @@
 import React, { FC, ReactNode, useEffect, useState } from 'react';
 import { ScrollView } from 'react-native';
-import { connect } from 'react-redux';
-import scrolling from '../redux/actions/scrolling';
+import { useAppDispatch } from '../redux/hooks';
+import { scrollDown, scrollUp } from '../redux/slice/scrollingSlice';
 
 interface Props {
   children: ReactNode;
   pageHeight?: number;
-  setScrollDirection: (scrollDirection: string) => void;
 }
 
-const ScrollViewToggleBottomBar: FC<Props> = ({
-  children,
-  pageHeight,
-  setScrollDirection,
-}) => {
+const ScrollViewToggleBottomBar: FC<Props> = ({ children, pageHeight }) => {
   const [oldOffset, setOldOffset] = useState(0);
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
     return () => {
-      setScrollDirection('up');
+      dispatch(scrollUp());
     };
-  }, [setScrollDirection]);
+  }, [dispatch]);
 
   const handleScroll = (currentOffset: number) => {
     if (currentOffset < 1) {
-      setScrollDirection('up');
+      dispatch(scrollUp());
       return;
     }
     setOldOffset(currentOffset);
     if (currentOffset >= 0 && currentOffset !== 0) {
       if (currentOffset < oldOffset) {
-        setScrollDirection('up');
+        dispatch(scrollUp());
       } else {
-        setScrollDirection('down');
+        dispatch(scrollDown());
       }
     }
   };
@@ -59,21 +55,4 @@ const ScrollViewToggleBottomBar: FC<Props> = ({
   );
 };
 
-const mapStateToProps = state => {
-  // maps the state van redux naar de props voor component.
-  return {
-    scrollDirection: state.scrolling.scrollDirection,
-  };
-};
-
-const mapDispatchToProps = dispatch => {
-  // maps the actions naar de props
-  return {
-    setScrollDirection: key => dispatch(scrolling.setScrollDirection(key)),
-  };
-};
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(ScrollViewToggleBottomBar);
+export default ScrollViewToggleBottomBar;

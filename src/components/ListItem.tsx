@@ -16,7 +16,7 @@ const ListItem: FC<Props> = ({ onSubmit, iconFile, title, subTitle }) => {
       <Item.Content>
         <Item.Title>{title}</Item.Title>
         {subTitle !== undefined && subTitle !== '' && (
-          <Item.Subtitle style={{ color: 'grey' }}>{subTitle}</Item.Subtitle>
+          <Item.Subtitle style={{ color: '#616161' }}>{subTitle}</Item.Subtitle>
         )}
       </Item.Content>
       <Item.Chevron />
