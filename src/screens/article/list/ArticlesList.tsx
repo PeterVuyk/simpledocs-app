@@ -23,7 +23,7 @@ const styles = StyleSheet.create({
 interface Props {
   tabInfo: TabInfo;
   showHeader: boolean;
-  showLevels?: string[];
+  showChapterDivisions?: string[];
   navigation: DrawerNavigationProp<any>;
   articleChapters: ArticleChapter[];
   bookType: string;
@@ -32,7 +32,7 @@ interface Props {
 const ArticlesList: FC<Props> = ({
   tabInfo,
   showHeader,
-  showLevels,
+  showChapterDivisions,
   navigation,
   articleChapters,
   bookType,
@@ -69,8 +69,10 @@ const ArticlesList: FC<Props> = ({
     async (articleChapter: ArticleChapter) => {
       const bookInfo = await configHelper.getConfigByBookType(bookType);
       if (
-        showLevels === undefined ||
-        bookInfo?.showLevelsInIntermediateList.includes(articleChapter.level)
+        showChapterDivisions === undefined ||
+        bookInfo?.chapterDivisionsInIntermediateList.includes(
+          articleChapter.chapterDivision,
+        )
       ) {
         navigateToDetailsScreen(articleChapter);
         return;
@@ -79,7 +81,9 @@ const ArticlesList: FC<Props> = ({
       const nextChapter = articleChapters[index + 1];
       if (
         nextChapter === undefined ||
-        !bookInfo?.showLevelsInIntermediateList.includes(nextChapter.level)
+        !bookInfo?.chapterDivisionsInIntermediateList.includes(
+          nextChapter.chapterDivision,
+        )
       ) {
         navigateToDetailsScreen(articleChapter);
         return;
@@ -87,7 +91,11 @@ const ArticlesList: FC<Props> = ({
       const nextChapters: ArticleChapter[] = [];
       nextChapters.push(articleChapters[index]);
       for (const chapter of articleChapters.slice(index + 1)) {
-        if (!bookInfo?.showLevelsInIntermediateList.includes(chapter.level)) {
+        if (
+          !bookInfo?.chapterDivisionsInIntermediateList.includes(
+            chapter.chapterDivision,
+          )
+        ) {
           break;
         }
         nextChapters.push(chapter);
@@ -99,16 +107,16 @@ const ArticlesList: FC<Props> = ({
       bookType,
       navigateArticleList,
       navigateToDetailsScreen,
-      showLevels,
+      showChapterDivisions,
     ],
   );
 
   const getChapters = () => {
-    if (!showLevels) {
+    if (!showChapterDivisions) {
       return articleChapters;
     }
     return articleChapters.filter(chapter =>
-      showLevels.includes(chapter.level),
+      showChapterDivisions.includes(chapter.chapterDivision),
     );
   };
 

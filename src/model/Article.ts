@@ -3,7 +3,7 @@ import { ContentType } from './ContentType';
 export interface Article {
   pageIndex: number;
   chapter: string;
-  level: string;
+  chapterDivision: string;
   title: string;
   subTitle: string;
   searchText: string;

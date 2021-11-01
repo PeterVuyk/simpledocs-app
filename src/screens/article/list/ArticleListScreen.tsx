@@ -35,9 +35,9 @@ const ArticleListScreen: FC<Props> = ({ navigation, route }) => {
     articleRepository.getChapters(currentBookType, setArticleChapters);
   }, [bookType, currentBookType]);
 
-  const getLevelsToShowInList = (): string[] | undefined =>
+  const getChapterDivisionsToShowInList = (): string[] | undefined =>
     tabInfo.bookTypes.find(value => value.bookType === currentBookType)
-      ?.showLevelsInList;
+      ?.chapterDivisionsInList;
 
   if (!currentBookType || !articleChapters) {
     return null;
@@ -46,7 +46,7 @@ const ArticleListScreen: FC<Props> = ({ navigation, route }) => {
     <ArticlesList
       showHeader
       tabInfo={tabInfo}
-      showLevels={getLevelsToShowInList()}
+      showChapterDivisions={getChapterDivisionsToShowInList()}
       navigation={navigation}
       articleChapters={articleChapters}
       bookType={currentBookType}

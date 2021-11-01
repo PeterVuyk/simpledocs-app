@@ -10,7 +10,7 @@ function addArticle(
   bookType: string,
 ): void {
   sqlTransaction.executeSql(
-    `INSERT INTO articles (chapter, pageIndex, title, bookType, subTitle, content, contentType, searchText, level, iconFile) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+    `INSERT INTO articles (chapter, pageIndex, title, bookType, subTitle, content, contentType, searchText, chapterDivision, iconFile) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
     [
       `${article.chapter}`,
       article.pageIndex,
@@ -20,7 +20,7 @@ function addArticle(
       article.content,
       article.contentType,
       article.searchText,
-      article.level,
+      article.chapterDivision,
       article.iconFile,
     ],
   );

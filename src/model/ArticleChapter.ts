@@ -3,6 +3,6 @@ export interface ArticleChapter {
   subTitle?: string;
   chapter: string;
   iconFile: string;
-  level: string;
+  chapterDivision: string;
   pageIndex: number;
 }

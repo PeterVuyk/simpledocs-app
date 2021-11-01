@@ -88,7 +88,7 @@ const storageSystemConfigurations = async () => {
   );
 };
 
-const dumpConfigToStorage = async () => {
+const dumpConfigToStorage = async (): Promise<void> => {
   storageDebugPath = `debug/${
     environment.getEnvironment().envName
   }/${new Date().toISOString()}/`;

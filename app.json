@@ -2,7 +2,7 @@
   "expo": {
     "name": "ambulancezorg-app",
     "slug": "ambulancezorg-app",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "splash": {
@@ -22,6 +22,7 @@
       "bundleIdentifier": "com.petervuyk.ambulancezorgapp"
     },
     "android": {
+      "versionCode": 2,
       "allowBackup": false,
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
