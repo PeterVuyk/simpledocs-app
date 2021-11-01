@@ -66,12 +66,7 @@ const BooksOverviewScreen: FC<Props> = ({ navigation, route }) => {
 
   const getHeader = () => {
     return (
-      <TitleBar
-        title={`${tabInfo.title ?? ''}, ${
-          environment.getEnvironment().envName
-        }`}
-        subTitle={tabInfo.subTitle ?? ''}
-      />
+      <TitleBar title={tabInfo.title ?? ''} subTitle={tabInfo.subTitle ?? ''} />
     );
   };
 
