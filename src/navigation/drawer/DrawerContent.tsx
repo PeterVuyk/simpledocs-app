@@ -1,15 +1,7 @@
-import React, { FC, useEffect } from 'react';
-import {
-  Linking,
-  Image,
-  View,
-  Platform,
-  StyleSheet,
-} from 'react-native';
+import React, { FC } from 'react';
+import { Linking, Image, View, Platform, StyleSheet } from 'react-native';
 import { DrawerNavigationHelpers } from '@react-navigation/drawer/lib/typescript/src/types';
-import Animated from 'react-native-reanimated';
 import DrawerItem from './DrawerItem';
-import { getDrawerProgressListener } from './onDrawerProgressListener';
 import { IconFamilyType } from '../../model/IconFamilyType';
 import { AppConfigurations } from '../../model/AppConfigurations';
 
@@ -27,22 +19,11 @@ const styles = StyleSheet.create({
 });
 
 interface Props {
-  progress: Animated.Node<number>;
   navigation: DrawerNavigationHelpers;
   appConfigurations: AppConfigurations;
 }
 
-const DrawerContent: FC<Props> = ({
-  progress,
-  navigation,
-  appConfigurations,
-}) => {
-  useEffect(() => {
-    if (getDrawerProgressListener()) {
-      getDrawerProgressListener()(progress);
-    }
-  }, [progress]);
-
+const DrawerContent: FC<Props> = ({ navigation, appConfigurations }) => {
   return (
     <View style={{ flex: 1 }}>
       <View style={styles.drawerImageContainer}>
@@ -64,9 +45,7 @@ const DrawerContent: FC<Props> = ({
       <DrawerItem
         label="Over de maker"
         onSubmit={() => {
-          navigation.navigate('AboutUsStack', {
-            screen: 'AboutUsScreen',
-          });
+          navigation.navigate('AboutUsScreen');
         }}
         iconName="information-outline"
         iconType="MaterialCommunityIcons"
@@ -74,9 +53,7 @@ const DrawerContent: FC<Props> = ({
       <DrawerItem
         label="Auteursrechten"
         onSubmit={() => {
-          navigation.navigate('CopyrightStack', {
-            screen: 'CopyrightScreen',
-          });
+          navigation.navigate('CopyrightScreen');
         }}
         iconName="copyright"
         iconType="MaterialCommunityIcons"

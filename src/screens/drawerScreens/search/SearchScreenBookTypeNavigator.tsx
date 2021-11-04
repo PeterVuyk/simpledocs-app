@@ -2,9 +2,9 @@ import React, { FC, useCallback, useEffect, useRef, useState } from 'react';
 import { FlatList, StyleSheet } from 'react-native';
 import { useIsFocused } from '@react-navigation/native';
 import getWidth from 'string-pixel-width';
-import configHelper from '../../helper/configHelper';
-import { BookInfo } from '../../model/AppConfigurations';
-import NavigatorChip from '../../components/NavigatorChip';
+import configHelper from '../../../helper/configHelper';
+import { BookInfo } from '../../../model/AppConfigurations';
+import NavigatorChip from '../../../components/NavigatorChip';
 
 interface BookInfoItem {
   index: number;

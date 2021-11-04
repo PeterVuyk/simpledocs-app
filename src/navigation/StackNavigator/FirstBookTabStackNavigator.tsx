@@ -18,7 +18,7 @@ interface Props {
 
 const FirstBookTabStackNavigator: FC<Props> = ({ navigation, tabInfo }) => {
   return (
-    <Stack.Navigator headerMode="screen">
+    <Stack.Navigator screenOptions={{ headerMode: 'screen' }}>
       {tabInfo.bookTypes.length !== 1 && (
         <Stack.Screen
           name="FirstBookTabOverviewScreen"

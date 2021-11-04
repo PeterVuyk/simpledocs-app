@@ -28,9 +28,7 @@ const SearchButton: FC<Props> = ({ navigation }) => {
         type="MaterialCommunityIcons"
         onPress={() => {
           if (navigation) {
-            navigation.navigate('SearchStack', {
-              screen: 'SearchScreen',
-            });
+            navigation.navigate('SearchScreen');
           }
         }}
       />

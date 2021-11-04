@@ -1,11 +1,5 @@
 import React from 'react';
-import {
-  StyleProp,
-  ViewStyle,
-  View,
-  Text,
-  TouchableOpacity,
-} from 'react-native';
+import { StyleProp, ViewStyle, View } from 'react-native';
 import {
   useNavigationBuilder,
   DefaultNavigatorOptions,
@@ -17,14 +11,11 @@ import {
   createNavigatorFactory,
   ParamListBase,
 } from '@react-navigation/native';
-import { Icon } from 'native-base';
-import HideWithKeyboardView from '../../components/keyboard/HideWithKeyboardView';
-import ToggleBottomNavigator from '../../navigation/bottom/ToggleBottomNavigator';
 import { IconFamilyType } from '../../model/IconFamilyType';
+import BottomTabs from './BottomTabs';
 
 // Props accepted by the view
 type TabNavigationConfig = {
-  tabBarStyle: StyleProp<ViewStyle>;
   contentStyle: StyleProp<ViewStyle>;
 };
 
@@ -33,7 +24,6 @@ type TabNavigationOptions = {
   title: string;
   icon: string;
   iconFamilyType?: IconFamilyType;
-  showInBottomBar: boolean;
 };
 
 // Map of event name and the type of data (in event.data)
@@ -48,7 +38,12 @@ type TabNavigationEventMap = {
 };
 
 // The props accepted by the component is a combination of 3 things
-type Props = DefaultNavigatorOptions<TabNavigationOptions> &
+type Props = DefaultNavigatorOptions<
+  ParamListBase,
+  TabNavigationState<ParamListBase>,
+  TabNavigationOptions,
+  TabNavigationEventMap
+> &
   TabRouterOptions &
   TabNavigationConfig;
 
@@ -56,7 +51,6 @@ function TabNavigator({
   initialRouteName,
   children,
   screenOptions,
-  tabBarStyle,
   contentStyle,
 }: Props) {
   const { state, navigation, descriptors } = useNavigationBuilder<
@@ -71,6 +65,7 @@ function TabNavigator({
     initialRouteName,
   });
 
+  // @ts-ignore
   const onTabPress = route => {
     if (route.name === 'SecondBookTabStack') {
       navigation.navigate('SecondBookTabStack', {
@@ -127,43 +122,18 @@ function TabNavigator({
           );
         })}
       </View>
-      <HideWithKeyboardView>
-        <ToggleBottomNavigator>
-          {state.routes
-            .filter(route => descriptors[route.key].options.showInBottomBar)
-            .map((route, index) => (
-              <View key={route.key} style={[{ flex: 1 }, tabBarStyle]}>
-                <TouchableOpacity
-                  onPress={() => onTabPress(route)}
-                  style={{
-                    flex: 1,
-                  }}
-                >
-                  <Icon
-                    style={{
-                      textAlign: 'center',
-                      color: state.index === index ? '#fff' : '#5bb5f6',
-                    }}
-                    name={descriptors[route.key].options.icon}
-                    type={
-                      descriptors[route.key].options.iconFamilyType ??
-                      'MaterialCommunityIcons'
-                    }
-                    fontSize={26}
-                  />
-                  <Text
-                    style={{
-                      textAlign: 'center',
-                      color: state.index === index ? '#fff' : '#5bb5f6',
-                    }}
-                  >
-                    {descriptors[route.key].options.title}
-                  </Text>
-                </TouchableOpacity>
-              </View>
-            ))}
-        </ToggleBottomNavigator>
-      </HideWithKeyboardView>
+      <BottomTabs
+        tabs={state.routes.map((route, index) => {
+          return {
+            index,
+            title: descriptors[route.key].options.title,
+            icon: descriptors[route.key].options.icon,
+            iconFamilyType: descriptors[route.key].options.iconFamilyType,
+            onPress: () => onTabPress(route),
+            isSelected: state.index === index,
+          };
+        })}
+      />
     </>
   );
 }
