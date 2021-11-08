@@ -6,7 +6,7 @@ import DrawerButton from '../../navigation/header/DrawerButton';
 import SearchButton from '../../navigation/header/SearchButton';
 import { headerStyles } from '../../navigation/header/Header';
 
-const SynchronizationSplashScreen: FC = () => {
+const SynchronizationSplashScreen: FC = React.memo(() => {
   const Header = () => {
     return (
       <SafeAreaView style={headerStyles.container}>
@@ -70,6 +70,6 @@ const SynchronizationSplashScreen: FC = () => {
       <ScreenLoader />
     </>
   );
-};
+});
 
 export default SynchronizationSplashScreen;

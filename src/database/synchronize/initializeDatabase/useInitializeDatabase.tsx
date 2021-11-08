@@ -1,9 +1,9 @@
 import { useCallback, useEffect, useState } from 'react';
-import migrationChangelogRepository from '../repository/migrationChangelogRepository';
-import { MigrationChangelog } from '../../model/migrationChangelog';
-import initializeApp from '../synchronize/initializeApp';
-import logger from '../../util/logger';
-import SQLiteClient from '../migrations/SQLiteClient';
+import migrationChangelogRepository from '../../repository/migrationChangelogRepository';
+import { MigrationChangelog } from '../../../model/migrationChangelog';
+import initializeApp from './initializeApp';
+import logger from '../../../util/logger';
+import SQLiteClient from '../../migrations/SQLiteClient';
 
 function useInitializeDatabase() {
   const [migrations, setMigrations] = useState<MigrationChangelog[] | null>(

@@ -1,56 +1,52 @@
-import React, { FC, ReactNode, useEffect, useState } from 'react';
-import { View } from 'react-native';
+import React, { FC, ReactNode, useCallback, useEffect } from 'react';
 import Firebase from '../firebase';
 import logger from '../../util/logger';
-import NoInternetConnectionOverlay from '../../screens/splash/NoInternetConnectionOverlay';
 import internetConnectivity from '../../helper/internetConnectivity';
+import { useAppDispatch, useAppSelector } from '../../redux/hooks';
+import {
+  AUTHENTICATE_STATE,
+  INIT_DATABASE_STATE,
+  INTERNET_REQUIRED_STATE,
+  STARTUP_FAILURE_STATE,
+  updateStartupState,
+} from '../../redux/slice/startupStateSlice';
 
 interface Props {
   children: ReactNode;
 }
 
 const AuthProvider: FC<Props> = ({ children }) => {
-  const [authSuccessful, setAuthSuccessful] = useState<boolean>();
+  const dispatch = useAppDispatch();
+  const currentStartupState = useAppSelector(
+    state => state.startupState.currentState,
+  );
 
-  const signIn = async () => {
+  const signIn = useCallback(async () => {
     if (!(await internetConnectivity.hasInternetConnection())) {
-      setAuthSuccessful(false);
+      dispatch(updateStartupState({ currentState: INTERNET_REQUIRED_STATE }));
       return;
     }
     Firebase.auth()
       .signInAnonymously()
-      .then(() => {
-        setAuthSuccessful(true);
-      })
       .catch(error => {
         logger.error('signing in user as anonymous failed', error.code);
-        // TODO: show error page
+        dispatch(updateStartupState({ currentState: STARTUP_FAILURE_STATE }));
       });
-  };
+  }, [dispatch]);
 
   useEffect(() => {
-    // auth.signOut();
-    const unsubscribe = Firebase.auth().onAuthStateChanged(async user => {
+    return Firebase.auth().onAuthStateChanged(async user => {
+      if (currentStartupState !== AUTHENTICATE_STATE) {
+        return;
+      }
       if (user) {
-        setAuthSuccessful(true);
+        dispatch(updateStartupState({ currentState: INIT_DATABASE_STATE }));
         return;
       }
       signIn();
     });
-    return unsubscribe;
-  }, []);
+  }, [currentStartupState, dispatch, signIn]);
 
-  if (authSuccessful === undefined) {
-    return null;
-  }
-
-  if (!authSuccessful) {
-    return (
-      <View style={{ flex: 1 }}>
-        <NoInternetConnectionOverlay onRetryButtonAction={signIn} />
-      </View>
-    );
-  }
   return <>{children}</>;
 };
 

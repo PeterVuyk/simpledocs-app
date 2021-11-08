@@ -3,17 +3,17 @@ import synchronizeDatabase from './synchronizeDatabase';
 import {
   AGGREGATE_CALCULATIONS,
   AGGREGATE_DECISION_TREE,
-} from '../../model/aggregate';
-import logger from '../../util/logger';
-import configurationsDAO from '../../configurations/configurationsDAO';
-import environment from '../../util/environment';
-import configHelper from '../../helper/configHelper';
-import { STAGING_ENVIRONMENT } from '../../model/Environment';
-import debugHandler from '../../debug/debugHandler';
-import getAppInfo from '../../firebase/functions/getAppInfo';
-import configurationsStorage from '../../configurations/configurationsStorage';
-import { AppInfo } from '../../model/AppInfoResponse';
-import { AppConfigurations } from '../../model/AppConfigurations';
+} from '../../../model/aggregate';
+import logger from '../../../util/logger';
+import configurationsDAO from '../../../configurations/configurationsDAO';
+import environment from '../../../util/environment';
+import configHelper from '../../../helper/configHelper';
+import { STAGING_ENVIRONMENT } from '../../../model/Environment';
+import debugHandler from '../../../debug/debugHandler';
+import getAppInfo from '../../../firebase/functions/getAppInfo';
+import configurationsStorage from '../../../configurations/configurationsStorage';
+import { AppInfo } from '../../../model/AppInfoResponse';
+import { AppConfigurations } from '../../../model/AppConfigurations';
 
 function useUpdateAggregates() {
   const [isAggregatesUpdated, setIsAggregatesUpdated] = useState<

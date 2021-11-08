@@ -5,21 +5,30 @@ import * as Font from 'expo-font';
 import { Ionicons } from '@expo/vector-icons';
 import Drawer from '../../navigation/drawer/Drawer';
 import NoInternetConnectionOverlay from './NoInternetConnectionOverlay';
+import InitializationAppFailureOverlay from './InitializationAppFailureOverlay';
+import SynchronizationSplashScreen from './SynchronizationSplashScreen';
+import ViewBottomTab from '../../navigation/bottom/ViewBottomTab';
+import { useAppDispatch, useAppSelector } from '../../redux/hooks';
+import {
+  AUTHENTICATE_STATE,
+  INTERNET_REQUIRED_STATE,
+  STARTUP_FAILURE_STATE,
+  STARTUP_SUCCESSFUL_STATE,
+  updateStartupState,
+} from '../../redux/slice/startupStateSlice';
 import ShowNotification from '../../components/ShowNotification';
 import { NOTIFICATION_TYPE_NO_INTERNET_CONNECTION } from '../../model/NotificationType';
-import InitializationAppFailureOverlay from './InitializationAppFailureOverlay';
-import usePrepareResources from './usePrepareResources';
-import SynchronizationSplashScreen from './SynchronizationSplashScreen';
 
 const AppSplashScreen: FC = () => {
-  const {
-    isAggregatesUpdated,
-    initialStartupSuccessful,
-    internetRequired,
-    internetSuggested,
-    onRetry,
-  } = usePrepareResources();
   const [appIsReady, setAppReady] = useState<boolean | null>(null);
+  const [loading, setLoading] = useState<boolean>(true);
+  const currentStartupState = useAppSelector(
+    state => state.startupState.currentState,
+  );
+  const internetSuggested = useAppSelector(
+    state => state.internetSuggestedState.internetSuggested,
+  );
+  const dispatch = useAppDispatch();
 
   const loadFonts = async () => {
     await Font.loadAsync({
@@ -37,6 +46,14 @@ const AppSplashScreen: FC = () => {
       });
   }, []);
 
+  useEffect(() => {
+    setLoading(
+      ![STARTUP_SUCCESSFUL_STATE, STARTUP_FAILURE_STATE].includes(
+        currentStartupState,
+      ),
+    );
+  }, [currentStartupState]);
+
   const onLayoutRootView = useCallback(async () => {
     if (appIsReady) {
       // This tells the splash screen to hide immediately! If we call this after
@@ -52,21 +69,19 @@ const AppSplashScreen: FC = () => {
     return null;
   }
 
-  if (internetRequired === true) {
+  if (currentStartupState === INTERNET_REQUIRED_STATE) {
     return (
       <View style={{ flex: 1 }} onLayout={onLayoutRootView}>
         <NoInternetConnectionOverlay
           onRetryButtonAction={() => {
-            setAppReady(false);
-            onRetry();
-            setAppReady(true);
+            dispatch(updateStartupState({ currentState: AUTHENTICATE_STATE }));
           }}
         />
       </View>
     );
   }
 
-  if (initialStartupSuccessful === false) {
+  if (currentStartupState === STARTUP_FAILURE_STATE) {
     return (
       <View style={{ flex: 1 }} onLayout={onLayoutRootView}>
         <InitializationAppFailureOverlay />
@@ -74,19 +89,17 @@ const AppSplashScreen: FC = () => {
     );
   }
 
-  if (
-    initialStartupSuccessful === true &&
-    internetRequired === false &&
-    (isAggregatesUpdated || internetSuggested)
-  ) {
+  if (!loading) {
     return (
       <View style={{ flex: 1 }} onLayout={onLayoutRootView}>
-        <Drawer />
-        {internetSuggested && (
-          <ShowNotification
-            notificationType={NOTIFICATION_TYPE_NO_INTERNET_CONNECTION}
-          />
-        )}
+        <ViewBottomTab>
+          <Drawer />
+          {internetSuggested && (
+            <ShowNotification
+              notificationType={NOTIFICATION_TYPE_NO_INTERNET_CONNECTION}
+            />
+          )}
+        </ViewBottomTab>
       </View>
     );
   }

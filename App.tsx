@@ -8,6 +8,8 @@ import AppSplashScreen from './src/screens/splash/AppSplashScreen';
 import AuthProvider from './src/firebase/authentication/AuthProvider';
 import environment from './src/util/environment';
 import { store } from './src/redux/store';
+import InitDatabaseProvider from './src/database/synchronize/initializeDatabase/InitDatabaseProvider';
+import AggregateDataProvider from './src/database/synchronize/updateAggregates/AggregateDataProvider';
 
 const theme = {
   Chip: {
@@ -37,11 +39,15 @@ Bugsnag.start({
 const App: FC = () => {
   return (
     <Provider store={store}>
-      <AuthProvider>
-        <ThemeProvider theme={theme}>
-          <AppSplashScreen />
-        </ThemeProvider>
-      </AuthProvider>
+      <ThemeProvider theme={theme}>
+        <AuthProvider>
+          <InitDatabaseProvider>
+            <AggregateDataProvider>
+              <AppSplashScreen />
+            </AggregateDataProvider>
+          </InitDatabaseProvider>
+        </AuthProvider>
+      </ThemeProvider>
     </Provider>
   );
 };

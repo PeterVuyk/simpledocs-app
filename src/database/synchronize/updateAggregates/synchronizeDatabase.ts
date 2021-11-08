@@ -1,15 +1,15 @@
 import updateDecisionTreeTable from './updateDecisionTreeTable';
-import logger from '../../util/logger';
+import logger from '../../../util/logger';
 import updateCalculationsTable from './updateCalculationsTable';
 import {
   AGGREGATE_CALCULATIONS,
   AGGREGATE_DECISION_TREE,
-} from '../../model/aggregate';
-import updateArticleTable from '../synchronize/updateArticleTable';
-import configurationsDAO from '../../configurations/configurationsDAO';
-import { DecisionTreeStep } from '../../model/DecisionTreeStep';
-import { CalculationInfo } from '../../model/CalculationInfo';
-import { Article } from '../../model/Article';
+} from '../../../model/aggregate';
+import updateArticleTable from './updateArticleTable';
+import configurationsDAO from '../../../configurations/configurationsDAO';
+import { DecisionTreeStep } from '../../../model/DecisionTreeStep';
+import { CalculationInfo } from '../../../model/CalculationInfo';
+import { Article } from '../../../model/Article';
 
 const updateBook = async (
   bookType: string,

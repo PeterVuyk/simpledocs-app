@@ -8,22 +8,12 @@ import configurationsStorage from '../../configurations/configurationsStorage';
 import CopyrightScreen from '../../screens/drawerScreens/copyright/CopyrightScreen';
 import SearchScreen from '../../screens/drawerScreens/search/SearchScreen';
 import AboutUsScreen from '../../screens/drawerScreens/about/AboutUsScreen';
-import { useAppDispatch } from '../../redux/hooks';
-import { scrollUp } from '../../redux/slice/scrollingSlice';
 
 const DrawerNavigator = createDrawerNavigator();
 
 const Drawer: FC = () => {
   const [appConfigurations, setAppConfigurations] =
     useState<AppConfigurations | null>(null);
-
-  const dispatch = useAppDispatch();
-
-  useEffect(() => {
-    setTimeout(() => {
-      dispatch(scrollUp());
-    }, 400);
-  }, [dispatch]);
 
   useEffect(() => {
     configurationsStorage.getSystemConfiguration().then(config => {
