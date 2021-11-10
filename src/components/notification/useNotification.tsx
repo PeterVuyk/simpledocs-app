@@ -1,28 +1,16 @@
-import React, { FC, useCallback, useEffect, useState } from 'react';
-import { Alert, View } from 'react-native';
+import React, { useCallback, useEffect, useState } from 'react';
+import { Alert } from 'react-native';
 import {
   NOTIFICATION_TYPE_HORIZONTAL_SCROLL_TIP,
   NOTIFICATION_TYPE_NO_INTERNET_CONNECTION,
   NotificationType,
-} from '../model/NotificationType';
-import notificationRepository from '../database/repository/notificationRepository';
-import { Notification } from '../model/Notification';
-import logger from '../util/logger';
+} from '../../model/NotificationType';
+import notificationRepository from '../../database/repository/notificationRepository';
+import { Notification } from '../../model/Notification';
+import logger from '../../util/logger';
 
-interface Props {
-  notificationType: NotificationType;
-}
-
-const ShowNotification: FC<Props> = ({ notificationType }) => {
+const useNotification = () => {
   const [notification, setNotification] = useState<Notification | null>(null);
-
-  useEffect(() => {
-    notificationRepository
-      .getNotification(setNotification, notificationType)
-      .catch(reason =>
-        logger.error('Failed retrieving notification from repository', reason),
-      );
-  }, [notificationType]);
 
   const disableNotification = (type: NotificationType) => {
     notificationRepository.updateNotification({
@@ -75,7 +63,15 @@ const ShowNotification: FC<Props> = ({ notificationType }) => {
     }
   }, [notification, showHorizontalScrollTip, showNoInternetNotification]);
 
-  return <View />;
+  const notify = useCallback((notificationType: NotificationType) => {
+    notificationRepository
+      .getNotification(setNotification, notificationType)
+      .catch(reason =>
+        logger.error('Failed retrieving notification from repository', reason),
+      );
+  }, []);
+
+  return { notify };
 };
 
-export default ShowNotification;
+export default useNotification;

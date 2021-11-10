@@ -45,7 +45,7 @@ const SearchScreenBookTypeNavigator: FC<Props> = ({
       return {
         bookType: value.bookType,
         title: value.title,
-        width: width + 35,
+        width: width + 55,
         index: index++,
       } as BookInfoItem;
     });

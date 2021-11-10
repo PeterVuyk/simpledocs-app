@@ -11,7 +11,6 @@ import {
   UPDATE_AGGREGATES_STATE,
   updateStartupState,
 } from '../../../redux/slice/startupStateSlice';
-import { setInternetSuggested } from '../../../redux/slice/internetSuggestedSlice';
 import useInitializeDatabase from './useInitializeDatabase';
 
 interface Props {
@@ -39,11 +38,6 @@ const InitDatabaseProvider: FC<Props> = ({ children }) => {
     if ((await isFirstStartup()) && !(await hasInternetConnection())) {
       dispatch(updateStartupState({ currentState: INTERNET_REQUIRED_STATE }));
       return;
-    }
-    if (!(await hasInternetConnection())) {
-      configurationsDAO.isStartupSuccessful().then(success => {
-        dispatch(setInternetSuggested(success ?? true));
-      });
     }
     await initializeDatabase();
   }, [dispatch, initializeDatabase]);

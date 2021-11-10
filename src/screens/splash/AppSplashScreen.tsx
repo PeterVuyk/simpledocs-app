@@ -16,17 +16,13 @@ import {
   STARTUP_SUCCESSFUL_STATE,
   updateStartupState,
 } from '../../redux/slice/startupStateSlice';
-import ShowNotification from '../../components/ShowNotification';
-import { NOTIFICATION_TYPE_NO_INTERNET_CONNECTION } from '../../model/NotificationType';
+import InternetSuggestedNotification from '../../components/notification/InternetSuggestedNotification';
 
 const AppSplashScreen: FC = () => {
   const [appIsReady, setAppReady] = useState<boolean | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const currentStartupState = useAppSelector(
     state => state.startupState.currentState,
-  );
-  const internetSuggested = useAppSelector(
-    state => state.internetSuggestedState.internetSuggested,
   );
   const dispatch = useAppDispatch();
 
@@ -92,14 +88,11 @@ const AppSplashScreen: FC = () => {
   if (!loading) {
     return (
       <View style={{ flex: 1 }} onLayout={onLayoutRootView}>
-        <ViewBottomTab>
-          <Drawer />
-          {internetSuggested && (
-            <ShowNotification
-              notificationType={NOTIFICATION_TYPE_NO_INTERNET_CONNECTION}
-            />
-          )}
-        </ViewBottomTab>
+        <InternetSuggestedNotification>
+          <ViewBottomTab>
+            <Drawer />
+          </ViewBottomTab>
+        </InternetSuggestedNotification>
       </View>
     );
   }

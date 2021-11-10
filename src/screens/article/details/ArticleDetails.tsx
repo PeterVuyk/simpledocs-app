@@ -3,9 +3,9 @@ import { View, FlatList, ScaledSize } from 'react-native';
 import { useIsFocused } from '@react-navigation/native';
 import ArticleDetailItem from './ArticleDetailItem';
 import { ArticleChapter } from '../../../model/ArticleChapter';
-import ShowNotification from '../../../components/ShowNotification';
 import { NOTIFICATION_TYPE_HORIZONTAL_SCROLL_TIP } from '../../../model/NotificationType';
 import BookChapterNavigator from '../BookChapterNavigator';
+import useNotification from '../../../components/notification/useNotification';
 
 interface Props {
   articleChapter: string;
@@ -22,6 +22,7 @@ const ArticleDetails: FC<Props> = ({
 }) => {
   const flatListRef = useRef<FlatList<ArticleChapter> | null>(null);
   const [currentIndex, setCurrentIndex] = useState<number>();
+  const { notify } = useNotification();
   const isFocused = useIsFocused();
 
   const handleArticleNavigation = useCallback(
@@ -37,6 +38,10 @@ const ArticleDetails: FC<Props> = ({
     },
     [articleChapterList],
   );
+
+  useEffect(() => {
+    notify(NOTIFICATION_TYPE_HORIZONTAL_SCROLL_TIP);
+  }, [notify]);
 
   useEffect(() => {
     const index = articleChapterList
@@ -65,9 +70,6 @@ const ArticleDetails: FC<Props> = ({
 
   return (
     <View style={{ flex: 1 }}>
-      <ShowNotification
-        notificationType={NOTIFICATION_TYPE_HORIZONTAL_SCROLL_TIP}
-      />
       {isFocused && currentIndex !== undefined && (
         <>
           <BookChapterNavigator
