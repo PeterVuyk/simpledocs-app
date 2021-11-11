@@ -41,11 +41,14 @@ const SearchScreenBookTypeNavigator: FC<Props> = ({
   const mapBookInfoToItem = useCallback((books: BookInfo[]) => {
     let index = 0;
     return books.map(value => {
-      const width = getWidth(value.title, { bold: true, size: 14 });
+      const width = getWidth(value.title.toUpperCase(), {
+        bold: true,
+        size: 14,
+      });
       return {
         bookType: value.bookType,
         title: value.title,
-        width: width + 55,
+        width: width < 160 ? width + 35 : 200,
         index: index++,
       } as BookInfoItem;
     });

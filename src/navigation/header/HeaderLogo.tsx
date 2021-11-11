@@ -19,7 +19,7 @@ const styles = StyleSheet.create({
   },
 });
 
-const HeaderLogo: FC = () => {
+const HeaderLogo: FC = React.memo(() => {
   return (
     <View style={{ flex: 1 }}>
       <Image
@@ -38,6 +38,6 @@ const HeaderLogo: FC = () => {
       )}
     </View>
   );
-};
+});
 
 export default HeaderLogo;
