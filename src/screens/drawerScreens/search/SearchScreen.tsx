@@ -10,7 +10,7 @@ import SearchHeader from '../../../navigation/header/search/SearchHeader';
 import KeyboardAwareView from '../../../components/keyboard/KeyboardAwareView';
 import { AppConfigurations } from '../../../model/AppConfigurations';
 import useContentNavigator from '../../../components/hooks/useContentNavigator';
-import SearchScreenBookTypeNavigator from './SearchScreenBookTypeNavigator';
+import SearchScreenNavigator from './SearchScreenNavigator';
 import { useAppDispatch } from '../../../redux/hooks';
 import { setSearchText as setReduxSearchText } from '../../../redux/slice/searchTextSlice';
 import DrawerScreen from '../DrawerScreen';
@@ -32,7 +32,7 @@ interface Props {
 }
 
 const SearchScreen: FC<Props> = ({ navigation, appConfigurations }) => {
-  const [bookType, setBookType] = useState<string>(
+  const [searchItem, setSearchItem] = useState<string>(
     appConfigurations.defaultBookTypeSearch,
   );
   const [articles, setArticles] = useState<Article[] | null>(null);
@@ -45,15 +45,23 @@ const SearchScreen: FC<Props> = ({ navigation, appConfigurations }) => {
       setArticles(null);
       return;
     }
-    articleRepository.searchArticles(bookType, searchText, setArticles);
-  }, [bookType, searchText]);
+    if (searchItem === 'favorites') {
+      articleRepository.searchArticlesByBookmarks(searchText, setArticles);
+      return;
+    }
+    articleRepository.searchArticlesByBookType(
+      searchItem,
+      searchText,
+      setArticles,
+    );
+  }, [searchItem, searchText]);
 
   const handleSearchTextChange = (searchedText: string): void =>
     setSearchText(searchedText);
 
-  const handleBookTypeTabChange = (type: string): void => {
+  const onTabChange = (type: string): void => {
     setArticles(null);
-    setBookType(type);
+    setSearchItem(type);
   };
 
   const getShortenedBody = (fullBody: string): string => {
@@ -78,16 +86,16 @@ const SearchScreen: FC<Props> = ({ navigation, appConfigurations }) => {
       setReduxSearchText({
         chapter: item.chapter,
         searchText,
-        bookType,
+        bookType: item.bookType,
       }),
     );
     navigateToChapter(
       {
         articleChapter: item.chapter,
-        bookType,
+        bookType: item.bookType,
         searchText: { chapter: item.chapter, searchText },
       },
-      bookType,
+      item.bookType,
     );
   };
 
@@ -122,9 +130,9 @@ const SearchScreen: FC<Props> = ({ navigation, appConfigurations }) => {
         searchText={searchText}
       >
         <View>
-          <SearchScreenBookTypeNavigator
-            onBookTypeTabChange={handleBookTypeTabChange}
-            bookType={bookType}
+          <SearchScreenNavigator
+            onTabChange={onTabChange}
+            chipItem={searchItem}
           />
         </View>
         <KeyboardAwareView>
@@ -150,7 +158,9 @@ const SearchScreen: FC<Props> = ({ navigation, appConfigurations }) => {
           {articles && (
             <FlatList<Article>
               data={articles}
-              keyExtractor={item => item.chapter.toString()}
+              keyExtractor={item =>
+                item.chapter.toString() + item.bookType.toString()
+              }
               renderItem={({ item }) => renderItem(item)}
             />
           )}

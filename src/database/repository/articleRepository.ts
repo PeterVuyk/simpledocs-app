@@ -103,7 +103,7 @@ function getArticleByChapter(
   );
 }
 
-function searchArticles(
+function searchArticlesByBookType(
   bookType: string,
   text: string,
   setArticles: (articles: Article[]) => void,
@@ -125,7 +125,38 @@ function searchArticles(
       );
     },
     error =>
-      logger.error('articleRepository.searchArticles failed', error.message),
+      logger.error(
+        'articleRepository.searchArticlesByBookType failed',
+        error.message,
+      ),
+  );
+}
+
+function searchArticlesByBookmarks(
+  text: string,
+  setArticles: (articles: Article[]) => void,
+): void {
+  db.transaction(
+    sqlTransaction => {
+      sqlTransaction.executeSql(
+        `SELECT *
+            ,(CASE WHEN title LIKE ? THEN 1 ELSE 0 END) AS [priority]
+            ,(CASE WHEN searchText like ? THEN 1 ELSE 0 END)
+       FROM (SELECT * FROM articles WHERE bookmarked = 1 ORDER BY pageIndex)
+       WHERE title LIKE ? OR searchText LIKE ?
+       ORDER BY [priority] DESC;`,
+        [`%${text}%`, `%${text}%`, `%${text}%`, `%${text}%`],
+        // @ts-ignore
+        (_, { rows: { _array } }) => {
+          setArticles(_array);
+        },
+      );
+    },
+    error =>
+      logger.error(
+        'articleRepository.searchArticlesByBookmarks failed',
+        error.message,
+      ),
   );
 }
 
@@ -176,7 +207,8 @@ function getChaptersByList(
 const articleRepository = {
   getArticles,
   getArticleByChapter,
-  searchArticles,
+  searchArticlesByBookmarks,
+  searchArticlesByBookType,
   getChapters,
   getChaptersByList,
   toggleBookmark,
