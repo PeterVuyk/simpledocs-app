@@ -3,7 +3,7 @@ import ContentLoader, { Rect } from 'react-content-loader/native';
 import { Platform, SafeAreaView, View } from 'react-native';
 import HeaderLogo from '../../navigation/header/HeaderLogo';
 import DrawerButton from '../../navigation/header/DrawerButton';
-import SearchButton from '../../navigation/header/SearchButton';
+import SearchButton from '../../navigation/header/search/SearchButton';
 import { headerStyles } from '../../navigation/header/Header';
 
 const SynchronizationSplashScreen: FC = React.memo(() => {

@@ -5,7 +5,6 @@ import { Dimensions } from 'react-native';
 import articleRepository from '../../../database/repository/articleRepository';
 import { ArticleChapter } from '../../../model/ArticleChapter';
 import ArticleDetails from './ArticleDetails';
-import Header from '../../../navigation/header/Header';
 
 interface Props {
   navigation: DrawerNavigationHelpers;
@@ -50,11 +49,9 @@ const ArticleDetailsScreen: FC<Props> = ({ navigation, route }) => {
 
   return (
     <>
-      <Header navigation={navigation} />
-      {/* TODO: kept it here for reference later when we replace it with button to article favorites */}
-      {/* <Header navigation={navigation} showListButtonFromBookType={bookType} /> */}
       {!loading && chapters.length !== 0 && (
         <ArticleDetails
+          navigation={navigation}
           windowWidth={dimensions.window}
           bookType={bookType}
           articleChapterList={chapters}

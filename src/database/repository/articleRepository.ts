@@ -5,6 +5,31 @@ import { ArticleChapter } from '../../model/ArticleChapter';
 
 const db = SQLite.openDatabase('db.db');
 
+function toggleBookmark(articleChapter: ArticleChapter): Promise<void> {
+  return new Promise((resolve, reject) => {
+    db.transaction(
+      sqlTransaction => {
+        sqlTransaction.executeSql(
+          `UPDATE articles
+           SET bookmarked = ?
+           WHERE chapter = ?
+             AND bookType = ?`,
+          [
+            !articleChapter.bookmarked,
+            articleChapter.chapter,
+            articleChapter.bookType,
+          ],
+        );
+      },
+      error => {
+        logger.error('articleRepository.toggleBookmark failed', error.message);
+        reject();
+      },
+      resolve,
+    );
+  });
+}
+
 function getArticles(callback: (article: Article[]) => void): void {
   db.transaction(
     sqlTransaction => {
@@ -84,7 +109,7 @@ function getChapters(
   db.transaction(
     sqlTransaction => {
       sqlTransaction.executeSql(
-        `SELECT chapter, title, subTitle, pageIndex, chapterDivision, iconFile FROM articles WHERE bookType = ? ORDER BY pageIndex;`,
+        `SELECT chapter, title, subTitle, pageIndex, chapterDivision, bookType, iconFile, bookmarked FROM articles WHERE bookType = ? ORDER BY pageIndex;`,
         [bookType],
         // @ts-ignore
         (_, { rows: { _array } }) => {
@@ -127,6 +152,7 @@ const articleRepository = {
   searchArticles,
   getChapters,
   getChaptersByList,
+  toggleBookmark,
 };
 
 export default articleRepository;

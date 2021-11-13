@@ -6,7 +6,7 @@ import articleRepository from '../../../database/repository/articleRepository';
 import { Article } from '../../../model/Article';
 import SVGIcon from '../../../components/SVGIcon';
 import HighlightWords from '../../../components/HighlightWords';
-import SearchHeader from '../../../navigation/header/SearchHeader';
+import SearchHeader from '../../../navigation/header/search/SearchHeader';
 import KeyboardAwareView from '../../../components/keyboard/KeyboardAwareView';
 import { AppConfigurations } from '../../../model/AppConfigurations';
 import useContentNavigator from '../../../components/hooks/useContentNavigator';

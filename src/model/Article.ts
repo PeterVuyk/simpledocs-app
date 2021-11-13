@@ -10,4 +10,5 @@ export interface Article {
   iconFile: string;
   contentType: ContentType;
   content: string;
+  bookmarked: boolean;
 }

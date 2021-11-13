@@ -5,4 +5,6 @@ export interface ArticleChapter {
   iconFile: string;
   chapterDivision: string;
   pageIndex: number;
+  bookmarked: boolean;
+  bookType: boolean;
 }

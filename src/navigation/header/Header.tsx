@@ -4,9 +4,10 @@ import { DrawerNavigationHelpers } from '@react-navigation/drawer/lib/typescript
 import { HeaderBackButton, StackNavigationProp } from '@react-navigation/stack';
 import { useNavigation } from '@react-navigation/native';
 import DrawerButton from './DrawerButton';
-import SearchButton from './SearchButton';
-import ArticleListButton from './ArticleListButton';
+import SearchButton from './search/SearchButton';
+import BookmarkChapter from './favorites/BookmarkChapter';
 import HeaderLogo from './HeaderLogo';
+import { ArticleChapter } from '../../model/ArticleChapter';
 
 export const headerStyles = StyleSheet.create({
   container: {
@@ -31,10 +32,10 @@ export const headerStyles = StyleSheet.create({
 
 interface Props {
   navigation: DrawerNavigationHelpers;
-  showListButtonFromBookType?: string;
+  articleChapter?: ArticleChapter;
 }
 
-const Header: FC<Props> = ({ navigation, showListButtonFromBookType }) => {
+const Header: FC<Props> = ({ articleChapter, navigation }) => {
   const navigator = useNavigation<StackNavigationProp<any>>();
 
   return (
@@ -59,8 +60,12 @@ const Header: FC<Props> = ({ navigation, showListButtonFromBookType }) => {
           />
         )}
         <SearchButton navigation={navigation} />
-        {showListButtonFromBookType !== undefined && (
-          <ArticleListButton bookType={showListButtonFromBookType} />
+        {/* TODO: Later when we support bookmarks we can enable this part of the code */}
+        {/* {false && bookType !== undefined && currentChapter !== undefined && ( */}
+        {/*  <BookmarkChapter chapter={currentChapter} bookType={bookType} /> */}
+        {/* )} */}
+        {articleChapter !== undefined && (
+          <BookmarkChapter articleChapter={articleChapter} />
         )}
       </View>
     </SafeAreaView>
