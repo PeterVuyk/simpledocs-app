@@ -1,73 +1,66 @@
-import { useCallback, useEffect, useState } from 'react';
+import React from 'react';
 import migrationChangelogRepository from '../../repository/migrationChangelogRepository';
 import { MigrationChangelog } from '../../../model/migrationChangelog';
-import initializeApp from './initializeApp';
+import initializeRepository from './initializeRepository';
 import logger from '../../../util/logger';
 import SQLiteClient from '../../migrations/SQLiteClient';
+import { useAppDispatch } from '../../../redux/hooks';
+import {
+  retryOnFailure,
+  UPDATE_AGGREGATES_STATE,
+  updateStartupState,
+} from '../../../redux/slice/startupStateSlice';
 
 function useInitializeDatabase() {
-  const [migrations, setMigrations] = useState<MigrationChangelog[] | null>(
-    null,
-  );
-  const [startInitializing, setStartInitializing] = useState<boolean>(false);
-  const [
-    initializationDatabaseSuccessful,
-    setInitializationDatabaseSuccessful,
-  ] = useState<boolean | null>();
+  const dispatch = useAppDispatch();
 
-  useEffect(() => {
-    async function init() {
-      // First we make sure the initial migration table exists
-      await initializeApp
-        .initializeChangelogTable()
-        .then(() =>
-          // Then we get all migrations that are already migrated
-          migrationChangelogRepository.getMigrationChangelog(setMigrations),
-        )
-        // If the initialization failed or getting the migrations, then something really went wrong and we return the initialization failure.
-        .catch(reason => {
-          logger.error('Failed to initialize database', reason);
-          setInitializationDatabaseSuccessful(false);
-        });
+  const prepareDatabaseInitialStartup = async () => {
+    await initializeRepository
+      .initializeInitialTables()
+      .then(() => {
+        dispatch(updateStartupState(UPDATE_AGGREGATES_STATE));
+      })
+      .catch(reason => {
+        logger.error('Failed first startup of the app', reason);
+        dispatch(retryOnFailure());
+      });
+  };
+
+  const runMigrations = async (changelog: MigrationChangelog[]) => {
+    new SQLiteClient()
+      .runMigrations(changelog)
+      .then(() => {
+        dispatch(updateStartupState(UPDATE_AGGREGATES_STATE));
+      })
+      .catch(reason => {
+        logger.error('Failed running the migrations by startup', reason);
+        dispatch(retryOnFailure());
+      });
+  };
+
+  const getMigrationsCallback = async (changelog: MigrationChangelog[]) => {
+    if (changelog.length === 0) {
+      await prepareDatabaseInitialStartup();
+      return;
     }
-    init();
-  }, []);
+    await runMigrations(changelog);
+  };
 
-  const initializeDatabase = useCallback(async () => {
-    setStartInitializing(true);
-  }, []);
+  const prepareDatabase = async () => {
+    await initializeRepository
+      .initializeChangelogTable()
+      .then(() =>
+        migrationChangelogRepository.getMigrationChangelog(
+          getMigrationsCallback,
+        ),
+      )
+      .catch(reason => {
+        logger.error('Failed to initialize database', reason);
+        dispatch(retryOnFailure());
+      });
+  };
 
-  useEffect(() => {
-    async function runMigrations() {
-      if (!startInitializing || migrations === null) {
-        return;
-      }
-
-      // If no migrations are executed yet, then we initialize all tables instead of running the migrations to speedup the first startup
-      if (migrations.length === 0) {
-        await initializeApp.initializeInitialTables().catch(reason => {
-          logger.error('Failed first startup of the app', reason);
-          setInitializationDatabaseSuccessful(false);
-        });
-        setInitializationDatabaseSuccessful(true);
-        return;
-      }
-
-      // Now we run all migrations
-      new SQLiteClient()
-        .runMigrations(migrations)
-        // If an error occurs with the migrations, something really went wrong and app is not usable
-        .catch(reason => {
-          logger.error('Failed running the migrations by startup', reason);
-          setInitializationDatabaseSuccessful(false);
-        })
-        // if migrations are successful
-        .then(() => setInitializationDatabaseSuccessful(true));
-    }
-    runMigrations();
-  }, [migrations, startInitializing]);
-
-  return { initializeDatabase, initializationDatabaseSuccessful };
+  return { prepareDatabase };
 }
 
 export default useInitializeDatabase;

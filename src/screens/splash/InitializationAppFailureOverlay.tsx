@@ -3,6 +3,9 @@ import { Overlay } from 'react-native-elements';
 import { StyleSheet, View } from 'react-native';
 import TitleBar from '../../components/TitleBar';
 import debugHandler from '../../debug/debugHandler';
+import tearDown from '../../database/synchronize/restore/tearDownDatabase';
+import configurationsStorage from '../../configurations/configurationsStorage';
+import logger from '../../util/logger';
 
 const styles = StyleSheet.create({
   messageContainer: { flex: 1, marginTop: 200 },
@@ -16,7 +19,16 @@ const styles = StyleSheet.create({
  */
 const InitializationAppFailureOverlay: FC = () => {
   useEffect(() => {
-    debugHandler.dumpConfigToStorage();
+    debugHandler
+      .dumpConfigToStorage()
+      .then(tearDown.down)
+      .then(configurationsStorage.removeSystemConfiguration)
+      .catch(reason => {
+        logger.error(
+          'InitializationAppFailureOverlay Tried to dump config and tearDown database and systemConfig but failed resulting in a failure state',
+          reason,
+        );
+      });
   }, []);
 
   return (

@@ -1,8 +1,8 @@
-import React, { FC, ReactNode, useEffect } from 'react';
+import React, { FC, ReactNode, useCallback, useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from '../../../redux/hooks';
 import useUpdateAggregates from './useUpdateAggregates';
 import {
-  STARTUP_FAILURE_STATE,
+  retryOnFailure,
   STARTUP_SUCCESSFUL_STATE,
   UPDATE_AGGREGATES_STATE,
   updateStartupState,
@@ -15,34 +15,27 @@ interface Props {
 
 const AggregateDataProvider: FC<Props> = ({ children }) => {
   const dispatch = useAppDispatch();
-  const { isAggregatesUpdated, updateAggregates } = useUpdateAggregates();
+  const { updateAggregates } = useUpdateAggregates();
   const currentStartupState = useAppSelector(
     state => state.startupState.currentState,
   );
 
-  useEffect(() => {
-    if (currentStartupState === UPDATE_AGGREGATES_STATE) {
-      updateAggregates();
-    }
-  }, [currentStartupState, dispatch, updateAggregates]);
+  const handleUpdateAggregates = useCallback(async () => {
+    await updateAggregates().then(async () => {
+      const isStartupSuccessful = await configurationsDAO.isStartupSuccessful();
+      if (isStartupSuccessful) {
+        dispatch(updateStartupState(STARTUP_SUCCESSFUL_STATE));
+        return;
+      }
+      dispatch(retryOnFailure());
+    });
+  }, [dispatch, updateAggregates]);
 
   useEffect(() => {
-    if (!isAggregatesUpdated) {
-      return;
+    if (currentStartupState === UPDATE_AGGREGATES_STATE) {
+      handleUpdateAggregates();
     }
-    const isUpdated = async () => {
-      dispatch(
-        updateStartupState({
-          currentState: await configurationsDAO
-            .isStartupSuccessful()
-            .then(success =>
-              success ? STARTUP_SUCCESSFUL_STATE : STARTUP_FAILURE_STATE,
-            ),
-        }),
-      );
-    };
-    isUpdated();
-  }, [dispatch, isAggregatesUpdated]);
+  }, [currentStartupState, dispatch, handleUpdateAggregates, updateAggregates]);
 
   return <>{children}</>;
 };

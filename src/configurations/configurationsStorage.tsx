@@ -4,6 +4,12 @@ import { SystemConfigurations } from '../model/SystemConfigurations';
 
 let systemConfigurations: SystemConfigurations | undefined;
 
+const removeSystemConfiguration = async () => {
+  AsyncStorage.removeItem('systemConfigurations.json').catch(reason =>
+    logger.error('Failed removing systemConfiguration from storage', reason),
+  );
+};
+
 const storeSystemConfiguration = async (
   configurations: SystemConfigurations,
 ) => {
@@ -39,6 +45,7 @@ const getSystemConfiguration = async () => {
 const configurationsStorage = {
   getSystemConfiguration,
   storeSystemConfiguration,
+  removeSystemConfiguration,
 };
 
 export default configurationsStorage;

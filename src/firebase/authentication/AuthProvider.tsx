@@ -23,14 +23,14 @@ const AuthProvider: FC<Props> = ({ children }) => {
 
   const signIn = useCallback(async () => {
     if (!(await internetConnectivity.hasInternetConnection())) {
-      dispatch(updateStartupState({ currentState: INTERNET_REQUIRED_STATE }));
+      dispatch(updateStartupState(INTERNET_REQUIRED_STATE));
       return;
     }
     Firebase.auth()
       .signInAnonymously()
       .catch(error => {
         logger.error('signing in user as anonymous failed', error.code);
-        dispatch(updateStartupState({ currentState: STARTUP_FAILURE_STATE }));
+        dispatch(updateStartupState(STARTUP_FAILURE_STATE));
       });
   }, [dispatch]);
 
@@ -40,7 +40,7 @@ const AuthProvider: FC<Props> = ({ children }) => {
         return;
       }
       if (user) {
-        dispatch(updateStartupState({ currentState: INIT_DATABASE_STATE }));
+        dispatch(updateStartupState(INIT_DATABASE_STATE));
         return;
       }
       signIn();

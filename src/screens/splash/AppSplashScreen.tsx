@@ -70,7 +70,7 @@ const AppSplashScreen: FC = () => {
       <View style={{ flex: 1 }} onLayout={onLayoutRootView}>
         <NoInternetConnectionOverlay
           onRetryButtonAction={() => {
-            dispatch(updateStartupState({ currentState: AUTHENTICATE_STATE }));
+            dispatch(updateStartupState(AUTHENTICATE_STATE));
           }}
         />
       </View>

@@ -71,9 +71,9 @@ function initializeInitialTables(): Promise<void> {
   });
 }
 
-const initializeApp = {
+const initializeRepository = {
   initializeInitialTables,
   initializeChangelogTable,
 };
 
-export default initializeApp;
+export default initializeRepository;

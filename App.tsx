@@ -10,6 +10,7 @@ import environment from './src/util/environment';
 import { store } from './src/redux/store';
 import InitDatabaseProvider from './src/database/synchronize/initializeDatabase/InitDatabaseProvider';
 import AggregateDataProvider from './src/database/synchronize/updateAggregates/AggregateDataProvider';
+import RestoreAppProvider from './src/database/synchronize/restore/RestoreAppProvider';
 
 const theme = {
   Chip: {
@@ -41,11 +42,13 @@ const App: FC = () => {
     <Provider store={store}>
       <ThemeProvider theme={theme}>
         <AuthProvider>
-          <InitDatabaseProvider>
-            <AggregateDataProvider>
-              <AppSplashScreen />
-            </AggregateDataProvider>
-          </InitDatabaseProvider>
+          <RestoreAppProvider>
+            <InitDatabaseProvider>
+              <AggregateDataProvider>
+                <AppSplashScreen />
+              </AggregateDataProvider>
+            </InitDatabaseProvider>
+          </RestoreAppProvider>
         </AuthProvider>
       </ThemeProvider>
     </Provider>

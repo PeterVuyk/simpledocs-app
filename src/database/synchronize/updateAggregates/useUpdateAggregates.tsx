@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import React from 'react';
 import synchronizeDatabase from './synchronizeDatabase';
 import {
   AGGREGATE_CALCULATIONS,
@@ -16,10 +16,6 @@ import { AppInfo } from '../../../model/AppInfoResponse';
 import { AppConfigurations } from '../../../model/AppConfigurations';
 
 function useUpdateAggregates() {
-  const [isAggregatesUpdated, setIsAggregatesUpdated] = useState<
-    null | boolean
-  >(null);
-
   const updateBooks = async (appInfoResponse: AppInfo): Promise<void> => {
     const appConfigurations =
       appInfoResponse.appConfigurations as AppConfigurations;
@@ -97,16 +93,11 @@ function useUpdateAggregates() {
   };
 
   const updateAggregates = async () => {
-    if (isAggregatesUpdated !== null) {
-      return;
-    }
     const appInfo = await getAppInfoFromServer();
     if (!appInfo || !('appConfigurations' in appInfo)) {
-      setIsAggregatesUpdated(true);
       return;
     }
 
-    setIsAggregatesUpdated(false);
     await configurationsDAO.updateConfigurations(appInfo.appConfigurations);
     await updateDecisionTree(appInfo)
       .then(() => updateCalculations(appInfo))
@@ -119,9 +110,8 @@ function useUpdateAggregates() {
         );
         debugHandler.dumpConfigToStorage();
       });
-    setIsAggregatesUpdated(true);
   };
-  return { isAggregatesUpdated, updateAggregates };
+  return { updateAggregates };
 }
 
 export default useUpdateAggregates;

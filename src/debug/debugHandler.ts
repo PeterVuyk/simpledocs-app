@@ -94,6 +94,9 @@ const dumpConfigToStorage = async (): Promise<void> => {
   }/${new Date().toISOString()}/`;
   databaseContentIterator = 0;
 
+  logger.errorFromMessage(
+    `dumping config to storage, location: ${storageDebugPath}`,
+  );
   debugRepository
     .describeTables(storageTableDescription)
     .catch(error =>
