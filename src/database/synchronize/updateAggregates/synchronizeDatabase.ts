@@ -9,12 +9,12 @@ import updateArticleTable from './updateArticleTable';
 import configurationsDAO from '../../../configurations/configurationsDAO';
 import { DecisionTreeStep } from '../../../model/DecisionTreeStep';
 import { CalculationInfo } from '../../../model/CalculationInfo';
-import { Article } from '../../../model/Article';
+import { ApiArticle } from '../../../model/Article';
 
 const updateBook = async (
   bookType: string,
   serverVersion: string,
-  articles: Article[],
+  articles: ApiArticle[],
 ) => {
   return updateArticleTable
     .updateArticles(articles, serverVersion, bookType)

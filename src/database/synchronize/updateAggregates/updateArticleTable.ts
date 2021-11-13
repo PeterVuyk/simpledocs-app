@@ -1,16 +1,16 @@
 import * as SQLite from 'expo-sqlite';
 import logger from '../../../util/logger';
-import { Article } from '../../../model/Article';
+import { ApiArticle } from '../../../model/Article';
 
 const db = SQLite.openDatabase('db.db');
 
 function addArticle(
   sqlTransaction: SQLite.SQLTransaction,
-  article: Article,
+  article: ApiArticle,
   bookType: string,
 ): void {
   sqlTransaction.executeSql(
-    `INSERT INTO articles (chapter, pageIndex, title, bookType, subTitle, content, contentType, searchText, chapterDivision, iconFile) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+    `INSERT INTO articles (chapter, pageIndex, title, bookType, subTitle, content, contentType, searchText, chapterDivision, iconFile, bookmarked) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
     [
       `${article.chapter}`,
       article.pageIndex,
@@ -22,13 +22,14 @@ function addArticle(
       article.searchText,
       article.chapterDivision,
       article.iconFile,
+      `${article.bookmarked ?? 0}`,
     ],
   );
 }
 
 function addArticles(
   sqlTransaction: SQLite.SQLTransaction,
-  articles: Article[],
+  articles: ApiArticle[],
   bookType: string,
 ): void {
   articles.forEach(article => addArticle(sqlTransaction, article, bookType));
@@ -44,7 +45,7 @@ function removeArticlesByType(
 }
 
 function updateArticles(
-  articles: Article[],
+  articles: ApiArticle[],
   version: string,
   bookType: string,
 ): Promise<void> {

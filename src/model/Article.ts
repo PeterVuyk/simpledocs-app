@@ -11,4 +11,7 @@ export interface Article {
   contentType: ContentType;
   content: string;
   bookmarked: boolean;
+  bookType: string;
 }
+
+export interface ApiArticle extends Article, Omit<Article, 'bookType'> {}

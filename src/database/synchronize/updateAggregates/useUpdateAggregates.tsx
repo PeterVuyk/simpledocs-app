@@ -14,9 +14,32 @@ import getAppInfo from '../../../firebase/functions/getAppInfo';
 import configurationsStorage from '../../../configurations/configurationsStorage';
 import { AppInfo } from '../../../model/AppInfoResponse';
 import { AppConfigurations } from '../../../model/AppConfigurations';
+import articleRepository from '../../repository/articleRepository';
+import { ApiArticle, Article } from '../../../model/Article';
 
 function useUpdateAggregates() {
-  const updateBooks = async (appInfoResponse: AppInfo): Promise<void> => {
+  const addBookmarksToArticles = (
+    bookType: string,
+    articles: ApiArticle[],
+    bookmarkedArticles: Article[],
+  ) => {
+    bookmarkedArticles
+      .filter(value => value.bookType === bookType)
+      .forEach(bookmarkedArticle => {
+        const article = articles.find(
+          value => value.chapter === bookmarkedArticle.chapter,
+        );
+        if (article) {
+          article.bookmarked = bookmarkedArticle.bookmarked;
+        }
+      });
+    return articles;
+  };
+
+  const updateBooksOld = async (
+    appInfoResponse: AppInfo,
+    bookmarkedArticles: Article[],
+  ): Promise<void> => {
     const appConfigurations =
       appInfoResponse.appConfigurations as AppConfigurations;
 
@@ -37,9 +60,28 @@ function useUpdateAggregates() {
       await synchronizeDatabase.updateBook(
         aggregate,
         appInfoResponse.appConfigurations.versioning[aggregate].version,
-        appInfoResponse[aggregate],
+        addBookmarksToArticles(
+          aggregate,
+          appInfoResponse[aggregate],
+          bookmarkedArticles,
+        ),
       );
     }
+  };
+
+  const updateBooksPreserveFavorites = async (
+    appInfoResponse: AppInfo,
+  ): Promise<void> => {
+    return new Promise((resolve, reject) => {
+      articleRepository
+        .getBookmarkedChapters(async articles => {
+          await updateBooksOld(appInfoResponse, articles);
+          resolve();
+        })
+        .catch(reason => {
+          reject(reason);
+        });
+    });
   };
 
   const updateCalculations = async (
@@ -101,7 +143,7 @@ function useUpdateAggregates() {
     await configurationsDAO.updateConfigurations(appInfo.appConfigurations);
     await updateDecisionTree(appInfo)
       .then(() => updateCalculations(appInfo))
-      .then(() => updateBooks(appInfo))
+      .then(() => updateBooksPreserveFavorites(appInfo))
       .then(configurationsDAO.createSessionConfiguration)
       .catch(reason => {
         logger.error(

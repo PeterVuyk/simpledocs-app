@@ -30,6 +30,33 @@ function toggleBookmark(articleChapter: ArticleChapter): Promise<void> {
   });
 }
 
+function getBookmarkedChapters(
+  callback: (article: Article[]) => void,
+): Promise<void> {
+  return new Promise((resolve, reject) => {
+    db.transaction(
+      sqlTransaction => {
+        sqlTransaction.executeSql(
+          `SELECT * FROM articles WHERE bookmarked = 1`,
+          [],
+          // @ts-ignore
+          (_, { rows: { _array } }) => {
+            callback(_array as Article[]);
+          },
+        );
+      },
+      error => {
+        logger.error(
+          'articleRepository.getBookmarkedChapters failed',
+          error.message,
+        );
+        reject();
+      },
+      resolve,
+    );
+  });
+}
+
 function getArticles(callback: (article: Article[]) => void): void {
   db.transaction(
     sqlTransaction => {
@@ -153,6 +180,7 @@ const articleRepository = {
   getChapters,
   getChaptersByList,
   toggleBookmark,
+  getBookmarkedChapters,
 };
 
 export default articleRepository;
