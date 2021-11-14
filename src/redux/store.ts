@@ -3,6 +3,7 @@ import keyboardReducer from './slice/keyboardSlice';
 import searchTextReducer from './slice/searchTextSlice';
 import scrollingReducer from './slice/scrollingSlice';
 import startupStateReducer from './slice/startupStateSlice';
+import bookmarkStateReducer from './slice/BookmarkSlice';
 
 export const store = configureStore({
   reducer: {
@@ -10,6 +11,7 @@ export const store = configureStore({
     searchText: searchTextReducer,
     scrolling: scrollingReducer,
     startupState: startupStateReducer,
+    bookmarkState: bookmarkStateReducer,
   },
 });
 

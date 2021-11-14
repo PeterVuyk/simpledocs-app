@@ -6,7 +6,7 @@ import {
   AGGREGATE_DECISION_TREE,
 } from '../../../model/aggregate';
 import updateArticleTable from './updateArticleTable';
-import configurationsDAO from '../../../configurations/configurationsDAO';
+import configurationsHelper from '../../../helper/configurationsHelper';
 import { DecisionTreeStep } from '../../../model/DecisionTreeStep';
 import { CalculationInfo } from '../../../model/CalculationInfo';
 import { ApiArticle } from '../../../model/Article';
@@ -19,7 +19,7 @@ const updateBook = async (
   return updateArticleTable
     .updateArticles(articles, serverVersion, bookType)
     .then(() => {
-      configurationsDAO.updateVersioning(bookType, {
+      configurationsHelper.updateVersioning(bookType, {
         version: serverVersion,
         isBookType: true,
       });
@@ -39,7 +39,7 @@ const updateDecisionTree = async (
   return updateDecisionTreeTable
     .updateDecisionTreeSteps(decisionTreeSteps)
     .then(() => {
-      configurationsDAO.updateVersioning(AGGREGATE_DECISION_TREE, {
+      configurationsHelper.updateVersioning(AGGREGATE_DECISION_TREE, {
         version: serverVersion,
         isBookType: false,
       });
@@ -59,7 +59,7 @@ const updateCalculations = async (
   return updateCalculationsTable
     .updateCalculation(calculationInfo)
     .then(() => {
-      configurationsDAO.updateVersioning(AGGREGATE_CALCULATIONS, {
+      configurationsHelper.updateVersioning(AGGREGATE_CALCULATIONS, {
         version: serverVersion,
         isBookType: false,
       });

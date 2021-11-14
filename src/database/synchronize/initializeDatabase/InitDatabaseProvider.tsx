@@ -1,5 +1,5 @@
 import React, { FC, ReactNode, useCallback, useEffect } from 'react';
-import configurationsStorage from '../../../configurations/configurationsStorage';
+import configurationsStorage from '../../../storage/configurationsStorage';
 import internetConnectivity from '../../../helper/internetConnectivity';
 import { useAppDispatch, useAppSelector } from '../../../redux/hooks';
 import {

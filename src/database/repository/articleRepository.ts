@@ -45,13 +45,7 @@ function getBookmarkedChapters(
           },
         );
       },
-      error => {
-        logger.error(
-          'articleRepository.getBookmarkedChapters failed',
-          error.message,
-        );
-        reject();
-      },
+      reject,
       resolve,
     );
   });
@@ -70,10 +64,7 @@ function getArticles(callback: (article: Article[]) => void): void {
       );
     },
     error =>
-      logger.error(
-        'articleRepository.getArticleByChapter failed',
-        error.message,
-      ),
+      logger.error('articleRepository.getArticles failed', error.message),
   );
 }
 

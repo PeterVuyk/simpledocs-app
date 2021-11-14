@@ -5,40 +5,41 @@ import {
   AGGREGATE_DECISION_TREE,
 } from '../../../model/aggregate';
 import logger from '../../../util/logger';
-import configurationsDAO from '../../../configurations/configurationsDAO';
+import configurationsHelper from '../../../helper/configurationsHelper';
 import environment from '../../../util/environment';
 import configHelper from '../../../helper/configHelper';
 import { STAGING_ENVIRONMENT } from '../../../model/Environment';
 import debugHandler from '../../../debug/debugHandler';
 import getAppInfo from '../../../firebase/functions/getAppInfo';
-import configurationsStorage from '../../../configurations/configurationsStorage';
+import configurationsStorage from '../../../storage/configurationsStorage';
 import { AppInfo } from '../../../model/AppInfoResponse';
 import { AppConfigurations } from '../../../model/AppConfigurations';
 import articleRepository from '../../repository/articleRepository';
-import { ApiArticle, Article } from '../../../model/Article';
+import { ApiArticle } from '../../../model/Article';
+import { Bookmark } from '../../../model/Bookmark';
 
 function useUpdateAggregates() {
   const addBookmarksToArticles = (
     bookType: string,
     articles: ApiArticle[],
-    bookmarkedArticles: Article[],
+    bookmarks: Bookmark[],
   ) => {
-    bookmarkedArticles
+    bookmarks
       .filter(value => value.bookType === bookType)
       .forEach(bookmarkedArticle => {
         const article = articles.find(
           value => value.chapter === bookmarkedArticle.chapter,
         );
         if (article) {
-          article.bookmarked = bookmarkedArticle.bookmarked;
+          article.bookmarked = true;
         }
       });
     return articles;
   };
 
-  const updateBooksOld = async (
+  const updateBooks = async (
     appInfoResponse: AppInfo,
-    bookmarkedArticles: Article[],
+    bookmarks: Bookmark[],
   ): Promise<void> => {
     const appConfigurations =
       appInfoResponse.appConfigurations as AppConfigurations;
@@ -63,7 +64,7 @@ function useUpdateAggregates() {
         addBookmarksToArticles(
           aggregate,
           appInfoResponse[aggregate],
-          bookmarkedArticles,
+          bookmarks,
         ),
       );
     }
@@ -71,14 +72,24 @@ function useUpdateAggregates() {
 
   const updateBooksPreserveFavorites = async (
     appInfoResponse: AppInfo,
+    preservedBookmarks: Bookmark[],
   ): Promise<void> => {
+    if (preservedBookmarks.length !== 0) {
+      return updateBooks(appInfoResponse, preservedBookmarks);
+    }
     return new Promise((resolve, reject) => {
       articleRepository
         .getBookmarkedChapters(async articles => {
-          await updateBooksOld(appInfoResponse, articles);
+          await updateBooks(
+            appInfoResponse,
+            articles.map(value => {
+              return { chapter: value.chapter, bookType: value.bookType };
+            }),
+          );
           resolve();
         })
         .catch(reason => {
+          logger.error('failed collecting bookmarks from database', reason);
           reject(reason);
         });
     });
@@ -134,17 +145,17 @@ function useUpdateAggregates() {
     );
   };
 
-  const updateAggregates = async () => {
+  const updateAggregates = async (preservedBookmarks: Bookmark[]) => {
     const appInfo = await getAppInfoFromServer();
     if (!appInfo || !('appConfigurations' in appInfo)) {
       return;
     }
 
-    await configurationsDAO.updateConfigurations(appInfo.appConfigurations);
+    await configurationsHelper.updateConfigurations(appInfo.appConfigurations);
     await updateDecisionTree(appInfo)
       .then(() => updateCalculations(appInfo))
-      .then(() => updateBooksPreserveFavorites(appInfo))
-      .then(configurationsDAO.createSessionConfiguration)
+      .then(() => updateBooksPreserveFavorites(appInfo, preservedBookmarks))
+      .then(configurationsHelper.createSessionConfiguration)
       .catch(reason => {
         logger.error(
           'something when wrong by update aggregates, some or all updates may be skipped',

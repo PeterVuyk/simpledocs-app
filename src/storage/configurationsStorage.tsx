@@ -5,6 +5,7 @@ import { SystemConfigurations } from '../model/SystemConfigurations';
 let systemConfigurations: SystemConfigurations | undefined;
 
 const removeSystemConfiguration = async () => {
+  systemConfigurations = undefined;
   AsyncStorage.removeItem('systemConfigurations.json').catch(reason =>
     logger.error('Failed removing systemConfiguration from storage', reason),
   );

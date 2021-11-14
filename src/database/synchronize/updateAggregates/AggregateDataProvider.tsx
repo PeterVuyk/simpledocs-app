@@ -7,7 +7,7 @@ import {
   UPDATE_AGGREGATES_STATE,
   updateStartupState,
 } from '../../../redux/slice/startupStateSlice';
-import configurationsDAO from '../../../configurations/configurationsDAO';
+import configurationsHelper from '../../../helper/configurationsHelper';
 
 interface Props {
   children: ReactNode;
@@ -16,26 +16,26 @@ interface Props {
 const AggregateDataProvider: FC<Props> = ({ children }) => {
   const dispatch = useAppDispatch();
   const { updateAggregates } = useUpdateAggregates();
-  const currentStartupState = useAppSelector(
-    state => state.startupState.currentState,
-  );
+  const { currentState } = useAppSelector(state => state.startupState);
+  const { bookmarks } = useAppSelector(state => state.bookmarkState);
 
   const handleUpdateAggregates = useCallback(async () => {
-    await updateAggregates().then(async () => {
-      const isStartupSuccessful = await configurationsDAO.isStartupSuccessful();
+    await updateAggregates(bookmarks).then(async () => {
+      const isStartupSuccessful =
+        await configurationsHelper.isStartupSuccessful();
       if (isStartupSuccessful) {
         dispatch(updateStartupState(STARTUP_SUCCESSFUL_STATE));
         return;
       }
       dispatch(retryOnFailure());
     });
-  }, [dispatch, updateAggregates]);
+  }, [bookmarks, dispatch, updateAggregates]);
 
   useEffect(() => {
-    if (currentStartupState === UPDATE_AGGREGATES_STATE) {
+    if (currentState === UPDATE_AGGREGATES_STATE) {
       handleUpdateAggregates();
     }
-  }, [currentStartupState, dispatch, handleUpdateAggregates, updateAggregates]);
+  }, [currentState, dispatch, handleUpdateAggregates, updateAggregates]);
 
   return <>{children}</>;
 };

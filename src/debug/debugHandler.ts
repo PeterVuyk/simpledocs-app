@@ -1,5 +1,5 @@
 import storageBucket from '../firebase/bucket/storageBucket';
-import configurationsStorage from '../configurations/configurationsStorage';
+import configurationsStorage from '../storage/configurationsStorage';
 import logger from '../util/logger';
 import debugRepository from '../database/repository/debugRepository';
 import articleRepository from '../database/repository/articleRepository';

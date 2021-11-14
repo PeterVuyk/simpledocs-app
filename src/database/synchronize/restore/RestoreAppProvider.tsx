@@ -1,5 +1,5 @@
 import React, { FC, ReactNode, useCallback, useEffect } from 'react';
-import configurationsStorage from '../../../configurations/configurationsStorage';
+import configurationsStorage from '../../../storage/configurationsStorage';
 import { useAppDispatch, useAppSelector } from '../../../redux/hooks';
 import {
   AUTHENTICATE_STATE,
@@ -10,6 +10,9 @@ import {
 import tearDown from '../restore/tearDownDatabase';
 import logger from '../../../util/logger';
 import debugHandler from '../../../debug/debugHandler';
+import articleRepository from '../../repository/articleRepository';
+import { setBookmarks } from '../../../redux/slice/BookmarkSlice';
+import { Bookmark } from '../../../model/Bookmark';
 
 interface Props {
   children: ReactNode;
@@ -19,9 +22,27 @@ const RestoreAppProvider: FC<Props> = ({ children }) => {
   const dispatch = useAppDispatch();
   const { currentState } = useAppSelector(state => state.startupState);
 
+  const preserveArticleFavorites = useCallback(() => {
+    return new Promise(resolve => {
+      articleRepository
+        .getBookmarkedChapters(async articles => {
+          const bookmarks = articles.map(value => {
+            return { chapter: value.chapter, bookType: value.bookType };
+          }) as Bookmark[];
+          dispatch(setBookmarks(bookmarks));
+          resolve();
+        })
+        .catch(() => {
+          // an exception can occur if the database for example doesn't exist
+          resolve();
+        });
+    });
+  }, [dispatch]);
+
   const restore = useCallback(async () => {
     await debugHandler
       .dumpConfigToStorage()
+      .then(preserveArticleFavorites)
       .then(tearDown.down)
       .then(configurationsStorage.removeSystemConfiguration)
       .then(() => {
@@ -34,7 +55,7 @@ const RestoreAppProvider: FC<Props> = ({ children }) => {
         );
         dispatch(updateStartupState(STARTUP_FAILURE_STATE));
       });
-  }, [dispatch]);
+  }, [dispatch, preserveArticleFavorites]);
 
   useEffect(() => {
     if (currentState === RESTORE_APP_FROM_FAILED_STARTUP) {

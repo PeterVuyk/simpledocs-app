@@ -4,7 +4,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import DrawerContent from './DrawerContent';
 import TabNavigation from '../bottom/TabNavigation';
 import { AppConfigurations } from '../../model/AppConfigurations';
-import configurationsStorage from '../../configurations/configurationsStorage';
+import configurationsStorage from '../../storage/configurationsStorage';
 import CopyrightScreen from '../../screens/drawerScreens/copyright/CopyrightScreen';
 import SearchScreen from '../../screens/drawerScreens/search/SearchScreen';
 import AboutUsScreen from '../../screens/drawerScreens/about/AboutUsScreen';

@@ -1,5 +1,5 @@
 import { Versioning } from '../model/SystemConfigurations';
-import configurationsStorage from './configurationsStorage';
+import configurationsStorage from '../storage/configurationsStorage';
 import { AppConfigurations } from '../model/AppConfigurations';
 import logger from '../util/logger';
 
@@ -99,11 +99,11 @@ const isStartupSuccessful = async (): Promise<boolean> => {
   return true;
 };
 
-const configurationsDAO = {
+const configurationsHelper = {
   updateVersioning,
   updateConfigurations,
   createSessionConfiguration,
   isStartupSuccessful,
 };
 
-export default configurationsDAO;
+export default configurationsHelper;

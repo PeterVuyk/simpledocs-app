@@ -4,7 +4,7 @@ import { StyleSheet, View } from 'react-native';
 import TitleBar from '../../components/TitleBar';
 import debugHandler from '../../debug/debugHandler';
 import tearDown from '../../database/synchronize/restore/tearDownDatabase';
-import configurationsStorage from '../../configurations/configurationsStorage';
+import configurationsStorage from '../../storage/configurationsStorage';
 import logger from '../../util/logger';
 
 const styles = StyleSheet.create({
