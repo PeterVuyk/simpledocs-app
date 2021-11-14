@@ -2,8 +2,8 @@ import React, { FC, useEffect, useState } from 'react';
 import { RouteProp, useIsFocused } from '@react-navigation/native';
 import ArticlesList from './ArticlesList';
 import articleRepository from '../../../database/repository/articleRepository';
-import { ArticleChapter } from '../../../model/ArticleChapter';
-import { BookTabInfo } from '../../../model/AppConfigurations';
+import { ArticleChapter } from '../../../model/articles/ArticleChapter';
+import { BookTabInfo } from '../../../model/configurations/AppConfigurations';
 
 interface Props {
   navigation: any;

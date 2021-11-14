@@ -12,7 +12,7 @@ import logger from '../../../util/logger';
 import debugHandler from '../../../debug/debugHandler';
 import articleRepository from '../../repository/articleRepository';
 import { setBookmarks } from '../../../redux/slice/BookmarkSlice';
-import { Bookmark } from '../../../model/Bookmark';
+import { Bookmark } from '../../../model/articles/Bookmark';
 
 interface Props {
   children: ReactNode;

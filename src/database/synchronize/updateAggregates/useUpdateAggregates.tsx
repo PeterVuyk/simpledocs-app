@@ -13,10 +13,10 @@ import debugHandler from '../../../debug/debugHandler';
 import getAppInfo from '../../../firebase/functions/getAppInfo';
 import configurationsStorage from '../../../storage/configurationsStorage';
 import { AppInfo } from '../../../model/AppInfoResponse';
-import { AppConfigurations } from '../../../model/AppConfigurations';
+import { AppConfigurations } from '../../../model/configurations/AppConfigurations';
 import articleRepository from '../../repository/articleRepository';
-import { ApiArticle } from '../../../model/Article';
-import { Bookmark } from '../../../model/Bookmark';
+import { ApiArticle } from '../../../model/articles/Article';
+import { Bookmark } from '../../../model/articles/Bookmark';
 
 function useUpdateAggregates() {
   const addBookmarksToArticles = (

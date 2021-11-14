@@ -4,11 +4,11 @@ import calculationsRepository from '../../../database/repository/calculationsRep
 import TitleBar from '../../../components/TitleBar';
 import OvertakingDistanceCalculator from './OvertakingDistanceCalculator';
 import KeyboardAwareView from '../../../components/keyboard/KeyboardAwareView';
-import { CalculationInfo } from '../../../model/CalculationInfo';
+import { CalculationInfo } from '../../../model/calculations/CalculationInfo';
 import {
   OVERTAKING_DISTANCE,
   STOPPING_DISTANCE,
-} from '../../../model/CalculationType';
+} from '../../../model/calculations/CalculationType';
 import StoppingDistanceCalculator from './StoppingDistanceCalculator';
 import ContentViewer from '../../../components/viewer/ContentViewer';
 

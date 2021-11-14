@@ -1,5 +1,5 @@
-import { FIRST_BOOK_TAB, SECOND_BOOK_TAB } from '../model/BookTab';
-import { BookInfo, Versions } from '../model/AppConfigurations';
+import { FIRST_BOOK_TAB, SECOND_BOOK_TAB } from '../model/BottomTab';
+import { BookInfo, Versions } from '../model/configurations/AppConfigurations';
 import configurationsStorage from '../storage/configurationsStorage';
 
 const getBookTypes = async (): Promise<BookInfo[]> => {

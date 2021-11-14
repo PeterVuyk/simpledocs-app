@@ -3,7 +3,7 @@ import { FlatList, StyleSheet } from 'react-native';
 import { useIsFocused } from '@react-navigation/native';
 import getWidth from 'string-pixel-width';
 import configHelper from '../../../helper/configHelper';
-import { BookInfo } from '../../../model/AppConfigurations';
+import { BookInfo } from '../../../model/configurations/AppConfigurations';
 import NavigatorChip from '../../../components/NavigatorChip';
 
 interface SearchItem {

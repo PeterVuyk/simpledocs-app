@@ -7,9 +7,9 @@ import {
 } from '../../../model/aggregate';
 import updateArticleTable from './updateArticleTable';
 import configurationsHelper from '../../../helper/configurationsHelper';
-import { DecisionTreeStep } from '../../../model/DecisionTreeStep';
-import { CalculationInfo } from '../../../model/CalculationInfo';
-import { ApiArticle } from '../../../model/Article';
+import { DecisionTreeStep } from '../../../model/decisionTree/DecisionTreeStep';
+import { CalculationInfo } from '../../../model/calculations/CalculationInfo';
+import { ApiArticle } from '../../../model/articles/Article';
 
 const updateBook = async (
   bookType: string,

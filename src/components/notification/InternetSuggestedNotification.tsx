@@ -1,5 +1,5 @@
 import React, { FC, ReactNode, useEffect } from 'react';
-import { NOTIFICATION_TYPE_NO_INTERNET_CONNECTION } from '../../model/NotificationType';
+import { NOTIFICATION_TYPE_NO_INTERNET_CONNECTION } from '../../model/notifications/NotificationType';
 import useNotification from './useNotification';
 import internetConnectivity from '../../helper/internetConnectivity';
 

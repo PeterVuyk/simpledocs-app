@@ -2,7 +2,7 @@ import React, { FC } from 'react';
 import { DrawerNavigationHelpers } from '@react-navigation/drawer/lib/typescript/src/types';
 import { StyleSheet, View } from 'react-native';
 import TitleBar from '../../../components/TitleBar';
-import { AppConfigurations } from '../../../model/AppConfigurations';
+import { AppConfigurations } from '../../../model/configurations/AppConfigurations';
 import DrawerScreen from '../DrawerScreen';
 
 const styles = StyleSheet.create({

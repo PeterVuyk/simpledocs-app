@@ -1,6 +1,6 @@
 import React, { FC, useCallback, useEffect, useState } from 'react';
 import { View } from 'react-native';
-import { Article } from '../../../model/Article';
+import { Article } from '../../../model/articles/Article';
 import articleRepository from '../../../database/repository/articleRepository';
 import ScrollAwareBottomButton from '../../../components/ScrollAwareBottomButton';
 import ContentViewer from '../../../components/viewer/ContentViewer';

@@ -1,7 +1,7 @@
 import React, { FC, useCallback, useEffect, useMemo, useRef } from 'react';
 import { FlatList, StyleSheet, View } from 'react-native';
 import getWidth from 'string-pixel-width';
-import { ArticleChapter } from '../../model/ArticleChapter';
+import { ArticleChapter } from '../../model/articles/ArticleChapter';
 import NavigatorChip from '../../components/NavigatorChip';
 
 interface Props {

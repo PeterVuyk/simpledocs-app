@@ -6,13 +6,16 @@ import decisionTreeRepository from '../../database/repository/decisionTreeReposi
 import ListItem from '../../components/listItem/ListItem';
 import calculationsRepository from '../../database/repository/calculationsRepository';
 import TitleBar from '../../components/TitleBar';
-import { CalculationInfo } from '../../model/CalculationInfo';
+import { CalculationInfo } from '../../model/calculations/CalculationInfo';
 import {
   AGGREGATE_CALCULATIONS,
   AGGREGATE_DECISION_TREE,
 } from '../../model/aggregate';
-import { DecisionTreeTitle } from '../../model/DecisionTreeTitle';
-import { DecisionsTab, BookTabInfo } from '../../model/AppConfigurations';
+import { DecisionTreeTitle } from '../../model/decisionTree/DecisionTreeTitle';
+import {
+  DecisionsTab,
+  BookTabInfo,
+} from '../../model/configurations/AppConfigurations';
 import logger from '../../util/logger';
 
 interface Props {

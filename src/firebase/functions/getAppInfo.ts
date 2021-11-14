@@ -1,7 +1,7 @@
 import Constants from 'expo-constants';
 import { LogBox } from 'react-native';
 import { AppInfoResponse, AppInfo } from '../../model/AppInfoResponse';
-import { Versions } from '../../model/AppConfigurations';
+import { Versions } from '../../model/configurations/AppConfigurations';
 import Firebase from '../firebase';
 import environment from '../../util/environment';
 

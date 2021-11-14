@@ -1,6 +1,6 @@
-import { Versioning } from '../model/SystemConfigurations';
+import { Versioning } from '../model/configurations/SystemConfigurations';
 import configurationsStorage from '../storage/configurationsStorage';
-import { AppConfigurations } from '../model/AppConfigurations';
+import { AppConfigurations } from '../model/configurations/AppConfigurations';
 import logger from '../util/logger';
 
 const updateVersioning = async (aggregate: string, versioning: Versioning) => {

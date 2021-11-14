@@ -4,7 +4,7 @@ import { DrawerNavigationHelpers } from '@react-navigation/drawer/lib/typescript
 import Header from '../header/Header';
 import DecisionsOverviewScreen from '../../screens/decisions/DecisionsOverviewScreen';
 import DocumentationScreen from '../../screens/decisions/DocumentationScreen';
-import { DecisionsTab } from '../../model/AppConfigurations';
+import { DecisionsTab } from '../../model/configurations/AppConfigurations';
 import DecisionScreen from '../../screens/decisions/DecisionScreen';
 
 const Stack = createStackNavigator();

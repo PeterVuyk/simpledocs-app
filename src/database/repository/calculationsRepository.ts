@@ -1,10 +1,10 @@
 import * as SQLite from 'expo-sqlite';
 import logger from '../../util/logger';
-import { CalculationInfo } from '../../model/CalculationInfo';
+import { CalculationInfo } from '../../model/calculations/CalculationInfo';
 import {
   OVERTAKING_DISTANCE,
   STOPPING_DISTANCE,
-} from '../../model/CalculationType';
+} from '../../model/calculations/CalculationType';
 
 const db = SQLite.openDatabase('db.db');
 

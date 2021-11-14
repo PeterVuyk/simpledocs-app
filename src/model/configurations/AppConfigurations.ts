@@ -1,4 +1,4 @@
-import { IconFamilyType } from './IconFamilyType';
+import { IconFamilyType } from '../IconFamilyType';
 
 export interface BottomTab {
   familyType: IconFamilyType;

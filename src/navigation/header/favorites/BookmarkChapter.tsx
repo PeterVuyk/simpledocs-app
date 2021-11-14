@@ -1,7 +1,7 @@
 import React, { FC, useEffect, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Icon } from 'native-base';
-import { ArticleChapter } from '../../../model/ArticleChapter';
+import { ArticleChapter } from '../../../model/articles/ArticleChapter';
 import articleRepository from '../../../database/repository/articleRepository';
 
 const styles = StyleSheet.create({

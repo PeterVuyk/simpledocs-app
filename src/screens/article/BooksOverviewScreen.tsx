@@ -2,10 +2,13 @@ import React, { FC, useCallback } from 'react';
 import { DrawerNavigationProp } from '@react-navigation/drawer/lib/typescript/src/types';
 import { FlatList, StyleSheet, View } from 'react-native';
 import { RouteProp } from '@react-navigation/native';
-import { SECOND_BOOK_TAB } from '../../model/BookTab';
+import { SECOND_BOOK_TAB } from '../../model/BottomTab';
 import TitleBar from '../../components/TitleBar';
 import ListItem from '../../components/listItem/ListItem';
-import { BookInfo, BookTabInfo } from '../../model/AppConfigurations';
+import {
+  BookInfo,
+  BookTabInfo,
+} from '../../model/configurations/AppConfigurations';
 
 const styles = StyleSheet.create({
   container: {

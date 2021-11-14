@@ -3,7 +3,7 @@ import { RouteProp } from '@react-navigation/native';
 import { DrawerNavigationHelpers } from '@react-navigation/drawer/lib/typescript/src/types';
 import { Dimensions } from 'react-native';
 import articleRepository from '../../../database/repository/articleRepository';
-import { ArticleChapter } from '../../../model/ArticleChapter';
+import { ArticleChapter } from '../../../model/articles/ArticleChapter';
 import ArticleDetails from './ArticleDetails';
 
 interface Props {

@@ -1,6 +1,6 @@
 import * as SQLite from 'expo-sqlite';
 import logger from '../../../util/logger';
-import { ApiArticle } from '../../../model/Article';
+import { ApiArticle } from '../../../model/articles/Article';
 
 const db = SQLite.openDatabase('db.db');
 

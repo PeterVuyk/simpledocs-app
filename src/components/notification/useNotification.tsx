@@ -4,9 +4,9 @@ import {
   NOTIFICATION_TYPE_HORIZONTAL_SCROLL_TIP,
   NOTIFICATION_TYPE_NO_INTERNET_CONNECTION,
   NotificationType,
-} from '../../model/NotificationType';
+} from '../../model/notifications/NotificationType';
 import notificationRepository from '../../database/repository/notificationRepository';
-import { Notification } from '../../model/Notification';
+import { Notification } from '../../model/notifications/Notification';
 import logger from '../../util/logger';
 
 const useNotification = () => {

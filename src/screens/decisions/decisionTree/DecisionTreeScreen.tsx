@@ -2,7 +2,7 @@ import React, { FC, useCallback, useEffect, useState } from 'react';
 import { StyleSheet, View, Text } from 'react-native';
 import { Button, Icon } from 'react-native-elements';
 import decisionTreeRepository from '../../../database/repository/decisionTreeRepository';
-import { DecisionTreeStep } from '../../../model/DecisionTreeStep';
+import { DecisionTreeStep } from '../../../model/decisionTree/DecisionTreeStep';
 
 const styles = StyleSheet.create({
   question: {

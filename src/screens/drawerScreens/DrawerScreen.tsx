@@ -1,6 +1,6 @@
 import React, { FC, ReactNode } from 'react';
 import { DrawerNavigationHelpers } from '@react-navigation/drawer/lib/typescript/src/types';
-import { AppConfigurations } from '../../model/AppConfigurations';
+import { AppConfigurations } from '../../model/configurations/AppConfigurations';
 import BottomTabs from '../../navigation/bottom/BottomTabs';
 import Header from '../../navigation/header/Header';
 import BottomTab from '../../model/BottomTab';

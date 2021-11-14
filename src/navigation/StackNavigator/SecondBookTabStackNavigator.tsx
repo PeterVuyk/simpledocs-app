@@ -4,9 +4,9 @@ import { DrawerNavigationHelpers } from '@react-navigation/drawer/lib/typescript
 import Header from '../header/Header';
 import ArticleDetailsScreen from '../../screens/article/details/ArticleDetailsScreen';
 import ArticleListScreen from '../../screens/article/list/ArticleListScreen';
-import { SECOND_BOOK_TAB } from '../../model/BookTab';
+import { SECOND_BOOK_TAB } from '../../model/BottomTab';
 import BooksOverviewScreen from '../../screens/article/BooksOverviewScreen';
-import { BookTabInfo } from '../../model/AppConfigurations';
+import { BookTabInfo } from '../../model/configurations/AppConfigurations';
 import ArticleIntermediateListScreen from '../../screens/article/list/ArticleIntermediateListScreen';
 
 const Stack = createStackNavigator();

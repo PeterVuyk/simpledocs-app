@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import { ListItem } from 'react-native-elements';
 import { View } from 'react-native';
-import { Article } from '../../../model/Article';
+import { Article } from '../../../model/articles/Article';
 import SVGIcon from '../../../components/SVGIcon';
 import HighlightWords from '../../../components/HighlightWords';
 import useContentNavigator from '../../../components/hooks/useContentNavigator';

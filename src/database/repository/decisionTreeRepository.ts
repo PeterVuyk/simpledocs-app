@@ -1,7 +1,7 @@
 import * as SQLite from 'expo-sqlite';
 import logger from '../../util/logger';
-import { DecisionTreeStep } from '../../model/DecisionTreeStep';
-import { DecisionTreeTitle } from '../../model/DecisionTreeTitle';
+import { DecisionTreeStep } from '../../model/decisionTree/DecisionTreeStep';
+import { DecisionTreeTitle } from '../../model/decisionTree/DecisionTreeTitle';
 
 const db = SQLite.openDatabase('db.db');
 

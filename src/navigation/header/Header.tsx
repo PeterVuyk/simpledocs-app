@@ -7,7 +7,7 @@ import DrawerButton from './DrawerButton';
 import SearchButton from './search/SearchButton';
 import BookmarkChapter from './favorites/BookmarkChapter';
 import HeaderLogo from './HeaderLogo';
-import { ArticleChapter } from '../../model/ArticleChapter';
+import { ArticleChapter } from '../../model/articles/ArticleChapter';
 
 export const headerStyles = StyleSheet.create({
   container: {

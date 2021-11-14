@@ -2,7 +2,7 @@ import React, { FC } from 'react';
 import { DrawerNavigationHelpers } from '@react-navigation/drawer/lib/typescript/src/types';
 import TabNavigator from './TabNavigator';
 import DecisionsStackNavigator from '../StackNavigator/DecisionsStackNavigator';
-import { AppConfigurations } from '../../model/AppConfigurations';
+import { AppConfigurations } from '../../model/configurations/AppConfigurations';
 import SecondBookTabStackNavigator from '../StackNavigator/SecondBookTabStackNavigator';
 import FirstBookTabStackNavigator from '../StackNavigator/FirstBookTabStackNavigator';
 import ResizeScreenDrawer from '../drawer/ResizeScreenDrawer';
