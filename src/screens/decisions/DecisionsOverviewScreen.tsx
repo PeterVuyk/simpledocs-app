@@ -149,6 +149,7 @@ const DecisionsOverviewScreen: FC<Props> = ({ navigation, route }) => {
         onSubmit={() => navigateDecisionItem(item)}
         iconFile={item.iconFile}
         title={item.title}
+        bookmarked={false}
         subTitle={getSubtitleFromAggregate(item.aggregate)}
       />
     ),

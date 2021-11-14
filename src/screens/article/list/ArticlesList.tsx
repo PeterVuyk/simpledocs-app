@@ -126,6 +126,7 @@ const ArticlesList: FC<Props> = ({
         title={item.title}
         subTitle={item.subTitle}
         iconFile={item.iconFile}
+        bookmarked={item.bookmarked}
         onSubmit={() => handleItemClick(item)}
       />
     ),
@@ -153,6 +154,7 @@ const ArticlesList: FC<Props> = ({
         <FlatList
           ListHeaderComponent={getHeader}
           keyExtractor={item => item.chapter.toString()}
+          extraData={getChapters()}
           data={getChapters()}
           renderItem={({ item }) => renderItem(item)}
         />

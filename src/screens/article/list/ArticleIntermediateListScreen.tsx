@@ -1,5 +1,5 @@
 import React, { FC, useEffect, useState } from 'react';
-import { RouteProp } from '@react-navigation/native';
+import { RouteProp, useIsFocused } from '@react-navigation/native';
 import ArticlesList from './ArticlesList';
 import articleRepository from '../../../database/repository/articleRepository';
 import { ArticleChapter } from '../../../model/ArticleChapter';
@@ -22,10 +22,12 @@ interface Props {
 const ArticleIntermediateListScreen: FC<Props> = ({ navigation, route }) => {
   const { bookType, chapters, tabInfo } = route.params;
   const [articleChapters, setArticleChapters] = useState<ArticleChapter[]>([]);
+  const isFocused = useIsFocused();
 
   useEffect(() => {
     articleRepository.getChaptersByList(bookType, chapters, setArticleChapters);
-  }, [bookType, chapters]);
+    // Add 'isFocused' so if you go back you make sure new bookmarks are loaded as well
+  }, [isFocused, bookType, chapters]);
 
   if (!articleChapters) {
     return null;

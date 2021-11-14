@@ -1,5 +1,5 @@
 import React, { FC, useEffect, useState } from 'react';
-import { RouteProp } from '@react-navigation/native';
+import { RouteProp, useIsFocused } from '@react-navigation/native';
 import ArticlesList from './ArticlesList';
 import articleRepository from '../../../database/repository/articleRepository';
 import { ArticleChapter } from '../../../model/ArticleChapter';
@@ -22,6 +22,7 @@ const ArticleListScreen: FC<Props> = ({ navigation, route }) => {
   const { tabInfo, bookType } = route.params;
   const [articleChapters, setArticleChapters] = useState<ArticleChapter[]>([]);
   const [currentBookType, setCurrentBookType] = useState<string | null>(null);
+  const isFocused = useIsFocused();
 
   useEffect(() => {
     setCurrentBookType(null);
@@ -29,11 +30,23 @@ const ArticleListScreen: FC<Props> = ({ navigation, route }) => {
   }, [bookType, tabInfo]);
 
   useEffect(() => {
-    if (currentBookType === null) {
-      return;
+    let isMounted = true;
+
+    if (currentBookType !== null) {
+      articleRepository.getChapters(
+        currentBookType,
+        (chapters: ArticleChapter[]) => {
+          if (isMounted) {
+            setArticleChapters(chapters);
+          }
+        },
+      );
     }
-    articleRepository.getChapters(currentBookType, setArticleChapters);
-  }, [bookType, currentBookType]);
+    return () => {
+      isMounted = false;
+    };
+    // Add 'isFocused' so if you go back you make sure new bookmarks are loaded as well
+  }, [isFocused, bookType, currentBookType]);
 
   const getChapterDivisionsToShowInList = (): string[] | undefined =>
     tabInfo.bookTypes.find(value => value.bookType === currentBookType)

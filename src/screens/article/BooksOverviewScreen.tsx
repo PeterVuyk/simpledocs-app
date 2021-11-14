@@ -57,6 +57,7 @@ const BooksOverviewScreen: FC<Props> = ({ navigation, route }) => {
         title={item.title ?? ''}
         subTitle={item.subTitle}
         iconFile={item.iconFile ?? ''}
+        bookmarked={false}
         onSubmit={() => navigate(item.bookType)}
       />
     ),

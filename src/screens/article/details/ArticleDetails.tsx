@@ -44,7 +44,13 @@ const ArticleDetails: FC<Props> = ({
   );
 
   useEffect(() => {
-    notify(NOTIFICATION_TYPE_HORIZONTAL_SCROLL_TIP);
+    let isMounted = true;
+    if (isMounted) {
+      notify(NOTIFICATION_TYPE_HORIZONTAL_SCROLL_TIP);
+    }
+    return () => {
+      isMounted = false;
+    };
   }, [notify]);
 
   useEffect(() => {
