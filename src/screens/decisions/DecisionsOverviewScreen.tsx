@@ -3,7 +3,7 @@ import { FlatList, View } from 'react-native';
 import { DrawerNavigationProp } from '@react-navigation/drawer/lib/typescript/src/types';
 import { RouteProp } from '@react-navigation/native';
 import decisionTreeRepository from '../../database/repository/decisionTreeRepository';
-import ListItem from '../../components/ListItem';
+import ListItem from '../../components/listItem/ListItem';
 import calculationsRepository from '../../database/repository/calculationsRepository';
 import TitleBar from '../../components/TitleBar';
 import { CalculationInfo } from '../../model/CalculationInfo';

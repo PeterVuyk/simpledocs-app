@@ -4,7 +4,7 @@ import { FlatList, StyleSheet, View } from 'react-native';
 import { RouteProp } from '@react-navigation/native';
 import { SECOND_BOOK_TAB } from '../../model/BookTab';
 import TitleBar from '../../components/TitleBar';
-import ListItem from '../../components/ListItem';
+import ListItem from '../../components/listItem/ListItem';
 import { BookInfo, TabInfo } from '../../model/AppConfigurations';
 
 const styles = StyleSheet.create({

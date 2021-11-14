@@ -1,8 +1,8 @@
 import { ListItem as Item } from 'react-native-elements';
 import React, { FC } from 'react';
-import { Icon } from 'native-base';
-import { View, StyleSheet } from 'react-native';
-import SVGIcon from './SVGIcon';
+import { View } from 'react-native';
+import SVGIcon from '../SVGIcon';
+import BookmarkIndicator from './BookmarkIndicator';
 
 interface Props {
   onSubmit: () => void;
@@ -12,16 +12,6 @@ interface Props {
   bookmarked: boolean;
 }
 
-const styles = StyleSheet.create({
-  buttonColor: {
-    zIndex: 100,
-    color: '#5bb5f6',
-    position: 'absolute',
-    right: 50,
-    top: 0,
-  },
-});
-
 const ListItem: FC<Props> = ({
   onSubmit,
   iconFile,
@@ -30,14 +20,7 @@ const ListItem: FC<Props> = ({
   bookmarked,
 }) => {
   return (
-    <View
-      style={{
-        flex: 1,
-        zIndex: 1,
-        position: 'relative',
-        backgroundColor: 'pink',
-      }}
-    >
+    <View style={{ position: 'relative' }}>
       <Item topDivider bottomDivider onPress={onSubmit}>
         <SVGIcon iconBlob={iconFile} />
         <Item.Content>
@@ -50,14 +33,7 @@ const ListItem: FC<Props> = ({
         </Item.Content>
         <Item.Chevron />
       </Item>
-      {bookmarked ? (
-        <Icon
-          style={styles.buttonColor}
-          name="bookmark-check"
-          type="MaterialCommunityIcons"
-          fontSize={26}
-        />
-      ) : null}
+      {bookmarked ? <BookmarkIndicator /> : null}
     </View>
   );
 };

@@ -1,19 +1,14 @@
 import React, { FC, useEffect, useState } from 'react';
 import { FlatList, Image, StyleSheet, View, Text } from 'react-native';
-import { ListItem } from 'react-native-elements';
 import { DrawerNavigationHelpers } from '@react-navigation/drawer/lib/typescript/src/types';
 import articleRepository from '../../../database/repository/articleRepository';
 import { Article } from '../../../model/Article';
-import SVGIcon from '../../../components/SVGIcon';
-import HighlightWords from '../../../components/HighlightWords';
 import SearchHeader from '../../../navigation/header/search/SearchHeader';
 import KeyboardAwareView from '../../../components/keyboard/KeyboardAwareView';
 import { AppConfigurations } from '../../../model/AppConfigurations';
-import useContentNavigator from '../../../components/hooks/useContentNavigator';
 import SearchScreenNavigator from './SearchScreenNavigator';
-import { useAppDispatch } from '../../../redux/hooks';
-import { setSearchText as setReduxSearchText } from '../../../redux/slice/searchTextSlice';
 import DrawerScreen from '../DrawerScreen';
+import SearchResultItem from './SearchResultItem';
 
 const styles = StyleSheet.create({
   findPlaceholderImage: {
@@ -37,8 +32,6 @@ const SearchScreen: FC<Props> = ({ navigation, appConfigurations }) => {
   );
   const [articles, setArticles] = useState<Article[] | null>(null);
   const [searchText, setSearchText] = useState<string>('');
-  const { navigateToChapter } = useContentNavigator();
-  const dispatch = useAppDispatch();
 
   useEffect(() => {
     if (searchText === '') {
@@ -63,61 +56,6 @@ const SearchScreen: FC<Props> = ({ navigation, appConfigurations }) => {
     setArticles(null);
     setSearchItem(type);
   };
-
-  const getShortenedBody = (fullBody: string): string => {
-    const firstOccurrence: number = fullBody
-      .toLowerCase()
-      .indexOf(searchText.toLowerCase());
-    const bodyLength = fullBody.replace('\n', '').length;
-    if (firstOccurrence < 100 && bodyLength > 100) {
-      return `${fullBody.replace('\n', '').substring(0, 100)}...`;
-    }
-    if (bodyLength > 200) {
-      return `...${fullBody.substring(
-        firstOccurrence - 50,
-        firstOccurrence + 50,
-      )}...`;
-    }
-    return fullBody;
-  };
-
-  const submitSearch = (item: Article) => {
-    dispatch(
-      setReduxSearchText({
-        chapter: item.chapter,
-        searchText,
-        bookType: item.bookType,
-      }),
-    );
-    navigateToChapter(
-      {
-        articleChapter: item.chapter,
-        bookType: item.bookType,
-        searchText: { chapter: item.chapter, searchText },
-      },
-      item.bookType,
-    );
-  };
-
-  const renderItem = (item: Article) => (
-    <ListItem bottomDivider onPress={() => submitSearch(item)}>
-      <SVGIcon iconBlob={item.iconFile} />
-      <ListItem.Content>
-        <ListItem.Title>
-          <HighlightWords
-            searchText={searchText}
-            textToHighlight={item.title}
-          />
-        </ListItem.Title>
-        <ListItem.Subtitle style={{ color: '#616161' }}>
-          <HighlightWords
-            searchText={searchText}
-            textToHighlight={getShortenedBody(item.searchText)}
-          />
-        </ListItem.Subtitle>
-      </ListItem.Content>
-    </ListItem>
-  );
 
   return (
     <DrawerScreen
@@ -161,7 +99,9 @@ const SearchScreen: FC<Props> = ({ navigation, appConfigurations }) => {
               keyExtractor={item =>
                 item.chapter.toString() + item.bookType.toString()
               }
-              renderItem={({ item }) => renderItem(item)}
+              renderItem={({ item }) => (
+                <SearchResultItem searchText={searchText} article={item} />
+              )}
             />
           )}
         </KeyboardAwareView>

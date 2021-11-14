@@ -1,7 +1,7 @@
 import React, { FC, useCallback } from 'react';
 import { FlatList, StyleSheet, View } from 'react-native';
 import { DrawerNavigationProp } from '@react-navigation/drawer/lib/typescript/src/types';
-import ListItem from '../../../components/ListItem';
+import ListItem from '../../../components/listItem/ListItem';
 import { ArticleChapter } from '../../../model/ArticleChapter';
 import configHelper from '../../../helper/configHelper';
 import { FIRST_BOOK_TAB } from '../../../model/BookTab';
