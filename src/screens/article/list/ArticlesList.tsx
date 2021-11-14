@@ -7,7 +7,7 @@ import configHelper from '../../../helper/configHelper';
 import { FIRST_BOOK_TAB } from '../../../model/BookTab';
 import useContentNavigator from '../../../components/hooks/useContentNavigator';
 import TitleBar from '../../../components/TitleBar';
-import { TabInfo } from '../../../model/AppConfigurations';
+import { BookTabInfo } from '../../../model/AppConfigurations';
 
 const styles = StyleSheet.create({
   container: {
@@ -21,7 +21,7 @@ const styles = StyleSheet.create({
 });
 
 interface Props {
-  tabInfo: TabInfo;
+  bookTabInfo: BookTabInfo;
   showHeader: boolean;
   showChapterDivisions?: string[];
   navigation: DrawerNavigationProp<any>;
@@ -30,7 +30,7 @@ interface Props {
 }
 
 const ArticlesList: FC<Props> = ({
-  tabInfo,
+  bookTabInfo,
   showHeader,
   showChapterDivisions,
   navigation,
@@ -137,7 +137,7 @@ const ArticlesList: FC<Props> = ({
     if (!showHeader) {
       return <></>;
     }
-    const bookInfo = tabInfo.bookTypes.find(
+    const bookInfo = bookTabInfo.bookTypes.find(
       value => value.bookType === bookType,
     );
     if (!bookInfo) {

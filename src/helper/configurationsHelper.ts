@@ -52,12 +52,12 @@ const createSessionConfiguration = async () => {
     return aggregateExists;
   };
 
-  systemConfig!.appConfigurations!.firstTab.bookTypes =
-    systemConfig!.appConfigurations!.firstTab.bookTypes.filter(value =>
+  systemConfig!.appConfigurations!.firstBookTab.bookTypes =
+    systemConfig!.appConfigurations!.firstBookTab.bookTypes.filter(value =>
       validateConfigPredicate(value.bookType),
     );
-  systemConfig!.appConfigurations!.secondTab.bookTypes =
-    systemConfig!.appConfigurations!.secondTab.bookTypes.filter(value =>
+  systemConfig!.appConfigurations!.secondBookTab.bookTypes =
+    systemConfig!.appConfigurations!.secondBookTab.bookTypes.filter(value =>
       validateConfigPredicate(value.bookType),
     );
   systemConfig!.appConfigurations!.decisionsTab.indexDecisionType =
@@ -80,19 +80,19 @@ const isStartupSuccessful = async (): Promise<boolean> => {
     return false;
   }
 
-  const numberOfAggregatesFirstTab =
-    systemConfig.appConfigurations.firstTab.bookTypes.length;
-  const numberOfAggregatesSecondTab =
-    systemConfig.appConfigurations.secondTab.bookTypes.length;
+  const numberOfAggregatesFirstBookTab =
+    systemConfig.appConfigurations.firstBookTab.bookTypes.length;
+  const numberOfAggregatesSecondBookTab =
+    systemConfig.appConfigurations.secondBookTab.bookTypes.length;
   const numberOfAggregatesDecisionTab =
     systemConfig.appConfigurations.decisionsTab.indexDecisionType.length;
   if (
-    numberOfAggregatesFirstTab === 0 &&
-    numberOfAggregatesSecondTab === 0 &&
+    numberOfAggregatesFirstBookTab === 0 &&
+    numberOfAggregatesSecondBookTab === 0 &&
     numberOfAggregatesDecisionTab === 0
   ) {
     logger.errorFromMessage(
-      `isStartupSuccessful called but returned 'failed' because all tabs are empty. numberOfAggregatesFirstTab: ${numberOfAggregatesFirstTab}, numberOfAggregatesSecondTab: ${numberOfAggregatesSecondTab}, numberOfAggregatesDecisionTab: ${numberOfAggregatesDecisionTab}`,
+      `isStartupSuccessful called but returned 'failed' because all tabs are empty. numberOfAggregatesFirstBookTab: ${numberOfAggregatesFirstBookTab}, numberOfAggregatesSecondBookTab: ${numberOfAggregatesSecondBookTab}, numberOfAggregatesDecisionTab: ${numberOfAggregatesDecisionTab}`,
     );
     return false;
   }

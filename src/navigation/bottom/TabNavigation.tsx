@@ -1,12 +1,10 @@
-import React, { FC, useEffect } from 'react';
+import React, { FC } from 'react';
 import { DrawerNavigationHelpers } from '@react-navigation/drawer/lib/typescript/src/types';
 import TabNavigator from './TabNavigator';
 import DecisionsStackNavigator from '../StackNavigator/DecisionsStackNavigator';
 import { AppConfigurations } from '../../model/AppConfigurations';
 import SecondBookTabStackNavigator from '../StackNavigator/SecondBookTabStackNavigator';
 import FirstBookTabStackNavigator from '../StackNavigator/FirstBookTabStackNavigator';
-import { scrollUp } from '../../redux/slice/scrollingSlice';
-import { useAppDispatch } from '../../redux/hooks';
 import ResizeScreenDrawer from '../drawer/ResizeScreenDrawer';
 
 const Tab = TabNavigator();
@@ -19,11 +17,11 @@ interface Props {
 const TabNavigation: FC<Props> = ({ navigation, appConfigurations }) => {
   const getInitialRoute = () => {
     switch (appConfigurations.defaultInitialTab) {
-      case 'secondTab':
+      case 'secondBookTab':
         return 'SecondBookTabStack';
       case 'decisionTab':
         return 'DecisionsScreenStack';
-      case 'firstTab':
+      case 'firstBookTab':
       default:
         return 'FirstBookTabStack';
     }
@@ -37,35 +35,37 @@ const TabNavigation: FC<Props> = ({ navigation, appConfigurations }) => {
         }}
         initialRouteName={getInitialRoute()}
       >
-        {appConfigurations.firstTab.bookTypes.length !== 0 && (
+        {appConfigurations.firstBookTab.bookTypes.length !== 0 && (
           <Tab.Screen
             name="FirstBookTabStack"
             children={() => (
               <FirstBookTabStackNavigator
                 navigation={navigation}
-                tabInfo={appConfigurations.firstTab}
+                bookTabInfo={appConfigurations.firstBookTab}
               />
             )}
             options={{
-              title: appConfigurations.firstTab.bottomTab.title,
-              icon: appConfigurations.firstTab.bottomTab.icon,
-              iconFamilyType: appConfigurations.firstTab.bottomTab.familyType,
+              title: appConfigurations.firstBookTab.bottomTab.title,
+              icon: appConfigurations.firstBookTab.bottomTab.icon,
+              iconFamilyType:
+                appConfigurations.firstBookTab.bottomTab.familyType,
             }}
           />
         )}
-        {appConfigurations.secondTab.bookTypes.length !== 0 && (
+        {appConfigurations.secondBookTab.bookTypes.length !== 0 && (
           <Tab.Screen
             name="SecondBookTabStack"
             children={() => (
               <SecondBookTabStackNavigator
                 navigation={navigation}
-                tabInfo={appConfigurations.secondTab}
+                bookTabInfo={appConfigurations.secondBookTab}
               />
             )}
             options={{
-              title: appConfigurations.secondTab.bottomTab.title,
-              icon: appConfigurations.secondTab.bottomTab.icon,
-              iconFamilyType: appConfigurations.secondTab.bottomTab.familyType,
+              title: appConfigurations.secondBookTab.bottomTab.title,
+              icon: appConfigurations.secondBookTab.bottomTab.icon,
+              iconFamilyType:
+                appConfigurations.secondBookTab.bottomTab.familyType,
             }}
           />
         )}

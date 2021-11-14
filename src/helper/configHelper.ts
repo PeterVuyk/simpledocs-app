@@ -4,14 +4,15 @@ import configurationsStorage from '../storage/configurationsStorage';
 
 const getBookTypes = async (): Promise<BookInfo[]> => {
   const config = await configurationsStorage.getSystemConfiguration();
-  const bookTypesFirstTab = config!.appConfigurations!.firstTab.bookTypes.sort(
-    (a, b) => a.index - b.index,
-  );
-  const bookTypesSecondTab =
-    config!.appConfigurations!.secondTab.bookTypes.sort(
+  const bookTypesFirstBookTab =
+    config!.appConfigurations!.firstBookTab.bookTypes.sort(
       (a, b) => a.index - b.index,
     );
-  return [...bookTypesFirstTab, ...bookTypesSecondTab];
+  const bookTypesSecondBookTab =
+    config!.appConfigurations!.secondBookTab.bookTypes.sort(
+      (a, b) => a.index - b.index,
+    );
+  return [...bookTypesFirstBookTab, ...bookTypesSecondBookTab];
 };
 
 const getConfigByBookType = async (
@@ -24,14 +25,14 @@ const getConfigByBookType = async (
 const getTabByBookType = async (bookType: string): Promise<string | null> => {
   const config = await configurationsStorage.getSystemConfiguration();
   if (
-    config!.appConfigurations!.firstTab.bookTypes.find(
+    config!.appConfigurations!.firstBookTab.bookTypes.find(
       value => value.bookType === bookType,
     )
   ) {
     return FIRST_BOOK_TAB;
   }
   if (
-    config!.appConfigurations!.secondTab.bookTypes.find(
+    config!.appConfigurations!.secondBookTab.bookTypes.find(
       value => value.bookType === bookType,
     )
   ) {

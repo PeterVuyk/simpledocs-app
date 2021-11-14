@@ -3,14 +3,14 @@ import { RouteProp, useIsFocused } from '@react-navigation/native';
 import ArticlesList from './ArticlesList';
 import articleRepository from '../../../database/repository/articleRepository';
 import { ArticleChapter } from '../../../model/ArticleChapter';
-import { TabInfo } from '../../../model/AppConfigurations';
+import { BookTabInfo } from '../../../model/AppConfigurations';
 
 interface Props {
   navigation: any;
   route: RouteProp<
     {
       params: {
-        tabInfo: TabInfo;
+        bookTabInfo: BookTabInfo;
         chapters: string[];
         bookType: string;
       };
@@ -20,7 +20,7 @@ interface Props {
 }
 
 const ArticleIntermediateListScreen: FC<Props> = ({ navigation, route }) => {
-  const { bookType, chapters, tabInfo } = route.params;
+  const { bookType, chapters, bookTabInfo } = route.params;
   const [articleChapters, setArticleChapters] = useState<ArticleChapter[]>([]);
   const isFocused = useIsFocused();
 
@@ -35,7 +35,7 @@ const ArticleIntermediateListScreen: FC<Props> = ({ navigation, route }) => {
 
   return (
     <ArticlesList
-      tabInfo={tabInfo}
+      bookTabInfo={bookTabInfo}
       showHeader={false}
       navigation={navigation}
       articleChapters={articleChapters}

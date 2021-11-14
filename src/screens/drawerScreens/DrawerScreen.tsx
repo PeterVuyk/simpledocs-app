@@ -21,12 +21,12 @@ const DrawerScreen: FC<Props> = ({
 }) => {
   const getBottomTab = (): BottomTab[] => {
     const tabs = [];
-    if (appConfigurations.firstTab.bookTypes.length !== 0) {
+    if (appConfigurations.firstBookTab.bookTypes.length !== 0) {
       tabs.push({
         index: 0,
-        title: appConfigurations.firstTab.bottomTab.title,
-        icon: appConfigurations.firstTab.bottomTab.icon,
-        iconFamilyType: appConfigurations.firstTab.bottomTab.familyType,
+        title: appConfigurations.firstBookTab.bottomTab.title,
+        icon: appConfigurations.firstBookTab.bottomTab.icon,
+        iconFamilyType: appConfigurations.firstBookTab.bottomTab.familyType,
         isSelected: false,
         onPress: () =>
           navigation.navigate('FirstBookTabStack', {
@@ -34,12 +34,12 @@ const DrawerScreen: FC<Props> = ({
           }),
       });
     }
-    if (appConfigurations.secondTab.bookTypes.length !== 0) {
+    if (appConfigurations.secondBookTab.bookTypes.length !== 0) {
       tabs.push({
         index: 1,
-        title: appConfigurations.secondTab.bottomTab.title,
-        icon: appConfigurations.secondTab.bottomTab.icon,
-        iconFamilyType: appConfigurations.secondTab.bottomTab.familyType,
+        title: appConfigurations.secondBookTab.bottomTab.title,
+        icon: appConfigurations.secondBookTab.bottomTab.icon,
+        iconFamilyType: appConfigurations.secondBookTab.bottomTab.familyType,
         isSelected: false,
         onPress: () =>
           navigation.navigate('SecondBookTabStack', {

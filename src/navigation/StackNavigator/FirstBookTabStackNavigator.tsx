@@ -6,24 +6,27 @@ import ArticleDetailsScreen from '../../screens/article/details/ArticleDetailsSc
 import ArticleListScreen from '../../screens/article/list/ArticleListScreen';
 import { FIRST_BOOK_TAB } from '../../model/BookTab';
 import BooksOverviewScreen from '../../screens/article/BooksOverviewScreen';
-import { TabInfo } from '../../model/AppConfigurations';
+import { BookTabInfo } from '../../model/AppConfigurations';
 import ArticleIntermediateListScreen from '../../screens/article/list/ArticleIntermediateListScreen';
 
 const Stack = createStackNavigator();
 
 interface Props {
   navigation: DrawerNavigationHelpers;
-  tabInfo: TabInfo;
+  bookTabInfo: BookTabInfo;
 }
 
-const FirstBookTabStackNavigator: FC<Props> = ({ navigation, tabInfo }) => {
+const FirstBookTabStackNavigator: FC<Props> = ({ navigation, bookTabInfo }) => {
   return (
     <Stack.Navigator screenOptions={{ headerMode: 'screen' }}>
-      {tabInfo.bookTypes.length !== 1 && (
+      {bookTabInfo.bookTypes.length !== 1 && (
         <Stack.Screen
           name="FirstBookTabOverviewScreen"
           component={BooksOverviewScreen}
-          initialParams={{ tabInfo, currentTab: FIRST_BOOK_TAB }}
+          initialParams={{
+            bookTabInfo,
+            currentTab: FIRST_BOOK_TAB,
+          }}
           options={{
             header: () => <Header navigation={navigation} />,
           }}
@@ -31,13 +34,13 @@ const FirstBookTabStackNavigator: FC<Props> = ({ navigation, tabInfo }) => {
       )}
       <Stack.Screen
         name={
-          tabInfo.bookTypes.length !== 1
+          bookTabInfo.bookTypes.length !== 1
             ? 'FirstBookTabArticleScreen'
             : 'FirstBookTabOverviewScreen'
         }
         component={ArticleListScreen}
         initialParams={{
-          tabInfo,
+          bookTabInfo,
           chapters: null,
           bookType: null,
         }}
@@ -49,7 +52,7 @@ const FirstBookTabStackNavigator: FC<Props> = ({ navigation, tabInfo }) => {
         name="FirstBookTabIntermediateScreen"
         component={ArticleIntermediateListScreen}
         initialParams={{
-          tabInfo,
+          bookTabInfo,
         }}
         options={{
           header: () => <Header navigation={navigation} />,

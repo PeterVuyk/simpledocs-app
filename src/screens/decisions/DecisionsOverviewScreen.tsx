@@ -12,7 +12,7 @@ import {
   AGGREGATE_DECISION_TREE,
 } from '../../model/aggregate';
 import { DecisionTreeTitle } from '../../model/DecisionTreeTitle';
-import { DecisionsTab, TabInfo } from '../../model/AppConfigurations';
+import { DecisionsTab, BookTabInfo } from '../../model/AppConfigurations';
 import logger from '../../util/logger';
 
 interface Props {
@@ -20,7 +20,7 @@ interface Props {
   route: RouteProp<
     {
       params: {
-        tabInfo: TabInfo;
+        bookTabInfo: BookTabInfo;
         decisionTabInfo: DecisionsTab;
       };
     },

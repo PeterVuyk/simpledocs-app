@@ -45,8 +45,10 @@ function useUpdateAggregates() {
       appInfoResponse.appConfigurations as AppConfigurations;
 
     const books = [
-      ...appConfigurations!.firstTab.bookTypes.map(value => value.bookType),
-      ...appConfigurations!.secondTab.bookTypes.map(value => value.bookType),
+      ...appConfigurations!.firstBookTab.bookTypes.map(value => value.bookType),
+      ...appConfigurations!.secondBookTab.bookTypes.map(
+        value => value.bookType,
+      ),
     ];
     for (const aggregate in appConfigurations!.versioning) {
       if (!appConfigurations!.versioning[aggregate].isBookType) {

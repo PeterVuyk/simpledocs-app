@@ -5,7 +5,7 @@ import { RouteProp } from '@react-navigation/native';
 import { SECOND_BOOK_TAB } from '../../model/BookTab';
 import TitleBar from '../../components/TitleBar';
 import ListItem from '../../components/listItem/ListItem';
-import { BookInfo, TabInfo } from '../../model/AppConfigurations';
+import { BookInfo, BookTabInfo } from '../../model/AppConfigurations';
 
 const styles = StyleSheet.create({
   container: {
@@ -23,7 +23,7 @@ interface Props {
   route: RouteProp<
     {
       params: {
-        tabInfo: TabInfo;
+        bookTabInfo: BookTabInfo;
         currentTab: string;
       };
     },
@@ -32,23 +32,23 @@ interface Props {
 }
 
 const BooksOverviewScreen: FC<Props> = ({ navigation, route }) => {
-  const { tabInfo, currentTab } = route.params;
+  const { bookTabInfo, currentTab } = route.params;
 
   const navigate = useCallback(
     (bookType: string) => {
       if (currentTab === SECOND_BOOK_TAB) {
         navigation.navigate('SecondBookTabStack', {
           screen: 'SecondBookTabArticleScreen',
-          params: { bookType, tabInfo },
+          params: { bookType, bookTabInfo },
         });
         return;
       }
       navigation.navigate('FirstBookTabStack', {
         screen: 'FirstBookTabArticleScreen',
-        params: { bookType, tabInfo },
+        params: { bookType, bookTabInfo },
       });
     },
-    [currentTab, navigation, tabInfo],
+    [currentTab, navigation, bookTabInfo],
   );
 
   const renderItem = useCallback(
@@ -66,7 +66,10 @@ const BooksOverviewScreen: FC<Props> = ({ navigation, route }) => {
 
   const getHeader = () => {
     return (
-      <TitleBar title={tabInfo.title ?? ''} subTitle={tabInfo.subTitle ?? ''} />
+      <TitleBar
+        title={bookTabInfo.title ?? ''}
+        subTitle={bookTabInfo.subTitle ?? ''}
+      />
     );
   };
 
@@ -76,7 +79,7 @@ const BooksOverviewScreen: FC<Props> = ({ navigation, route }) => {
         <FlatList
           ListHeaderComponent={getHeader}
           keyExtractor={item => item.bookType.toString()}
-          data={tabInfo.bookTypes.sort((a, b) => a.index - b.index)}
+          data={bookTabInfo.bookTypes.sort((a, b) => a.index - b.index)}
           renderItem={({ item }) => renderItem(item)}
         />
       </View>

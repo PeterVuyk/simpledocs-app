@@ -3,14 +3,14 @@ import { RouteProp, useIsFocused } from '@react-navigation/native';
 import ArticlesList from './ArticlesList';
 import articleRepository from '../../../database/repository/articleRepository';
 import { ArticleChapter } from '../../../model/ArticleChapter';
-import { TabInfo } from '../../../model/AppConfigurations';
+import { BookTabInfo } from '../../../model/AppConfigurations';
 
 interface Props {
   navigation: any;
   route: RouteProp<
     {
       params: {
-        tabInfo: TabInfo;
+        bookTabInfo: BookTabInfo;
         bookType?: string;
       };
     },
@@ -19,15 +19,15 @@ interface Props {
 }
 
 const ArticleListScreen: FC<Props> = ({ navigation, route }) => {
-  const { tabInfo, bookType } = route.params;
+  const { bookTabInfo, bookType } = route.params;
   const [articleChapters, setArticleChapters] = useState<ArticleChapter[]>([]);
   const [currentBookType, setCurrentBookType] = useState<string | null>(null);
   const isFocused = useIsFocused();
 
   useEffect(() => {
     setCurrentBookType(null);
-    setCurrentBookType(bookType ?? tabInfo.bookTypes[0].bookType);
-  }, [bookType, tabInfo]);
+    setCurrentBookType(bookType ?? bookTabInfo.bookTypes[0].bookType);
+  }, [bookType, bookTabInfo]);
 
   useEffect(() => {
     let isMounted = true;
@@ -49,7 +49,7 @@ const ArticleListScreen: FC<Props> = ({ navigation, route }) => {
   }, [isFocused, bookType, currentBookType]);
 
   const getChapterDivisionsToShowInList = (): string[] | undefined =>
-    tabInfo.bookTypes.find(value => value.bookType === currentBookType)
+    bookTabInfo.bookTypes.find(value => value.bookType === currentBookType)
       ?.chapterDivisionsInList;
 
   if (!currentBookType || !articleChapters) {
@@ -58,7 +58,7 @@ const ArticleListScreen: FC<Props> = ({ navigation, route }) => {
   return (
     <ArticlesList
       showHeader
-      tabInfo={tabInfo}
+      bookTabInfo={bookTabInfo}
       showChapterDivisions={getChapterDivisionsToShowInList()}
       navigation={navigation}
       articleChapters={articleChapters}

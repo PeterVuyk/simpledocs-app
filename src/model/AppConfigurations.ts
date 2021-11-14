@@ -23,7 +23,7 @@ export interface DecisionsTab {
   indexDecisionType: string[];
 }
 
-export interface TabInfo {
+export interface BookTabInfo {
   bottomTab: BottomTab;
   bookTypes: BookInfo[];
   title?: string;
@@ -52,8 +52,8 @@ export interface Versions {
 }
 
 export interface AppConfigurations {
-  firstTab: TabInfo;
-  secondTab: TabInfo;
+  firstBookTab: BookTabInfo;
+  secondBookTab: BookTabInfo;
   decisionsTab: DecisionsTab;
   drawer: Drawer;
   defaultBookTypeSearch: string;
