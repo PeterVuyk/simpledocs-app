@@ -6,5 +6,5 @@ export interface ArticleChapter {
   chapterDivision: string;
   pageIndex: number;
   bookmarked: boolean;
-  bookType: boolean;
+  bookType: string;
 }

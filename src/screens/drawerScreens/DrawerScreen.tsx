@@ -5,6 +5,7 @@ import BottomTabs from '../../navigation/bottom/BottomTabs';
 import Header from '../../navigation/header/Header';
 import BottomTab from '../../model/BottomTab';
 import ResizeScreenDrawer from '../../navigation/drawer/ResizeScreenDrawer';
+import { IconFamilyType } from '../../model/IconFamilyType';
 
 interface Props {
   children: ReactNode;
@@ -21,9 +22,20 @@ const DrawerScreen: FC<Props> = ({
 }) => {
   const getBottomTab = (): BottomTab[] => {
     const tabs = [];
+    tabs.push({
+      index: 0,
+      title: 'Favorieten',
+      icon: 'bookmark-check',
+      iconFamilyType: 'MaterialCommunityIcons' as IconFamilyType,
+      isSelected: false,
+      onPress: () =>
+        navigation.navigate('FavoritesTabStack', {
+          screen: 'FavoritesScreen',
+        }),
+    });
     if (appConfigurations.firstBookTab.bookTypes.length !== 0) {
       tabs.push({
-        index: 0,
+        index: 1,
         title: appConfigurations.firstBookTab.bottomTab.title,
         icon: appConfigurations.firstBookTab.bottomTab.icon,
         iconFamilyType: appConfigurations.firstBookTab.bottomTab.familyType,
@@ -36,7 +48,7 @@ const DrawerScreen: FC<Props> = ({
     }
     if (appConfigurations.secondBookTab.bookTypes.length !== 0) {
       tabs.push({
-        index: 1,
+        index: 2,
         title: appConfigurations.secondBookTab.bottomTab.title,
         icon: appConfigurations.secondBookTab.bottomTab.icon,
         iconFamilyType: appConfigurations.secondBookTab.bottomTab.familyType,
@@ -49,7 +61,7 @@ const DrawerScreen: FC<Props> = ({
     }
     if (appConfigurations.decisionsTab.indexDecisionType.length !== 0) {
       tabs.push({
-        index: 2,
+        index: 3,
         title: appConfigurations.decisionsTab.bottomTab.title,
         icon: appConfigurations.decisionsTab.bottomTab.icon,
         iconFamilyType: appConfigurations.decisionsTab.bottomTab.familyType,

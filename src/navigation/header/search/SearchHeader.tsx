@@ -5,7 +5,7 @@ import { useIsFocused, useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#fff' },
+  tabContainer: { flex: 1, backgroundColor: '#fff' },
   searchInputContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -42,9 +42,9 @@ const SearchHeader: FC<Props> = ({
   }, [isFocused, searchRef]);
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={styles.tabContainer}>
       <View style={styles.searchInputContainer}>
-        <View style={styles.container}>
+        <View style={styles.tabContainer}>
           {isFocused && (
             <SearchBar
               ref={search => {

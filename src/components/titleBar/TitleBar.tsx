@@ -2,7 +2,7 @@ import React, { FC } from 'react';
 import { Text, View, StyleSheet, Keyboard } from 'react-native';
 
 const styles = StyleSheet.create({
-  container: {
+  tabContainer: {
     backgroundColor: '#fff',
     margin: 20,
   },
@@ -27,7 +27,7 @@ interface Props {
 
 const TitleBar: FC<Props> = ({ title, subTitle }) => {
   return (
-    <View onTouchStart={Keyboard.dismiss} style={styles.container}>
+    <View onTouchStart={Keyboard.dismiss} style={styles.tabContainer}>
       <Text style={styles.headerTitle}>{title}</Text>
       {subTitle !== undefined && (
         <Text style={styles.headerSubTitle}>{subTitle}</Text>

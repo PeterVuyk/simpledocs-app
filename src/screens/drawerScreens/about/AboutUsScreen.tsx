@@ -1,12 +1,12 @@
 import React, { FC } from 'react';
 import { DrawerNavigationHelpers } from '@react-navigation/drawer/lib/typescript/src/types';
 import { StyleSheet, View } from 'react-native';
-import TitleBar from '../../../components/TitleBar';
+import TitleBar from '../../../components/titleBar/TitleBar';
 import { AppConfigurations } from '../../../model/configurations/AppConfigurations';
 import DrawerScreen from '../DrawerScreen';
 
 const styles = StyleSheet.create({
-  container: {
+  tabContainer: {
     flex: 1,
     backgroundColor: '#fff',
     marginBottom: 60,
@@ -25,7 +25,7 @@ const AboutUsScreen: FC<Props> = ({ navigation, appConfigurations }) => {
       appConfigurations={appConfigurations}
       navigation={navigation}
     >
-      <View style={styles.container}>
+      <View style={styles.tabContainer}>
         <TitleBar
           title="Wie zijn wij?"
           subTitle="Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur,

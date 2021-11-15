@@ -6,11 +6,11 @@ import { ArticleChapter } from '../../../model/articles/ArticleChapter';
 import configHelper from '../../../helper/configHelper';
 import { FIRST_BOOK_TAB } from '../../../model/BottomTab';
 import useContentNavigator from '../../../components/hooks/useContentNavigator';
-import TitleBar from '../../../components/TitleBar';
+import TitleBar from '../../../components/titleBar/TitleBar';
 import { BookTabInfo } from '../../../model/configurations/AppConfigurations';
 
 const styles = StyleSheet.create({
-  container: {
+  tabContainer: {
     flex: 1,
     backgroundColor: '#fff',
   },
@@ -149,7 +149,7 @@ const ArticlesList: FC<Props> = ({
   };
 
   return (
-    <View style={styles.container}>
+    <View style={styles.tabContainer}>
       <View style={styles.flatListContainer}>
         <FlatList
           ListHeaderComponent={getHeader}

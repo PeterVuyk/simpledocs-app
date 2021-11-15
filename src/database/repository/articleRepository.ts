@@ -30,7 +30,7 @@ function toggleBookmark(articleChapter: ArticleChapter): Promise<void> {
   });
 }
 
-function getBookmarkedChapters(
+function getBookmarkedArticles(
   callback: (article: Article[]) => void,
 ): Promise<void> {
   return new Promise((resolve, reject) => {
@@ -151,6 +151,28 @@ function searchArticlesByBookmarks(
   );
 }
 
+function getBookmarkedChapters(
+  setChapters: (chapters: ArticleChapter[]) => void,
+): void {
+  db.transaction(
+    sqlTransaction => {
+      sqlTransaction.executeSql(
+        `SELECT chapter, title, subTitle, pageIndex, chapterDivision, iconFile, bookmarked, bookType FROM articles WHERE bookmarked = 1 ORDER BY pageIndex;`,
+        [],
+        // @ts-ignore
+        (_, { rows: { _array } }) => {
+          setChapters(_array);
+        },
+      );
+    },
+    error =>
+      logger.error(
+        'articleRepository.getBookmarkedChapters failed',
+        error.message,
+      ),
+  );
+}
+
 function getChapters(
   bookType: string,
   setChapters: (chapters: ArticleChapter[]) => void,
@@ -158,7 +180,7 @@ function getChapters(
   db.transaction(
     sqlTransaction => {
       sqlTransaction.executeSql(
-        `SELECT chapter, title, subTitle, pageIndex, chapterDivision, bookType, iconFile, bookmarked FROM articles WHERE bookType = ? ORDER BY pageIndex;`,
+        `SELECT chapter, title, subTitle, pageIndex, chapterDivision, iconFile, bookmarked, bookType FROM articles WHERE bookType = ? ORDER BY pageIndex;`,
         [bookType],
         // @ts-ignore
         (_, { rows: { _array } }) => {
@@ -203,6 +225,7 @@ const articleRepository = {
   getChapters,
   getChaptersByList,
   toggleBookmark,
+  getBookmarkedArticles,
   getBookmarkedChapters,
 };
 

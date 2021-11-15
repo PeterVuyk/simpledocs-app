@@ -1,7 +1,7 @@
 import React, { FC, useEffect, useState } from 'react';
 import { ScrollView, StyleSheet } from 'react-native';
 import calculationsRepository from '../../../database/repository/calculationsRepository';
-import TitleBar from '../../../components/TitleBar';
+import TitleBar from '../../../components/titleBar/TitleBar';
 import OvertakingDistanceCalculator from './OvertakingDistanceCalculator';
 import KeyboardAwareView from '../../../components/keyboard/KeyboardAwareView';
 import { CalculationInfo } from '../../../model/calculations/CalculationInfo';
@@ -13,7 +13,7 @@ import StoppingDistanceCalculator from './StoppingDistanceCalculator';
 import ContentViewer from '../../../components/viewer/ContentViewer';
 
 const styles = StyleSheet.create({
-  container: {
+  tabContainer: {
     flex: 1,
     backgroundColor: 'white',
   },
@@ -35,7 +35,7 @@ const CalculatorScreen: FC<Props> = ({ title }) => {
     return null;
   }
   return (
-    <ScrollView style={styles.container}>
+    <ScrollView style={styles.tabContainer}>
       <KeyboardAwareView>
         <TitleBar
           title={calculationInfo.title}

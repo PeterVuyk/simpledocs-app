@@ -32,7 +32,7 @@ const ArticleListScreen: FC<Props> = ({ navigation, route }) => {
   useEffect(() => {
     let isMounted = true;
 
-    if (currentBookType !== null) {
+    if (currentBookType !== null && isFocused) {
       articleRepository.getChapters(
         currentBookType,
         (chapters: ArticleChapter[]) => {

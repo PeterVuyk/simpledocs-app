@@ -3,7 +3,7 @@ import { StyleSheet, Text, View } from 'react-native';
 import { TextInput } from 'react-native-paper';
 
 const styles = StyleSheet.create({
-  container: {
+  tabContainer: {
     margin: 10,
   },
   headerSubTitle: {
@@ -48,7 +48,7 @@ const OvertakingDistanceCalculator: FC = () => {
   };
 
   return (
-    <View style={styles.container}>
+    <View style={styles.tabContainer}>
       <Text
         style={[
           {

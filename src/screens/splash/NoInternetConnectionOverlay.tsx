@@ -1,7 +1,7 @@
 import React, { FC, useState } from 'react';
 import { Button, Overlay } from 'react-native-elements';
 import { StyleSheet, View } from 'react-native';
-import TitleBar from '../../components/TitleBar';
+import TitleBar from '../../components/titleBar/TitleBar';
 
 const styles = StyleSheet.create({
   messageContainer: { flex: 1, marginTop: 200 },

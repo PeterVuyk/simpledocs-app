@@ -81,6 +81,13 @@ function TabNavigator({
       return;
     }
 
+    if (route.name === 'FavoritesTabStack') {
+      navigation.navigate('FavoritesTabStack', {
+        screen: 'FavoritesScreen',
+      });
+      return;
+    }
+
     if (route.name === 'DecisionsScreenStack') {
       navigation.navigate('DecisionsScreenStack', {
         screen: 'DecisionsOverviewScreen',

@@ -9,7 +9,7 @@ import { headerStyles } from '../../navigation/header/Header';
 const SynchronizationSplashScreen: FC = React.memo(() => {
   const Header = () => {
     return (
-      <SafeAreaView style={headerStyles.container}>
+      <SafeAreaView style={headerStyles.tabContainer}>
         {Platform.OS !== 'ios' && (
           <DrawerButton iconName="menu" iconType="MaterialCommunityIcons" />
         )}

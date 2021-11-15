@@ -6,6 +6,7 @@ import { AppConfigurations } from '../../model/configurations/AppConfigurations'
 import SecondBookTabStackNavigator from '../StackNavigator/SecondBookTabStackNavigator';
 import FirstBookTabStackNavigator from '../StackNavigator/FirstBookTabStackNavigator';
 import ResizeScreenDrawer from '../drawer/ResizeScreenDrawer';
+import FavoritesStackNavigator from '../StackNavigator/FavoritesStackNavigator';
 
 const Tab = TabNavigator();
 
@@ -21,6 +22,8 @@ const TabNavigation: FC<Props> = ({ navigation, appConfigurations }) => {
         return 'SecondBookTabStack';
       case 'decisionTab':
         return 'DecisionsScreenStack';
+      case 'favorites':
+        return 'FavoritesTabStack';
       case 'firstBookTab':
       default:
         return 'FirstBookTabStack';
@@ -35,6 +38,20 @@ const TabNavigation: FC<Props> = ({ navigation, appConfigurations }) => {
         }}
         initialRouteName={getInitialRoute()}
       >
+        <Tab.Screen
+          name="FavoritesTabStack"
+          children={() => (
+            <FavoritesStackNavigator
+              navigation={navigation}
+              bookTabInfo={appConfigurations.firstBookTab}
+            />
+          )}
+          options={{
+            title: 'Favorieten',
+            icon: 'bookmark-check',
+            iconFamilyType: 'MaterialCommunityIcons',
+          }}
+        />
         {appConfigurations.firstBookTab.bookTypes.length !== 0 && (
           <Tab.Screen
             name="FirstBookTabStack"

@@ -3,7 +3,7 @@ import { DrawerNavigationProp } from '@react-navigation/drawer/lib/typescript/sr
 import { FlatList, StyleSheet, View } from 'react-native';
 import { RouteProp } from '@react-navigation/native';
 import { SECOND_BOOK_TAB } from '../../model/BottomTab';
-import TitleBar from '../../components/TitleBar';
+import TitleBar from '../../components/titleBar/TitleBar';
 import ListItem from '../../components/listItem/ListItem';
 import {
   BookInfo,
@@ -11,7 +11,7 @@ import {
 } from '../../model/configurations/AppConfigurations';
 
 const styles = StyleSheet.create({
-  container: {
+  tabContainer: {
     flex: 1,
     backgroundColor: '#fff',
   },
@@ -77,7 +77,7 @@ const BooksOverviewScreen: FC<Props> = ({ navigation, route }) => {
   };
 
   return (
-    <View style={styles.container}>
+    <View style={styles.tabContainer}>
       <View style={styles.flatListContainer}>
         <FlatList
           ListHeaderComponent={getHeader}

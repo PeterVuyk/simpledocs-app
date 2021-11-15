@@ -25,7 +25,7 @@ const RestoreAppProvider: FC<Props> = ({ children }) => {
   const preserveArticleFavorites = useCallback(() => {
     return new Promise(resolve => {
       articleRepository
-        .getBookmarkedChapters(async articles => {
+        .getBookmarkedArticles(async articles => {
           const bookmarks = articles.map(value => {
             return { chapter: value.chapter, bookType: value.bookType };
           }) as Bookmark[];

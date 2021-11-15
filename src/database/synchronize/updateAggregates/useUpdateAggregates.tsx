@@ -81,7 +81,7 @@ function useUpdateAggregates() {
     }
     return new Promise((resolve, reject) => {
       articleRepository
-        .getBookmarkedChapters(async articles => {
+        .getBookmarkedArticles(async articles => {
           await updateBooks(
             appInfoResponse,
             articles.map(value => {

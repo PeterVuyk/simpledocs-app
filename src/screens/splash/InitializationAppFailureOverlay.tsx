@@ -1,7 +1,7 @@
 import React, { FC, useEffect } from 'react';
 import { Overlay } from 'react-native-elements';
 import { StyleSheet, View } from 'react-native';
-import TitleBar from '../../components/TitleBar';
+import TitleBar from '../../components/titleBar/TitleBar';
 import debugHandler from '../../debug/debugHandler';
 import tearDown from '../../database/synchronize/restore/tearDownDatabase';
 import configurationsStorage from '../../storage/configurationsStorage';

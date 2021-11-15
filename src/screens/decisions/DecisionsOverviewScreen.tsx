@@ -5,7 +5,7 @@ import { RouteProp } from '@react-navigation/native';
 import decisionTreeRepository from '../../database/repository/decisionTreeRepository';
 import ListItem from '../../components/listItem/ListItem';
 import calculationsRepository from '../../database/repository/calculationsRepository';
-import TitleBar from '../../components/TitleBar';
+import TitleBar from '../../components/titleBar/TitleBar';
 import { CalculationInfo } from '../../model/calculations/CalculationInfo';
 import {
   AGGREGATE_CALCULATIONS,

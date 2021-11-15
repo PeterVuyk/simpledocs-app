@@ -33,7 +33,7 @@ const BookChapterNavigator: FC<Props> = ({
     const maxCharacters = Math.max(
       ...articleChapterList.map(value => value.chapter.length),
     );
-    return getWidth('W'.repeat(maxCharacters), { bold: true, size: 14 }) + 10;
+    return getWidth('W'.repeat(maxCharacters), { bold: true, size: 16 }) + 10;
   }, [articleChapterList]);
 
   const firstUpdate = useRef(true);

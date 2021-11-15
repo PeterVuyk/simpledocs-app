@@ -10,7 +10,7 @@ import HeaderLogo from './HeaderLogo';
 import { ArticleChapter } from '../../model/articles/ArticleChapter';
 
 export const headerStyles = StyleSheet.create({
-  container: {
+  tabContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     paddingTop: 40,
@@ -39,7 +39,7 @@ const Header: FC<Props> = ({ articleChapter, navigation }) => {
   const navigator = useNavigation<StackNavigationProp<any>>();
 
   return (
-    <SafeAreaView style={headerStyles.container}>
+    <SafeAreaView style={headerStyles.tabContainer}>
       {Platform.OS === 'ios' && navigator.canGoBack() && (
         <HeaderBackButton onPress={navigator.goBack} />
       )}
@@ -60,10 +60,6 @@ const Header: FC<Props> = ({ articleChapter, navigation }) => {
           />
         )}
         <SearchButton navigation={navigation} />
-        {/* TODO: Later when we support bookmarks we can enable this part of the code */}
-        {/* {false && bookType !== undefined && currentChapter !== undefined && ( */}
-        {/*  <BookmarkChapter chapter={currentChapter} bookType={bookType} /> */}
-        {/* )} */}
         {articleChapter !== undefined && (
           <BookmarkChapter articleChapter={articleChapter} />
         )}

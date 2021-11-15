@@ -25,7 +25,13 @@ const ArticleIntermediateListScreen: FC<Props> = ({ navigation, route }) => {
   const isFocused = useIsFocused();
 
   useEffect(() => {
-    articleRepository.getChaptersByList(bookType, chapters, setArticleChapters);
+    if (isFocused) {
+      articleRepository.getChaptersByList(
+        bookType,
+        chapters,
+        setArticleChapters,
+      );
+    }
     // Add 'isFocused' so if you go back you make sure new bookmarks are loaded as well
   }, [isFocused, bookType, chapters]);
 
