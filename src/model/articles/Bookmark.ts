@@ -1,4 +1,4 @@
 export interface Bookmark {
-  chapter: string;
+  id: string;
   bookType: string;
 }

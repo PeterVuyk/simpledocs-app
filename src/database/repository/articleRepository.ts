@@ -180,7 +180,7 @@ function getChapters(
   db.transaction(
     sqlTransaction => {
       sqlTransaction.executeSql(
-        `SELECT chapter, title, subTitle, pageIndex, chapterDivision, iconFile, bookmarked, bookType FROM articles WHERE bookType = ? ORDER BY pageIndex;`,
+        `SELECT id, chapter, title, subTitle, pageIndex, chapterDivision, iconFile, bookmarked, bookType FROM articles WHERE bookType = ? ORDER BY pageIndex;`,
         [bookType],
         // @ts-ignore
         (_, { rows: { _array } }) => {

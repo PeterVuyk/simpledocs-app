@@ -75,7 +75,7 @@ const BookChapterNavigator: FC<Props> = ({
       <FlatList
         style={[styles.navigationContainer, styles.navigationBorder]}
         ref={flatListRef}
-        keyExtractor={item => item.chapter.toString()}
+        keyExtractor={item => item.id.toString()}
         initialScrollIndex={articleChapterList
           .map(chapter => chapter.chapter)
           .indexOf(currentChapter)}

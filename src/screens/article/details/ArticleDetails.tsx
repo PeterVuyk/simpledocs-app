@@ -115,7 +115,7 @@ const ArticleDetails: FC<Props> = ({
                 offset: windowWidth.width * index,
                 index,
               })}
-              keyExtractor={item => item.chapter.toString()}
+              keyExtractor={item => item.id.toString()}
               renderItem={({ item }) => renderItem(item)}
             />
           </>

@@ -153,7 +153,7 @@ const ArticlesList: FC<Props> = ({
       <View style={styles.flatListContainer}>
         <FlatList
           ListHeaderComponent={getHeader}
-          keyExtractor={item => item.chapter.toString()}
+          keyExtractor={item => item.id.toString()}
           extraData={getChapters()}
           data={getChapters()}
           renderItem={({ item }) => renderItem(item)}

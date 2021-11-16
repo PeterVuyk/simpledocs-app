@@ -27,7 +27,7 @@ const RestoreAppProvider: FC<Props> = ({ children }) => {
       articleRepository
         .getBookmarkedArticles(async articles => {
           const bookmarks = articles.map(value => {
-            return { chapter: value.chapter, bookType: value.bookType };
+            return { id: value.id, bookType: value.bookType };
           }) as Bookmark[];
           dispatch(setBookmarks(bookmarks));
           resolve();

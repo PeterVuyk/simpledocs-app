@@ -28,7 +28,7 @@ function useUpdateAggregates() {
       .filter(value => value.bookType === bookType)
       .forEach(bookmarkedArticle => {
         const article = articles.find(
-          value => value.chapter === bookmarkedArticle.chapter,
+          value => value.id === bookmarkedArticle.id,
         );
         if (article) {
           article.bookmarked = true;
@@ -85,7 +85,7 @@ function useUpdateAggregates() {
           await updateBooks(
             appInfoResponse,
             articles.map(value => {
-              return { chapter: value.chapter, bookType: value.bookType };
+              return { id: value.id, bookType: value.bookType };
             }),
           );
           resolve();

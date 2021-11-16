@@ -1,4 +1,5 @@
 export interface ArticleChapter {
+  id: string;
   title: string;
   subTitle?: string;
   chapter: string;

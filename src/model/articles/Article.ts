@@ -1,6 +1,7 @@
 import { ContentType } from '../ContentType';
 
 export interface Article {
+  id: string;
   pageIndex: number;
   chapter: string;
   chapterDivision: string;
