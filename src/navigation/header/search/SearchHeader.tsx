@@ -45,22 +45,20 @@ const SearchHeader: FC<Props> = ({
     <SafeAreaView style={styles.tabContainer}>
       <View style={styles.searchInputContainer}>
         <View style={styles.tabContainer}>
-          {isFocused && (
-            <SearchBar
-              ref={search => {
-                searchRef = search;
-              }}
-              containerStyle={{ backgroundColor: '#fff' }}
-              inputContainerStyle={{
-                backgroundColor: Platform.OS === 'ios' ? '#ddd' : '#fff',
-              }}
-              platform={Platform.OS === 'ios' ? 'ios' : 'android'}
-              placeholder="Zoek op titel of trefwoord..."
-              onCancel={() => (Platform.OS === 'ios' ? navigation.pop() : '')}
-              onChangeText={handleSearchTextChange}
-              value={searchText}
-            />
-          )}
+          <SearchBar
+            ref={search => {
+              searchRef = search;
+            }}
+            containerStyle={{ backgroundColor: '#fff' }}
+            inputContainerStyle={{
+              backgroundColor: Platform.OS === 'ios' ? '#ddd' : '#fff',
+            }}
+            platform={Platform.OS === 'ios' ? 'ios' : 'android'}
+            placeholder="Zoek op titel of trefwoord..."
+            onCancel={() => (Platform.OS === 'ios' ? navigation.pop() : '')}
+            onChangeText={handleSearchTextChange}
+            value={searchText}
+          />
         </View>
       </View>
       {children}

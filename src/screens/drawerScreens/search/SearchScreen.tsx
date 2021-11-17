@@ -58,11 +58,7 @@ const SearchScreen: FC<Props> = ({ navigation, appConfigurations }) => {
   };
 
   return (
-    <DrawerScreen
-      appConfigurations={appConfigurations}
-      navigation={navigation}
-      showHeader={false}
-    >
+    <DrawerScreen appConfigurations={appConfigurations} navigation={navigation}>
       <SearchHeader
         handleSearchTextChange={handleSearchTextChange}
         searchText={searchText}

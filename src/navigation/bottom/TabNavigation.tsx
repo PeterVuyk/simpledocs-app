@@ -7,6 +7,7 @@ import SecondBookTabStackNavigator from '../StackNavigator/SecondBookTabStackNav
 import FirstBookTabStackNavigator from '../StackNavigator/FirstBookTabStackNavigator';
 import ResizeScreenDrawer from '../drawer/ResizeScreenDrawer';
 import FavoritesStackNavigator from '../StackNavigator/FavoritesStackNavigator';
+import Header from '../header/Header';
 
 const Tab = TabNavigator();
 
@@ -32,6 +33,7 @@ const TabNavigation: FC<Props> = ({ navigation, appConfigurations }) => {
 
   return (
     <ResizeScreenDrawer>
+      <Header navigation={navigation} />
       <Tab.Navigator
         contentStyle={{
           height: 60,
@@ -42,7 +44,6 @@ const TabNavigation: FC<Props> = ({ navigation, appConfigurations }) => {
           name="FavoritesTabStack"
           children={() => (
             <FavoritesStackNavigator
-              navigation={navigation}
               bookTabInfo={appConfigurations.firstBookTab}
             />
           )}
@@ -57,7 +58,6 @@ const TabNavigation: FC<Props> = ({ navigation, appConfigurations }) => {
             name="FirstBookTabStack"
             children={() => (
               <FirstBookTabStackNavigator
-                navigation={navigation}
                 bookTabInfo={appConfigurations.firstBookTab}
               />
             )}
@@ -74,7 +74,6 @@ const TabNavigation: FC<Props> = ({ navigation, appConfigurations }) => {
             name="SecondBookTabStack"
             children={() => (
               <SecondBookTabStackNavigator
-                navigation={navigation}
                 bookTabInfo={appConfigurations.secondBookTab}
               />
             )}
@@ -91,7 +90,6 @@ const TabNavigation: FC<Props> = ({ navigation, appConfigurations }) => {
             name="DecisionsScreenStack"
             children={() => (
               <DecisionsStackNavigator
-                navigation={navigation}
                 decisionTabInfo={appConfigurations.decisionsTab}
               />
             )}

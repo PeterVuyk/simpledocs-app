@@ -8,6 +8,7 @@ import configurationsStorage from '../../storage/configurationsStorage';
 import CopyrightScreen from '../../screens/drawerScreens/copyright/CopyrightScreen';
 import SearchScreen from '../../screens/drawerScreens/search/SearchScreen';
 import AboutUsScreen from '../../screens/drawerScreens/about/AboutUsScreen';
+import Header from '../header/Header';
 
 const DrawerNavigator = createDrawerNavigator();
 
