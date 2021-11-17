@@ -23,7 +23,7 @@ function addArticle(
       article.searchText,
       article.chapterDivision,
       article.iconFile,
-      `${article.bookmarked ?? 0}`,
+      `${article.bookmarked ? 1 : 0}`,
     ],
   );
 }

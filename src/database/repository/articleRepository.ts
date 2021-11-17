@@ -15,7 +15,7 @@ function toggleBookmark(articleChapter: ArticleChapter): Promise<void> {
            WHERE chapter = ?
              AND bookType = ?`,
           [
-            !articleChapter.bookmarked,
+            articleChapter.bookmarked ? 0 : 1,
             articleChapter.chapter,
             articleChapter.bookType,
           ],

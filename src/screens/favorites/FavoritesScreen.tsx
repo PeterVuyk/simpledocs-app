@@ -34,7 +34,7 @@ interface Props {
 }
 
 const FavoritesScreen: FC<Props> = () => {
-  const [sections, setSections] = useState<Sections[] | null>(null);
+  const [sections, setSections] = useState<Sections[]>([]);
   const isFocused = useIsFocused();
   const { navigateToChapter } = useContentNavigator();
 
@@ -93,7 +93,7 @@ const FavoritesScreen: FC<Props> = () => {
 
   return (
     <View style={styles.tabContainer}>
-      {sections !== null && sections.length === 0 && (
+      {sections.length === 0 && (
         <>
           <Image
             style={styles.findPlaceholderImage}
@@ -102,7 +102,7 @@ const FavoritesScreen: FC<Props> = () => {
           <TitleBar title="Favorieten" subTitle="Geen favorieten toegevoegd" />
         </>
       )}
-      {sections !== null && sections.length !== 0 && (
+      {sections.length !== 0 && (
         <SectionList
           ListHeaderComponent={getHeader}
           sections={sections}

@@ -3,11 +3,10 @@ import { Platform, SafeAreaView, StyleSheet, View } from 'react-native';
 import { DrawerNavigationHelpers } from '@react-navigation/drawer/lib/typescript/src/types';
 import { HeaderBackButton, StackNavigationProp } from '@react-navigation/stack';
 import { useNavigation } from '@react-navigation/native';
+import { WhitePortal } from 'react-native-portal';
 import DrawerButton from './DrawerButton';
 import SearchButton from './search/SearchButton';
-import BookmarkChapter from './favorites/BookmarkChapter';
 import HeaderLogo from './HeaderLogo';
-import { ArticleChapter } from '../../model/articles/ArticleChapter';
 
 export const headerStyles = StyleSheet.create({
   tabContainer: {
@@ -32,10 +31,9 @@ export const headerStyles = StyleSheet.create({
 
 interface Props {
   navigation: DrawerNavigationHelpers;
-  articleChapter?: ArticleChapter;
 }
 
-const Header: FC<Props> = ({ articleChapter, navigation }) => {
+const Header: FC<Props> = ({ navigation }) => {
   const navigator = useNavigation<StackNavigationProp<any>>();
 
   return (
@@ -60,9 +58,7 @@ const Header: FC<Props> = ({ articleChapter, navigation }) => {
           />
         )}
         <SearchButton navigation={navigation} />
-        {articleChapter !== undefined && (
-          <BookmarkChapter articleChapter={articleChapter} />
-        )}
+        <WhitePortal name="bookmarkToggle" />
       </View>
     </SafeAreaView>
   );

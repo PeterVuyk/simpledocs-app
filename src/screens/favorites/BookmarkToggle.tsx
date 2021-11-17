@@ -1,8 +1,9 @@
 import React, { FC, useEffect, useState } from 'react';
-import { StyleSheet, TouchableOpacity, View } from 'react-native';
+import { StyleSheet, TouchableOpacity, View, Text } from 'react-native';
 import { Icon } from 'native-base';
-import { ArticleChapter } from '../../../model/articles/ArticleChapter';
-import articleRepository from '../../../database/repository/articleRepository';
+import { BlackPortal } from 'react-native-portal';
+import { ArticleChapter } from '../../model/articles/ArticleChapter';
+import articleRepository from '../../database/repository/articleRepository';
 
 const styles = StyleSheet.create({
   buttonColor: {
@@ -15,7 +16,7 @@ interface Props {
   articleChapter: ArticleChapter;
 }
 
-const BookmarkChapter: FC<Props> = ({ articleChapter }) => {
+const BookmarkToggle: FC<Props> = ({ articleChapter }) => {
   const [isBookmarked, setBookmarked] = useState<boolean>(
     articleChapter.bookmarked,
   );
@@ -31,7 +32,7 @@ const BookmarkChapter: FC<Props> = ({ articleChapter }) => {
   }, [articleChapter.bookmarked]);
 
   return (
-    <View>
+    <BlackPortal name="bookmarkToggle">
       <Icon
         style={styles.buttonColor}
         name={isBookmarked ? 'bookmark-check' : 'bookmark-plus-outline'}
@@ -39,8 +40,8 @@ const BookmarkChapter: FC<Props> = ({ articleChapter }) => {
         fontSize={26}
         onPress={handleBookmarkChapter}
       />
-    </View>
+    </BlackPortal>
   );
 };
 
-export default BookmarkChapter;
+export default BookmarkToggle;

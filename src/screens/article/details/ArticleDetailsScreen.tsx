@@ -51,7 +51,6 @@ const ArticleDetailsScreen: FC<Props> = ({ navigation, route }) => {
     <>
       {!loading && chapters.length !== 0 && (
         <ArticleDetails
-          navigation={navigation}
           windowWidth={dimensions.window}
           bookType={bookType}
           articleChapterList={chapters}

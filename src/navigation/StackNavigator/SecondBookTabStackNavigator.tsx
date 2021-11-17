@@ -64,7 +64,9 @@ const SecondBookTabStackNavigator: FC<Props> = ({
       <Stack.Screen
         name="SecondBookTabDetailsScreen"
         component={ArticleDetailsScreen}
-        options={{ headerShown: false }}
+        options={{
+          header: () => <Header navigation={navigation} />,
+        }}
       />
     </Stack.Navigator>
   );
