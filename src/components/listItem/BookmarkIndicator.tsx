@@ -1,11 +1,12 @@
 import React, { FC } from 'react';
 import { Icon } from 'native-base';
 import { StyleSheet } from 'react-native';
+import globalStyle from '../../styling/globalStyle';
 
 const styles = StyleSheet.create({
   iconStyle: {
     zIndex: 100,
-    color: '#5bb5f6',
+    color: globalStyle.color.primary.light,
     position: 'absolute',
     right: 50,
     top: 0,
@@ -18,7 +19,7 @@ const BookmarkIndicator: FC = () => {
       style={styles.iconStyle}
       name="bookmark-check"
       type="MaterialCommunityIcons"
-      fontSize={26}
+      fontSize={globalStyle.icon.size.large}
     />
   );
 };

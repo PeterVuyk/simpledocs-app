@@ -3,6 +3,7 @@ import React, { FC } from 'react';
 import { View } from 'react-native';
 import SVGIcon from '../SVGIcon';
 import BookmarkIndicator from './BookmarkIndicator';
+import globalStyle from '../../styling/globalStyle';
 
 interface Props {
   onSubmit: () => void;
@@ -26,7 +27,7 @@ const ListItem: FC<Props> = ({
         <Item.Content>
           <Item.Title>{title}</Item.Title>
           {subTitle !== undefined && subTitle !== '' && (
-            <Item.Subtitle style={{ color: '#616161' }}>
+            <Item.Subtitle style={{ color: globalStyle.color.secondary.dark }}>
               {subTitle}
             </Item.Subtitle>
           )}

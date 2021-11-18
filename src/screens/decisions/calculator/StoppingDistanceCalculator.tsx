@@ -1,15 +1,15 @@
 import React, { FC, useCallback, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { TextInput } from 'react-native-paper';
+import globalStyle from '../../../styling/globalStyle';
 
 const styles = StyleSheet.create({
   tabContainer: {
     margin: 10,
   },
   headerSubTitle: {
+    ...globalStyle.typography.h3,
     textAlign: 'center',
-    fontSize: 15,
-    fontWeight: 'bold',
   },
 });
 
@@ -52,7 +52,10 @@ const StoppingDistanceCalculator: FC = () => {
       <Text
         style={[
           {
-            color: textInput === undefined ? '#fff' : '#154594',
+            color:
+              textInput === undefined
+                ? globalStyle.color.white
+                : globalStyle.color.primary.main,
           },
           styles.headerSubTitle,
         ]}
@@ -72,7 +75,7 @@ const StoppingDistanceCalculator: FC = () => {
         value={getTextInputValue()}
         keyboardType="numeric"
         mode="outlined"
-        theme={{ colors: { primary: '#154594' } }}
+        theme={{ colors: { primary: globalStyle.color.primary.main } }}
         underlineColor="green"
         onChangeText={(updatedText: string) => {
           if (!Number.isNaN(Number(updatedText))) {

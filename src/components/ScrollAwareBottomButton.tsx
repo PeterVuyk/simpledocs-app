@@ -3,6 +3,7 @@ import { Animated } from 'react-native';
 import { Button } from 'react-native-elements';
 import HideWithKeyboardView from './keyboard/HideWithKeyboardView';
 import { useAppSelector } from '../redux/hooks';
+import globalStyle from '../styling/globalStyle';
 
 interface Props {
   title: string;
@@ -54,7 +55,10 @@ const ScrollAwareBottomButton: FC<Props> = ({ title, onPress }) => {
         <Button
           title={title}
           onPress={onPress}
-          buttonStyle={{ backgroundColor: '#154594', borderRadius: 5 }}
+          buttonStyle={{
+            backgroundColor: globalStyle.color.primary.main,
+            borderRadius: 5,
+          }}
         />
       </Animated.View>
     </HideWithKeyboardView>

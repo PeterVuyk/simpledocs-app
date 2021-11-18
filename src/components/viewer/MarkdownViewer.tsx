@@ -4,13 +4,14 @@ import { useIsFocused } from '@react-navigation/native';
 import Markdown from 'react-native-markdown-display';
 import ScrollViewToggleBottomBar from '../ScrollViewToggleBottomBar';
 import useContentNavigator from '../hooks/useContentNavigator';
+import globalStyle from '../../styling/globalStyle';
 
 const styles = StyleSheet.create({
   viewContainer: {
     flex: 1,
     paddingRight: 10,
     paddingLeft: 10,
-    backgroundColor: 'white',
+    backgroundColor: globalStyle.color.white,
   },
 });
 

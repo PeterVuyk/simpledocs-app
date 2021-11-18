@@ -3,6 +3,7 @@ import { FlatList, StyleSheet, View } from 'react-native';
 import getWidth from 'string-pixel-width';
 import { ArticleChapter } from '../../model/articles/ArticleChapter';
 import NavigatorChip from '../../components/NavigatorChip';
+import globalStyle from '../../styling/globalStyle';
 
 interface Props {
   onArticleNavigation: (chapter: string) => void;
@@ -12,7 +13,7 @@ interface Props {
 
 const styles = StyleSheet.create({
   navigationBorder: {
-    borderBottomColor: '#d4d3d3',
+    borderBottomColor: globalStyle.color.secondary.light,
     borderBottomWidth: 1,
   },
   navigationContainer: {
@@ -71,7 +72,7 @@ const BookChapterNavigator: FC<Props> = ({
   );
 
   return (
-    <View style={{ backgroundColor: '#fff' }}>
+    <View style={{ backgroundColor: globalStyle.color.white }}>
       <FlatList
         style={[styles.navigationContainer, styles.navigationBorder]}
         ref={flatListRef}

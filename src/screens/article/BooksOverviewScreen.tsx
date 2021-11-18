@@ -9,11 +9,12 @@ import {
   BookInfo,
   BookTabInfo,
 } from '../../model/configurations/AppConfigurations';
+import globalStyle from '../../styling/globalStyle';
 
 const styles = StyleSheet.create({
   tabContainer: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: globalStyle.color.white,
   },
   flatListContainer: {
     flex: 1,

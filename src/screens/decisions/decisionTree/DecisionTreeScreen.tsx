@@ -3,13 +3,13 @@ import { StyleSheet, View, Text } from 'react-native';
 import { Button, Icon } from 'react-native-elements';
 import decisionTreeRepository from '../../../database/repository/decisionTreeRepository';
 import { DecisionTreeStep } from '../../../model/decisionTree/DecisionTreeStep';
+import globalStyle from '../../../styling/globalStyle';
 
 const styles = StyleSheet.create({
   question: {
+    ...globalStyle.typography.h1,
     textAlign: 'center',
-    fontWeight: 'bold',
-    color: '#154594',
-    fontSize: 21,
+    color: globalStyle.color.primary.main,
   },
   buttonContainer: {
     flex: 1,
@@ -20,7 +20,7 @@ const styles = StyleSheet.create({
     padding: 15,
   },
   tabContainer: {
-    backgroundColor: '#fff',
+    backgroundColor: globalStyle.color.white,
     flex: 1,
   },
   contentContainerStyle: {
@@ -32,7 +32,7 @@ const styles = StyleSheet.create({
   },
   articleButtonsStyle: {
     alignSelf: 'stretch',
-    backgroundColor: '#154594',
+    backgroundColor: globalStyle.color.primary.main,
   },
   leftButtonStyle: {
     backgroundColor: 'red',
@@ -109,7 +109,7 @@ const DecisionTreeScreen: FC<Props> = ({ title, navigation }) => {
               ]}
             >
               <Icon
-                color="#154594"
+                color={globalStyle.color.primary.main}
                 name="keyboard-backspace"
                 type="MaterialCommunityIcons"
                 disabled={getPreviousQuestion() === undefined}
@@ -117,7 +117,7 @@ const DecisionTreeScreen: FC<Props> = ({ title, navigation }) => {
                 reverse
               />
               <Icon
-                color="#154594"
+                color={globalStyle.color.primary.main}
                 name="restore"
                 type="MaterialCommunityIcons"
                 disabled={getPreviousQuestion() === undefined}

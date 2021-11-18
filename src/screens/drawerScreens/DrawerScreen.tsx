@@ -5,7 +5,7 @@ import BottomTabs from '../../navigation/bottom/BottomTabs';
 import Header from '../../navigation/header/Header';
 import BottomTab from '../../model/BottomTab';
 import ResizeScreenDrawer from '../../navigation/drawer/ResizeScreenDrawer';
-import { IconFamilyType } from '../../model/IconFamilyType';
+import { IconFamilyType } from '../../model/style/IconFamilyType';
 
 interface Props {
   children: ReactNode;

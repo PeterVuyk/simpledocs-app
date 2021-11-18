@@ -9,6 +9,7 @@ import { AppConfigurations } from '../../../model/configurations/AppConfiguratio
 import SearchScreenNavigator from './SearchScreenNavigator';
 import DrawerScreen from '../DrawerScreen';
 import SearchResultItem from './SearchResultItem';
+import globalStyle from '../../../styling/globalStyle';
 
 const styles = StyleSheet.create({
   findPlaceholderImage: {
@@ -17,7 +18,9 @@ const styles = StyleSheet.create({
     width: 'auto',
     resizeMode: 'contain',
   },
-  noResultsTextSize: { fontSize: 15 },
+  noResultsTextSize: {
+    ...globalStyle.typography.h4,
+  },
   noResultContainer: { flex: 1, margin: 20 },
 });
 

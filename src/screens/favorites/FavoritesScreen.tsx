@@ -9,10 +9,11 @@ import configHelper from '../../helper/configHelper';
 import TitleBar from '../../components/titleBar/TitleBar';
 import useContentNavigator from '../../components/hooks/useContentNavigator';
 import SectionTitleBar from '../../components/titleBar/SectionTitleBar';
+import globalStyle from '../../styling/globalStyle';
 
 const styles = StyleSheet.create({
   tabContainer: {
-    backgroundColor: '#fff',
+    backgroundColor: globalStyle.color.white,
     marginBottom: 60,
     flex: 1,
   },

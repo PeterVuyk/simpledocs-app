@@ -2,14 +2,15 @@ import React, { FC } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { DrawerNavigationHelpers } from '@react-navigation/drawer/lib/typescript/src/types';
 import { Icon } from 'native-base';
+import globalStyle from '../../../styling/globalStyle';
 
 const styles = StyleSheet.create({
   buttonColor: {
-    color: '#154594',
+    color: globalStyle.color.primary.main,
     padding: 10,
   },
   buttonColorDisabled: {
-    color: '#b7b7b7',
+    color: globalStyle.color.secondary.main,
     padding: 10,
   },
 });
@@ -23,7 +24,7 @@ const SearchButton: FC<Props> = ({ navigation }) => {
     <View>
       <Icon
         name="magnify"
-        fontSize={26}
+        fontSize={globalStyle.icon.size.large}
         style={[navigation ? styles.buttonColor : styles.buttonColorDisabled]}
         type="MaterialCommunityIcons"
         onPress={() => {

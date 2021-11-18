@@ -3,9 +3,10 @@ import { Platform, SafeAreaView, StyleSheet, View } from 'react-native';
 import { SearchBar } from 'react-native-elements';
 import { useIsFocused, useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
+import globalStyle from '../../../styling/globalStyle';
 
 const styles = StyleSheet.create({
-  tabContainer: { flex: 1, backgroundColor: '#fff' },
+  tabContainer: { flex: 1, backgroundColor: globalStyle.color.white },
   searchInputContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -14,7 +15,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.1,
     shadowRadius: 3,
     elevation: 2,
-    backgroundColor: '#fff',
+    backgroundColor: globalStyle.color.white,
     alignItems: 'center',
   },
 });
@@ -49,9 +50,12 @@ const SearchHeader: FC<Props> = ({
             ref={search => {
               searchRef = search;
             }}
-            containerStyle={{ backgroundColor: '#fff' }}
+            containerStyle={{ backgroundColor: globalStyle.color.white }}
             inputContainerStyle={{
-              backgroundColor: Platform.OS === 'ios' ? '#ddd' : '#fff',
+              backgroundColor:
+                Platform.OS === 'ios'
+                  ? globalStyle.color.secondary.light
+                  : globalStyle.color.white,
             }}
             platform={Platform.OS === 'ios' ? 'ios' : 'android'}
             placeholder="Zoek op titel of trefwoord..."

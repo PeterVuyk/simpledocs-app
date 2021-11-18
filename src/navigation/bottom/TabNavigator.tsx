@@ -11,7 +11,7 @@ import {
   createNavigatorFactory,
   ParamListBase,
 } from '@react-navigation/native';
-import { IconFamilyType } from '../../model/IconFamilyType';
+import { IconFamilyType } from '../../model/style/IconFamilyType';
 import BottomTabs from './BottomTabs';
 
 // Props accepted by the view

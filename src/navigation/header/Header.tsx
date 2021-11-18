@@ -8,6 +8,7 @@ import { Icon } from 'native-base';
 import DrawerButton from './DrawerButton';
 import SearchButton from './search/SearchButton';
 import HeaderLogo from './HeaderLogo';
+import globalStyle from '../../styling/globalStyle';
 
 export const headerStyles = StyleSheet.create({
   tabContainer: {
@@ -19,7 +20,7 @@ export const headerStyles = StyleSheet.create({
     shadowOpacity: 0.1,
     shadowRadius: 3,
     elevation: 2,
-    backgroundColor: '#fff',
+    backgroundColor: globalStyle.color.white,
     alignItems: 'center',
   },
   rightContainer: {
@@ -49,6 +50,7 @@ const Header: FC<Props> = ({ navigation }) => {
           navigation={navigation}
         />
       )}
+      <View style={{ width: 50 }} />
       <HeaderLogo />
       <View style={headerStyles.rightContainer}>
         {Platform.OS === 'ios' && (
@@ -62,10 +64,14 @@ const Header: FC<Props> = ({ navigation }) => {
         <WhitePortal name="bookmarkToggle">
           {/* The icon below is a placeholder and is only rendered if the bookmarkToggle isn't set. Added this so the header logo stay fixed independent if bookmarkToggle is set */}
           <Icon
-            style={{ color: 'white', padding: 10, opacity: 0.0 }}
+            style={{
+              color: globalStyle.color.white,
+              padding: 10,
+              opacity: 0.0,
+            }}
             name="bookmark-plus-outline"
             type="MaterialCommunityIcons"
-            fontSize={26}
+            fontSize={globalStyle.icon.size.large}
           />
         </WhitePortal>
       </View>

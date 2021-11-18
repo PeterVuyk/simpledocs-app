@@ -2,7 +2,7 @@ import React, { FC } from 'react';
 import { Linking, Image, View, Platform, StyleSheet } from 'react-native';
 import { DrawerNavigationHelpers } from '@react-navigation/drawer/lib/typescript/src/types';
 import DrawerItem from './DrawerItem';
-import { IconFamilyType } from '../../model/IconFamilyType';
+import { IconFamilyType } from '../../model/style/IconFamilyType';
 import { AppConfigurations } from '../../model/configurations/AppConfigurations';
 
 const styles = StyleSheet.create({

@@ -4,10 +4,11 @@ import { Icon } from 'native-base';
 import { BlackPortal } from 'react-native-portal';
 import { ArticleChapter } from '../../model/articles/ArticleChapter';
 import articleRepository from '../../database/repository/articleRepository';
+import globalStyle from '../../styling/globalStyle';
 
 const styles = StyleSheet.create({
   buttonColor: {
-    color: '#154594',
+    color: globalStyle.color.primary.main,
     padding: 10,
   },
 });
@@ -37,7 +38,7 @@ const BookmarkToggle: FC<Props> = ({ articleChapter }) => {
         style={styles.buttonColor}
         name={isBookmarked ? 'bookmark-check' : 'bookmark-plus-outline'}
         type="MaterialCommunityIcons"
-        fontSize={26}
+        fontSize={globalStyle.icon.size.large}
         onPress={handleBookmarkChapter}
       />
     </BlackPortal>

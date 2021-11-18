@@ -11,11 +11,12 @@ import {
 } from '../../../model/calculations/CalculationType';
 import StoppingDistanceCalculator from './StoppingDistanceCalculator';
 import ContentViewer from '../../../components/viewer/ContentViewer';
+import globalStyle from '../../../styling/globalStyle';
 
 const styles = StyleSheet.create({
   tabContainer: {
     flex: 1,
-    backgroundColor: 'white',
+    backgroundColor: globalStyle.color.white,
   },
 });
 

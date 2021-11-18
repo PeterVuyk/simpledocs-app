@@ -1,15 +1,15 @@
 import React, { FC, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { TextInput } from 'react-native-paper';
+import globalStyle from '../../../styling/globalStyle';
 
 const styles = StyleSheet.create({
   tabContainer: {
     margin: 10,
   },
   headerSubTitle: {
+    ...globalStyle.typography.h3,
     textAlign: 'center',
-    fontSize: 15,
-    fontWeight: 'bold',
   },
 });
 
@@ -52,7 +52,10 @@ const OvertakingDistanceCalculator: FC = () => {
       <Text
         style={[
           {
-            color: ownSpeed === undefined ? '#fff' : '#154594',
+            color:
+              ownSpeed === undefined
+                ? globalStyle.color.white
+                : globalStyle.color.primary.main,
           },
           styles.headerSubTitle,
         ]}
@@ -64,7 +67,7 @@ const OvertakingDistanceCalculator: FC = () => {
         value={getOwnSpeed()}
         keyboardType="numeric"
         mode="outlined"
-        theme={{ colors: { primary: '#154594' } }}
+        theme={{ colors: { primary: globalStyle.color.primary.main } }}
         underlineColor="green"
         onChangeText={(updatedText: string) => {
           if (!Number.isNaN(Number(updatedText))) {
@@ -80,7 +83,7 @@ const OvertakingDistanceCalculator: FC = () => {
         value={getVehicleInFrontSpeed()}
         keyboardType="numeric"
         mode="outlined"
-        theme={{ colors: { primary: '#154594' } }}
+        theme={{ colors: { primary: globalStyle.color.primary.main } }}
         underlineColor="green"
         onChangeText={(updatedText: string) => {
           if (!Number.isNaN(Number(updatedText))) {

@@ -17,6 +17,7 @@ import {
   BookTabInfo,
 } from '../../model/configurations/AppConfigurations';
 import logger from '../../util/logger';
+import globalStyle from '../../styling/globalStyle';
 
 interface Props {
   navigation: DrawerNavigationProp<any>;
@@ -126,7 +127,7 @@ const DecisionsOverviewScreen: FC<Props> = ({ navigation, route }) => {
 
   const flatListHeader = () => {
     return (
-      <View style={{ backgroundColor: '#fff' }}>
+      <View style={{ backgroundColor: globalStyle.color.white }}>
         <TitleBar
           title={decisionTabInfo.title}
           subTitle={decisionTabInfo.subTitle}
@@ -160,7 +161,13 @@ const DecisionsOverviewScreen: FC<Props> = ({ navigation, route }) => {
   );
 
   return (
-    <View style={{ flex: 1, paddingBottom: 60, backgroundColor: '#fff' }}>
+    <View
+      style={{
+        flex: 1,
+        paddingBottom: 60,
+        backgroundColor: globalStyle.color.white,
+      }}
+    >
       {decisionItems.length !== 0 && (
         <FlatList
           keyExtractor={item => item.title}

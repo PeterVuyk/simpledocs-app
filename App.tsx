@@ -13,10 +13,11 @@ import { store } from './src/redux/store';
 import InitDatabaseProvider from './src/database/synchronize/initializeDatabase/InitDatabaseProvider';
 import AggregateDataProvider from './src/database/synchronize/updateAggregates/AggregateDataProvider';
 import RestoreAppProvider from './src/database/synchronize/restore/RestoreAppProvider';
+import globalStyle from './src/styling/globalStyle';
 
 const theme = {
   Chip: {
-    theme: { colors: { primary: '#154594' } },
+    theme: { colors: { primary: globalStyle.color.primary.main } },
   },
 };
 

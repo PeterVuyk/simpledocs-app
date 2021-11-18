@@ -2,17 +2,18 @@ import React, { FC } from 'react';
 import { DrawerItem as Item } from '@react-navigation/drawer';
 import { Icon } from 'native-base';
 import { StyleSheet, View } from 'react-native';
-import { IconFamilyType } from '../../model/IconFamilyType';
+import { IconFamilyType } from '../../model/style/IconFamilyType';
+import globalStyle from '../../styling/globalStyle';
 
 const styles = StyleSheet.create({
   drawerDivider: {
-    borderTopColor: '#d4d3d3',
+    borderTopColor: globalStyle.color.secondary.light,
     borderTopWidth: 1,
     marginBottom: -5,
   },
   relativeContainer: { position: 'relative' },
   externalLinkContainer: { position: 'absolute', right: 18, top: 13 },
-  externalLinkColor: { color: 'rgba(28, 28, 30, 0.68)' },
+  externalLinkColor: { color: globalStyle.color.secondary.rgbDark },
 });
 
 interface Props {
@@ -39,7 +40,7 @@ const DrawerItem: FC<Props> = ({
               name="exit-to-app"
               style={styles.externalLinkColor}
               type="MaterialCommunityIcons"
-              fontSize={20}
+              fontSize={globalStyle.icon.size.medium}
             />
           </View>
         )}
@@ -52,7 +53,7 @@ const DrawerItem: FC<Props> = ({
               name={iconName}
               style={{ color }}
               type={iconType}
-              fontSize={20}
+              fontSize={globalStyle.icon.size.medium}
             />
           )}
         />

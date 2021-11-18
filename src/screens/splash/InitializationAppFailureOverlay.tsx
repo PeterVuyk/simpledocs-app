@@ -6,11 +6,15 @@ import debugHandler from '../../debug/debugHandler';
 import tearDown from '../../database/synchronize/restore/tearDownDatabase';
 import configurationsStorage from '../../storage/configurationsStorage';
 import logger from '../../util/logger';
+import globalStyle from '../../styling/globalStyle';
 
 const styles = StyleSheet.create({
   messageContainer: { flex: 1, marginTop: 200 },
   buttonContainer: { flex: 3, justifyContent: 'flex-end', margin: 10 },
-  buttonStyle: { backgroundColor: '#154594', borderRadius: 5 },
+  buttonStyle: {
+    backgroundColor: globalStyle.color.primary.main,
+    borderRadius: 5,
+  },
 });
 
 /**

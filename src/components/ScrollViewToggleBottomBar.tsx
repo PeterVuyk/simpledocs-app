@@ -2,6 +2,7 @@ import React, { FC, ReactNode, useEffect, useState } from 'react';
 import { ScrollView } from 'react-native';
 import { useAppDispatch } from '../redux/hooks';
 import { scrollDown, scrollUp } from '../redux/slice/scrollingSlice';
+import globalStyle from '../styling/globalStyle';
 
 interface Props {
   children: ReactNode;
@@ -42,7 +43,7 @@ const ScrollViewToggleBottomBar: FC<Props> = ({ children, pageHeight }) => {
 
   return (
     <ScrollView
-      style={{ backgroundColor: '#fff' }}
+      style={{ backgroundColor: globalStyle.color.white }}
       nestedScrollEnabled
       onScroll={event => {
         handleScroll(event.nativeEvent.contentOffset.y);

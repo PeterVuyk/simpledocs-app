@@ -1,6 +1,7 @@
 import React, { FC, ReactNode } from 'react';
 import { View, Keyboard } from 'react-native';
 import { useAppSelector } from '../../redux/hooks';
+import globalStyle from '../../styling/globalStyle';
 
 interface Props {
   children: ReactNode;
@@ -16,7 +17,7 @@ const SearchScreen: FC<Props> = ({ children }) => {
       style={{
         flex: 1,
         paddingBottom: isKeyboardVisible ? 0 : 60,
-        backgroundColor: '#fff',
+        backgroundColor: globalStyle.color.white,
       }}
       onTouchStart={Keyboard.dismiss}
     >

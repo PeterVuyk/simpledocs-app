@@ -8,6 +8,7 @@ import useContentNavigator from '../../../components/hooks/useContentNavigator';
 import { useAppDispatch } from '../../../redux/hooks';
 import { setSearchText as setReduxSearchText } from '../../../redux/slice/searchTextSlice';
 import BookmarkIndicator from '../../../components/listItem/BookmarkIndicator';
+import globalStyle from '../../../styling/globalStyle';
 
 interface Props {
   searchText: string;
@@ -64,7 +65,9 @@ const SearchResultItem: FC<Props> = ({ searchText, article }) => {
               textToHighlight={article.title}
             />
           </ListItem.Title>
-          <ListItem.Subtitle style={{ color: '#616161' }}>
+          <ListItem.Subtitle
+            style={{ color: globalStyle.color.secondary.dark }}
+          >
             <HighlightWords
               searchText={searchText}
               textToHighlight={getShortenedBody(article.searchText)}

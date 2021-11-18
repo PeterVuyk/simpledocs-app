@@ -5,6 +5,7 @@ import getWidth from 'string-pixel-width';
 import configHelper from '../../../helper/configHelper';
 import { BookInfo } from '../../../model/configurations/AppConfigurations';
 import NavigatorChip from '../../../components/NavigatorChip';
+import globalStyle from '../../../styling/globalStyle';
 
 interface SearchItem {
   index: number;
@@ -15,7 +16,7 @@ interface SearchItem {
 
 const styles = StyleSheet.create({
   navigationBorder: {
-    borderBottomColor: '#d4d3d3',
+    borderBottomColor: globalStyle.color.secondary.light,
     borderBottomWidth: 1,
   },
   navigationContainer: {

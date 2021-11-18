@@ -8,7 +8,7 @@ import configurationsStorage from '../../storage/configurationsStorage';
 import CopyrightScreen from '../../screens/drawerScreens/copyright/CopyrightScreen';
 import SearchScreen from '../../screens/drawerScreens/search/SearchScreen';
 import AboutUsScreen from '../../screens/drawerScreens/about/AboutUsScreen';
-import Header from '../header/Header';
+import globalStyle from '../../styling/globalStyle';
 
 const DrawerNavigator = createDrawerNavigator();
 
@@ -32,11 +32,11 @@ const Drawer: FC = () => {
         screenOptions={{
           headerShown: false,
           drawerType: 'slide',
-          drawerStyle: { backgroundColor: '#fff' },
+          drawerStyle: { backgroundColor: globalStyle.color.white },
           overlayColor: 'transparant',
           lazy: true,
-          drawerActiveBackgroundColor: '#fff',
-          sceneContainerStyle: { backgroundColor: '#fff' },
+          drawerActiveBackgroundColor: globalStyle.color.white,
+          sceneContainerStyle: { backgroundColor: globalStyle.color.white },
         }}
         initialRouteName="tabs"
         drawerContent={props => {

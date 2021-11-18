@@ -4,11 +4,12 @@ import { StyleSheet, View } from 'react-native';
 import TitleBar from '../../../components/titleBar/TitleBar';
 import { AppConfigurations } from '../../../model/configurations/AppConfigurations';
 import DrawerScreen from '../DrawerScreen';
+import globalStyle from '../../../styling/globalStyle';
 
 const styles = StyleSheet.create({
   tabContainer: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: globalStyle.color.white,
     marginBottom: 60,
   },
 });

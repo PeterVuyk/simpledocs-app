@@ -1,15 +1,15 @@
 import React, { FC } from 'react';
 import { Text, View, StyleSheet } from 'react-native';
+import globalStyle from '../../styling/globalStyle';
 
 const styles = StyleSheet.create({
   tabContainer: {
-    backgroundColor: '#fff',
+    backgroundColor: globalStyle.color.white,
   },
   headerTitle: {
+    ...globalStyle.typography.h3,
+    color: globalStyle.color.primary.main,
     padding: 10,
-    fontSize: 16,
-    fontWeight: 'bold',
-    color: '#154594',
   },
 });
 

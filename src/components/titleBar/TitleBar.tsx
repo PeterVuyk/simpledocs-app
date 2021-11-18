@@ -1,22 +1,22 @@
 import React, { FC } from 'react';
 import { Text, View, StyleSheet, Keyboard } from 'react-native';
+import globalStyle from '../../styling/globalStyle';
 
 const styles = StyleSheet.create({
   tabContainer: {
-    backgroundColor: '#fff',
+    backgroundColor: globalStyle.color.white,
     margin: 20,
   },
   headerTitle: {
+    ...globalStyle.typography.h1,
     textAlign: 'center',
-    fontSize: 21,
-    fontWeight: 'bold',
-    color: '#154594',
+    color: globalStyle.color.primary.main,
     alignSelf: 'center',
   },
   headerSubTitle: {
+    ...globalStyle.typography.h4,
     paddingTop: 20,
     textAlign: 'center',
-    fontSize: 15,
   },
 });
 

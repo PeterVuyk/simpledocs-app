@@ -6,6 +6,7 @@ import HeaderLogo from '../../navigation/header/HeaderLogo';
 import DrawerButton from '../../navigation/header/DrawerButton';
 import SearchButton from '../../navigation/header/search/SearchButton';
 import { headerStyles } from '../../navigation/header/Header';
+import globalStyle from '../../styling/globalStyle';
 
 const SynchronizationSplashScreen: FC = React.memo(() => {
   const Header = () => {
@@ -14,6 +15,7 @@ const SynchronizationSplashScreen: FC = React.memo(() => {
         {Platform.OS !== 'ios' && (
           <DrawerButton iconName="menu" iconType="MaterialCommunityIcons" />
         )}
+        <View style={{ width: 50 }} />
         <HeaderLogo />
         <View style={headerStyles.rightContainer}>
           {Platform.OS === 'ios' && (
@@ -25,10 +27,14 @@ const SynchronizationSplashScreen: FC = React.memo(() => {
           <SearchButton />
           {/* The icon below is a placeholder and is added so the header logo doesn't jump if the bookmarkToggle is set */}
           <Icon
-            style={{ color: 'white', padding: 10, opacity: 0.0 }}
+            style={{
+              color: globalStyle.color.white,
+              padding: 10,
+              opacity: 0.0,
+            }}
             name="bookmark-plus-outline"
             type="MaterialCommunityIcons"
-            fontSize={26}
+            fontSize={globalStyle.icon.size.large}
           />
         </View>
       </SafeAreaView>

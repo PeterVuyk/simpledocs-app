@@ -2,6 +2,7 @@ import React, { FC } from 'react';
 import { Image, StyleSheet, View } from 'react-native';
 import { Icon } from 'native-base';
 import environment from '../../util/environment';
+import globalStyle from '../../styling/globalStyle';
 
 const styles = StyleSheet.create({
   headerLogo: {
@@ -12,10 +13,10 @@ const styles = StyleSheet.create({
   nonProductionIndicatorContainer: {
     position: 'absolute',
     right: 0,
-    bottom: 0,
+    bottom: -5,
   },
   editIndicator: {
-    color: '#616161',
+    color: globalStyle.color.secondary.dark,
   },
 });
 
@@ -32,7 +33,7 @@ const HeaderLogo: FC = React.memo(() => {
             name="edit-3"
             style={styles.editIndicator}
             type="Feather"
-            fontSize={20}
+            fontSize={globalStyle.icon.size.small}
           />
         </View>
       )}
