@@ -13,10 +13,11 @@ const styles = StyleSheet.create({
   nonProductionIndicatorContainer: {
     position: 'absolute',
     right: 0,
-    bottom: -5,
+    bottom: 0,
   },
   editIndicator: {
     color: globalStyle.color.secondary.dark,
+    fontSize: globalStyle.typography.h1.fontSize,
   },
 });
 
@@ -29,12 +30,7 @@ const HeaderLogo: FC = React.memo(() => {
       />
       {!environment.isProduction() && (
         <View style={styles.nonProductionIndicatorContainer}>
-          <Icon
-            name="edit-3"
-            style={styles.editIndicator}
-            type="Feather"
-            fontSize={globalStyle.icon.size.small}
-          />
+          <Icon name="edit-3" style={styles.editIndicator} type="Feather" />
         </View>
       )}
     </View>

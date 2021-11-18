@@ -34,7 +34,6 @@ const SynchronizationSplashScreen: FC = React.memo(() => {
             }}
             name="bookmark-plus-outline"
             type="MaterialCommunityIcons"
-            fontSize={globalStyle.icon.size.large}
           />
         </View>
       </SafeAreaView>

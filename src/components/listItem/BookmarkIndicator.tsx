@@ -19,7 +19,6 @@ const BookmarkIndicator: FC = () => {
       style={styles.iconStyle}
       name="bookmark-check"
       type="MaterialCommunityIcons"
-      fontSize={globalStyle.icon.size.large}
     />
   );
 };

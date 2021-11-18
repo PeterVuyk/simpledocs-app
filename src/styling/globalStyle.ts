@@ -28,12 +28,8 @@ const GlobalStyle = {
     h4: {
       fontSize: 15,
     },
-  },
-  icon: {
-    size: {
-      small: 14,
-      medium: 20,
-      large: 26,
+    h5: {
+      fontSize: 12,
     },
   },
 };

@@ -71,7 +71,6 @@ const Header: FC<Props> = ({ navigation }) => {
             }}
             name="bookmark-plus-outline"
             type="MaterialCommunityIcons"
-            fontSize={globalStyle.icon.size.large}
           />
         </WhitePortal>
       </View>

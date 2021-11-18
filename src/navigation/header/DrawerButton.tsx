@@ -28,7 +28,6 @@ const DrawerButton: FC<Props> = ({ navigation, iconType, iconName }) => {
       style={[navigation ? styles.buttonColor : styles.buttonColorDisabled]}
       name={iconName}
       type={iconType}
-      fontSize={globalStyle.icon.size.large}
       onPress={() => {
         if (navigation) {
           navigation.openDrawer();

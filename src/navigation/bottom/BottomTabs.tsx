@@ -11,14 +11,18 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-around',
     flex: 1,
-    paddingLeft: 5,
-    paddingRight: 5,
+    paddingLeft: 3,
+    paddingRight: 3,
     backgroundColor: globalStyle.color.primary.main,
   },
   tabContainer: {
     paddingBottom: 5,
     paddingTop: 5,
     height: 60,
+  },
+  tabTitle: {
+    ...globalStyle.typography.h5,
+    textAlign: 'center',
   },
 });
 
@@ -50,15 +54,16 @@ const BottomTabs: FC<Props> = ({ tabs }) => {
                     }}
                     name={tab.icon}
                     type={tab.iconFamilyType}
-                    fontSize={globalStyle.icon.size.large}
                   />
                   <Text
-                    style={{
-                      textAlign: 'center',
-                      color: tab.isSelected
-                        ? globalStyle.color.white
-                        : globalStyle.color.primary.light,
-                    }}
+                    style={[
+                      {
+                        color: tab.isSelected
+                          ? globalStyle.color.white
+                          : globalStyle.color.primary.light,
+                      },
+                      styles.tabTitle,
+                    ]}
                   >
                     {tab.title}
                   </Text>

@@ -40,7 +40,6 @@ const DrawerItem: FC<Props> = ({
               name="exit-to-app"
               style={styles.externalLinkColor}
               type="MaterialCommunityIcons"
-              fontSize={globalStyle.icon.size.medium}
             />
           </View>
         )}
@@ -49,12 +48,7 @@ const DrawerItem: FC<Props> = ({
           label={label}
           onPress={onSubmit}
           icon={({ color }) => (
-            <Icon
-              name={iconName}
-              style={{ color }}
-              type={iconType}
-              fontSize={globalStyle.icon.size.medium}
-            />
+            <Icon name={iconName} style={{ color }} type={iconType} />
           )}
         />
       </View>

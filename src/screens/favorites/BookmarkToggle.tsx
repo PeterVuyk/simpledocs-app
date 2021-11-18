@@ -38,7 +38,6 @@ const BookmarkToggle: FC<Props> = ({ articleChapter }) => {
         style={styles.buttonColor}
         name={isBookmarked ? 'bookmark-check' : 'bookmark-plus-outline'}
         type="MaterialCommunityIcons"
-        fontSize={globalStyle.icon.size.large}
         onPress={handleBookmarkChapter}
       />
     </BlackPortal>

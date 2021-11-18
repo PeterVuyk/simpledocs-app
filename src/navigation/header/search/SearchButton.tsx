@@ -24,7 +24,6 @@ const SearchButton: FC<Props> = ({ navigation }) => {
     <View>
       <Icon
         name="magnify"
-        fontSize={globalStyle.icon.size.large}
         style={[navigation ? styles.buttonColor : styles.buttonColorDisabled]}
         type="MaterialCommunityIcons"
         onPress={() => {
