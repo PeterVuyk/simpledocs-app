@@ -12,7 +12,7 @@ const styles = StyleSheet.create({
   nonProductionIndicatorContainer: {
     position: 'absolute',
     right: 0,
-    bottom: 10,
+    bottom: 0,
   },
   editIndicator: {
     color: '#616161',

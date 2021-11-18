@@ -16,7 +16,7 @@ const styles = StyleSheet.create({
 });
 
 interface Props {
-  navigation: DrawerNavigationHelpers;
+  navigation?: DrawerNavigationHelpers;
   iconName: string;
   iconType: IconFamilyType;
 }

@@ -15,7 +15,7 @@ const styles = StyleSheet.create({
 });
 
 interface Props {
-  navigation: DrawerNavigationHelpers;
+  navigation?: DrawerNavigationHelpers;
 }
 
 const SearchButton: FC<Props> = ({ navigation }) => {

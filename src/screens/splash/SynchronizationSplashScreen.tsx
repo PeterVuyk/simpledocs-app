@@ -1,6 +1,7 @@
 import React, { FC } from 'react';
 import ContentLoader, { Rect } from 'react-content-loader/native';
 import { Platform, SafeAreaView, View } from 'react-native';
+import { Icon } from 'native-base';
 import HeaderLogo from '../../navigation/header/HeaderLogo';
 import DrawerButton from '../../navigation/header/DrawerButton';
 import SearchButton from '../../navigation/header/search/SearchButton';
@@ -22,6 +23,13 @@ const SynchronizationSplashScreen: FC = React.memo(() => {
             />
           )}
           <SearchButton />
+          {/* The icon below is a placeholder and is added so the header logo doesn't jump if the bookmarkToggle is set */}
+          <Icon
+            style={{ color: 'white', padding: 10, opacity: 0.0 }}
+            name="bookmark-plus-outline"
+            type="MaterialCommunityIcons"
+            fontSize={26}
+          />
         </View>
       </SafeAreaView>
     );

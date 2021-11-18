@@ -4,6 +4,7 @@ import { DrawerNavigationHelpers } from '@react-navigation/drawer/lib/typescript
 import { HeaderBackButton, StackNavigationProp } from '@react-navigation/stack';
 import { useNavigation } from '@react-navigation/native';
 import { WhitePortal } from 'react-native-portal';
+import { Icon } from 'native-base';
 import DrawerButton from './DrawerButton';
 import SearchButton from './search/SearchButton';
 import HeaderLogo from './HeaderLogo';
@@ -58,7 +59,15 @@ const Header: FC<Props> = ({ navigation }) => {
           />
         )}
         <SearchButton navigation={navigation} />
-        <WhitePortal name="bookmarkToggle" />
+        <WhitePortal name="bookmarkToggle">
+          {/* The icon below is a placeholder and is only rendered if the bookmarkToggle isn't set. Added this so the header logo stay fixed independent if bookmarkToggle is set */}
+          <Icon
+            style={{ color: 'white', padding: 10, opacity: 0.0 }}
+            name="bookmark-plus-outline"
+            type="MaterialCommunityIcons"
+            fontSize={26}
+          />
+        </WhitePortal>
       </View>
     </SafeAreaView>
   );

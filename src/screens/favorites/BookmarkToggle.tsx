@@ -1,5 +1,5 @@
 import React, { FC, useEffect, useState } from 'react';
-import { StyleSheet, TouchableOpacity, View, Text } from 'react-native';
+import { StyleSheet } from 'react-native';
 import { Icon } from 'native-base';
 import { BlackPortal } from 'react-native-portal';
 import { ArticleChapter } from '../../model/articles/ArticleChapter';
