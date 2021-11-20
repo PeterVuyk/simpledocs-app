@@ -76,6 +76,7 @@ const HTMLViewer: FC<Props> = ({ htmlFile, bookType }) => {
         <ScrollViewToggleBottomBar pageHeight={webViewHeight ?? 0}>
           <WebView
             ref={webview}
+            allowsFullscreenVideo
             originWhitelist={['https://*']}
             scalesPageToFit={false}
             onShouldStartLoadWithRequest={openExternalLink}
