@@ -1,28 +1,19 @@
-import React, { FC, useEffect, useState } from 'react';
-import { FlatList, Image, StyleSheet, View, Text } from 'react-native';
+import React, { FC, useCallback, useEffect, useState } from 'react';
 import { DrawerNavigationHelpers } from '@react-navigation/drawer/lib/typescript/src/types';
-import articleRepository from '../../../database/repository/articleRepository';
-import { Article } from '../../../model/articles/Article';
-import SearchHeader from '../../../navigation/header/search/SearchHeader';
-import KeyboardAwareView from '../../../components/keyboard/KeyboardAwareView';
-import { AppConfigurations } from '../../../model/configurations/AppConfigurations';
+import { View } from 'react-native';
+import getWidth from 'string-pixel-width';
+import DimensionsProvider from '../../../components/viewer/DimensionsProvider';
+import {
+  AppConfigurations,
+  BookInfo,
+} from '../../../model/configurations/AppConfigurations';
+import configHelper from '../../../helper/configHelper';
 import SearchScreenNavigator from './SearchScreenNavigator';
 import DrawerScreen from '../DrawerScreen';
-import SearchResultItem from './SearchResultItem';
-import globalStyle from '../../../styling/globalStyle';
-
-const styles = StyleSheet.create({
-  findPlaceholderImage: {
-    marginTop: 120,
-    height: 120,
-    width: 'auto',
-    resizeMode: 'contain',
-  },
-  noResultsTextSize: {
-    ...globalStyle.typography.h4,
-  },
-  noResultContainer: { flex: 1, margin: 20 },
-});
+import SearchHeader from '../../../navigation/header/search/SearchHeader';
+import KeyboardAwareView from '../../../components/keyboard/KeyboardAwareView';
+import { SearchTab } from '../../../model/SearchTab';
+import SearchScreenList from './SearchScreenList';
 
 interface Props {
   navigation: DrawerNavigationHelpers;
@@ -30,76 +21,89 @@ interface Props {
 }
 
 const SearchScreen: FC<Props> = ({ navigation, appConfigurations }) => {
-  const [searchItem, setSearchItem] = useState<string>(
-    appConfigurations.defaultBookTypeSearch,
-  );
-  const [articles, setArticles] = useState<Article[] | null>(null);
+  const [searchTabs, setSearchTabs] = useState<SearchTab[] | null>(null);
+  const [currentIndex, setCurrentIndex] = useState<number>();
   const [searchText, setSearchText] = useState<string>('');
 
+  const getChipWidth = (text: string) => {
+    const width = getWidth(text.toUpperCase(), {
+      bold: true,
+      size: 14,
+    });
+    return width < 160 ? width + 35 : 200;
+  };
+
+  const mapSearchItems = useCallback((books: BookInfo[]) => {
+    let index = 1;
+    const result = books.map(value => {
+      return {
+        itemId: value.bookType,
+        title: value.title,
+        chipWidth: getChipWidth(value.title),
+        index: index++,
+      } as SearchTab;
+    });
+    result.push({
+      itemId: 'favorites',
+      title: 'Favorieten',
+      chipWidth: getChipWidth('Favorieten'),
+      index: 0,
+    });
+    return result.sort((a, b) => a.index - b.index);
+  }, []);
+
   useEffect(() => {
-    if (searchText === '') {
-      setArticles(null);
-      return;
-    }
-    if (searchItem === 'favorites') {
-      articleRepository.searchArticlesByBookmarks(searchText, setArticles);
-      return;
-    }
-    articleRepository.searchArticlesByBookType(
-      searchItem,
-      searchText,
-      setArticles,
-    );
-  }, [searchItem, searchText]);
+    configHelper
+      .getBookTypes()
+      .then(value => mapSearchItems(value))
+      .then(tabs => {
+        const { defaultSearchChip } = appConfigurations;
+        if (defaultSearchChip === undefined) {
+          setCurrentIndex(0);
+          setSearchTabs(tabs);
+          return;
+        }
+        setCurrentIndex(
+          tabs.map(value => value.itemId).indexOf(defaultSearchChip) ?? 0,
+        );
+        setSearchTabs(tabs);
+      });
+  }, [appConfigurations, appConfigurations.defaultSearchChip, mapSearchItems]);
 
-  const handleSearchTextChange = (searchedText: string): void =>
-    setSearchText(searchedText);
+  const handleTabChange = (searchTab: SearchTab): void => {
+    setCurrentIndex(searchTab.index);
+  };
 
-  const onTabChange = (type: string): void => {
-    setArticles(null);
-    setSearchItem(type);
+  const getCurrentTab = () => {
+    return searchTabs !== null ? searchTabs[currentIndex ?? 0] : null;
   };
 
   return (
     <DrawerScreen appConfigurations={appConfigurations} navigation={navigation}>
       <SearchHeader
-        handleSearchTextChange={handleSearchTextChange}
+        handleSearchTextChange={setSearchText}
         searchText={searchText}
       >
         <View>
-          <SearchScreenNavigator
-            onTabChange={onTabChange}
-            chipItem={searchItem}
-          />
-        </View>
-        <KeyboardAwareView>
-          {!articles && searchText === '' && (
-            <Image
-              style={styles.findPlaceholderImage}
-              source={require('../../../../assets/images/find.png')}
+          {searchTabs && getCurrentTab() !== null && (
+            <SearchScreenNavigator
+              searchTabs={searchTabs}
+              onTabChange={handleTabChange}
+              currentTab={getCurrentTab()!}
             />
           )}
-          {articles && articles.length === 0 && searchText !== '' && (
-            <View style={styles.noResultContainer}>
-              <Text style={styles.noResultsTextSize}>
-                Geen zoekresultaten.{`\n\n`}
-                <Text>Suggesties:{`\n`}</Text>
-                <Text>
-                  - Zorg ervoor dat de zoekopdracht goed gespeld is.{`\n`}
-                </Text>
-                <Text>- Gebruik andere trefwoorden.{`\n`}</Text>
-                <Text>- Zoek in een andere categorie.{`\n`}</Text>
-              </Text>
-            </View>
-          )}
-          {articles && (
-            <FlatList<Article>
-              data={articles}
-              keyExtractor={item =>
-                item.chapter.toString() + item.bookType.toString()
-              }
-              renderItem={({ item }) => (
-                <SearchResultItem searchText={searchText} article={item} />
+        </View>
+        <KeyboardAwareView>
+          {searchTabs && getCurrentTab() !== null && (
+            <DimensionsProvider
+              children={window => (
+                <SearchScreenList
+                  searchText={searchText}
+                  searchTabs={searchTabs}
+                  onTabChange={handleTabChange}
+                  currentTab={getCurrentTab()!}
+                  window={window}
+                />
               )}
             />
           )}

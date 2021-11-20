@@ -11,7 +11,7 @@ interface Props {
   children: ReactNode;
   appConfigurations: AppConfigurations;
   navigation: DrawerNavigationHelpers;
-  showHeader: boolean;
+  showHeader?: boolean;
 }
 
 const DrawerScreen: FC<Props> = ({

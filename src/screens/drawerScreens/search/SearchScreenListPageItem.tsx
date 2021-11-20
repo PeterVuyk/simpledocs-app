@@ -15,7 +15,7 @@ interface Props {
   article: Article;
 }
 
-const SearchResultItem: FC<Props> = ({ searchText, article }) => {
+const SearchScreenListPageItem: FC<Props> = ({ searchText, article }) => {
   const { navigateToChapter } = useContentNavigator();
   const dispatch = useAppDispatch();
 
@@ -80,4 +80,4 @@ const SearchResultItem: FC<Props> = ({ searchText, article }) => {
   );
 };
 
-export default SearchResultItem;
+export default SearchScreenListPageItem;

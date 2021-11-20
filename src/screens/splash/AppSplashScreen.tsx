@@ -6,7 +6,7 @@ import { Ionicons } from '@expo/vector-icons';
 import Drawer from '../../navigation/drawer/Drawer';
 import NoInternetConnectionOverlay from './NoInternetConnectionOverlay';
 import InitializationAppFailureOverlay from './InitializationAppFailureOverlay';
-import SynchronizationSplashScreen from './SynchronizationSplashScreen';
+import IntentSplashScreen from './IntentSplashScreen';
 import ViewBottomTab from '../../navigation/bottom/ViewBottomTab';
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
 import {
@@ -99,7 +99,7 @@ const AppSplashScreen: FC = () => {
 
   return (
     <View style={{ flex: 1 }} onLayout={onLayoutRootView}>
-      <SynchronizationSplashScreen />
+      <IntentSplashScreen />
     </View>
   );
 };

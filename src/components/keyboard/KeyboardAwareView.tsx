@@ -7,7 +7,7 @@ interface Props {
   children: ReactNode;
 }
 
-const SearchScreen: FC<Props> = ({ children }) => {
+const KeyboardAwareView: FC<Props> = ({ children }) => {
   const isKeyboardVisible = useAppSelector(
     state => state.keyboard.isKeyboardVisible,
   );
@@ -26,4 +26,4 @@ const SearchScreen: FC<Props> = ({ children }) => {
   );
 };
 
-export default SearchScreen;
+export default KeyboardAwareView;

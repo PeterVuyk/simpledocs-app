@@ -1,18 +1,9 @@
-import React, { FC, useCallback, useEffect, useRef, useState } from 'react';
+import React, { FC, useEffect, useRef } from 'react';
 import { FlatList, StyleSheet } from 'react-native';
 import { useIsFocused } from '@react-navigation/native';
-import getWidth from 'string-pixel-width';
-import configHelper from '../../../helper/configHelper';
-import { BookInfo } from '../../../model/configurations/AppConfigurations';
 import NavigatorChip from '../../../components/NavigatorChip';
 import globalStyle from '../../../styling/globalStyle';
-
-interface SearchItem {
-  index: number;
-  width: number;
-  title: string;
-  item: string;
-}
+import { SearchTab } from '../../../model/SearchTab';
 
 const styles = StyleSheet.create({
   navigationBorder: {
@@ -27,44 +18,23 @@ const styles = StyleSheet.create({
 });
 
 interface Props {
-  onTabChange: (chipItem: string) => void;
-  chipItem: string;
+  onTabChange: (searchTab: SearchTab) => void;
+  searchTabs: SearchTab[];
+  currentTab: SearchTab;
 }
 
-const SearchScreenNavigator: FC<Props> = ({ onTabChange, chipItem }) => {
-  const [searchItems, setSearchItems] = useState<SearchItem[]>([]);
-  const flatListRef = useRef<FlatList<SearchItem> | null>(null);
+const SearchScreenNavigator: FC<Props> = ({
+  onTabChange,
+  currentTab,
+  searchTabs,
+}) => {
+  const flatListRef = useRef<FlatList<SearchTab> | null>(null);
   const isFocused = useIsFocused();
 
-  const getChipWidth = (text: string) => {
-    const width = getWidth(text.toUpperCase(), {
-      bold: true,
-      size: 14,
-    });
-    return width < 160 ? width + 35 : 200;
-  };
-
-  const mapSearchItems = useCallback((books: BookInfo[]) => {
-    let index = 1;
-    const result = books.map(value => {
-      return {
-        item: value.bookType,
-        title: value.title,
-        width: getChipWidth(value.title),
-        index: index++,
-      } as SearchItem;
-    });
-    result.push({
-      item: 'favorites',
-      title: 'Favorieten',
-      width: getChipWidth('Favorieten'),
-      index: 0,
-    });
-    return result.sort((a, b) => a.index - b.index);
-  }, []);
-
   useEffect(() => {
-    const index = searchItems.find(value => value.item === chipItem)?.index;
+    const index = searchTabs.find(
+      value => value.itemId === currentTab.itemId,
+    )?.index;
     if (index === undefined) {
       return;
     }
@@ -73,69 +43,61 @@ const SearchScreenNavigator: FC<Props> = ({ onTabChange, chipItem }) => {
       index,
     });
     // added 'isFocused' so we scroll back to the focused Chip
-  }, [isFocused, chipItem, searchItems]);
+  }, [isFocused, searchTabs, currentTab]);
 
-  useEffect(() => {
-    configHelper
-      .getBookTypes()
-      .then(value => mapSearchItems(value))
-      .then(value => setSearchItems(value));
-  }, [mapSearchItems]);
-
-  const getItem = (searchItem: SearchItem) => {
+  const getItem = (searchTab: SearchTab) => {
     return (
       <NavigatorChip
-        id={searchItem.item}
-        title={searchItem.title}
-        isSelected={searchItem.item === chipItem}
+        id={searchTab.itemId}
+        title={searchTab.title}
+        isSelected={searchTab.itemId === currentTab.itemId}
         onPress={title => {
-          if (title === chipItem) {
+          if (title === currentTab.itemId) {
             return;
           }
-          onTabChange(title);
+          onTabChange(searchTab);
         }}
-        width={searchItem.width}
+        width={searchTab.chipWidth}
       />
     );
   };
 
   const getIndexItem = (index: number) => {
     let width = 0;
-    for (const item of searchItems) {
+    for (const item of searchTabs) {
       if (item.index === index) {
         return width;
       }
-      width += item.width;
+      width += item.chipWidth;
     }
     return width;
   };
 
   return (
     <>
-      {searchItems.length !== 0 && (
-        <FlatList
-          ref={flatListRef}
-          style={[styles.navigationContainer, styles.navigationBorder]}
-          keyExtractor={item => item.title.toString()}
-          data={searchItems}
-          horizontal
-          initialScrollIndex={
-            searchItems.find(value => value.item === chipItem)?.index ?? 0
-          }
-          getItemLayout={(data, index) => {
-            const width = getIndexItem(index);
-            return {
-              length:
-                searchItems.find(value => value.index === index)?.width ?? 0,
-              offset: width + index * 4 - 40,
-              index,
-            };
-          }}
-          bounces={false}
-          showsHorizontalScrollIndicator={false}
-          renderItem={({ item }) => getItem(item)}
-        />
-      )}
+      <FlatList
+        ref={flatListRef}
+        style={[styles.navigationContainer, styles.navigationBorder]}
+        keyExtractor={item => item.title.toString()}
+        data={searchTabs}
+        horizontal
+        initialScrollIndex={
+          searchTabs.find(value => value.itemId === currentTab.itemId)?.index ??
+          0
+        }
+        getItemLayout={(data, index) => {
+          const width = getIndexItem(index);
+          return {
+            length:
+              searchTabs.find(value => value.index === index)?.chipWidth ?? 0,
+            offset: width + index * 4 - 40,
+            index,
+          };
+        }}
+        bounces={false}
+        showsHorizontalScrollIndicator={false}
+        renderItem={({ item }) => getItem(item)}
+      />
     </>
   );
 };

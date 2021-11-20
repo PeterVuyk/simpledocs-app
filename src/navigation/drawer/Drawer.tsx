@@ -6,9 +6,9 @@ import TabNavigation from '../bottom/TabNavigation';
 import { AppConfigurations } from '../../model/configurations/AppConfigurations';
 import configurationsStorage from '../../storage/configurationsStorage';
 import CopyrightScreen from '../../screens/drawerScreens/copyright/CopyrightScreen';
-import SearchScreen from '../../screens/drawerScreens/search/SearchScreen';
 import AboutUsScreen from '../../screens/drawerScreens/about/AboutUsScreen';
 import globalStyle from '../../styling/globalStyle';
+import SearchScreen from '../../screens/drawerScreens/search/SearchScreen';
 
 const DrawerNavigator = createDrawerNavigator();
 

@@ -8,7 +8,7 @@ import SearchButton from '../../navigation/header/search/SearchButton';
 import { headerStyles } from '../../navigation/header/Header';
 import globalStyle from '../../styling/globalStyle';
 
-const SynchronizationSplashScreen: FC = React.memo(() => {
+const IntentSplashScreen: FC = React.memo(() => {
   const Header = () => {
     return (
       <SafeAreaView style={headerStyles.tabContainer}>
@@ -85,4 +85,4 @@ const SynchronizationSplashScreen: FC = React.memo(() => {
   );
 });
 
-export default SynchronizationSplashScreen;
+export default IntentSplashScreen;
