@@ -7,7 +7,7 @@ import BottomTab from '../../model/BottomTab';
 import globalStyle from '../../styling/globalStyle';
 
 const styles = StyleSheet.create({
-  tabsContainer: {
+  container: {
     flexDirection: 'row',
     justifyContent: 'space-around',
     flex: 1,
@@ -34,7 +34,7 @@ const BottomTabs: FC<Props> = ({ tabs }) => {
   return (
     <HideWithKeyboardView>
       <ToggleBottomNavigator>
-        <View style={styles.tabsContainer}>
+        <View style={styles.container}>
           {tabs
             .sort((a, b) => a.index - b.index)
             .map(tab => (

@@ -72,7 +72,7 @@ function useUpdateAggregates() {
     }
   };
 
-  const updateBooksPreserveFavorites = async (
+  const updateBooksPreserveBookmarks = async (
     appInfoResponse: AppInfo,
     preservedBookmarks: Bookmark[],
   ): Promise<void> => {
@@ -156,7 +156,7 @@ function useUpdateAggregates() {
     await configurationsHelper.updateConfigurations(appInfo.appConfigurations);
     await updateDecisionTree(appInfo)
       .then(() => updateCalculations(appInfo))
-      .then(() => updateBooksPreserveFavorites(appInfo, preservedBookmarks))
+      .then(() => updateBooksPreserveBookmarks(appInfo, preservedBookmarks))
       .then(configurationsHelper.createSessionConfiguration)
       .catch(reason => {
         logger.error(

@@ -22,7 +22,7 @@ const RestoreAppProvider: FC<Props> = ({ children }) => {
   const dispatch = useAppDispatch();
   const { currentState } = useAppSelector(state => state.startupState);
 
-  const preserveArticleFavorites = useCallback(() => {
+  const preserveArticleBookmarks = useCallback(() => {
     return new Promise(resolve => {
       articleRepository
         .getBookmarkedArticles(async articles => {
@@ -42,7 +42,7 @@ const RestoreAppProvider: FC<Props> = ({ children }) => {
   const restore = useCallback(async () => {
     await debugHandler
       .dumpConfigToStorage()
-      .then(preserveArticleFavorites)
+      .then(preserveArticleBookmarks)
       .then(tearDown.down)
       .then(configurationsStorage.removeSystemConfiguration)
       .then(() => {
@@ -55,7 +55,7 @@ const RestoreAppProvider: FC<Props> = ({ children }) => {
         );
         dispatch(updateStartupState(STARTUP_FAILURE_STATE));
       });
-  }, [dispatch, preserveArticleFavorites]);
+  }, [dispatch, preserveArticleBookmarks]);
 
   useEffect(() => {
     if (currentState === RESTORE_APP_FROM_FAILED_STARTUP) {

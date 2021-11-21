@@ -81,9 +81,9 @@ function TabNavigator({
       return;
     }
 
-    if (route.name === 'FavoritesTabStack') {
-      navigation.navigate('FavoritesTabStack', {
-        screen: 'FavoritesScreen',
+    if (route.name === 'BookmarkTabStack') {
+      navigation.navigate('BookmarkTabStack', {
+        screen: 'BookmarkScreen',
       });
       return;
     }

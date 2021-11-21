@@ -6,7 +6,7 @@ import { AppConfigurations } from '../../model/configurations/AppConfigurations'
 import SecondBookTabStackNavigator from '../StackNavigator/SecondBookTabStackNavigator';
 import FirstBookTabStackNavigator from '../StackNavigator/FirstBookTabStackNavigator';
 import ResizeScreenDrawer from '../drawer/ResizeScreenDrawer';
-import FavoritesStackNavigator from '../StackNavigator/FavoritesStackNavigator';
+import BookmarksStackNavigator from '../StackNavigator/BookmarksStackNavigator';
 import Header from '../header/Header';
 
 const Tab = TabNavigator();
@@ -23,8 +23,8 @@ const TabNavigation: FC<Props> = ({ navigation, appConfigurations }) => {
         return 'SecondBookTabStack';
       case 'decisionTab':
         return 'DecisionsScreenStack';
-      case 'favorites':
-        return 'FavoritesTabStack';
+      case 'bookmarks':
+        return 'BookmarkTabStack';
       case 'firstBookTab':
       default:
         return 'FirstBookTabStack';
@@ -41,9 +41,9 @@ const TabNavigation: FC<Props> = ({ navigation, appConfigurations }) => {
         initialRouteName={getInitialRoute()}
       >
         <Tab.Screen
-          name="FavoritesTabStack"
+          name="BookmarkTabStack"
           children={() => (
-            <FavoritesStackNavigator
+            <BookmarksStackNavigator
               bookTabInfo={appConfigurations.firstBookTab}
             />
           )}

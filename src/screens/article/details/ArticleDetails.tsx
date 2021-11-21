@@ -6,7 +6,7 @@ import { ArticleChapter } from '../../../model/articles/ArticleChapter';
 import { NOTIFICATION_TYPE_HORIZONTAL_SCROLL_TIP } from '../../../model/notifications/NotificationType';
 import BookChapterNavigator from '../BookChapterNavigator';
 import useNotification from '../../../components/notification/useNotification';
-import BookmarkToggle from '../../favorites/BookmarkToggle';
+import BookmarkToggle from '../../bookmarks/BookmarkToggle';
 
 interface Props {
   articleChapter: string;

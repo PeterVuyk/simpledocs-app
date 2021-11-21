@@ -44,7 +44,7 @@ const SearchScreen: FC<Props> = ({ navigation, appConfigurations }) => {
       } as SearchTab;
     });
     result.push({
-      itemId: 'favorites',
+      itemId: 'bookmarks',
       title: 'Favorieten',
       chipWidth: getChipWidth('Favorieten'),
       index: 0,

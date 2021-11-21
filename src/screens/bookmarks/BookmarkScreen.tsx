@@ -1,7 +1,8 @@
 import React, { FC, useCallback, useEffect, useState } from 'react';
 import { DrawerNavigationProp } from '@react-navigation/drawer/lib/typescript/src/types';
-import { Image, SectionList, StyleSheet, View } from 'react-native';
+import { Image, SectionList, StyleSheet, View, Text } from 'react-native';
 import { useIsFocused } from '@react-navigation/native';
+import { Swipeable } from 'react-native-gesture-handler';
 import articleRepository from '../../database/repository/articleRepository';
 import { ArticleChapter } from '../../model/articles/ArticleChapter';
 import ListItem from '../../components/listItem/ListItem';
@@ -10,6 +11,7 @@ import TitleBar from '../../components/titleBar/TitleBar';
 import useContentNavigator from '../../components/hooks/useContentNavigator';
 import SectionTitleBar from '../../components/titleBar/SectionTitleBar';
 import globalStyle from '../../styling/globalStyle';
+import RemoveBookmarkView from './RemoveBookmarkView';
 
 const styles = StyleSheet.create({
   tabContainer: {
@@ -34,7 +36,7 @@ interface Props {
   navigation: DrawerNavigationProp<any>;
 }
 
-const FavoritesScreen: FC<Props> = () => {
+const BookmarkScreen: FC<Props> = () => {
   const [sections, setSections] = useState<Sections[]>([]);
   const isFocused = useIsFocused();
   const { navigateToChapter } = useContentNavigator();
@@ -52,6 +54,10 @@ const FavoritesScreen: FC<Props> = () => {
       .filter(value => value.data.length !== 0);
     setSections(mappedSections);
   }, []);
+
+  const loadBookmarks = useCallback(() => {
+    articleRepository.getBookmarkedChapters(mapSections);
+  }, [mapSections]);
 
   useEffect(() => {
     let isMounted = true;
@@ -72,20 +78,26 @@ const FavoritesScreen: FC<Props> = () => {
 
   const renderItem = useCallback(
     (item: ArticleChapter) => (
-      <ListItem
-        title={item.title}
-        subTitle={item.subTitle}
-        iconFile={item.iconFile}
-        bookmarked={false}
-        onSubmit={() =>
-          navigateToChapter(
-            { articleChapter: item.chapter, bookType: item.bookType },
-            item.bookType,
-          )
-        }
-      />
+      <Swipeable
+        renderRightActions={() => (
+          <RemoveBookmarkView articleChapter={item} onClick={loadBookmarks} />
+        )}
+      >
+        <ListItem
+          title={item.title}
+          subTitle={item.subTitle}
+          iconFile={item.iconFile}
+          bookmarked={false}
+          onSubmit={() =>
+            navigateToChapter(
+              { articleChapter: item.chapter, bookType: item.bookType },
+              item.bookType,
+            )
+          }
+        />
+      </Swipeable>
     ),
-    [navigateToChapter],
+    [loadBookmarks, navigateToChapter],
   );
 
   const getHeader = () => {
@@ -120,4 +132,4 @@ const FavoritesScreen: FC<Props> = () => {
   );
 };
 
-export default FavoritesScreen;
+export default BookmarkScreen;

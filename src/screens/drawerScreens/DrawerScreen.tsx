@@ -29,8 +29,8 @@ const DrawerScreen: FC<Props> = ({
       iconFamilyType: 'MaterialCommunityIcons' as IconFamilyType,
       isSelected: false,
       onPress: () =>
-        navigation.navigate('FavoritesTabStack', {
-          screen: 'FavoritesScreen',
+        navigation.navigate('BookmarkTabStack', {
+          screen: 'BookmarkScreen',
         }),
     });
     if (appConfigurations.firstBookTab.bookTypes.length !== 0) {

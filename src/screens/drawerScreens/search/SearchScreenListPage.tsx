@@ -36,7 +36,7 @@ const SearchScreenListPage: FC<Props> = ({ searchText, searchTab }) => {
       if (text === searchText) {
         return;
       }
-      if (searchTab.itemId === 'favorites') {
+      if (searchTab.itemId === 'bookmarks') {
         articleRepository.searchArticlesByBookmarks(searchText, value => {
           if (isMounted) {
             setText(searchText);
