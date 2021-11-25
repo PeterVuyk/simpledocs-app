@@ -67,33 +67,35 @@ function TabNavigator({
 
   // @ts-ignore
   const onTabPress = route => {
-    if (route.name === 'SecondBookTabStack') {
-      navigation.navigate('SecondBookTabStack', {
-        screen: 'SecondBookTabOverviewScreen',
-      });
-      return;
-    }
-
-    if (route.name === 'FirstBookTabStack') {
-      navigation.navigate('FirstBookTabStack', {
-        screen: 'FirstBookTabOverviewScreen',
-      });
-      return;
-    }
-
-    if (route.name === 'BookmarkTabStack') {
-      navigation.navigate('BookmarkTabStack', {
-        screen: 'BookmarkScreen',
-      });
-      return;
-    }
-
-    if (route.name === 'DecisionsScreenStack') {
-      navigation.navigate('DecisionsScreenStack', {
-        screen: 'DecisionsOverviewScreen',
-      });
-      return;
-    }
+    // Kept the code below because I need to discuss how we want to work with navigation in the app.
+    // Do we always want to go to the first screen by clicking the tab? Or do we want to go to the last opened page of the tab?
+    // if (route.name === 'SecondBookTabStack') {
+    //   navigation.navigate('SecondBookTabStack', {
+    //     screen: 'SecondBookTabOverviewScreen',
+    //   });
+    //   return;
+    // }
+    //
+    // if (route.name === 'FirstBookTabStack') {
+    //   navigation.navigate('FirstBookTabStack', {
+    //     screen: 'FirstBookTabOverviewScreen',
+    //   });
+    //   return;
+    // }
+    //
+    // if (route.name === 'BookmarkTabStack') {
+    //   navigation.navigate('BookmarkTabStack', {
+    //     screen: 'BookmarkScreen',
+    //   });
+    //   return;
+    // }
+    //
+    // if (route.name === 'DecisionsScreenStack') {
+    //   navigation.navigate('DecisionsScreenStack', {
+    //     screen: 'DecisionsOverviewScreen',
+    //   });
+    //   return;
+    // }
 
     const event = navigation.emit({
       type: 'tabPress',

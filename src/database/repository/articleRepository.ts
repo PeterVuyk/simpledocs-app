@@ -94,6 +94,33 @@ function getArticleByChapter(
   );
 }
 
+function getArticleById(
+  id: string,
+  callback: (article: Article) => void,
+): Promise<void> {
+  return new Promise((resolve, reject) => {
+    db.transaction(
+      sqlTransaction => {
+        sqlTransaction.executeSql(
+          `SELECT * FROM articles WHERE id = ?;`,
+          [id],
+          // @ts-ignore
+          (_, { rows: { _array } }) => {
+            if (_array.length === 1) {
+              callback(_array[0]);
+            }
+          },
+        );
+      },
+      error => {
+        logger.error('articleRepository.getArticleById failed', error.message);
+        reject();
+      },
+      resolve,
+    );
+  });
+}
+
 function searchArticlesByBookType(
   bookType: string,
   text: string,
@@ -220,6 +247,7 @@ function getChaptersByList(
 const articleRepository = {
   getArticles,
   getArticleByChapter,
+  getArticleById,
   searchArticlesByBookmarks,
   searchArticlesByBookType,
   getChapters,

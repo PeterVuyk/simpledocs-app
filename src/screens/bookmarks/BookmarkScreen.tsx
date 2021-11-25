@@ -32,11 +32,8 @@ interface Sections {
   bookType: string;
   data: ArticleChapter[];
 }
-interface Props {
-  navigation: DrawerNavigationProp<any>;
-}
 
-const BookmarkScreen: FC<Props> = () => {
+const BookmarkScreen: FC = () => {
   const [sections, setSections] = useState<Sections[]>([]);
   const isFocused = useIsFocused();
   const { navigateToChapter } = useContentNavigator();

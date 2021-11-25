@@ -1,23 +1,15 @@
-import { StackNavigationProp } from '@react-navigation/stack';
 import { useNavigation } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
 import configHelper from '../../helper/configHelper';
 import { FIRST_BOOK_TAB, SECOND_BOOK_TAB } from '../../model/BottomTab';
 import logger from '../../util/logger';
+import articleRepository from '../../database/repository/articleRepository';
 
 export const BLANK_WEBPAGE = 'https://page-blank.firebaseapp.com/';
 
-const getBookTypeFromUrl = (url: string): string | null => {
-  const path = url.split(BLANK_WEBPAGE);
-  if (path.length === 0) {
-    return null;
-  }
-  const article = path[1].split('/');
-  return article.length === 0 ? null : article[0];
-};
-
-const getChapterFromUrl = (url: string): string | null => {
+const getIdFromUrl = (url: string): string | null => {
   const path = url.split('/');
-  if (path.length < 5) {
+  if (path.length < 4) {
     return null;
   }
   return path[path.length - 1];
@@ -94,15 +86,20 @@ function useContentNavigator() {
     url: string,
     currentBookType: string,
   ) => {
-    const bookType = getBookTypeFromUrl(url);
-    const chapter = getChapterFromUrl(url);
-    if (bookType === null || chapter === null) {
+    const id = getIdFromUrl(url);
+    if (id === null) {
       logger.errorFromMessage(
         `Navigation from link in html file to another chapter failed, url with link: ${url}, currentBookType: ${currentBookType}`,
       );
       return;
     }
-    await redirect(currentBookType, bookType, chapter);
+    await articleRepository.getArticleById(id, article => {
+      return new Promise(resolve => {
+        redirect(currentBookType, article.bookType, article.chapter).then(
+          resolve,
+        );
+      });
+    });
   };
 
   return {
