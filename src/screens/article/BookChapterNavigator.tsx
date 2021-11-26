@@ -6,7 +6,7 @@ import NavigatorChip from '../../components/NavigatorChip';
 import globalStyle from '../../styling/globalStyle';
 
 interface Props {
-  onArticleNavigation: (chapter: string) => void;
+  onPageChange: (chapter: string) => void;
   currentChapter: string;
   articleChapterList: ArticleChapter[];
 }
@@ -24,7 +24,7 @@ const styles = StyleSheet.create({
 });
 
 const BookChapterNavigator: FC<Props> = ({
-  onArticleNavigation,
+  onPageChange,
   currentChapter,
   articleChapterList,
 }) => {
@@ -34,19 +34,10 @@ const BookChapterNavigator: FC<Props> = ({
     const maxCharacters = Math.max(
       ...articleChapterList.map(value => value.chapter.length),
     );
-    return getWidth('W'.repeat(maxCharacters), { bold: true, size: 16 }) + 10;
+    return getWidth('W'.repeat(maxCharacters), { bold: true, size: 16 }) + 5;
   }, [articleChapterList]);
 
-  const firstUpdate = useRef(true);
-  /**
-   * The useEffect to scrollToIndex should only be triggered if the chapter changes,
-   * and not on the initial load, otherwise it conflicts with FlatLists 'initialScrollIndex'.
-   */
   useEffect(() => {
-    if (firstUpdate.current) {
-      firstUpdate.current = false;
-      return;
-    }
     const index = articleChapterList
       .map(chapter => chapter.chapter)
       .indexOf(currentChapter);
@@ -63,12 +54,12 @@ const BookChapterNavigator: FC<Props> = ({
           id={item.chapter}
           title={item.chapter}
           isSelected={item.chapter === currentChapter}
-          onPress={onArticleNavigation}
+          onPress={onPageChange}
           width={chipWidth}
         />
       );
     },
-    [chipWidth, currentChapter, onArticleNavigation],
+    [chipWidth, currentChapter, onPageChange],
   );
 
   return (
