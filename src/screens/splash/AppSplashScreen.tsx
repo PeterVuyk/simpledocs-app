@@ -7,7 +7,6 @@ import Drawer from '../../navigation/drawer/Drawer';
 import NoInternetConnectionOverlay from './NoInternetConnectionOverlay';
 import InitializationAppFailureOverlay from './InitializationAppFailureOverlay';
 import IntentSplashScreen from './IntentSplashScreen';
-import ViewBottomTab from '../../navigation/bottom/ViewBottomTab';
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
 import {
   AUTHENTICATE_STATE,
@@ -89,9 +88,7 @@ const AppSplashScreen: FC = () => {
     return (
       <View style={{ flex: 1 }} onLayout={onLayoutRootView}>
         <InternetSuggestedNotification>
-          <ViewBottomTab>
-            <Drawer />
-          </ViewBottomTab>
+          <Drawer />
         </InternetSuggestedNotification>
       </View>
     );

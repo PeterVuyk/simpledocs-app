@@ -5,7 +5,7 @@ interface ScrollingState {
 }
 
 const initialState: ScrollingState = {
-  scrollDirection: 'down',
+  scrollDirection: 'up',
 };
 
 const scrollingSlice = createSlice({

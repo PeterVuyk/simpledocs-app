@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 import ContentLoader, { Rect } from 'react-content-loader/native';
-import { Platform, SafeAreaView, View } from 'react-native';
+import { Platform, SafeAreaView, StyleSheet, View } from 'react-native';
 import { Icon } from 'native-base';
 import HeaderLogo from '../../navigation/header/HeaderLogo';
 import DrawerButton from '../../navigation/header/DrawerButton';
@@ -8,10 +8,21 @@ import SearchButton from '../../navigation/header/search/SearchButton';
 import { headerStyles } from '../../navigation/header/Header';
 import globalStyle from '../../styling/globalStyle';
 
+const styles = StyleSheet.create({
+  bottomTabContainer: {
+    backgroundColor: globalStyle.color.primary.main,
+    height: 60,
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    bottom: 0,
+  },
+});
+
 const IntentSplashScreen: FC = React.memo(() => {
   const Header = () => {
     return (
-      <SafeAreaView style={headerStyles.tabContainer}>
+      <SafeAreaView style={headerStyles.bottomTabContainer}>
         {Platform.OS !== 'ios' && (
           <DrawerButton iconName="menu" iconType="MaterialCommunityIcons" />
         )}
@@ -81,6 +92,7 @@ const IntentSplashScreen: FC = React.memo(() => {
     <>
       <Header />
       <ScreenLoader />
+      <View style={styles.bottomTabContainer} />
     </>
   );
 });
