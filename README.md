@@ -15,8 +15,8 @@ Make sure 'expo cli' is installed.
 In the project directory, you can run:
 
     # the default app.
-    npx cross-env APP_DOMAIN=academie-voor-ambulancezorg LOCAL_DEVELOPMENT=true expo start    
-    npx cross-env APP_DOMAIN='' LOCAL_DEVELOPMENT=true expo start
+    npx cross-env APP_DOMAIN=academie-voor-ambulancezorg LOCAL_DEVELOPMENT=true expo start -c
+    npx cross-env LOCAL_DEVELOPMENT=true expo start -c
 
 It starts a webpage with instructions how to develop the app in the development mode.
 
@@ -25,10 +25,6 @@ It starts a webpage with instructions how to develop the app in the development 
 The following channels are available:
 
     # Production and staging for customer:
-    production-academie-voor-ambulancezorg
-    staging-academie-voor-ambulancezorg
-
-    # Production and staging for default styling:
     production
     staging
 
