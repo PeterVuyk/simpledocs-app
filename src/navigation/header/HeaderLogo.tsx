@@ -26,7 +26,7 @@ const HeaderLogo: FC = React.memo(() => {
     <View style={{ flex: 1 }}>
       <Image
         style={styles.headerLogo}
-        source={require('../../../assets/images/company-logo.png')}
+        source={require('../../../assets/company-logo.png')}
       />
       {!environment.isProduction() && (
         <View style={styles.nonProductionIndicatorContainer}>

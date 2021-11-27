@@ -66,7 +66,7 @@ const SearchScreenListPage: FC<Props> = ({ searchText, searchTab }) => {
     return (
       <Image
         style={styles.findPlaceholderImage}
-        source={require('../../../../assets/images/find.png')}
+        source={require('../../../../assets/find.png')}
       />
     );
   }

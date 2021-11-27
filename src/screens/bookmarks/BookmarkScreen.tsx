@@ -107,7 +107,7 @@ const BookmarkScreen: FC = () => {
         <>
           <Image
             style={styles.findPlaceholderImage}
-            source={require('../../../assets/images/bookmark.png')}
+            source={require('../../../assets/bookmark.png')}
           />
           <TitleBar title="Favorieten" subTitle="Geen favorieten toegevoegd" />
         </>

@@ -22,7 +22,7 @@ const styles = StyleSheet.create({
 const IntentSplashScreen: FC = React.memo(() => {
   const Header = () => {
     return (
-      <SafeAreaView style={headerStyles.bottomTabContainer}>
+      <SafeAreaView style={headerStyles.tabContainer}>
         {Platform.OS !== 'ios' && (
           <DrawerButton iconName="menu" iconType="MaterialCommunityIcons" />
         )}

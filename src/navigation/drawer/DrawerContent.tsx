@@ -28,7 +28,7 @@ const DrawerContent: FC<Props> = ({ navigation, appConfigurations }) => {
     <View style={{ flex: 1 }}>
       <View style={styles.drawerImageContainer}>
         <Image
-          source={require('../../../assets/images/company-logo.png')}
+          source={require('../../../assets/company-logo.png')}
           style={styles.drawerImage}
         />
       </View>

@@ -14,14 +14,31 @@ Make sure 'expo cli' is installed.
 
 In the project directory, you can run:
 
-    expo start
+    # the default app.
+    npx cross-env APP_DOMAIN=academie-voor-ambulancezorg LOCAL_DEVELOPMENT=true expo start    
+    npx cross-env APP_DOMAIN='' LOCAL_DEVELOPMENT=true expo start
 
 It starts a webpage with instructions how to develop the app in the development mode.
 
-When you are done with the code changes you can run the following command to build an artifact. 
+## Channels
 
-    expo build:android --release-channel staging | prod
-    expo build:ios --release-channel staging | prod
+The following channels are available:
+
+    # Production and staging for customer:
+    production-academie-voor-ambulancezorg
+    staging-academie-voor-ambulancezorg
+
+    # Production and staging for default styling:
+    production
+    staging
+
+## Build
+
+When you are done with the code changes you can run the following command to build an artifact.
+The environment variable APP_DOMAIN specifies the customer.
+
+    npx cross-env APP_DOMAIN=academie-voor-ambulancezorg expo build:android --release-channel staging | production
+    npx cross-env APP_DOMAIN=academie-voor-ambulancezorg expo build:ios --release-channel staging | production
 
 You can see everything that you’ve published or see a detailed view with:
 

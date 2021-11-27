@@ -2,20 +2,19 @@ import firebase from 'firebase';
 import 'firebase/functions';
 import 'firebase/storage';
 import { LogBox } from 'react-native';
-import environment from '../util/environment';
+import Constants from 'expo-constants';
 
 LogBox.ignoreLogs(['Setting a timer']);
-const env = environment.getEnvironment();
 
 const firebaseConfig = {
-  apiKey: env.apiKey,
-  authDomain: process.env.AUTH_DOMAIN ?? '',
-  databaseURL: env.dbUrl,
-  projectId: process.env.PROJECT_ID ?? '',
-  storageBucket: process.env.STORAGE_BUCKET ?? '',
-  messagingSenderId: process.env.MESSAGING_SENDER_ID ?? '',
-  appId: process.env.APP_ID ?? '',
-  measurementId: process.env.MEASUREMENT_ID ?? '',
+  apiKey: Constants.manifest!.extra!.firebaseApiKey,
+  authDomain: Constants.manifest!.extra!.firebaseAuthDomain,
+  databaseURL: Constants.manifest!.extra!.firebaseDatabaseUrl,
+  projectId: Constants.manifest!.extra!.firebaseProjectId,
+  storageBucket: Constants.manifest!.extra!.firebaseStorageBucket,
+  messagingSenderId: Constants.manifest!.extra!.firebaseMessagingSenderId,
+  appId: Constants.manifest!.extra!.firebaseAppId,
+  measurementId: Constants.manifest!.extra!.firebaseMeasurementId,
 };
 
 const Firebase =

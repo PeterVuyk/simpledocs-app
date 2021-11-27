@@ -4,32 +4,37 @@ import {
   DEVELOPMENT_ENVIRONMENT,
   PRODUCTION_ENVIRONMENT,
   STAGING_ENVIRONMENT,
+  CUSTOMER_ACADEMIE_AMBULANCEZORG,
+  CUSTOMER_DEFAULT,
 } from '../model/Environment';
 
-function getEnvironment(): Environment {
-  if (Updates.releaseChannel.startsWith('prod')) {
-    // matches prod-v1, prod-v2, prod-v3
-    return {
-      envName: PRODUCTION_ENVIRONMENT,
-      dbUrl: process.env.DATABASE_URL ?? '',
-      apiKey: process.env.API_KEY ?? '',
-    }; // prod env settings
+const getCustomer = (): string => {
+  return process.env.APP_DOMAIN === CUSTOMER_ACADEMIE_AMBULANCEZORG
+    ? CUSTOMER_ACADEMIE_AMBULANCEZORG
+    : CUSTOMER_DEFAULT;
+};
+
+const getEnvironmentFromChannel = (): string => {
+  // future matches prod-v1, prod-v2, prod-v3
+  if (Updates.releaseChannel.toLowerCase() === PRODUCTION_ENVIRONMENT) {
+    return PRODUCTION_ENVIRONMENT;
   }
-  if (Updates.releaseChannel.startsWith('staging')) {
-    // matches staging-v1, staging-v2
-    return {
-      envName: STAGING_ENVIRONMENT,
-      dbUrl: process.env.DATABASE_URL ?? '',
-      apiKey: process.env.API_KEY ?? '',
-    }; // stage env settings
+  // future matches staging-v1, staging-v2
+  if (Updates.releaseChannel.toLowerCase() === STAGING_ENVIRONMENT) {
+    return STAGING_ENVIRONMENT;
   }
-  // assume any other release channel is development
+  // dev env settings
+  return DEVELOPMENT_ENVIRONMENT;
+};
+
+const getEnvironment = (): Environment => {
+  console.log('customer', process.env.APP_DOMAIN);
+  console.log('envName', Updates.releaseChannel.toLowerCase());
   return {
-    envName: DEVELOPMENT_ENVIRONMENT,
-    dbUrl: process.env.DATABASE_URL ?? '',
-    apiKey: process.env.API_KEY ?? '',
-  }; // dev env settings
-}
+    customer: getCustomer(),
+    envName: getEnvironmentFromChannel(),
+  };
+};
 
 function isProduction(): boolean {
   return ![STAGING_ENVIRONMENT, DEVELOPMENT_ENVIRONMENT].includes(
