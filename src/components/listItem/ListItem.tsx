@@ -27,7 +27,7 @@ const ListItem: FC<Props> = ({
         <Item.Content>
           <Item.Title>{title}</Item.Title>
           {subTitle !== undefined && subTitle !== '' && (
-            <Item.Subtitle style={{ color: globalStyle.color.secondary.dark }}>
+            <Item.Subtitle style={{ color: globalStyle.color.default.dark }}>
               {subTitle}
             </Item.Subtitle>
           )}

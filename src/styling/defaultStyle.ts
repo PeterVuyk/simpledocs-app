@@ -8,7 +8,7 @@ const defaultStyle = {
       main: '#154594',
       dark: '#052b69',
     },
-    secondary: {
+    default: {
       light: '#d4d3d3',
       main: '#b7b7b7',
       dark: '#616161',
@@ -31,6 +31,9 @@ const defaultStyle = {
     h5: {
       fontSize: 12,
     },
+  },
+  bottomTabLayout: {
+    tabSelection: '#fff',
   },
 };
 

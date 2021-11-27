@@ -49,7 +49,7 @@ const BottomTabs: FC<Props> = ({ tabs }) => {
                     style={{
                       textAlign: 'center',
                       color: tab.isSelected
-                        ? globalStyle.color.white
+                        ? globalStyle.bottomTabLayout.tabSelection
                         : globalStyle.color.primary.light,
                     }}
                     name={tab.icon}
@@ -59,7 +59,7 @@ const BottomTabs: FC<Props> = ({ tabs }) => {
                     style={[
                       {
                         color: tab.isSelected
-                          ? globalStyle.color.white
+                          ? globalStyle.bottomTabLayout.tabSelection
                           : globalStyle.color.primary.light,
                       },
                       styles.tabTitle,

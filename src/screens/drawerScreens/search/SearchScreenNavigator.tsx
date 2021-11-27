@@ -7,7 +7,7 @@ import { SearchTab } from '../../../model/SearchTab';
 
 const styles = StyleSheet.create({
   navigationBorder: {
-    borderBottomColor: globalStyle.color.secondary.light,
+    borderBottomColor: globalStyle.color.default.light,
     borderBottomWidth: 1,
   },
   navigationContainer: {

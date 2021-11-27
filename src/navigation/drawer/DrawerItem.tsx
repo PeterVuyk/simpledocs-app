@@ -7,13 +7,13 @@ import globalStyle from '../../styling/globalStyle';
 
 const styles = StyleSheet.create({
   drawerDivider: {
-    borderTopColor: globalStyle.color.secondary.light,
+    borderTopColor: globalStyle.color.default.light,
     borderTopWidth: 1,
     marginBottom: -5,
   },
   relativeContainer: { position: 'relative' },
   externalLinkContainer: { position: 'absolute', right: 18, top: 13 },
-  externalLinkColor: { color: globalStyle.color.secondary.rgbDark },
+  externalLinkColor: { color: globalStyle.color.default.rgbDark },
 });
 
 interface Props {

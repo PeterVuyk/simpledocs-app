@@ -36,5 +36,3 @@ if [ ! -d "${projectDirectory}/assets" ] || [ ! -d "${projectDirectory}/customer
 fi
 
 cp -r "$projectDirectory/customer-assets/${customer}/." "$projectDirectory/assets"
-
-# TODO: update assets based on customer directory

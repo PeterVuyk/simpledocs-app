@@ -4,15 +4,8 @@ import {
   DEVELOPMENT_ENVIRONMENT,
   PRODUCTION_ENVIRONMENT,
   STAGING_ENVIRONMENT,
-  CUSTOMER_ACADEMIE_AMBULANCEZORG,
   CUSTOMER_DEFAULT,
 } from '../model/Environment';
-
-const getCustomer = (): string => {
-  return process.env.APP_DOMAIN === CUSTOMER_ACADEMIE_AMBULANCEZORG
-    ? CUSTOMER_ACADEMIE_AMBULANCEZORG
-    : CUSTOMER_DEFAULT;
-};
 
 const getEnvironmentFromChannel = (): string => {
   // future matches prod-v1, prod-v2, prod-v3
@@ -28,10 +21,8 @@ const getEnvironmentFromChannel = (): string => {
 };
 
 const getEnvironment = (): Environment => {
-  console.log('customer', process.env.APP_DOMAIN);
-  console.log('envName', Updates.releaseChannel.toLowerCase());
   return {
-    customer: getCustomer(),
+    customer: process.env.CUSTOMER_NAME ?? CUSTOMER_DEFAULT,
     envName: getEnvironmentFromChannel(),
   };
 };

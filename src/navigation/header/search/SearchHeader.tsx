@@ -54,7 +54,7 @@ const SearchHeader: FC<Props> = ({
             inputContainerStyle={{
               backgroundColor:
                 Platform.OS === 'ios'
-                  ? globalStyle.color.secondary.light
+                  ? globalStyle.color.default.light
                   : globalStyle.color.white,
             }}
             platform={Platform.OS === 'ios' ? 'ios' : 'android'}

@@ -10,7 +10,7 @@ const styles = StyleSheet.create({
     padding: 10,
   },
   buttonColorDisabled: {
-    color: globalStyle.color.secondary.main,
+    color: globalStyle.color.default.main,
     padding: 10,
   },
 });

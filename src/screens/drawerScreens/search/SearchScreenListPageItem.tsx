@@ -65,9 +65,7 @@ const SearchScreenListPageItem: FC<Props> = ({ searchText, article }) => {
               textToHighlight={article.title}
             />
           </ListItem.Title>
-          <ListItem.Subtitle
-            style={{ color: globalStyle.color.secondary.dark }}
-          >
+          <ListItem.Subtitle style={{ color: globalStyle.color.default.dark }}>
             <HighlightWords
               searchText={searchText}
               textToHighlight={getShortenedBody(article.searchText)}

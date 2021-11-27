@@ -13,7 +13,7 @@ interface Props {
 
 const styles = StyleSheet.create({
   navigationBorder: {
-    borderBottomColor: globalStyle.color.secondary.light,
+    borderBottomColor: globalStyle.color.default.light,
     borderBottomWidth: 1,
   },
   navigationContainer: {

@@ -16,7 +16,7 @@ const styles = StyleSheet.create({
     bottom: 0,
   },
   editIndicator: {
-    color: globalStyle.color.secondary.dark,
+    color: globalStyle.color.default.dark,
     fontSize: globalStyle.typography.h1.fontSize,
   },
 });

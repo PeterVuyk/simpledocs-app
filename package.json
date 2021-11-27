@@ -1,7 +1,7 @@
 {
   "main": "node_modules/expo/AppEntry.js",
   "scripts": {
-    "start": "npx cross-env APP_DOMAIN=academie-voor-ambulancezorg LOCAL_DEVELOPMENT=true expo start",
+    "start": "npx env-cmd -f .env.development expo start -c",
     "android": "expo start --android",
     "ios": "expo start --ios",
     "eject": "expo eject"
