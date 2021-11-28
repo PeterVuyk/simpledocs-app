@@ -1,8 +1,6 @@
 import React, { FC, useCallback, useEffect, useState } from 'react';
-import { DrawerNavigationProp } from '@react-navigation/drawer/lib/typescript/src/types';
-import { Image, SectionList, StyleSheet, View, Text } from 'react-native';
+import { Image, SectionList, StyleSheet, View } from 'react-native';
 import { useIsFocused } from '@react-navigation/native';
-import { Swipeable } from 'react-native-gesture-handler';
 import articleRepository from '../../database/repository/articleRepository';
 import { ArticleChapter } from '../../model/articles/ArticleChapter';
 import ListItem from '../../components/listItem/ListItem';
@@ -11,7 +9,7 @@ import TitleBar from '../../components/titleBar/TitleBar';
 import useContentNavigator from '../../components/hooks/useContentNavigator';
 import SectionTitleBar from '../../components/titleBar/SectionTitleBar';
 import globalStyle from '../../styling/globalStyle';
-import RemoveBookmarkView from './RemoveBookmarkView';
+import SwipeableToggleBookmark from '../../components/bookmarks/SwipeableToggleBookmark';
 
 const styles = StyleSheet.create({
   tabContainer: {
@@ -75,11 +73,7 @@ const BookmarkScreen: FC = () => {
 
   const renderItem = useCallback(
     (item: ArticleChapter) => (
-      <Swipeable
-        renderRightActions={() => (
-          <RemoveBookmarkView articleChapter={item} onClick={loadBookmarks} />
-        )}
-      >
+      <SwipeableToggleBookmark articleChapter={item} onToggle={loadBookmarks}>
         <ListItem
           title={item.title}
           subTitle={item.subTitle}
@@ -92,7 +86,7 @@ const BookmarkScreen: FC = () => {
             )
           }
         />
-      </Swipeable>
+      </SwipeableToggleBookmark>
     ),
     [loadBookmarks, navigateToChapter],
   );

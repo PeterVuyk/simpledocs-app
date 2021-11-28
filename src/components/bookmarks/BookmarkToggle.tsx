@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC, useCallback, useEffect, useState } from 'react';
 import { StyleSheet } from 'react-native';
 import { Icon } from 'native-base';
 import { BlackPortal } from 'react-native-portal';
@@ -21,12 +21,12 @@ const BookmarkToggle: FC<Props> = ({ articleChapter }) => {
   const [isBookmarked, setBookmarked] = useState<boolean>(
     articleChapter.bookmarked,
   );
-  const handleBookmarkChapter = () => {
+  const handleBookmarkChapter = useCallback(() => {
     articleRepository.toggleBookmark(articleChapter).then(() => {
       articleChapter.bookmarked = !articleChapter.bookmarked;
       setBookmarked(articleChapter.bookmarked);
     });
-  };
+  }, [articleChapter]);
 
   useEffect(() => {
     setBookmarked(articleChapter.bookmarked);

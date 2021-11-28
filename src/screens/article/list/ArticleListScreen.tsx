@@ -29,6 +29,18 @@ const ArticleListScreen: FC<Props> = ({ navigation, route }) => {
     setCurrentBookType(bookType ?? bookTabInfo.bookTypes[0].bookType);
   }, [bookType, bookTabInfo]);
 
+  const handleReloadArticles = () => {
+    if (!currentBookType) {
+      return;
+    }
+    articleRepository.getChapters(
+      currentBookType,
+      (chapters: ArticleChapter[]) => {
+        setArticleChapters(chapters);
+      },
+    );
+  };
+
   useEffect(() => {
     let isMounted = true;
 
@@ -48,9 +60,11 @@ const ArticleListScreen: FC<Props> = ({ navigation, route }) => {
     // Add 'isFocused' so if you go back you make sure new bookmarks are loaded as well
   }, [isFocused, bookType, currentBookType]);
 
-  const getChapterDivisionsToShowInList = (): string[] | undefined =>
-    bookTabInfo.bookTypes.find(value => value.bookType === currentBookType)
-      ?.chapterDivisionsInList;
+  const getChapterDivisionsToShowInList = (): string[] | undefined => {
+    return bookTabInfo.bookTypes.find(
+      value => value.bookType === currentBookType,
+    )?.chapterDivisionsInList;
+  };
 
   if (!currentBookType || !articleChapters) {
     return null;
@@ -62,6 +76,7 @@ const ArticleListScreen: FC<Props> = ({ navigation, route }) => {
       showChapterDivisions={getChapterDivisionsToShowInList()}
       navigation={navigation}
       articleChapters={articleChapters}
+      onReloadArticles={handleReloadArticles}
       bookType={currentBookType}
     />
   );

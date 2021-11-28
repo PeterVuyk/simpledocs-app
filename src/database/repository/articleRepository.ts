@@ -229,7 +229,7 @@ function getChaptersByList(
     sqlTransaction => {
       sqlTransaction.executeSql(
         // Not working with prepared statements is bad bad. But unfortunately SQLite doesn't work with prepared statement in combination with 'IN'
-        `SELECT chapter, title, subTitle, pageIndex, chapterDivision, iconFile, bookmarked FROM articles WHERE bookType = ? AND chapter IN (${chapters
+        `SELECT chapter, title, subTitle, bookType, pageIndex, chapterDivision, iconFile, bookmarked FROM articles WHERE bookType = ? AND chapter IN (${chapters
           .map(value => `'${value}'`)
           .join(', ')}) ORDER BY pageIndex;`,
         [bookType],

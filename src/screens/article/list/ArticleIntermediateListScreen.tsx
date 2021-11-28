@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC, useCallback, useEffect, useState } from 'react';
 import { RouteProp, useIsFocused } from '@react-navigation/native';
 import ArticlesList from './ArticlesList';
 import articleRepository from '../../../database/repository/articleRepository';
@@ -24,16 +24,16 @@ const ArticleIntermediateListScreen: FC<Props> = ({ navigation, route }) => {
   const [articleChapters, setArticleChapters] = useState<ArticleChapter[]>([]);
   const isFocused = useIsFocused();
 
+  const handleLoadArticles = useCallback(() => {
+    articleRepository.getChaptersByList(bookType, chapters, setArticleChapters);
+  }, [bookType, chapters]);
+
   useEffect(() => {
     if (isFocused) {
-      articleRepository.getChaptersByList(
-        bookType,
-        chapters,
-        setArticleChapters,
-      );
+      handleLoadArticles();
     }
     // Add 'isFocused' so if you go back you make sure new bookmarks are loaded as well
-  }, [isFocused, bookType, chapters]);
+  }, [isFocused, bookType, chapters, handleLoadArticles]);
 
   if (!articleChapters) {
     return null;
@@ -41,6 +41,7 @@ const ArticleIntermediateListScreen: FC<Props> = ({ navigation, route }) => {
 
   return (
     <ArticlesList
+      onReloadArticles={handleLoadArticles}
       bookTabInfo={bookTabInfo}
       showHeader={false}
       navigation={navigation}

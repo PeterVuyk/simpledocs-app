@@ -9,7 +9,6 @@ const styles = StyleSheet.create({
   container: {
     alignItems: 'center',
     padding: 10,
-    backgroundColor: 'red',
   },
   iconStyle: {
     color: globalStyle.color.white,
@@ -27,20 +26,32 @@ interface Props {
   onClick: () => void;
 }
 
-const RemoveBookmarkView: FC<Props> = ({ articleChapter, onClick }) => {
+const ToggleBookmarkViewButton: FC<Props> = ({ articleChapter, onClick }) => {
   const handleClick = () => {
     articleRepository.toggleBookmark(articleChapter).then(onClick);
   };
   return (
-    <TouchableOpacity style={styles.container} onPress={handleClick}>
+    <TouchableOpacity
+      style={[
+        { backgroundColor: articleChapter.bookmarked ? 'red' : 'green' },
+        styles.container,
+      ]}
+      onPress={handleClick}
+    >
       <Icon
-        name="bookmark-off-outline"
-        style={styles.iconStyle}
+        name={
+          articleChapter.bookmarked
+            ? 'bookmark-off-outline'
+            : 'bookmark-plus-outline'
+        }
+        style={[styles.iconStyle]}
         type="MaterialCommunityIcons"
       />
-      <Text style={styles.tabTitle}>Verwijderen</Text>
+      <Text style={styles.tabTitle}>
+        {articleChapter.bookmarked ? 'Verwijderen' : 'Toevoegen'}
+      </Text>
     </TouchableOpacity>
   );
 };
 
-export default RemoveBookmarkView;
+export default ToggleBookmarkViewButton;

@@ -1,14 +1,11 @@
-import React, { FC, useCallback } from 'react';
+import React, { FC } from 'react';
 import { FlatList, StyleSheet, View } from 'react-native';
 import { DrawerNavigationProp } from '@react-navigation/drawer/lib/typescript/src/types';
-import ListItem from '../../../components/listItem/ListItem';
 import { ArticleChapter } from '../../../model/articles/ArticleChapter';
-import configHelper from '../../../helper/configHelper';
-import { FIRST_BOOK_TAB } from '../../../model/BottomTab';
-import useContentNavigator from '../../../components/hooks/useContentNavigator';
 import TitleBar from '../../../components/titleBar/TitleBar';
 import { BookTabInfo } from '../../../model/configurations/AppConfigurations';
 import globalStyle from '../../../styling/globalStyle';
+import ArticlesListItem from './ArticlesListItem';
 
 const styles = StyleSheet.create({
   tabContainer: {
@@ -27,6 +24,7 @@ interface Props {
   showChapterDivisions?: string[];
   navigation: DrawerNavigationProp<any>;
   articleChapters: ArticleChapter[];
+  onReloadArticles: () => void;
   bookType: string;
 }
 
@@ -36,82 +34,9 @@ const ArticlesList: FC<Props> = ({
   showChapterDivisions,
   navigation,
   articleChapters,
+  onReloadArticles,
   bookType,
 }) => {
-  const { navigateToChapter } = useContentNavigator();
-  const navigateArticleList = useCallback(
-    async (chapters: string[]) => {
-      if ((await configHelper.getTabByBookType(bookType)) === FIRST_BOOK_TAB) {
-        navigation.navigate('FirstBookTabStack', {
-          screen: 'FirstBookTabIntermediateScreen',
-          params: { bookType, chapters },
-        });
-        return;
-      }
-      navigation.navigate('SecondBookTabStack', {
-        screen: 'SecondBookTabIntermediateScreen',
-        params: { bookType, chapters },
-      });
-    },
-    [bookType, navigation],
-  );
-
-  const navigateToDetailsScreen = useCallback(
-    (articleChapter: ArticleChapter) => {
-      navigateToChapter(
-        { articleChapter: articleChapter.chapter, bookType },
-        bookType,
-      );
-    },
-    [bookType, navigateToChapter],
-  );
-
-  const handleItemClick = useCallback(
-    async (articleChapter: ArticleChapter) => {
-      const bookInfo = await configHelper.getConfigByBookType(bookType);
-      if (
-        showChapterDivisions === undefined ||
-        bookInfo?.chapterDivisionsInIntermediateList.includes(
-          articleChapter.chapterDivision,
-        )
-      ) {
-        navigateToDetailsScreen(articleChapter);
-        return;
-      }
-      const index = articleChapters.indexOf(articleChapter, 0);
-      const nextChapter = articleChapters[index + 1];
-      if (
-        nextChapter === undefined ||
-        !bookInfo?.chapterDivisionsInIntermediateList.includes(
-          nextChapter.chapterDivision,
-        )
-      ) {
-        navigateToDetailsScreen(articleChapter);
-        return;
-      }
-      const nextChapters: ArticleChapter[] = [];
-      nextChapters.push(articleChapters[index]);
-      for (const chapter of articleChapters.slice(index + 1)) {
-        if (
-          !bookInfo?.chapterDivisionsInIntermediateList.includes(
-            chapter.chapterDivision,
-          )
-        ) {
-          break;
-        }
-        nextChapters.push(chapter);
-      }
-      navigateArticleList(nextChapters.map(chapter => chapter.chapter));
-    },
-    [
-      articleChapters,
-      bookType,
-      navigateArticleList,
-      navigateToDetailsScreen,
-      showChapterDivisions,
-    ],
-  );
-
   const getChapters = () => {
     if (!showChapterDivisions) {
       return articleChapters;
@@ -120,19 +45,6 @@ const ArticlesList: FC<Props> = ({
       showChapterDivisions.includes(chapter.chapterDivision),
     );
   };
-
-  const renderItem = useCallback(
-    (item: ArticleChapter) => (
-      <ListItem
-        title={item.title}
-        subTitle={item.subTitle}
-        iconFile={item.iconFile}
-        bookmarked={item.bookmarked}
-        onSubmit={() => handleItemClick(item)}
-      />
-    ),
-    [handleItemClick],
-  );
 
   const getHeader = () => {
     if (!showHeader) {
@@ -157,7 +69,16 @@ const ArticlesList: FC<Props> = ({
           keyExtractor={item => item.chapter.toString()}
           extraData={getChapters()}
           data={getChapters()}
-          renderItem={({ item }) => renderItem(item)}
+          renderItem={({ item }) => (
+            <ArticlesListItem
+              showChapterDivisions={showChapterDivisions}
+              articleChapter={item}
+              articleChapters={articleChapters}
+              navigation={navigation}
+              onReloadArticles={onReloadArticles}
+              bookType={bookType}
+            />
+          )}
         />
       </View>
     </View>

@@ -1,11 +1,11 @@
-import React, { FC, useCallback, useEffect, useRef, useState } from 'react';
-import { View, FlatList, ScaledSize } from 'react-native';
+import React, { FC, useCallback, useEffect, useState } from 'react';
+import { View, ScaledSize } from 'react-native';
 import { useIsFocused } from '@react-navigation/native';
 import { ArticleChapter } from '../../../model/articles/ArticleChapter';
 import { NOTIFICATION_TYPE_HORIZONTAL_SCROLL_TIP } from '../../../model/notifications/NotificationType';
 import BookChapterNavigator from '../BookChapterNavigator';
 import useNotification from '../../../components/notification/useNotification';
-import BookmarkToggle from '../../bookmarks/BookmarkToggle';
+import BookmarkToggle from '../../../components/bookmarks/BookmarkToggle';
 import ArticleDetailsPage from './ArticleDetailsPage';
 
 interface Props {
