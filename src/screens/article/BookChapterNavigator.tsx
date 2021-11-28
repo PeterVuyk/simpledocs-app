@@ -29,6 +29,7 @@ const BookChapterNavigator: FC<Props> = ({
   articleChapterList,
 }) => {
   const flatListRef = useRef<FlatList<ArticleChapter> | null>(null);
+  const didMountRef = useRef(false);
 
   const chipWidth = useMemo(() => {
     const maxCharacters = Math.max(
@@ -38,6 +39,10 @@ const BookChapterNavigator: FC<Props> = ({
   }, [articleChapterList]);
 
   useEffect(() => {
+    if (!didMountRef.current) {
+      didMountRef.current = true;
+      return;
+    }
     const index = articleChapterList
       .map(chapter => chapter.chapter)
       .indexOf(currentChapter);
