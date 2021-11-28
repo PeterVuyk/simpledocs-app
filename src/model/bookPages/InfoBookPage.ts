@@ -1,4 +1,4 @@
-export interface ArticleChapter {
+export interface InfoBookPage {
   id: string;
   title: string;
   subTitle?: string;

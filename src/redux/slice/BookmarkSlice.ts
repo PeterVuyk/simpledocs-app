@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { Bookmark } from '../../model/articles/Bookmark';
+import { Bookmark } from '../../model/bookPages/Bookmark';
 
 interface BookmarkState {
   bookmarks: Bookmark[];

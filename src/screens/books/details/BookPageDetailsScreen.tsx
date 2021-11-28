@@ -1,9 +1,9 @@
 import React, { FC, useEffect, useState } from 'react';
 import { RouteProp } from '@react-navigation/native';
 import { DrawerNavigationHelpers } from '@react-navigation/drawer/lib/typescript/src/types';
-import articleRepository from '../../../database/repository/articleRepository';
-import { ArticleChapter } from '../../../model/articles/ArticleChapter';
-import ArticleDetails from './ArticleDetails';
+import bookPagesRepository from '../../../database/repository/bookPagesRepository';
+import { InfoBookPage } from '../../../model/bookPages/InfoBookPage';
+import BookPageDetails from './BookPageDetails';
 import DimensionsProvider from '../../../components/viewer/DimensionsProvider';
 
 interface Props {
@@ -11,7 +11,7 @@ interface Props {
   route: RouteProp<
     {
       params: {
-        articleChapter: string;
+        infoBookPage: string;
         bookType: string;
       };
     },
@@ -19,12 +19,12 @@ interface Props {
   >;
 }
 
-const ArticleDetailsScreen: FC<Props> = ({ navigation, route }) => {
-  const [chapters, setChapters] = useState<ArticleChapter[]>([]);
-  const { articleChapter, bookType } = route.params;
+const BookPageDetailsScreen: FC<Props> = ({ navigation, route }) => {
+  const [chapters, setChapters] = useState<InfoBookPage[]>([]);
+  const { infoBookPage, bookType } = route.params;
 
   useEffect(() => {
-    articleRepository.getChapters(bookType, setChapters);
+    bookPagesRepository.getChapters(bookType, setChapters);
   }, [bookType, navigation]);
 
   return (
@@ -32,10 +32,10 @@ const ArticleDetailsScreen: FC<Props> = ({ navigation, route }) => {
       {chapters.length !== 0 && (
         <DimensionsProvider
           children={window => (
-            <ArticleDetails
-              articleChapter={articleChapter}
+            <BookPageDetails
+              bookPageChapter={infoBookPage}
               bookType={bookType}
-              articleChapterList={chapters}
+              infoBookPages={chapters}
               windowWidth={window}
             />
           )}
@@ -45,4 +45,4 @@ const ArticleDetailsScreen: FC<Props> = ({ navigation, route }) => {
   );
 };
 
-export default ArticleDetailsScreen;
+export default BookPageDetailsScreen;

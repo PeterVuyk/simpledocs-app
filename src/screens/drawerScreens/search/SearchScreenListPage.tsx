@@ -1,11 +1,11 @@
 import React, { FC, useEffect, useState } from 'react';
 import { FlatList, Image, StyleSheet } from 'react-native';
 import { SearchTab } from '../../../model/SearchTab';
-import articleRepository from '../../../database/repository/articleRepository';
-import { Article } from '../../../model/articles/Article';
+import bookPagesRepository from '../../../database/repository/bookPagesRepository';
 import SearchScreenListPageItem from './SearchScreenListPageItem';
 import NoSearchResultView from './NoSearchResultView';
 import IntentSearchScreenListPage from './IntentSearchScreenListPage';
+import { BookPage } from '../../../model/bookPages/BookPage';
 
 const styles = StyleSheet.create({
   findPlaceholderImage: {
@@ -22,7 +22,7 @@ interface Props {
 }
 
 const SearchScreenListPage: FC<Props> = ({ searchText, searchTab }) => {
-  const [articles, setArticles] = useState<Article[] | null>(null);
+  const [pages, setPages] = useState<BookPage[] | null>(null);
   const [text, setText] = useState<string>('');
 
   useEffect(() => {
@@ -30,28 +30,28 @@ const SearchScreenListPage: FC<Props> = ({ searchText, searchTab }) => {
 
     const searchDatabaseOnSearchText = () => {
       if (searchText === '') {
-        setArticles(null);
+        setPages(null);
         return;
       }
       if (text === searchText) {
         return;
       }
       if (searchTab.itemId === 'bookmarks') {
-        articleRepository.searchArticlesByBookmarks(searchText, value => {
+        bookPagesRepository.searchPagesByBookmarks(searchText, value => {
           if (isMounted) {
             setText(searchText);
-            setArticles(value);
+            setPages(value);
           }
         });
         return;
       }
-      articleRepository.searchArticlesByBookType(
+      bookPagesRepository.searchBookPagesByBookType(
         searchTab.itemId,
         searchText,
         value => {
           if (isMounted) {
             setText(searchText);
-            setArticles(value);
+            setPages(value);
           }
         },
       );
@@ -62,7 +62,7 @@ const SearchScreenListPage: FC<Props> = ({ searchText, searchTab }) => {
     };
   }, [searchTab.itemId, searchText, text]);
 
-  if (!articles && searchText === '') {
+  if (!pages && searchText === '') {
     return (
       <Image
         style={styles.findPlaceholderImage}
@@ -71,19 +71,19 @@ const SearchScreenListPage: FC<Props> = ({ searchText, searchTab }) => {
     );
   }
 
-  if (articles && articles.length === 0 && searchText !== '') {
+  if (pages && pages.length === 0 && searchText !== '') {
     return <NoSearchResultView />;
   }
 
-  if (articles) {
+  if (pages) {
     return (
-      <FlatList<Article>
-        data={articles}
+      <FlatList<Page>
+        data={pages}
         keyExtractor={item =>
           item.chapter.toString() + item.bookType.toString()
         }
         renderItem={({ item }) => (
-          <SearchScreenListPageItem searchText={searchText} article={item} />
+          <SearchScreenListPageItem searchText={searchText} bookPage={item} />
         )}
       />
     );

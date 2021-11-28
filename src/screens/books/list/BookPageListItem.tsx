@@ -1,7 +1,7 @@
 import React, { FC, useCallback } from 'react';
 import { DrawerNavigationProp } from '@react-navigation/drawer/lib/typescript/src/types';
 import ListItem from '../../../components/listItem/ListItem';
-import { ArticleChapter } from '../../../model/articles/ArticleChapter';
+import { InfoBookPage } from '../../../model/bookPages/InfoBookPage';
 import configHelper from '../../../helper/configHelper';
 import { FIRST_BOOK_TAB } from '../../../model/BottomTab';
 import useContentNavigator from '../../../components/hooks/useContentNavigator';
@@ -10,22 +10,22 @@ import SwipeableToggleBookmark from '../../../components/bookmarks/SwipeableTogg
 interface Props {
   showChapterDivisions?: string[];
   navigation: DrawerNavigationProp<any>;
-  articleChapter: ArticleChapter;
-  articleChapters: ArticleChapter[];
-  onReloadArticles: () => void;
+  infoBookPage: InfoBookPage;
+  infoBookPages: InfoBookPage[];
+  onReloadPages: () => void;
   bookType: string;
 }
 
-const ArticlesListItem: FC<Props> = ({
+const BookPageListItem: FC<Props> = ({
   showChapterDivisions,
   navigation,
-  articleChapter,
-  articleChapters,
-  onReloadArticles,
+  infoBookPage,
+  infoBookPages,
+  onReloadPages,
   bookType,
 }) => {
   const { navigateToChapter } = useContentNavigator();
-  const navigateArticleList = useCallback(
+  const navigateBookPageList = useCallback(
     async (chapters: string[]) => {
       if ((await configHelper.getTabByBookType(bookType)) === FIRST_BOOK_TAB) {
         navigation.navigate('FirstBookTabStack', {
@@ -44,24 +44,24 @@ const ArticlesListItem: FC<Props> = ({
 
   const navigateToDetailsScreen = useCallback(() => {
     navigateToChapter(
-      { articleChapter: articleChapter.chapter, bookType },
+      { bookPageChapter: infoBookPage.chapter, bookType },
       bookType,
     );
-  }, [articleChapter.chapter, bookType, navigateToChapter]);
+  }, [infoBookPage.chapter, bookType, navigateToChapter]);
 
   const handleItemClick = useCallback(async () => {
     const bookInfo = await configHelper.getConfigByBookType(bookType);
     if (
       showChapterDivisions === undefined ||
       bookInfo?.chapterDivisionsInIntermediateList.includes(
-        articleChapter.chapterDivision,
+        infoBookPage.chapterDivision,
       )
     ) {
       navigateToDetailsScreen();
       return;
     }
-    const index = articleChapters.indexOf(articleChapter, 0);
-    const nextChapter = articleChapters[index + 1];
+    const index = infoBookPages.indexOf(infoBookPage, 0);
+    const nextChapter = infoBookPages[index + 1];
     if (
       nextChapter === undefined ||
       !bookInfo?.chapterDivisionsInIntermediateList.includes(
@@ -71,9 +71,9 @@ const ArticlesListItem: FC<Props> = ({
       navigateToDetailsScreen();
       return;
     }
-    const nextChapters: ArticleChapter[] = [];
-    nextChapters.push(articleChapters[index]);
-    for (const chapter of articleChapters.slice(index + 1)) {
+    const nextChapters: InfoBookPage[] = [];
+    nextChapters.push(infoBookPages[index]);
+    for (const chapter of infoBookPages.slice(index + 1)) {
       if (
         !bookInfo?.chapterDivisionsInIntermediateList.includes(
           chapter.chapterDivision,
@@ -83,30 +83,30 @@ const ArticlesListItem: FC<Props> = ({
       }
       nextChapters.push(chapter);
     }
-    navigateArticleList(nextChapters.map(chapter => chapter.chapter));
+    navigateBookPageList(nextChapters.map(chapter => chapter.chapter));
   }, [
-    articleChapter,
-    articleChapters,
+    infoBookPage,
+    infoBookPages,
     bookType,
-    navigateArticleList,
+    navigateBookPageList,
     navigateToDetailsScreen,
     showChapterDivisions,
   ]);
 
   return (
     <SwipeableToggleBookmark
-      articleChapter={articleChapter}
-      onToggle={onReloadArticles}
+      infoBookPage={infoBookPage}
+      onToggle={onReloadPages}
     >
       <ListItem
-        title={articleChapter.title}
-        subTitle={articleChapter.subTitle}
-        iconFile={articleChapter.iconFile}
-        bookmarked={articleChapter.bookmarked}
+        title={infoBookPage.title}
+        subTitle={infoBookPage.subTitle}
+        iconFile={infoBookPage.iconFile}
+        bookmarked={infoBookPage.bookmarked}
         onSubmit={handleItemClick}
       />
     </SwipeableToggleBookmark>
   );
 };
 
-export default ArticlesListItem;
+export default BookPageListItem;

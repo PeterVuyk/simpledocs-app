@@ -14,27 +14,25 @@ import getAppInfo from '../../../firebase/functions/getAppInfo';
 import configurationsStorage from '../../../storage/configurationsStorage';
 import { AppInfo } from '../../../model/AppInfoResponse';
 import { AppConfigurations } from '../../../model/configurations/AppConfigurations';
-import articleRepository from '../../repository/articleRepository';
-import { ApiArticle } from '../../../model/articles/Article';
-import { Bookmark } from '../../../model/articles/Bookmark';
+import bookPagesRepository from '../../repository/bookPagesRepository';
+import { ApiBookPage } from '../../../model/bookPages/BookPage';
+import { Bookmark } from '../../../model/bookPages/Bookmark';
 
 function useUpdateAggregates() {
-  const addBookmarksToArticles = (
+  const addBookmarksToPages = (
     bookType: string,
-    articles: ApiArticle[],
+    apiBookPages: ApiBookPage[],
     bookmarks: Bookmark[],
   ) => {
     bookmarks
       .filter(value => value.bookType === bookType)
-      .forEach(bookmarkedArticle => {
-        const article = articles.find(
-          value => value.id === bookmarkedArticle.id,
-        );
-        if (article) {
-          article.bookmarked = true;
+      .forEach(bookmarkedPage => {
+        const page = apiBookPages.find(value => value.id === bookmarkedPage.id);
+        if (page) {
+          page.bookmarked = true;
         }
       });
-    return articles;
+    return apiBookPages;
   };
 
   const updateBooks = async (
@@ -63,11 +61,7 @@ function useUpdateAggregates() {
       await synchronizeDatabase.updateBook(
         aggregate,
         appInfoResponse.appConfigurations.versioning[aggregate].version,
-        addBookmarksToArticles(
-          aggregate,
-          appInfoResponse[aggregate],
-          bookmarks,
-        ),
+        addBookmarksToPages(aggregate, appInfoResponse[aggregate], bookmarks),
       );
     }
   };
@@ -80,11 +74,11 @@ function useUpdateAggregates() {
       return updateBooks(appInfoResponse, preservedBookmarks);
     }
     return new Promise((resolve, reject) => {
-      articleRepository
-        .getBookmarkedArticles(async articles => {
+      bookPagesRepository
+        .getBookmarkedPages(async pages => {
           await updateBooks(
             appInfoResponse,
-            articles.map(value => {
+            pages.map(value => {
               return { id: value.id, bookType: value.bookType };
             }),
           );

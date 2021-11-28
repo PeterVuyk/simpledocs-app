@@ -30,7 +30,7 @@ const styles = StyleSheet.create({
     paddingRight: 20,
     paddingBottom: 200,
   },
-  articleButtonsStyle: {
+  bookPageButtonsStyle: {
     alignSelf: 'stretch',
     backgroundColor: globalStyle.color.primary.main,
   },
@@ -89,7 +89,7 @@ const DecisionTreeScreen: FC<Props> = ({ title, navigation }) => {
     return decisionTreeSteps.find(step => step.id === currentStep?.parentId);
   }, [currentStep, decisionTreeSteps]);
 
-  const navigateToArticle = (step: DecisionTreeStep) => {
+  const navigateToBookPage = (step: DecisionTreeStep) => {
     navigation.navigate('DecisionsScreenStack', {
       screen: 'DocumentationScreen',
       params: { content: step.content, contentType: step.contentType },
@@ -129,9 +129,9 @@ const DecisionTreeScreen: FC<Props> = ({ title, navigation }) => {
           {currentStep !== undefined && currentStep.content && (
             <View style={[{ bottom: 60 }, styles.buttonContainer]}>
               <Button
-                buttonStyle={[styles.articleButtonsStyle]}
+                buttonStyle={[styles.bookPageButtonsStyle]}
                 title="Open toelichting"
-                onPress={() => navigateToArticle(currentStep)}
+                onPress={() => navigateToBookPage(currentStep)}
               />
             </View>
           )}

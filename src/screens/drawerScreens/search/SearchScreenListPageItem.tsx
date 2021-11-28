@@ -1,7 +1,6 @@
 import React, { FC } from 'react';
 import { ListItem } from 'react-native-elements';
 import { View } from 'react-native';
-import { Article } from '../../../model/articles/Article';
 import SVGIcon from '../../../components/SVGIcon';
 import HighlightWords from '../../../components/HighlightWords';
 import useContentNavigator from '../../../components/hooks/useContentNavigator';
@@ -9,13 +8,14 @@ import { useAppDispatch } from '../../../redux/hooks';
 import { setSearchText as setReduxSearchText } from '../../../redux/slice/searchTextSlice';
 import BookmarkIndicator from '../../../components/listItem/BookmarkIndicator';
 import globalStyle from '../../../styling/globalStyle';
+import { BookPage } from '../../../model/bookPages/BookPage';
 
 interface Props {
   searchText: string;
-  article: Article;
+  bookPage: BookPage;
 }
 
-const SearchScreenListPageItem: FC<Props> = ({ searchText, article }) => {
+const SearchScreenListPageItem: FC<Props> = ({ searchText, bookPage }) => {
   const { navigateToChapter } = useContentNavigator();
   const dispatch = useAppDispatch();
 
@@ -36,7 +36,7 @@ const SearchScreenListPageItem: FC<Props> = ({ searchText, article }) => {
     return fullBody;
   };
 
-  const submitSearch = (item: Article) => {
+  const submitSearch = (item: BookPage) => {
     dispatch(
       setReduxSearchText({
         chapter: item.chapter,
@@ -46,7 +46,7 @@ const SearchScreenListPageItem: FC<Props> = ({ searchText, article }) => {
     );
     navigateToChapter(
       {
-        articleChapter: item.chapter,
+        bookPageChapter: item.chapter,
         bookType: item.bookType,
         searchText: { chapter: item.chapter, searchText },
       },
@@ -56,24 +56,24 @@ const SearchScreenListPageItem: FC<Props> = ({ searchText, article }) => {
 
   return (
     <View style={{ position: 'relative' }}>
-      <ListItem bottomDivider onPress={() => submitSearch(article)}>
-        <SVGIcon iconBlob={article.iconFile} />
+      <ListItem bottomDivider onPress={() => submitSearch(bookPage)}>
+        <SVGIcon iconBlob={bookPage.iconFile} />
         <ListItem.Content>
           <ListItem.Title>
             <HighlightWords
               searchText={searchText}
-              textToHighlight={article.title}
+              textToHighlight={bookPage.title}
             />
           </ListItem.Title>
           <ListItem.Subtitle style={{ color: globalStyle.color.default.dark }}>
             <HighlightWords
               searchText={searchText}
-              textToHighlight={getShortenedBody(article.searchText)}
+              textToHighlight={getShortenedBody(bookPage.searchText)}
             />
           </ListItem.Subtitle>
         </ListItem.Content>
       </ListItem>
-      {article.bookmarked ? <BookmarkIndicator /> : null}
+      {bookPage.bookmarked ? <BookmarkIndicator /> : null}
     </View>
   );
 };

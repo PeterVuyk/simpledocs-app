@@ -1,8 +1,8 @@
 import React, { FC, useEffect, useState } from 'react';
 import { RouteProp, useIsFocused } from '@react-navigation/native';
-import ArticlesList from './ArticlesList';
-import articleRepository from '../../../database/repository/articleRepository';
-import { ArticleChapter } from '../../../model/articles/ArticleChapter';
+import BookPagesList from './BookPagesList';
+import bookPagesRepository from '../../../database/repository/bookPagesRepository';
+import { InfoBookPage } from '../../../model/bookPages/InfoBookPage';
 import { BookTabInfo } from '../../../model/configurations/AppConfigurations';
 
 interface Props {
@@ -18,9 +18,9 @@ interface Props {
   >;
 }
 
-const ArticleListScreen: FC<Props> = ({ navigation, route }) => {
+const BookPageListScreen: FC<Props> = ({ navigation, route }) => {
   const { bookTabInfo, bookType } = route.params;
-  const [articleChapters, setArticleChapters] = useState<ArticleChapter[]>([]);
+  const [infoBookPages, setInfoBookPages] = useState<InfoBookPage[]>([]);
   const [currentBookType, setCurrentBookType] = useState<string | null>(null);
   const isFocused = useIsFocused();
 
@@ -29,14 +29,14 @@ const ArticleListScreen: FC<Props> = ({ navigation, route }) => {
     setCurrentBookType(bookType ?? bookTabInfo.bookTypes[0].bookType);
   }, [bookType, bookTabInfo]);
 
-  const handleReloadArticles = () => {
+  const handleReloadPages = () => {
     if (!currentBookType) {
       return;
     }
-    articleRepository.getChapters(
+    bookPagesRepository.getChapters(
       currentBookType,
-      (chapters: ArticleChapter[]) => {
-        setArticleChapters(chapters);
+      (chapters: InfoBookPage[]) => {
+        setInfoBookPages(chapters);
       },
     );
   };
@@ -45,11 +45,11 @@ const ArticleListScreen: FC<Props> = ({ navigation, route }) => {
     let isMounted = true;
 
     if (currentBookType !== null && isFocused) {
-      articleRepository.getChapters(
+      bookPagesRepository.getChapters(
         currentBookType,
-        (chapters: ArticleChapter[]) => {
+        (chapters: InfoBookPage[]) => {
           if (isMounted) {
-            setArticleChapters(chapters);
+            setInfoBookPages(chapters);
           }
         },
       );
@@ -66,20 +66,20 @@ const ArticleListScreen: FC<Props> = ({ navigation, route }) => {
     )?.chapterDivisionsInList;
   };
 
-  if (!currentBookType || !articleChapters) {
+  if (!currentBookType || !infoBookPages) {
     return null;
   }
   return (
-    <ArticlesList
+    <BookPagesList
       showHeader
       bookTabInfo={bookTabInfo}
       showChapterDivisions={getChapterDivisionsToShowInList()}
       navigation={navigation}
-      articleChapters={articleChapters}
-      onReloadArticles={handleReloadArticles}
+      InfoBookPages={infoBookPages}
+      onReloadPages={handleReloadPages}
       bookType={currentBookType}
     />
   );
 };
 
-export default ArticleListScreen;
+export default BookPageListScreen;

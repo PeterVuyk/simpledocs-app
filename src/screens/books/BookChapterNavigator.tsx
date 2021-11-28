@@ -1,14 +1,14 @@
 import React, { FC, useCallback, useEffect, useMemo, useRef } from 'react';
 import { FlatList, StyleSheet, View } from 'react-native';
 import getWidth from 'string-pixel-width';
-import { ArticleChapter } from '../../model/articles/ArticleChapter';
+import { InfoBookPage } from '../../model/bookPages/InfoBookPage';
 import NavigatorChip from '../../components/NavigatorChip';
 import globalStyle from '../../styling/globalStyle';
 
 interface Props {
   onPageChange: (chapter: string) => void;
   currentChapter: string;
-  articleChapterList: ArticleChapter[];
+  infoBookPages: InfoBookPage[];
 }
 
 const styles = StyleSheet.create({
@@ -26,34 +26,34 @@ const styles = StyleSheet.create({
 const BookChapterNavigator: FC<Props> = ({
   onPageChange,
   currentChapter,
-  articleChapterList,
+  infoBookPages,
 }) => {
-  const flatListRef = useRef<FlatList<ArticleChapter> | null>(null);
+  const flatListRef = useRef<FlatList<InfoBookPage> | null>(null);
   const didMountRef = useRef(false);
 
   const chipWidth = useMemo(() => {
     const maxCharacters = Math.max(
-      ...articleChapterList.map(value => value.chapter.length),
+      ...infoBookPages.map(value => value.chapter.length),
     );
     return getWidth('W'.repeat(maxCharacters), { bold: true, size: 16 }) + 5;
-  }, [articleChapterList]);
+  }, [infoBookPages]);
 
   useEffect(() => {
     if (!didMountRef.current) {
       didMountRef.current = true;
       return;
     }
-    const index = articleChapterList
+    const index = infoBookPages
       .map(chapter => chapter.chapter)
       .indexOf(currentChapter);
     flatListRef.current?.scrollToIndex({
       animated: true,
       index: index === -1 ? 1 : index,
     });
-  }, [articleChapterList, currentChapter]);
+  }, [infoBookPages, currentChapter]);
 
   const renderItem = useCallback(
-    (item: ArticleChapter) => {
+    (item: InfoBookPage) => {
       return (
         <NavigatorChip
           id={item.chapter}
@@ -73,13 +73,13 @@ const BookChapterNavigator: FC<Props> = ({
         style={[styles.navigationContainer, styles.navigationBorder]}
         ref={flatListRef}
         keyExtractor={item => item.id.toString()}
-        initialScrollIndex={articleChapterList
+        initialScrollIndex={infoBookPages
           .map(chapter => chapter.chapter)
           .indexOf(currentChapter)}
         horizontal
         bounces={false}
         showsHorizontalScrollIndicator={false}
-        data={articleChapterList}
+        data={infoBookPages}
         getItemLayout={(data, index) => {
           return {
             length: chipWidth + 4,

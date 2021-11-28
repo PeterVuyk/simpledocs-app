@@ -1,23 +1,23 @@
 import React, { FC, useCallback, useEffect, useState } from 'react';
 import { View, ScaledSize } from 'react-native';
 import { useIsFocused } from '@react-navigation/native';
-import { ArticleChapter } from '../../../model/articles/ArticleChapter';
+import { InfoBookPage } from '../../../model/bookPages/InfoBookPage';
 import { NOTIFICATION_TYPE_HORIZONTAL_SCROLL_TIP } from '../../../model/notifications/NotificationType';
 import BookChapterNavigator from '../BookChapterNavigator';
 import useNotification from '../../../components/notification/useNotification';
 import BookmarkToggle from '../../../components/bookmarks/BookmarkToggle';
-import ArticleDetailsPage from './ArticleDetailsPage';
+import BookPageDetailsPage from './BookPageDetailsPage';
 
 interface Props {
-  articleChapter: string;
+  bookPageChapter: string;
   bookType: string;
-  articleChapterList: ArticleChapter[];
+  infoBookPages: InfoBookPage[];
   windowWidth: ScaledSize;
 }
 
-const ArticleDetails: FC<Props> = ({
-  articleChapter,
-  articleChapterList,
+const BookPageDetails: FC<Props> = ({
+  bookPageChapter,
+  infoBookPages,
   bookType,
   windowWidth,
 }) => {
@@ -25,14 +25,12 @@ const ArticleDetails: FC<Props> = ({
   const { notify } = useNotification();
   const isFocused = useIsFocused();
 
-  const handleArticleNavigation = useCallback(
+  const handleBookPageNavigation = useCallback(
     (chapter: string) => {
-      const index = articleChapterList
-        .map(value => value.chapter)
-        .indexOf(chapter);
+      const index = infoBookPages.map(value => value.chapter).indexOf(chapter);
       setCurrentIndex(index === -1 ? 1 : index);
     },
-    [articleChapterList],
+    [infoBookPages],
   );
 
   useEffect(() => {
@@ -46,32 +44,30 @@ const ArticleDetails: FC<Props> = ({
   }, [notify]);
 
   useEffect(() => {
-    const index = articleChapterList
+    const index = infoBookPages
       .map(value => value.chapter)
-      .indexOf(articleChapter);
+      .indexOf(bookPageChapter);
     setCurrentIndex(index === -1 ? 1 : index);
-  }, [articleChapter, articleChapterList, handleArticleNavigation]);
+  }, [bookPageChapter, infoBookPages, handleBookPageNavigation]);
 
   const onPageChange = (chapter: string): void => {
-    setCurrentIndex(
-      articleChapterList.map(value => value.chapter).indexOf(chapter),
-    );
+    setCurrentIndex(infoBookPages.map(value => value.chapter).indexOf(chapter));
   };
 
   return (
     <View style={{ flex: 1 }}>
       {isFocused && currentIndex !== undefined && (
         <>
-          <BookmarkToggle articleChapter={articleChapterList[currentIndex]} />
+          <BookmarkToggle infoBookPage={infoBookPages[currentIndex]} />
           <BookChapterNavigator
             onPageChange={onPageChange}
-            articleChapterList={articleChapterList}
-            currentChapter={articleChapterList[currentIndex].chapter}
+            infoBookPages={infoBookPages}
+            currentChapter={infoBookPages[currentIndex].chapter}
           />
-          <ArticleDetailsPage
-            currentChapter={articleChapterList[currentIndex].chapter}
+          <BookPageDetailsPage
+            currentChapter={infoBookPages[currentIndex].chapter}
             bookType={bookType}
-            articleChapterList={articleChapterList}
+            infoBookPages={infoBookPages}
             windowWidth={windowWidth}
             onPageChange={onPageChange}
           />
@@ -81,4 +77,4 @@ const ArticleDetails: FC<Props> = ({
   );
 };
 
-export default ArticleDetails;
+export default BookPageDetails;

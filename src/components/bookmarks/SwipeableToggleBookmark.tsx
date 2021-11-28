@@ -1,16 +1,16 @@
 import React, { FC, ReactNode, useRef } from 'react';
 import { Swipeable } from 'react-native-gesture-handler';
-import { ArticleChapter } from '../../model/articles/ArticleChapter';
+import { InfoBookPage } from '../../model/bookPages/InfoBookPage';
 import ToggleBookmarkViewButton from './ToggleBookmarkViewButton';
 
 interface Props {
-  articleChapter: ArticleChapter;
+  infoBookPage: InfoBookPage;
   onToggle: () => void;
   children: ReactNode;
 }
 
 const SwipeableToggleBookmark: FC<Props> = ({
-  articleChapter,
+  infoBookPage,
   onToggle,
   children,
 }) => {
@@ -26,7 +26,7 @@ const SwipeableToggleBookmark: FC<Props> = ({
       ref={swipeableRef}
       renderRightActions={() => (
         <ToggleBookmarkViewButton
-          articleChapter={articleChapter}
+          infoBookPage={infoBookPage}
           onClick={handleToggle}
         />
       )}

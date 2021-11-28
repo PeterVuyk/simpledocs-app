@@ -5,19 +5,19 @@ import {
   AGGREGATE_CALCULATIONS,
   AGGREGATE_DECISION_TREE,
 } from '../../../model/aggregate';
-import updateArticleTable from './updateArticleTable';
+import updateBookPageTable from './updateBookPageTable';
 import configurationsHelper from '../../../helper/configurationsHelper';
 import { DecisionTreeStep } from '../../../model/decisionTree/DecisionTreeStep';
 import { CalculationInfo } from '../../../model/calculations/CalculationInfo';
-import { ApiArticle } from '../../../model/articles/Article';
+import { ApiBookPage } from '../../../model/bookPages/BookPage';
 
 const updateBook = async (
   bookType: string,
   serverVersion: string,
-  articles: ApiArticle[],
+  apiBookPages: ApiBookPage[],
 ) => {
-  return updateArticleTable
-    .updateArticles(articles, serverVersion, bookType)
+  return updateBookPageTable
+    .updateBookPages(apiBookPages, serverVersion, bookType)
     .then(() => {
       configurationsHelper.updateVersioning(bookType, {
         version: serverVersion,
@@ -26,7 +26,7 @@ const updateBook = async (
     })
     .catch(reason =>
       logger.error(
-        `Update version ${serverVersion} for articles bookType ${bookType} failed. By the next startup the articles will be fetched again, the update version will be tried to store again`,
+        `Update version ${serverVersion} for pages bookType ${bookType} failed. By the next startup the pages will be fetched again, the update version will be tried to store again`,
         reason,
       ),
     );

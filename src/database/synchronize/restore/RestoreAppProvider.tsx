@@ -10,9 +10,9 @@ import {
 import tearDown from '../restore/tearDownDatabase';
 import logger from '../../../util/logger';
 import debugHandler from '../../../debug/debugHandler';
-import articleRepository from '../../repository/articleRepository';
+import bookPagesRepository from '../../repository/bookPagesRepository';
 import { setBookmarks } from '../../../redux/slice/BookmarkSlice';
-import { Bookmark } from '../../../model/articles/Bookmark';
+import { Bookmark } from '../../../model/bookPages/Bookmark';
 
 interface Props {
   children: ReactNode;
@@ -22,11 +22,11 @@ const RestoreAppProvider: FC<Props> = ({ children }) => {
   const dispatch = useAppDispatch();
   const { currentState } = useAppSelector(state => state.startupState);
 
-  const preserveArticleBookmarks = useCallback(() => {
+  const preserveBookPagesBookmarks = useCallback(() => {
     return new Promise(resolve => {
-      articleRepository
-        .getBookmarkedArticles(async articles => {
-          const bookmarks = articles.map(value => {
+      bookPagesRepository
+        .getBookmarkedPages(async page => {
+          const bookmarks = page.map(value => {
             return { id: value.id, bookType: value.bookType };
           }) as Bookmark[];
           dispatch(setBookmarks(bookmarks));
@@ -42,7 +42,7 @@ const RestoreAppProvider: FC<Props> = ({ children }) => {
   const restore = useCallback(async () => {
     await debugHandler
       .dumpConfigToStorage()
-      .then(preserveArticleBookmarks)
+      .then(preserveBookPagesBookmarks)
       .then(tearDown.down)
       .then(configurationsStorage.removeSystemConfiguration)
       .then(() => {
@@ -55,7 +55,7 @@ const RestoreAppProvider: FC<Props> = ({ children }) => {
         );
         dispatch(updateStartupState(STARTUP_FAILURE_STATE));
       });
-  }, [dispatch, preserveArticleBookmarks]);
+  }, [dispatch, preserveBookPagesBookmarks]);
 
   useEffect(() => {
     if (currentState === RESTORE_APP_FROM_FAILED_STARTUP) {

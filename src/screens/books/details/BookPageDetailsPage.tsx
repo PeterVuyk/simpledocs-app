@@ -1,47 +1,47 @@
 import React, { FC, useCallback, useEffect, useRef } from 'react';
 import { View, FlatList, ScaledSize } from 'react-native';
-import ArticleDetailItem from './ArticleDetailItem';
-import { ArticleChapter } from '../../../model/articles/ArticleChapter';
+import BookPageDetailItem from './BookPageDetailItem';
+import { InfoBookPage } from '../../../model/bookPages/InfoBookPage';
 
 interface Props {
   currentChapter: string;
   bookType: string;
-  articleChapterList: ArticleChapter[];
+  infoBookPages: InfoBookPage[];
   windowWidth: ScaledSize;
   onPageChange: (chapter: string) => void;
 }
 
-const ArticleDetailsPage: FC<Props> = ({
+const BookPageDetailsPage: FC<Props> = ({
   currentChapter,
-  articleChapterList,
+  infoBookPages,
   bookType,
   windowWidth,
   onPageChange,
 }) => {
-  const flatListRef = useRef<FlatList<ArticleChapter> | null>(null);
+  const flatListRef = useRef<FlatList<InfoBookPage> | null>(null);
 
   useEffect(() => {
-    const index = articleChapterList
+    const index = infoBookPages
       .map(value => value.chapter)
       .indexOf(currentChapter);
     flatListRef.current?.scrollToIndex({
       animated: false,
       index: index === -1 ? 1 : index,
     });
-  }, [articleChapterList, currentChapter]);
+  }, [infoBookPages, currentChapter]);
 
   const onScrollEnd = e => {
     const { contentOffset } = e.nativeEvent;
     const viewSize = e.nativeEvent.layoutMeasurement;
     const val = Math.round(contentOffset.x / viewSize.width);
-    onPageChange(articleChapterList[val].chapter);
+    onPageChange(infoBookPages[val].chapter);
   };
 
   const renderItem = useCallback(
-    (chapter: ArticleChapter) => (
+    (infoBookPage: InfoBookPage) => (
       <View style={{ width: windowWidth.width, flex: 1 }}>
-        <ArticleDetailItem
-          articleChapter={chapter.chapter}
+        <BookPageDetailItem
+          bookPageChapter={infoBookPage.chapter}
           bookType={bookType}
         />
       </View>
@@ -63,8 +63,8 @@ const ArticleDetailsPage: FC<Props> = ({
         initialNumToRender={3}
         windowSize={3}
         onMomentumScrollEnd={onScrollEnd}
-        data={articleChapterList}
-        initialScrollIndex={articleChapterList
+        data={infoBookPages}
+        initialScrollIndex={infoBookPages
           .map(value => value.chapter)
           .indexOf(currentChapter)}
         getItemLayout={(data, index) => ({
@@ -79,4 +79,4 @@ const ArticleDetailsPage: FC<Props> = ({
   );
 };
 
-export default ArticleDetailsPage;
+export default BookPageDetailsPage;

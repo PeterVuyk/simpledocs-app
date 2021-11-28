@@ -1,11 +1,11 @@
 import React, { FC } from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
-import ArticleDetailsScreen from '../../screens/article/details/ArticleDetailsScreen';
-import ArticleListScreen from '../../screens/article/list/ArticleListScreen';
+import BookPageDetailsScreen from '../../screens/books/details/BookPageDetailsScreen';
+import BookPageListScreen from '../../screens/books/list/BookPageListScreen';
 import { FIRST_BOOK_TAB } from '../../model/BottomTab';
-import BooksOverviewScreen from '../../screens/article/BooksOverviewScreen';
+import BooksOverviewScreen from '../../screens/books/BooksOverviewScreen';
 import { BookTabInfo } from '../../model/configurations/AppConfigurations';
-import ArticleIntermediateListScreen from '../../screens/article/list/ArticleIntermediateListScreen';
+import BookPageIntermediateListScreen from '../../screens/books/list/BookPageIntermediateListScreen';
 
 const Stack = createStackNavigator();
 
@@ -30,10 +30,10 @@ const FirstBookTabStackNavigator: FC<Props> = ({ bookTabInfo }) => {
       <Stack.Screen
         name={
           bookTabInfo.bookTypes.length !== 1
-            ? 'FirstBookTabArticleScreen'
+            ? 'FirstBookTabPageScreen'
             : 'FirstBookTabOverviewScreen'
         }
-        component={ArticleListScreen}
+        component={BookPageListScreen}
         initialParams={{
           bookTabInfo,
           chapters: null,
@@ -43,7 +43,7 @@ const FirstBookTabStackNavigator: FC<Props> = ({ bookTabInfo }) => {
       />
       <Stack.Screen
         name="FirstBookTabIntermediateScreen"
-        component={ArticleIntermediateListScreen}
+        component={BookPageIntermediateListScreen}
         initialParams={{
           bookTabInfo,
         }}
@@ -51,7 +51,7 @@ const FirstBookTabStackNavigator: FC<Props> = ({ bookTabInfo }) => {
       />
       <Stack.Screen
         name="FirstBookTabDetailsScreen"
-        component={ArticleDetailsScreen}
+        component={BookPageDetailsScreen}
         options={{ header: () => null }}
       />
     </Stack.Navigator>

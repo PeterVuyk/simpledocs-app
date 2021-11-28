@@ -1,28 +1,31 @@
 import * as SQLite from 'expo-sqlite';
 import logger from '../../util/logger';
-import { Article } from '../../model/articles/Article';
-import { ArticleChapter } from '../../model/articles/ArticleChapter';
+import { InfoBookPage } from '../../model/bookPages/InfoBookPage';
+import { BookPage } from '../../model/bookPages/BookPage';
 
 const db = SQLite.openDatabase('db.db');
 
-function toggleBookmark(articleChapter: ArticleChapter): Promise<void> {
+function toggleBookmark(infoBookPage: InfoBookPage): Promise<void> {
   return new Promise((resolve, reject) => {
     db.transaction(
       sqlTransaction => {
         sqlTransaction.executeSql(
-          `UPDATE articles
+          `UPDATE bookPages
            SET bookmarked = ?
            WHERE chapter = ?
              AND bookType = ?`,
           [
-            articleChapter.bookmarked ? 0 : 1,
-            articleChapter.chapter,
-            articleChapter.bookType,
+            infoBookPage.bookmarked ? 0 : 1,
+            infoBookPage.chapter,
+            infoBookPage.bookType,
           ],
         );
       },
       error => {
-        logger.error('articleRepository.toggleBookmark failed', error.message);
+        logger.error(
+          'bookPagesRepository.toggleBookmark failed',
+          error.message,
+        );
         reject();
       },
       resolve,
@@ -30,18 +33,18 @@ function toggleBookmark(articleChapter: ArticleChapter): Promise<void> {
   });
 }
 
-function getBookmarkedArticles(
-  callback: (article: Article[]) => void,
+function getBookmarkedPages(
+  callback: (pages: BookPage[]) => void,
 ): Promise<void> {
   return new Promise((resolve, reject) => {
     db.transaction(
       sqlTransaction => {
         sqlTransaction.executeSql(
-          `SELECT * FROM articles WHERE bookmarked = 1`,
+          `SELECT * FROM bookPages WHERE bookmarked = 1`,
           [],
           // @ts-ignore
           (_, { rows: { _array } }) => {
-            callback(_array as Article[]);
+            callback(_array as Page[]);
           },
         );
       },
@@ -51,32 +54,31 @@ function getBookmarkedArticles(
   });
 }
 
-function getArticles(callback: (article: Article[]) => void): void {
+function getPages(callback: (bookPages: BookPage[]) => void): void {
   db.transaction(
     sqlTransaction => {
       sqlTransaction.executeSql(
-        `SELECT * FROM articles;`,
+        `SELECT * FROM bookPages;`,
         [],
         // @ts-ignore
         (_, { rows: { _array } }) => {
-          callback(_array as Article[]);
+          callback(_array as BookPage[]);
         },
       );
     },
-    error =>
-      logger.error('articleRepository.getArticles failed', error.message),
+    error => logger.error('bookPagesRepository.getPages failed', error.message),
   );
 }
 
-function getArticleByChapter(
+function getPageByChapter(
   bookType: string,
   chapter: string,
-  callback: (article: Article) => void,
+  callback: (page: BookPage) => void,
 ): void {
   db.transaction(
     sqlTransaction => {
       sqlTransaction.executeSql(
-        `SELECT * FROM articles WHERE bookType = ? AND chapter = ?;`,
+        `SELECT * FROM bookPages WHERE bookType = ? AND chapter = ?;`,
         [bookType, chapter],
         // @ts-ignore
         (_, { rows: { _array } }) => {
@@ -87,22 +89,19 @@ function getArticleByChapter(
       );
     },
     error =>
-      logger.error(
-        'articleRepository.getArticleByChapter failed',
-        error.message,
-      ),
+      logger.error('bookPageRepository.getPageByChapter failed', error.message),
   );
 }
 
-function getArticleById(
+function getPageById(
   id: string,
-  callback: (article: Article) => void,
+  callback: (page: BookPage) => void,
 ): Promise<void> {
   return new Promise((resolve, reject) => {
     db.transaction(
       sqlTransaction => {
         sqlTransaction.executeSql(
-          `SELECT * FROM articles WHERE id = ?;`,
+          `SELECT * FROM bookPages WHERE id = ?;`,
           [id],
           // @ts-ignore
           (_, { rows: { _array } }) => {
@@ -113,7 +112,10 @@ function getArticleById(
         );
       },
       error => {
-        logger.error('articleRepository.getArticleById failed', error.message);
+        logger.error(
+          'bookPageRepository.getBookPageById failed',
+          error.message,
+        );
         reject();
       },
       resolve,
@@ -121,10 +123,10 @@ function getArticleById(
   });
 }
 
-function searchArticlesByBookType(
+function searchBookPagesByBookType(
   bookType: string,
   text: string,
-  setArticles: (articles: Article[]) => void,
+  setPages: (pages: BookPage[]) => void,
 ): void {
   db.transaction(
     sqlTransaction => {
@@ -132,27 +134,27 @@ function searchArticlesByBookType(
         `SELECT *
             ,(CASE WHEN title LIKE ? THEN 1 ELSE 0 END) AS [priority]
             ,(CASE WHEN searchText like ? THEN 1 ELSE 0 END)
-       FROM (SELECT * FROM articles WHERE bookType = ? ORDER BY pageIndex)
+       FROM (SELECT * FROM bookPages WHERE bookType = ? ORDER BY pageIndex)
        WHERE title LIKE ? OR searchText LIKE ?
        ORDER BY [priority] DESC;`,
         [`%${text}%`, `%${text}%`, bookType, `%${text}%`, `%${text}%`],
         // @ts-ignore
         (_, { rows: { _array } }) => {
-          setArticles(_array);
+          setPages(_array);
         },
       );
     },
     error =>
       logger.error(
-        'articleRepository.searchArticlesByBookType failed',
+        'bookPagesRepository.searchPagesByBookType failed',
         error.message,
       ),
   );
 }
 
-function searchArticlesByBookmarks(
+function searchPagesByBookmarks(
   text: string,
-  setArticles: (articles: Article[]) => void,
+  setPages: (pages: BookPage[]) => void,
 ): void {
   db.transaction(
     sqlTransaction => {
@@ -160,31 +162,31 @@ function searchArticlesByBookmarks(
         `SELECT *
             ,(CASE WHEN title LIKE ? THEN 1 ELSE 0 END) AS [priority]
             ,(CASE WHEN searchText like ? THEN 1 ELSE 0 END)
-       FROM (SELECT * FROM articles WHERE bookmarked = 1 ORDER BY pageIndex)
+       FROM (SELECT * FROM bookPages WHERE bookmarked = 1 ORDER BY pageIndex)
        WHERE title LIKE ? OR searchText LIKE ?
        ORDER BY [priority] DESC;`,
         [`%${text}%`, `%${text}%`, `%${text}%`, `%${text}%`],
         // @ts-ignore
         (_, { rows: { _array } }) => {
-          setArticles(_array);
+          setPages(_array);
         },
       );
     },
     error =>
       logger.error(
-        'articleRepository.searchArticlesByBookmarks failed',
+        'bookPagesRepository.searchPagesByBookmarks failed',
         error.message,
       ),
   );
 }
 
 function getBookmarkedChapters(
-  setChapters: (chapters: ArticleChapter[]) => void,
+  setChapters: (chapters: InfoBookPage[]) => void,
 ): void {
   db.transaction(
     sqlTransaction => {
       sqlTransaction.executeSql(
-        `SELECT chapter, title, subTitle, pageIndex, chapterDivision, iconFile, bookmarked, bookType FROM articles WHERE bookmarked = 1 ORDER BY pageIndex;`,
+        `SELECT chapter, title, subTitle, pageIndex, chapterDivision, iconFile, bookmarked, bookType FROM bookPages WHERE bookmarked = 1 ORDER BY pageIndex;`,
         [],
         // @ts-ignore
         (_, { rows: { _array } }) => {
@@ -194,7 +196,7 @@ function getBookmarkedChapters(
     },
     error =>
       logger.error(
-        'articleRepository.getBookmarkedChapters failed',
+        'bookPagesRepository.getBookmarkedChapters failed',
         error.message,
       ),
   );
@@ -202,12 +204,12 @@ function getBookmarkedChapters(
 
 function getChapters(
   bookType: string,
-  setChapters: (chapters: ArticleChapter[]) => void,
+  setChapters: (chapters: InfoBookPage[]) => void,
 ): void {
   db.transaction(
     sqlTransaction => {
       sqlTransaction.executeSql(
-        `SELECT id, chapter, title, subTitle, pageIndex, chapterDivision, iconFile, bookmarked, bookType FROM articles WHERE bookType = ? ORDER BY pageIndex;`,
+        `SELECT id, chapter, title, subTitle, pageIndex, chapterDivision, iconFile, bookmarked, bookType FROM bookPages WHERE bookType = ? ORDER BY pageIndex;`,
         [bookType],
         // @ts-ignore
         (_, { rows: { _array } }) => {
@@ -216,20 +218,20 @@ function getChapters(
       );
     },
     error =>
-      logger.error('articleRepository.getChapters failed', error.message),
+      logger.error('bookPagesRepository.getChapters failed', error.message),
   );
 }
 
 function getChaptersByList(
   bookType: string,
   chapters: string[],
-  setChapters: (chapters: ArticleChapter[]) => void,
+  setChapters: (chapters: InfoBookPage[]) => void,
 ): void {
   db.transaction(
     sqlTransaction => {
       sqlTransaction.executeSql(
         // Not working with prepared statements is bad bad. But unfortunately SQLite doesn't work with prepared statement in combination with 'IN'
-        `SELECT chapter, title, subTitle, bookType, pageIndex, chapterDivision, iconFile, bookmarked FROM articles WHERE bookType = ? AND chapter IN (${chapters
+        `SELECT chapter, title, subTitle, bookType, pageIndex, chapterDivision, iconFile, bookmarked FROM bookPages WHERE bookType = ? AND chapter IN (${chapters
           .map(value => `'${value}'`)
           .join(', ')}) ORDER BY pageIndex;`,
         [bookType],
@@ -240,21 +242,24 @@ function getChaptersByList(
       );
     },
     error =>
-      logger.error('articleRepository.getChaptersByList failed', error.message),
+      logger.error(
+        'bookPagesRepository.getChaptersByList failed',
+        error.message,
+      ),
   );
 }
 
-const articleRepository = {
-  getArticles,
-  getArticleByChapter,
-  getArticleById,
-  searchArticlesByBookmarks,
-  searchArticlesByBookType,
+const bookPagesRepository = {
+  getPages,
+  getPageByChapter,
+  getPageById,
+  searchPagesByBookmarks,
+  searchBookPagesByBookType,
   getChapters,
   getChaptersByList,
   toggleBookmark,
-  getBookmarkedArticles,
+  getBookmarkedPages,
   getBookmarkedChapters,
 };
 
-export default articleRepository;
+export default bookPagesRepository;

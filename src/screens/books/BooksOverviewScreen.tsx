@@ -42,13 +42,13 @@ const BooksOverviewScreen: FC<Props> = ({ navigation, route }) => {
     (bookType: string) => {
       if (currentTab === SECOND_BOOK_TAB) {
         navigation.navigate('SecondBookTabStack', {
-          screen: 'SecondBookTabArticleScreen',
+          screen: 'SecondBookTabPageScreen',
           params: { bookType, bookTabInfo },
         });
         return;
       }
       navigation.navigate('FirstBookTabStack', {
-        screen: 'FirstBookTabArticleScreen',
+        screen: 'FirstBookTabPageScreen',
         params: { bookType, bookTabInfo },
       });
     },

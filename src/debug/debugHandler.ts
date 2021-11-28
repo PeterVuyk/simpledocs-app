@@ -2,14 +2,14 @@ import storageBucket from '../firebase/bucket/storageBucket';
 import configurationsStorage from '../storage/configurationsStorage';
 import logger from '../util/logger';
 import debugRepository from '../database/repository/debugRepository';
-import articleRepository from '../database/repository/articleRepository';
+import bookPagesRepository from '../database/repository/bookPagesRepository';
 import decisionTreeRepository from '../database/repository/decisionTreeRepository';
 import calculationsRepository from '../database/repository/calculationsRepository';
 import migrationChangelogRepository from '../database/repository/migrationChangelogRepository';
 import notificationRepository from '../database/repository/notificationRepository';
 import environment from '../util/environment';
 import {
-  ARTICLES,
+  BOOK_PAGES,
   CALCULATIONS,
   DECISION_TREE,
   MIGRATION_CHANGELOG,
@@ -39,8 +39,8 @@ const storageTableContentDump = (tableName: string) => {
   databaseContentIterator++;
   // eslint-disable-next-line default-case
   switch (tableName) {
-    case ARTICLES:
-      articleRepository.getArticles(tableContentStorageCallback);
+    case BOOK_PAGES:
+      bookPagesRepository.getPages(tableContentStorageCallback);
       break;
     case DECISION_TREE:
       decisionTreeRepository.getDecisionTrees(tableContentStorageCallback);

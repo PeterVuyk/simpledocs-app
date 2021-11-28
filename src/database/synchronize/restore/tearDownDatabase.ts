@@ -9,7 +9,7 @@ function down(): Promise<void> {
       sqlTransaction => {
         sqlTransaction.executeSql('drop table if exists migrationChangelog');
         sqlTransaction.executeSql('drop table if exists notification');
-        sqlTransaction.executeSql('drop table if exists articles;');
+        sqlTransaction.executeSql('drop table if exists bookPages;');
         sqlTransaction.executeSql('drop table if exists calculations;');
         sqlTransaction.executeSql('drop table if exists decisionTrees;');
       },

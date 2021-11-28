@@ -2,8 +2,8 @@ import React, { FC, useCallback, useEffect, useState } from 'react';
 import { StyleSheet } from 'react-native';
 import { Icon } from 'native-base';
 import { BlackPortal } from 'react-native-portal';
-import { ArticleChapter } from '../../model/articles/ArticleChapter';
-import articleRepository from '../../database/repository/articleRepository';
+import { InfoBookPage } from '../../model/bookPages/InfoBookPage';
+import bookPagesRepository from '../../database/repository/bookPagesRepository';
 import globalStyle from '../../styling/globalStyle';
 
 const styles = StyleSheet.create({
@@ -14,23 +14,23 @@ const styles = StyleSheet.create({
 });
 
 interface Props {
-  articleChapter: ArticleChapter;
+  infoBookPage: InfoBookPage;
 }
 
-const BookmarkToggle: FC<Props> = ({ articleChapter }) => {
+const BookmarkToggle: FC<Props> = ({ infoBookPage }) => {
   const [isBookmarked, setBookmarked] = useState<boolean>(
-    articleChapter.bookmarked,
+    infoBookPage.bookmarked,
   );
   const handleBookmarkChapter = useCallback(() => {
-    articleRepository.toggleBookmark(articleChapter).then(() => {
-      articleChapter.bookmarked = !articleChapter.bookmarked;
-      setBookmarked(articleChapter.bookmarked);
+    bookPagesRepository.toggleBookmark(infoBookPage).then(() => {
+      infoBookPage.bookmarked = !infoBookPage.bookmarked;
+      setBookmarked(infoBookPage.bookmarked);
     });
-  }, [articleChapter]);
+  }, [infoBookPage]);
 
   useEffect(() => {
-    setBookmarked(articleChapter.bookmarked);
-  }, [articleChapter.bookmarked]);
+    setBookmarked(infoBookPage.bookmarked);
+  }, [infoBookPage.bookmarked]);
 
   return (
     <BlackPortal name="bookmarkToggle">

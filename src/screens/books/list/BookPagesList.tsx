@@ -1,11 +1,11 @@
 import React, { FC } from 'react';
 import { FlatList, StyleSheet, View } from 'react-native';
 import { DrawerNavigationProp } from '@react-navigation/drawer/lib/typescript/src/types';
-import { ArticleChapter } from '../../../model/articles/ArticleChapter';
+import { InfoBookPage } from '../../../model/bookPages/InfoBookPage';
 import TitleBar from '../../../components/titleBar/TitleBar';
 import { BookTabInfo } from '../../../model/configurations/AppConfigurations';
 import globalStyle from '../../../styling/globalStyle';
-import ArticlesListItem from './ArticlesListItem';
+import BookPageListItem from './BookPageListItem';
 
 const styles = StyleSheet.create({
   tabContainer: {
@@ -23,25 +23,25 @@ interface Props {
   showHeader: boolean;
   showChapterDivisions?: string[];
   navigation: DrawerNavigationProp<any>;
-  articleChapters: ArticleChapter[];
-  onReloadArticles: () => void;
+  InfoBookPages: InfoBookPage[];
+  onReloadPages: () => void;
   bookType: string;
 }
 
-const ArticlesList: FC<Props> = ({
+const BookPagesList: FC<Props> = ({
   bookTabInfo,
   showHeader,
   showChapterDivisions,
   navigation,
-  articleChapters,
-  onReloadArticles,
+  InfoBookPages,
+  onReloadPages,
   bookType,
 }) => {
   const getChapters = () => {
     if (!showChapterDivisions) {
-      return articleChapters;
+      return InfoBookPages;
     }
-    return articleChapters.filter(chapter =>
+    return InfoBookPages.filter(chapter =>
       showChapterDivisions.includes(chapter.chapterDivision),
     );
   };
@@ -70,12 +70,12 @@ const ArticlesList: FC<Props> = ({
           extraData={getChapters()}
           data={getChapters()}
           renderItem={({ item }) => (
-            <ArticlesListItem
+            <BookPageListItem
               showChapterDivisions={showChapterDivisions}
-              articleChapter={item}
-              articleChapters={articleChapters}
+              infoBookPage={item}
+              infoBookPages={InfoBookPages}
               navigation={navigation}
-              onReloadArticles={onReloadArticles}
+              onReloadPages={onReloadPages}
               bookType={bookType}
             />
           )}
@@ -85,4 +85,4 @@ const ArticlesList: FC<Props> = ({
   );
 };
 
-export default ArticlesList;
+export default BookPagesList;

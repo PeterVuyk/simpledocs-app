@@ -10,7 +10,7 @@ export default class Migration20211101RenameLevelToChapterDivision
 
   public up(sqlTransaction: SQLTransaction): void {
     sqlTransaction.executeSql(
-      'ALTER TABLE articles RENAME COLUMN level TO chapterDivision;',
+      'ALTER TABLE bookPages RENAME COLUMN level TO chapterDivision;',
     );
   }
 }

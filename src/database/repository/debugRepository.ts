@@ -1,7 +1,7 @@
 import * as SQLite from 'expo-sqlite';
 import logger from '../../util/logger';
 import {
-  ARTICLES,
+  BOOK_PAGES,
   CALCULATIONS,
   DECISION_TREE,
   MIGRATION_CHANGELOG,
@@ -25,7 +25,7 @@ function resetDatabase(): Promise<void> {
           'drop index if exists versioning_aggregate_uindex;',
         );
         sqlTransaction.executeSql('drop table if exists notification;');
-        sqlTransaction.executeSql('drop table if exists articles;');
+        sqlTransaction.executeSql('drop table if exists bookPages;');
         sqlTransaction.executeSql('drop table if exists calculations;');
         sqlTransaction.executeSql('drop table if exists decisionTrees;');
         sqlTransaction.executeSql('drop table if exists migrationChangelog;');
@@ -73,7 +73,7 @@ function describeTable(
 async function describeTables(
   callback: (tableName: string, data: JSON[]) => void,
 ): Promise<void> {
-  await describeTable(ARTICLES, callback)
+  await describeTable(BOOK_PAGES, callback)
     .then(() => describeTable(NOTIFICATION, callback))
     .then(() => describeTable(CALCULATIONS, callback))
     .then(() => describeTable(DECISION_TREE, callback))

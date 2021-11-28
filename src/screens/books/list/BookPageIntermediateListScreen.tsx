@@ -1,8 +1,8 @@
 import React, { FC, useCallback, useEffect, useState } from 'react';
 import { RouteProp, useIsFocused } from '@react-navigation/native';
-import ArticlesList from './ArticlesList';
-import articleRepository from '../../../database/repository/articleRepository';
-import { ArticleChapter } from '../../../model/articles/ArticleChapter';
+import BookPagesList from './BookPagesList';
+import bookPagesRepository from '../../../database/repository/bookPagesRepository';
+import { InfoBookPage } from '../../../model/bookPages/InfoBookPage';
 import { BookTabInfo } from '../../../model/configurations/AppConfigurations';
 
 interface Props {
@@ -19,36 +19,36 @@ interface Props {
   >;
 }
 
-const ArticleIntermediateListScreen: FC<Props> = ({ navigation, route }) => {
+const BookPageIntermediateListScreen: FC<Props> = ({ navigation, route }) => {
   const { bookType, chapters, bookTabInfo } = route.params;
-  const [articleChapters, setArticleChapters] = useState<ArticleChapter[]>([]);
+  const [infoBookPages, setInfoBookPages] = useState<InfoBookPage[]>([]);
   const isFocused = useIsFocused();
 
-  const handleLoadArticles = useCallback(() => {
-    articleRepository.getChaptersByList(bookType, chapters, setArticleChapters);
+  const handleLoadPages = useCallback(() => {
+    bookPagesRepository.getChaptersByList(bookType, chapters, setInfoBookPages);
   }, [bookType, chapters]);
 
   useEffect(() => {
     if (isFocused) {
-      handleLoadArticles();
+      handleLoadPages();
     }
     // Add 'isFocused' so if you go back you make sure new bookmarks are loaded as well
-  }, [isFocused, bookType, chapters, handleLoadArticles]);
+  }, [isFocused, bookType, chapters, handleLoadPages]);
 
-  if (!articleChapters) {
+  if (!infoBookPages) {
     return null;
   }
 
   return (
-    <ArticlesList
-      onReloadArticles={handleLoadArticles}
+    <BookPagesList
+      onReloadPages={handleLoadPages}
       bookTabInfo={bookTabInfo}
       showHeader={false}
       navigation={navigation}
-      articleChapters={articleChapters}
+      InfoBookPages={infoBookPages}
       bookType={bookType}
     />
   );
 };
 
-export default ArticleIntermediateListScreen;
+export default BookPageIntermediateListScreen;

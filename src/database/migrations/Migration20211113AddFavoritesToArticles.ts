@@ -10,7 +10,7 @@ export default class Migration20211113AddFavoritesToArticles
 
   public up(sqlTransaction: SQLTransaction): void {
     sqlTransaction.executeSql(
-      `ALTER TABLE articles ADD bookmarked integer DEFAULT 0 NOT NULL;`,
+      `ALTER TABLE bookPages ADD bookmarked integer DEFAULT 0 NOT NULL;`,
     );
   }
 }

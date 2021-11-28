@@ -2,8 +2,8 @@ import React, { FC } from 'react';
 import { StyleSheet, TouchableOpacity, Text } from 'react-native';
 import { Icon } from 'native-base';
 import globalStyle from '../../styling/globalStyle';
-import articleRepository from '../../database/repository/articleRepository';
-import { ArticleChapter } from '../../model/articles/ArticleChapter';
+import bookPagesRepository from '../../database/repository/bookPagesRepository';
+import { InfoBookPage } from '../../model/bookPages/InfoBookPage';
 
 const styles = StyleSheet.create({
   container: {
@@ -22,25 +22,25 @@ const styles = StyleSheet.create({
 });
 
 interface Props {
-  articleChapter: ArticleChapter;
+  infoBookPage: InfoBookPage;
   onClick: () => void;
 }
 
-const ToggleBookmarkViewButton: FC<Props> = ({ articleChapter, onClick }) => {
+const ToggleBookmarkViewButton: FC<Props> = ({ infoBookPage, onClick }) => {
   const handleClick = () => {
-    articleRepository.toggleBookmark(articleChapter).then(onClick);
+    bookPagesRepository.toggleBookmark(infoBookPage).then(onClick);
   };
   return (
     <TouchableOpacity
       style={[
-        { backgroundColor: articleChapter.bookmarked ? 'red' : 'green' },
+        { backgroundColor: infoBookPage.bookmarked ? 'red' : 'green' },
         styles.container,
       ]}
       onPress={handleClick}
     >
       <Icon
         name={
-          articleChapter.bookmarked
+          infoBookPage.bookmarked
             ? 'bookmark-off-outline'
             : 'bookmark-plus-outline'
         }
@@ -48,7 +48,7 @@ const ToggleBookmarkViewButton: FC<Props> = ({ articleChapter, onClick }) => {
         type="MaterialCommunityIcons"
       />
       <Text style={styles.tabTitle}>
-        {articleChapter.bookmarked ? 'Verwijderen' : 'Toevoegen'}
+        {infoBookPage.bookmarked ? 'Verwijderen' : 'Toevoegen'}
       </Text>
     </TouchableOpacity>
   );

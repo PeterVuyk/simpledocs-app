@@ -1,6 +1,6 @@
 import { ContentType } from '../ContentType';
 
-export interface Article {
+export interface BookPage {
   id: string;
   pageIndex: number;
   chapter: string;
@@ -15,4 +15,4 @@ export interface Article {
   bookType: string;
 }
 
-export interface ApiArticle extends Article, Omit<Article, 'bookType'> {}
+export interface ApiBookPage extends BookPage, Omit<BookPage, 'bookType'> {}

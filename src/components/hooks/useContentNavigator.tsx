@@ -3,7 +3,7 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import configHelper from '../../helper/configHelper';
 import { FIRST_BOOK_TAB, SECOND_BOOK_TAB } from '../../model/BottomTab';
 import logger from '../../util/logger';
-import articleRepository from '../../database/repository/articleRepository';
+import bookPagesRepository from '../../database/repository/bookPagesRepository';
 
 export const BLANK_WEBPAGE = 'https://page-blank.firebaseapp.com/';
 
@@ -16,7 +16,7 @@ const getIdFromUrl = (url: string): string | null => {
 };
 
 interface NavigationParams {
-  articleChapter: string;
+  bookPageChapter: string;
   bookType: string;
   searchText?: {
     chapter: string;
@@ -57,27 +57,27 @@ function useContentNavigator() {
     if (targetTab === SECOND_BOOK_TAB) {
       if (currentTab === SECOND_BOOK_TAB) {
         navigation.push('SecondBookTabDetailsScreen', {
-          articleChapter: chapter,
+          infoBookPage: chapter,
           bookType: targetBookType,
         });
         return;
       }
       navigation.navigate('SecondBookTabStack', {
         screen: 'SecondBookTabDetailsScreen',
-        params: { articleChapter: chapter, bookType: targetBookType },
+        params: { infoBookPage: chapter, bookType: targetBookType },
       });
     }
     if (targetTab === FIRST_BOOK_TAB) {
       if (currentTab === FIRST_BOOK_TAB) {
         navigation.push('FirstBookTabDetailsScreen', {
-          articleChapter: chapter,
+          infoBookPage: chapter,
           bookType: targetBookType,
         });
         return;
       }
       navigation.navigate('FirstBookTabStack', {
         screen: 'FirstBookTabDetailsScreen',
-        params: { articleChapter: chapter, bookType: targetBookType },
+        params: { infoBookPage: chapter, bookType: targetBookType },
       });
     }
   };
@@ -93,11 +93,9 @@ function useContentNavigator() {
       );
       return;
     }
-    await articleRepository.getArticleById(id, article => {
+    await bookPagesRepository.getPageById(id, page => {
       return new Promise(resolve => {
-        redirect(currentBookType, article.bookType, article.chapter).then(
-          resolve,
-        );
+        redirect(currentBookType, page.bookType, page.chapter).then(resolve);
       });
     });
   };

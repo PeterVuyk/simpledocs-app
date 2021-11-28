@@ -1,8 +1,8 @@
 import React, { FC, useCallback, useEffect, useState } from 'react';
 import { Image, SectionList, StyleSheet, View } from 'react-native';
 import { useIsFocused } from '@react-navigation/native';
-import articleRepository from '../../database/repository/articleRepository';
-import { ArticleChapter } from '../../model/articles/ArticleChapter';
+import bookPagesRepository from '../../database/repository/bookPagesRepository';
+import { InfoBookPage } from '../../model/bookPages/InfoBookPage';
 import ListItem from '../../components/listItem/ListItem';
 import configHelper from '../../helper/configHelper';
 import TitleBar from '../../components/titleBar/TitleBar';
@@ -28,7 +28,7 @@ const styles = StyleSheet.create({
 interface Sections {
   bookTitle: string;
   bookType: string;
-  data: ArticleChapter[];
+  data: InfoBookPage[];
 }
 
 const BookmarkScreen: FC = () => {
@@ -36,7 +36,7 @@ const BookmarkScreen: FC = () => {
   const isFocused = useIsFocused();
   const { navigateToChapter } = useContentNavigator();
 
-  const mapSections = useCallback(async (chapters: ArticleChapter[]) => {
+  const mapSections = useCallback(async (chapters: InfoBookPage[]) => {
     const bookTypes = await configHelper.getBookTypes();
     const mappedSections = bookTypes
       .map(bookType => {
@@ -51,14 +51,14 @@ const BookmarkScreen: FC = () => {
   }, []);
 
   const loadBookmarks = useCallback(() => {
-    articleRepository.getBookmarkedChapters(mapSections);
+    bookPagesRepository.getBookmarkedChapters(mapSections);
   }, [mapSections]);
 
   useEffect(() => {
     let isMounted = true;
     if (isFocused) {
-      articleRepository.getBookmarkedChapters(
-        async (chapters: ArticleChapter[]) => {
+      bookPagesRepository.getBookmarkedChapters(
+        async (chapters: InfoBookPage[]) => {
           if (isMounted) {
             mapSections(chapters);
           }
@@ -72,8 +72,8 @@ const BookmarkScreen: FC = () => {
   }, [isFocused, mapSections]);
 
   const renderItem = useCallback(
-    (item: ArticleChapter) => (
-      <SwipeableToggleBookmark articleChapter={item} onToggle={loadBookmarks}>
+    (item: InfoBookPage) => (
+      <SwipeableToggleBookmark infoBookPage={item} onToggle={loadBookmarks}>
         <ListItem
           title={item.title}
           subTitle={item.subTitle}
@@ -81,7 +81,7 @@ const BookmarkScreen: FC = () => {
           bookmarked={false}
           onSubmit={() =>
             navigateToChapter(
-              { articleChapter: item.chapter, bookType: item.bookType },
+              { bookPageChapter: item.chapter, bookType: item.bookType },
               item.bookType,
             )
           }
