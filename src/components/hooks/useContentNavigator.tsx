@@ -57,27 +57,27 @@ function useContentNavigator() {
     if (targetTab === SECOND_BOOK_TAB) {
       if (currentTab === SECOND_BOOK_TAB) {
         navigation.push('SecondBookTabDetailsScreen', {
-          infoBookPage: chapter,
+          bookPageChapter: chapter,
           bookType: targetBookType,
         });
         return;
       }
       navigation.navigate('SecondBookTabStack', {
         screen: 'SecondBookTabDetailsScreen',
-        params: { infoBookPage: chapter, bookType: targetBookType },
+        params: { bookPageChapter: chapter, bookType: targetBookType },
       });
     }
     if (targetTab === FIRST_BOOK_TAB) {
       if (currentTab === FIRST_BOOK_TAB) {
         navigation.push('FirstBookTabDetailsScreen', {
-          infoBookPage: chapter,
+          bookPageChapter: chapter,
           bookType: targetBookType,
         });
         return;
       }
       navigation.navigate('FirstBookTabStack', {
         screen: 'FirstBookTabDetailsScreen',
-        params: { infoBookPage: chapter, bookType: targetBookType },
+        params: { bookPageChapter: chapter, bookType: targetBookType },
       });
     }
   };

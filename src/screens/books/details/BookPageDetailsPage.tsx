@@ -64,6 +64,7 @@ const BookPageDetailsPage: FC<Props> = ({
         windowSize={3}
         onMomentumScrollEnd={onScrollEnd}
         data={infoBookPages}
+        extraData={infoBookPages}
         initialScrollIndex={infoBookPages
           .map(value => value.chapter)
           .indexOf(currentChapter)}

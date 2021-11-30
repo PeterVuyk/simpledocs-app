@@ -79,6 +79,7 @@ const BookChapterNavigator: FC<Props> = ({
         horizontal
         bounces={false}
         showsHorizontalScrollIndicator={false}
+        extraData={infoBookPages}
         data={infoBookPages}
         getItemLayout={(data, index) => {
           return {

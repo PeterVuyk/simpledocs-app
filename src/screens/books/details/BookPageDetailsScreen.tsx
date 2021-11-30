@@ -1,5 +1,5 @@
 import React, { FC, useEffect, useState } from 'react';
-import { RouteProp } from '@react-navigation/native';
+import {RouteProp, useIsFocused} from '@react-navigation/native';
 import { DrawerNavigationHelpers } from '@react-navigation/drawer/lib/typescript/src/types';
 import bookPagesRepository from '../../../database/repository/bookPagesRepository';
 import { InfoBookPage } from '../../../model/bookPages/InfoBookPage';
@@ -11,7 +11,7 @@ interface Props {
   route: RouteProp<
     {
       params: {
-        infoBookPage: string;
+        bookPageChapter: string;
         bookType: string;
       };
     },
@@ -21,11 +21,22 @@ interface Props {
 
 const BookPageDetailsScreen: FC<Props> = ({ navigation, route }) => {
   const [chapters, setChapters] = useState<InfoBookPage[]>([]);
-  const { infoBookPage, bookType } = route.params;
+  const { bookPageChapter, bookType } = route.params;
+  const isFocused = useIsFocused();
 
   useEffect(() => {
-    bookPagesRepository.getChapters(bookType, setChapters);
-  }, [bookType, navigation]);
+    let isMounted = true;
+    bookPagesRepository.getChapters(bookType, pages => {
+      if (isMounted) {
+        setChapters(pages);
+      }
+    });
+    // trigger also on is focused to make sure that the chapters are reloaded.
+    // Important if a page is bookmarked then it need to be updated in the detail page as well.
+    return () => {
+      isMounted = false;
+    };
+  }, [isFocused, bookType, navigation]);
 
   return (
     <>
@@ -33,7 +44,7 @@ const BookPageDetailsScreen: FC<Props> = ({ navigation, route }) => {
         <DimensionsProvider
           children={window => (
             <BookPageDetails
-              bookPageChapter={infoBookPage}
+              bookPageChapter={bookPageChapter}
               bookType={bookType}
               infoBookPages={chapters}
               windowWidth={window}

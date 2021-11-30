@@ -22,6 +22,7 @@
       "bundleIdentifier": "com.petervuyk.ambulancezorgapp"
     },
     "android": {
+      "allowBackup": false,
       "versionCode": 1,
       "package": "com.petervuyk.ambulancezorgapp",
       "permissions": ["WRITE_EXTERNAL_STORAGE", "WRITE_EXTERNAL_STORAGE"],
