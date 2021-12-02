@@ -3,14 +3,14 @@ import { Text, View, StyleSheet, Keyboard } from 'react-native';
 import globalStyle from '../../styling/globalStyle';
 
 const styles = StyleSheet.create({
-  tabContainer: {
+  container: {
     backgroundColor: globalStyle.color.white,
     margin: 20,
   },
   headerTitle: {
     ...globalStyle.typography.h1,
     textAlign: 'center',
-    color: globalStyle.color.primary.main,
+    color: globalStyle.titleLayout.color,
     alignSelf: 'center',
   },
   headerSubTitle: {
@@ -27,7 +27,7 @@ interface Props {
 
 const TitleBar: FC<Props> = ({ title, subTitle }) => {
   return (
-    <View onTouchStart={Keyboard.dismiss} style={styles.tabContainer}>
+    <View onTouchStart={Keyboard.dismiss} style={styles.container}>
       <Text style={styles.headerTitle}>{title}</Text>
       {subTitle !== undefined && (
         <Text style={styles.headerSubTitle}>{subTitle}</Text>

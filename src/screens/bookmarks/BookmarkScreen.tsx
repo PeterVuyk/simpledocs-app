@@ -12,7 +12,7 @@ import globalStyle from '../../styling/globalStyle';
 import SwipeableToggleBookmark from '../../components/bookmarks/SwipeableToggleBookmark';
 
 const styles = StyleSheet.create({
-  tabContainer: {
+  container: {
     backgroundColor: globalStyle.color.white,
     marginBottom: 60,
     flex: 1,
@@ -96,7 +96,7 @@ const BookmarkScreen: FC = () => {
   };
 
   return (
-    <View style={styles.tabContainer}>
+    <View style={styles.container}>
       {sections.length === 0 && (
         <>
           <Image

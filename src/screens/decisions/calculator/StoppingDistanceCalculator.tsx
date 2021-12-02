@@ -4,7 +4,7 @@ import { TextInput } from 'react-native-paper';
 import globalStyle from '../../../styling/globalStyle';
 
 const styles = StyleSheet.create({
-  tabContainer: {
+  container: {
     margin: 10,
   },
   headerSubTitle: {
@@ -48,7 +48,7 @@ const StoppingDistanceCalculator: FC = () => {
   );
 
   return (
-    <View style={styles.tabContainer}>
+    <View style={styles.container}>
       <Text
         style={[
           {

@@ -8,7 +8,7 @@ import globalStyle from '../../../styling/globalStyle';
 import BookPageListItem from './BookPageListItem';
 
 const styles = StyleSheet.create({
-  tabContainer: {
+  container: {
     flex: 1,
     backgroundColor: globalStyle.color.white,
   },
@@ -62,7 +62,7 @@ const BookPagesList: FC<Props> = ({
   };
 
   return (
-    <View style={styles.tabContainer}>
+    <View style={styles.container}>
       <View style={styles.flatListContainer}>
         <FlatList
           ListHeaderComponent={getHeader}

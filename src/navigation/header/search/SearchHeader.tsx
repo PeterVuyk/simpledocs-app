@@ -6,7 +6,7 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import globalStyle from '../../../styling/globalStyle';
 
 const styles = StyleSheet.create({
-  tabContainer: { flex: 1, backgroundColor: globalStyle.color.white },
+  headerContainer: { flex: 1, backgroundColor: globalStyle.color.white },
   searchInputContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -15,7 +15,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.1,
     shadowRadius: 3,
     elevation: 2,
-    backgroundColor: globalStyle.color.white,
+    backgroundColor: globalStyle.header.backgroundColor,
     alignItems: 'center',
   },
 });
@@ -43,9 +43,9 @@ const SearchHeader: FC<Props> = ({
   }, [isFocused, searchRef]);
 
   return (
-    <SafeAreaView style={styles.tabContainer}>
+    <SafeAreaView style={styles.headerContainer}>
       <View style={styles.searchInputContainer}>
-        <View style={styles.tabContainer}>
+        <View style={{ flex: 1 }}>
           <SearchBar
             ref={search => {
               searchRef = search;

@@ -11,7 +11,7 @@ import HeaderLogo from './HeaderLogo';
 import globalStyle from '../../styling/globalStyle';
 
 export const headerStyles = StyleSheet.create({
-  tabContainer: {
+  headerContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     paddingTop: 40,
@@ -20,7 +20,7 @@ export const headerStyles = StyleSheet.create({
     shadowOpacity: 0.1,
     shadowRadius: 3,
     elevation: 2,
-    backgroundColor: globalStyle.color.white,
+    backgroundColor: globalStyle.header.backgroundColor,
     alignItems: 'center',
   },
   rightContainer: {
@@ -39,7 +39,7 @@ const Header: FC<Props> = ({ navigation }) => {
   const navigator = useNavigation<StackNavigationProp<any>>();
 
   return (
-    <SafeAreaView style={headerStyles.tabContainer}>
+    <SafeAreaView style={headerStyles.headerContainer}>
       {Platform.OS === 'ios' && navigator.canGoBack() && (
         <HeaderBackButton onPress={navigator.goBack} />
       )}

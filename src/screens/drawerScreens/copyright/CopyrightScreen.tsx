@@ -7,7 +7,7 @@ import DrawerScreen from '../DrawerScreen';
 import globalStyle from '../../../styling/globalStyle';
 
 const styles = StyleSheet.create({
-  tabContainer: {
+  container: {
     flex: 1,
     backgroundColor: globalStyle.color.white,
     marginBottom: 60,
@@ -26,7 +26,7 @@ const CopyrightScreen: FC<Props> = ({ navigation, appConfigurations }) => {
       navigation={navigation}
       showHeader
     >
-      <View style={styles.tabContainer}>
+      <View style={styles.container}>
         <TitleBar
           title="Auteursrechten"
           subTitle="Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur,

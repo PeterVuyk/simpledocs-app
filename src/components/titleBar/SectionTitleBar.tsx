@@ -3,7 +3,7 @@ import { Text, View, StyleSheet } from 'react-native';
 import globalStyle from '../../styling/globalStyle';
 
 const styles = StyleSheet.create({
-  tabContainer: {
+  container: {
     backgroundColor: globalStyle.color.white,
   },
   headerTitle: {
@@ -19,7 +19,7 @@ interface Props {
 
 const SectionTitleBar: FC<Props> = ({ title }) => {
   return (
-    <View style={styles.tabContainer}>
+    <View style={styles.container}>
       <Text style={styles.headerTitle}>{title}:</Text>
     </View>
   );

@@ -14,3 +14,8 @@ web-build/
 # macOS
 .DS_Store
 .idea/
+
+assets/adaptive-icon.png
+assets/company-logo.png
+assets/icon.png
+assets/splash.png

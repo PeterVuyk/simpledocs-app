@@ -19,7 +19,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     padding: 15,
   },
-  tabContainer: {
+  container: {
     backgroundColor: globalStyle.color.white,
     flex: 1,
   },
@@ -97,7 +97,7 @@ const DecisionTreeScreen: FC<Props> = ({ title, navigation }) => {
   };
 
   return (
-    <View style={styles.tabContainer}>
+    <View style={styles.container}>
       {decisionTreeSteps.length !== 0 && (
         <View style={styles.contentContainerStyle}>
           <Text style={styles.question}>{currentStep?.label}</Text>

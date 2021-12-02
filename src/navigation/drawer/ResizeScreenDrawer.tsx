@@ -4,7 +4,7 @@ import { StyleSheet } from 'react-native';
 import { useDrawerProgress } from '@react-navigation/drawer';
 
 const styles = StyleSheet.create({
-  tabContainer: { flex: 1, overflow: 'hidden' },
+  container: { flex: 1, overflow: 'hidden' },
 });
 
 interface Props {
@@ -29,7 +29,7 @@ const ResizeScreenDrawer: FC<Props> = ({ children }) => {
   const animatedStyle = { borderRadius, transform: [{ scale }] };
 
   return (
-    <Animated.View style={[styles.tabContainer, animatedStyle]}>
+    <Animated.View style={[styles.container, animatedStyle]}>
       {children}
     </Animated.View>
   );

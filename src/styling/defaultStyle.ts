@@ -35,6 +35,12 @@ const defaultStyle = {
   bottomTabLayout: {
     tabSelection: '#fff',
   },
+  titleLayout: {
+    color: '#154594',
+  },
+  header: {
+    backgroundColor: '#E5E5EA',
+  },
 };
 
 export default defaultStyle;

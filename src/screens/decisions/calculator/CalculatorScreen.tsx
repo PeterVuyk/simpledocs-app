@@ -14,7 +14,7 @@ import ContentViewer from '../../../components/viewer/ContentViewer';
 import globalStyle from '../../../styling/globalStyle';
 
 const styles = StyleSheet.create({
-  tabContainer: {
+  container: {
     flex: 1,
     backgroundColor: globalStyle.color.white,
   },
@@ -36,7 +36,7 @@ const CalculatorScreen: FC<Props> = ({ title }) => {
     return null;
   }
   return (
-    <ScrollView style={styles.tabContainer}>
+    <ScrollView style={styles.container}>
       <KeyboardAwareView>
         <TitleBar
           title={calculationInfo.title}

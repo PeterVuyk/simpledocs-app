@@ -1,6 +1,6 @@
 import { FontWeight } from '../model/style/FontWeight';
 
-const academieVoorAmbulancezorg = {
+const academieVoorAmbulancezorgStyle = {
   color: {
     white: '#fff',
     primary: {
@@ -13,9 +13,6 @@ const academieVoorAmbulancezorg = {
       main: '#b7b7b7',
       dark: '#616161',
       rgbDark: 'rgba(97, 97, 97, 1)',
-    },
-    brandColor: {
-      secondary: '#FFEA00',
     },
   },
   typography: {
@@ -38,6 +35,12 @@ const academieVoorAmbulancezorg = {
   bottomTabLayout: {
     tabSelection: '#FFEA00',
   },
+  titleLayout: {
+    color: '#E50060',
+  },
+  header: {
+    backgroundColor: '#E5E5EA',
+  },
 };
 
-export default academieVoorAmbulancezorg;
+export default academieVoorAmbulancezorgStyle;

@@ -12,7 +12,7 @@ import {
 import globalStyle from '../../styling/globalStyle';
 
 const styles = StyleSheet.create({
-  tabContainer: {
+  container: {
     flex: 1,
     backgroundColor: globalStyle.color.white,
   },
@@ -78,7 +78,7 @@ const BooksOverviewScreen: FC<Props> = ({ navigation, route }) => {
   };
 
   return (
-    <View style={styles.tabContainer}>
+    <View style={styles.container}>
       <View style={styles.flatListContainer}>
         <FlatList
           ListHeaderComponent={getHeader}
