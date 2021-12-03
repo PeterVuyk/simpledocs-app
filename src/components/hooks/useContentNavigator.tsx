@@ -5,7 +5,7 @@ import { FIRST_BOOK_TAB, SECOND_BOOK_TAB } from '../../model/BottomTab';
 import logger from '../../util/logger';
 import bookPagesRepository from '../../database/repository/bookPagesRepository';
 
-export const BLANK_WEBPAGE = 'https://page-blank.firebaseapp.com/';
+export const BLANK_WEBPAGE = 'https://linkpage.web.app/';
 
 const getIdFromUrl = (url: string): string | null => {
   const path = url.split('/');

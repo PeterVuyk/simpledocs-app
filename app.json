@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "ambulancezorg-app",
-    "slug": "ambulancezorg-app",
+    "name": "simpledocs",
+    "slug": "simpledocs",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -19,12 +19,12 @@
     "ios": {
       "supportsTablet": true,
       "requireFullScreen": true,
-      "bundleIdentifier": "com.petervuyk.ambulancezorgapp"
+      "bundleIdentifier": "eu.simpledocs.app"
     },
     "android": {
       "allowBackup": false,
       "versionCode": 1,
-      "package": "com.petervuyk.ambulancezorgapp",
+      "package": "eu.simpledocs.app",
       "permissions": ["WRITE_EXTERNAL_STORAGE", "WRITE_EXTERNAL_STORAGE"],
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",

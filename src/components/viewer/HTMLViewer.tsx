@@ -45,8 +45,8 @@ const HTMLViewer: FC<Props> = ({ htmlFile, bookType }) => {
    * loading the page from the links href, once a while it will attempt to load the page anyway. So in addition:
    * - We hide the webview component while switching to the next screen.
    * - We use http:// instead of app:// to avoid UNKNOWN_URL_SCHEME (Webview doesn't work well with 'unofficial' URI schemes
-   * - We use our own url with a blank-page instead of a local url to avoid ERR_CONNECTION_REFUSED
-   * (e.g. <a href="https://page-blank.firebaseapp.com/<bookType>/1.1">1.1</a> navigate to chapter 1.1)
+   * - We use our own url with a blank page instead of a local url to avoid ERR_CONNECTION_REFUSED
+   * (e.g. <a href="https://linkpage.web.app/<id>">1.1</a> navigate to chapter 1.1)
    *
    * If the user returns to this page the useEffect hook will enable the webview component whereupon the html file is loaded again.
    */
