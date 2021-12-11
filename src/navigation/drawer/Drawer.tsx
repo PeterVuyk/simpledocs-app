@@ -9,6 +9,7 @@ import CopyrightScreen from '../../screens/drawerScreens/copyright/CopyrightScre
 import AboutUsScreen from '../../screens/drawerScreens/about/AboutUsScreen';
 import globalStyle from '../../styling/globalStyle';
 import SearchScreen from '../../screens/drawerScreens/search/SearchScreen';
+import BackPressListener from '../BackPressListener';
 
 const DrawerNavigator = createDrawerNavigator();
 
@@ -28,59 +29,61 @@ const Drawer: FC = () => {
 
   return (
     <NavigationContainer>
-      <DrawerNavigator.Navigator
-        screenOptions={{
-          headerShown: false,
-          drawerType: 'slide',
-          drawerStyle: { backgroundColor: globalStyle.color.white },
-          overlayColor: 'transparant',
-          lazy: true,
-          drawerActiveBackgroundColor: globalStyle.color.white,
-          sceneContainerStyle: { backgroundColor: globalStyle.color.white },
-        }}
-        initialRouteName="tabs"
-        drawerContent={props => {
-          return (
-            <DrawerContent
-              appConfigurations={appConfigurations}
-              navigation={props.navigation}
-            />
-          );
-        }}
-      >
-        <DrawerNavigator.Screen name="tabs">
-          {props => (
-            <TabNavigation
-              navigation={props.navigation}
-              appConfigurations={appConfigurations}
-            />
-          )}
-        </DrawerNavigator.Screen>
-        <DrawerNavigator.Screen name="CopyrightScreen">
-          {props => (
-            <CopyrightScreen
-              appConfigurations={appConfigurations}
-              navigation={props.navigation}
-            />
-          )}
-        </DrawerNavigator.Screen>
-        <DrawerNavigator.Screen name="SearchScreen">
-          {props => (
-            <SearchScreen
-              navigation={props.navigation}
-              appConfigurations={appConfigurations}
-            />
-          )}
-        </DrawerNavigator.Screen>
-        <DrawerNavigator.Screen name="AboutUsScreen">
-          {props => (
-            <AboutUsScreen
-              navigation={props.navigation}
-              appConfigurations={appConfigurations}
-            />
-          )}
-        </DrawerNavigator.Screen>
-      </DrawerNavigator.Navigator>
+      <BackPressListener>
+        <DrawerNavigator.Navigator
+          screenOptions={{
+            headerShown: false,
+            drawerType: 'slide',
+            drawerStyle: { backgroundColor: globalStyle.color.white },
+            overlayColor: 'transparant',
+            lazy: true,
+            drawerActiveBackgroundColor: globalStyle.color.white,
+            sceneContainerStyle: { backgroundColor: globalStyle.color.white },
+          }}
+          initialRouteName="tabs"
+          drawerContent={props => {
+            return (
+              <DrawerContent
+                appConfigurations={appConfigurations}
+                navigation={props.navigation}
+              />
+            );
+          }}
+        >
+          <DrawerNavigator.Screen name="tabs">
+            {props => (
+              <TabNavigation
+                navigation={props.navigation}
+                appConfigurations={appConfigurations}
+              />
+            )}
+          </DrawerNavigator.Screen>
+          <DrawerNavigator.Screen name="CopyrightScreen">
+            {props => (
+              <CopyrightScreen
+                appConfigurations={appConfigurations}
+                navigation={props.navigation}
+              />
+            )}
+          </DrawerNavigator.Screen>
+          <DrawerNavigator.Screen name="SearchScreen">
+            {props => (
+              <SearchScreen
+                navigation={props.navigation}
+                appConfigurations={appConfigurations}
+              />
+            )}
+          </DrawerNavigator.Screen>
+          <DrawerNavigator.Screen name="AboutUsScreen">
+            {props => (
+              <AboutUsScreen
+                navigation={props.navigation}
+                appConfigurations={appConfigurations}
+              />
+            )}
+          </DrawerNavigator.Screen>
+        </DrawerNavigator.Navigator>
+      </BackPressListener>
     </NavigationContainer>
   );
 };

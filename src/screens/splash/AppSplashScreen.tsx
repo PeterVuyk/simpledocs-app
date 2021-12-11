@@ -16,6 +16,7 @@ import {
   updateStartupState,
 } from '../../redux/slice/startupStateSlice';
 import InternetSuggestedNotification from '../../components/notification/InternetSuggestedNotification';
+import BackPressListener from '../../navigation/BackPressListener';
 
 const AppSplashScreen: FC = () => {
   const [appIsReady, setAppReady] = useState<boolean | null>(null);
@@ -84,19 +85,14 @@ const AppSplashScreen: FC = () => {
     );
   }
 
-  if (!loading) {
-    return (
-      <View style={{ flex: 1 }} onLayout={onLayoutRootView}>
+  return (
+    <View style={{ flex: 1 }} onLayout={onLayoutRootView}>
+      {loading && <IntentSplashScreen />}
+      {!loading && (
         <InternetSuggestedNotification>
           <Drawer />
         </InternetSuggestedNotification>
-      </View>
-    );
-  }
-
-  return (
-    <View style={{ flex: 1 }} onLayout={onLayoutRootView}>
-      <IntentSplashScreen />
+      )}
     </View>
   );
 };

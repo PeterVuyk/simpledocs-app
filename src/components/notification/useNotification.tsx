@@ -31,6 +31,7 @@ const useNotification = () => {
         },
         { text: 'OK', onPress: () => null },
       ],
+      { cancelable: true },
     );
   }, []);
 
@@ -46,6 +47,7 @@ const useNotification = () => {
         },
         { text: 'OK', onPress: () => null },
       ],
+      { cancelable: true },
     );
   }, []);
 

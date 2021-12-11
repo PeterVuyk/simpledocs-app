@@ -42,11 +42,7 @@ const TabNavigation: FC<Props> = ({ navigation, appConfigurations }) => {
       >
         <Tab.Screen
           name="BookmarkTabStack"
-          children={() => (
-            <BookmarksStackNavigator
-              bookTabInfo={appConfigurations.firstBookTab}
-            />
-          )}
+          children={() => <BookmarksStackNavigator />}
           options={{
             title: 'Favorieten',
             icon: 'bookmark-check',

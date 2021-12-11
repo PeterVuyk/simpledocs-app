@@ -47,7 +47,7 @@ if (!global.atob) {
 Bugsnag.start({
   releaseStage: environment.getEnvironment().envName,
   appVersion: Constants.manifest?.version ?? 'unknown-version',
-  metadata: { company: Constants.manifest?.name ?? 'unknown-app' },
+  metadata: { customer: environment.getEnvironment().customer },
 });
 
 const App: FC = () => {
