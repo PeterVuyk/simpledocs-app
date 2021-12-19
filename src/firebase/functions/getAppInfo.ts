@@ -14,7 +14,7 @@ LogBox.ignoreLogs([
 
 async function getAppInfo(versioning: Versions | undefined): Promise<AppInfo> {
   const response = await Firebase.functions(process.env.FIREBASE_REGION)
-    .httpsCallable('getAppInfo')({
+    .httpsCallable('appApi-getAppInfo')({
       environment: environment.getEnvironment().envName,
       appVersion: Constants.manifest?.version,
       versioning,
