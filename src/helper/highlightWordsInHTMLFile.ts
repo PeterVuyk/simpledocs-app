@@ -5,7 +5,7 @@ const allIndexOf = (text: string, textToHighlight: string): number[] => {
     pos !== -1;
     pos = text.indexOf(textToHighlight, pos + 1)
   ) {
-    if (pos >= text.indexOf('<article>') + 9) {
+    if (pos >= text.indexOf('<body>') + 6) {
       indices.push(pos);
     }
   }
