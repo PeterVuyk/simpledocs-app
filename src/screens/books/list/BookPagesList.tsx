@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, useCallback } from 'react';
 import { FlatList, StyleSheet, View } from 'react-native';
 import { DrawerNavigationProp } from '@react-navigation/drawer/lib/typescript/src/types';
 import { InfoBookPage } from '../../../model/bookPages/InfoBookPage';
@@ -61,6 +61,24 @@ const BookPagesList: FC<Props> = ({
     );
   };
 
+  const bookPageListItem = useCallback(
+    (item: InfoBookPage) => {
+      return (
+        <View key={item.id}>
+          <BookPageListItem
+            showChapterDivisions={showChapterDivisions}
+            infoBookPage={item}
+            infoBookPages={InfoBookPages}
+            navigation={navigation}
+            onReloadPages={onReloadPages}
+            bookType={bookType}
+          />
+        </View>
+      );
+    },
+    [InfoBookPages, bookType, navigation, onReloadPages, showChapterDivisions],
+  );
+
   return (
     <View style={styles.container}>
       <View style={styles.flatListContainer}>
@@ -69,16 +87,7 @@ const BookPagesList: FC<Props> = ({
           keyExtractor={item => item.chapter.toString()}
           extraData={getChapters()}
           data={getChapters()}
-          renderItem={({ item }) => (
-            <BookPageListItem
-              showChapterDivisions={showChapterDivisions}
-              infoBookPage={item}
-              infoBookPages={InfoBookPages}
-              navigation={navigation}
-              onReloadPages={onReloadPages}
-              bookType={bookType}
-            />
-          )}
+          renderItem={({ item }) => bookPageListItem(item)}
         />
       </View>
     </View>

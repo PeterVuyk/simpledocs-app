@@ -35,7 +35,11 @@ const BookChapterNavigator: FC<Props> = ({
     const maxCharacters = Math.max(
       ...infoBookPages.map(value => value.chapter.length),
     );
-    return getWidth('W'.repeat(maxCharacters), { bold: true, size: 16 }) + 5;
+
+    return (
+      getWidth('W'.repeat(maxCharacters), { bold: true, size: 16 }) +
+      (maxCharacters < 5 ? 10 : 0)
+    );
   }, [infoBookPages]);
 
   useEffect(() => {
@@ -55,13 +59,15 @@ const BookChapterNavigator: FC<Props> = ({
   const renderItem = useCallback(
     (item: InfoBookPage) => {
       return (
-        <NavigatorChip
-          id={item.chapter}
-          title={item.chapter}
-          isSelected={item.chapter === currentChapter}
-          onPress={onPageChange}
-          width={chipWidth}
-        />
+        <View key={item.id}>
+          <NavigatorChip
+            id={item.chapter}
+            title={item.chapter}
+            isSelected={item.chapter === currentChapter}
+            onPress={onPageChange}
+            width={chipWidth}
+          />
+        </View>
       );
     },
     [chipWidth, currentChapter, onPageChange],
@@ -95,4 +101,4 @@ const BookChapterNavigator: FC<Props> = ({
   );
 };
 
-export default BookChapterNavigator;
+export default React.memo(BookChapterNavigator);

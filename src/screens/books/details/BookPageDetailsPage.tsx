@@ -39,7 +39,7 @@ const BookPageDetailsPage: FC<Props> = ({
 
   const renderItem = useCallback(
     (infoBookPage: InfoBookPage) => (
-      <View style={{ width: windowWidth.width, flex: 1 }}>
+      <View key={infoBookPage.id} style={{ width: windowWidth.width, flex: 1 }}>
         <BookPageDetailItem
           bookPageChapter={infoBookPage.chapter}
           bookType={bookType}
@@ -80,4 +80,4 @@ const BookPageDetailsPage: FC<Props> = ({
   );
 };
 
-export default BookPageDetailsPage;
+export default React.memo(BookPageDetailsPage);

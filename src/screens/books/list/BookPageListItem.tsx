@@ -109,4 +109,4 @@ const BookPageListItem: FC<Props> = ({
   );
 };
 
-export default BookPageListItem;
+export default React.memo(BookPageListItem);

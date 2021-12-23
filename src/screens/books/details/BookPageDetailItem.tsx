@@ -97,4 +97,4 @@ const BookPageDetailItem: FC<Props> = ({ bookPageChapter, bookType }) => {
   );
 };
 
-export default BookPageDetailItem;
+export default React.memo(BookPageDetailItem);

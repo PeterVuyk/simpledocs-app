@@ -77,4 +77,4 @@ const BookPageDetails: FC<Props> = ({
   );
 };
 
-export default BookPageDetails;
+export default React.memo(BookPageDetails);
