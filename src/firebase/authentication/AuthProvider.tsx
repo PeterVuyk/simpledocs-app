@@ -7,6 +7,7 @@ import {
   AUTHENTICATE_STATE,
   INIT_DATABASE_STATE,
   INTERNET_REQUIRED_STATE,
+  setIsFirstStartup,
   STARTUP_FAILURE_STATE,
   updateStartupState,
 } from '../../redux/slice/startupStateSlice';
@@ -43,6 +44,7 @@ const AuthProvider: FC<Props> = ({ children }) => {
         dispatch(updateStartupState(INIT_DATABASE_STATE));
         return;
       }
+      dispatch(setIsFirstStartup(true));
       signIn();
     });
   }, [currentStartupState, dispatch, signIn]);

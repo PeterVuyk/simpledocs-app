@@ -16,13 +16,12 @@ import {
   updateStartupState,
 } from '../../redux/slice/startupStateSlice';
 import InternetSuggestedNotification from '../../components/notification/InternetSuggestedNotification';
-import BackPressListener from '../../navigation/BackPressListener';
 
 const AppSplashScreen: FC = () => {
   const [appIsReady, setAppReady] = useState<boolean | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
-  const currentStartupState = useAppSelector(
-    state => state.startupState.currentState,
+  const { currentState, firstStartupApp } = useAppSelector(
+    state => state.startupState,
   );
   const dispatch = useAppDispatch();
 
@@ -44,11 +43,9 @@ const AppSplashScreen: FC = () => {
 
   useEffect(() => {
     setLoading(
-      ![STARTUP_SUCCESSFUL_STATE, STARTUP_FAILURE_STATE].includes(
-        currentStartupState,
-      ),
+      ![STARTUP_SUCCESSFUL_STATE, STARTUP_FAILURE_STATE].includes(currentState),
     );
-  }, [currentStartupState]);
+  }, [currentState]);
 
   const onLayoutRootView = useCallback(async () => {
     if (appIsReady) {
@@ -61,11 +58,11 @@ const AppSplashScreen: FC = () => {
     }
   }, [appIsReady]);
 
-  if (!appIsReady) {
+  if (!appIsReady || currentState === AUTHENTICATE_STATE) {
     return null;
   }
 
-  if (currentStartupState === INTERNET_REQUIRED_STATE) {
+  if (currentState === INTERNET_REQUIRED_STATE) {
     return (
       <View style={{ flex: 1 }} onLayout={onLayoutRootView}>
         <NoInternetConnectionOverlay
@@ -77,7 +74,7 @@ const AppSplashScreen: FC = () => {
     );
   }
 
-  if (currentStartupState === STARTUP_FAILURE_STATE) {
+  if (currentState === STARTUP_FAILURE_STATE) {
     return (
       <View style={{ flex: 1 }} onLayout={onLayoutRootView}>
         <InitializationAppFailureOverlay />
@@ -87,7 +84,7 @@ const AppSplashScreen: FC = () => {
 
   return (
     <View style={{ flex: 1 }} onLayout={onLayoutRootView}>
-      {loading && <IntentSplashScreen />}
+      {loading && <IntentSplashScreen firstStartupApp={firstStartupApp} />}
       {!loading && (
         <InternetSuggestedNotification>
           <Drawer />

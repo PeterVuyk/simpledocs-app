@@ -18,11 +18,13 @@ export type StartupState =
   | 'startupSuccessful';
 
 interface StartupStateApp {
+  firstStartupApp: boolean;
   currentState: StartupState;
   retriesOnFailure: number;
 }
 
 const initialState: StartupStateApp = {
+  firstStartupApp: false,
   currentState: AUTHENTICATE_STATE,
   retriesOnFailure: 0,
 };
@@ -46,8 +48,12 @@ const startupStateSlice = createSlice({
     updateStartupState(state, action: PayloadAction<StartupState>) {
       state.currentState = action.payload;
     },
+    setIsFirstStartup(state, action: PayloadAction<boolean>) {
+      state.firstStartupApp = action.payload;
+    },
   },
 });
 
-export const { retryOnFailure, updateStartupState } = startupStateSlice.actions;
+export const { retryOnFailure, updateStartupState, setIsFirstStartup } =
+  startupStateSlice.actions;
 export default startupStateSlice.reducer;

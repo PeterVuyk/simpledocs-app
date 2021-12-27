@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import ContentLoader, { Rect } from 'react-content-loader/native';
-import { Platform, SafeAreaView, StyleSheet, View } from 'react-native';
-import { Icon } from 'native-base';
+import { Platform, SafeAreaView, StyleSheet, View, Text } from 'react-native';
+import { Icon, Spinner } from 'native-base';
 import HeaderLogo from '../../navigation/header/HeaderLogo';
 import DrawerButton from '../../navigation/header/DrawerButton';
 import SearchButton from '../../navigation/header/search/SearchButton';
@@ -17,9 +17,21 @@ const styles = StyleSheet.create({
     right: 0,
     bottom: 0,
   },
+  firstStartupText: {
+    color: globalStyle.titleLayout.color,
+    ...globalStyle.typography.h3,
+    padding: 20,
+    paddingTop: 150,
+    alignSelf: 'center',
+    textAlign: 'center',
+  },
 });
 
-const IntentSplashScreen: FC = React.memo(() => {
+interface Props {
+  firstStartupApp: boolean;
+}
+
+const IntentSplashScreen: FC<Props> = React.memo(({ firstStartupApp }) => {
   const Header = () => {
     return (
       <SafeAreaView style={headerStyles.headerContainer}>
@@ -48,6 +60,17 @@ const IntentSplashScreen: FC = React.memo(() => {
           />
         </View>
       </SafeAreaView>
+    );
+  };
+
+  const FirstStartupLoader = () => {
+    return (
+      <View>
+        <Text style={styles.firstStartupText}>
+          De app wordt voorbereid voor het eerste gebruik...
+        </Text>
+        <Spinner color={globalStyle.color.primary.light} />
+      </View>
     );
   };
 
@@ -91,7 +114,8 @@ const IntentSplashScreen: FC = React.memo(() => {
   return (
     <>
       <Header />
-      <ScreenLoader />
+      {firstStartupApp && <FirstStartupLoader />}
+      {!firstStartupApp && <ScreenLoader />}
       <View style={styles.bottomTabContainer} />
     </>
   );
