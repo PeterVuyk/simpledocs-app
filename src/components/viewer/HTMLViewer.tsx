@@ -75,6 +75,8 @@ const HTMLViewer: FC<Props> = ({ htmlFile, bookType }) => {
       {!loading && (
         <ScrollViewToggleBottomBar pageHeight={webViewHeight ?? 0}>
           <WebView
+            cacheEnabled
+            cacheMode="LOAD_CACHE_ELSE_NETWORK"
             ref={webview}
             allowsFullscreenVideo
             originWhitelist={['https://*']}
