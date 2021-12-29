@@ -20,4 +20,17 @@ const Firebase =
     ? firebase.initializeApp(firebaseConfig)
     : firebase.app();
 
+// Below works, but due to a bug it could break by a future update of firebase. In that case read: https://github.com/firebase/firebase-tools/issues/3519#issuecomment-865173539
+if (
+  process.env.NODE_ENV === 'development' &&
+  process.env.DEVELOPMENT_USE_LOCAL_FUNCTIONS === 'true'
+) {
+  firebase
+    .app()
+    .functions(process.env.FIREBASE_REGION)
+    .useEmulator('10.0.2.2', 5001);
+}
+
+export const functions = firebase.app().functions(process.env.FIREBASE_REGION);
+
 export default Firebase;

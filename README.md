@@ -30,6 +30,10 @@ Then start the project, in the project directory, you can run:
 
 It starts a webpage with instructions how to develop the app in the development mode.
 
+If you would like to test the app with the API locally, update the environment variable
+`DEVELOPMENT_USE_LOCAL_FUNCTIONS` in the .env file to 'true', but make sure you don't
+commit these changes. For more info read the readme in the api project.
+
 ## Channels
 
 The following channels are available:

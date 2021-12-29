@@ -2,7 +2,7 @@ import Constants from 'expo-constants';
 import { LogBox } from 'react-native';
 import { AppInfoResponse, AppInfo } from '../../model/AppInfoResponse';
 import { Versions } from '../../model/configurations/AppConfigurations';
-import Firebase from '../firebase';
+import { functions } from '../firebase';
 import environment from '../../util/environment';
 
 /**
@@ -13,7 +13,7 @@ LogBox.ignoreLogs([
 ]);
 
 async function getAppInfo(versioning: Versions | undefined): Promise<AppInfo> {
-  const response = await Firebase.functions(process.env.FIREBASE_REGION)
+  const response = await functions
     .httpsCallable('appApi-getAppInfo')({
       environment: environment.getEnvironment().envName,
       appVersion: Constants.manifest?.version,
