@@ -14,6 +14,7 @@ import InitDatabaseProvider from './src/database/synchronize/initializeDatabase/
 import AggregateDataProvider from './src/database/synchronize/updateAggregates/AggregateDataProvider';
 import RestoreAppProvider from './src/database/synchronize/restore/RestoreAppProvider';
 import globalStyle from './src/styling/globalStyle';
+import UncaughtErrorHandler from './src/components/UncaughtErrorHandler';
 
 const theme = {
   Chip: {
@@ -55,15 +56,17 @@ const App: FC = () => {
     <PortalProvider>
       <Provider store={store}>
         <ThemeProvider theme={theme}>
-          <AuthProvider>
-            <RestoreAppProvider>
-              <InitDatabaseProvider>
-                <AggregateDataProvider>
-                  <AppSplashScreen />
-                </AggregateDataProvider>
-              </InitDatabaseProvider>
-            </RestoreAppProvider>
-          </AuthProvider>
+          <UncaughtErrorHandler>
+            <AuthProvider>
+              <RestoreAppProvider>
+                <InitDatabaseProvider>
+                  <AggregateDataProvider>
+                    <AppSplashScreen />
+                  </AggregateDataProvider>
+                </InitDatabaseProvider>
+              </RestoreAppProvider>
+            </AuthProvider>
+          </UncaughtErrorHandler>
         </ThemeProvider>
       </Provider>
     </PortalProvider>
