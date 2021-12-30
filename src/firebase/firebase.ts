@@ -1,6 +1,7 @@
-import firebase from 'firebase';
-import 'firebase/functions';
-import 'firebase/storage';
+import firebase from 'firebase/compat/app';
+import 'firebase/compat/functions';
+import 'firebase/compat/auth';
+import 'firebase/compat/storage';
 import { LogBox } from 'react-native';
 
 LogBox.ignoreLogs(['Setting a timer']);
@@ -32,5 +33,6 @@ if (
 }
 
 export const functions = firebase.app().functions(process.env.FIREBASE_REGION);
+export const auth = firebase.auth();
 
 export default Firebase;

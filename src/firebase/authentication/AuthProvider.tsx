@@ -1,5 +1,5 @@
 import React, { FC, ReactNode, useCallback, useEffect } from 'react';
-import Firebase from '../firebase';
+import { auth } from '../firebase';
 import logger from '../../util/logger';
 import internetConnectivity from '../../helper/internetConnectivity';
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
@@ -27,16 +27,14 @@ const AuthProvider: FC<Props> = ({ children }) => {
       dispatch(updateStartupState(INTERNET_REQUIRED_STATE));
       return;
     }
-    Firebase.auth()
-      .signInAnonymously()
-      .catch(error => {
-        logger.error('signing in user as anonymous failed', error.code);
-        dispatch(updateStartupState(STARTUP_FAILURE_STATE));
-      });
+    auth.signInAnonymously().catch(error => {
+      logger.error('signing in user as anonymous failed', error.code);
+      dispatch(updateStartupState(STARTUP_FAILURE_STATE));
+    });
   }, [dispatch]);
 
   useEffect(() => {
-    return Firebase.auth().onAuthStateChanged(async user => {
+    return auth.onAuthStateChanged(async user => {
       if (currentStartupState !== AUTHENTICATE_STATE) {
         return;
       }
