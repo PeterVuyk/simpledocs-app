@@ -22,14 +22,13 @@ interface Props {
 
 const MarkdownViewer: FC<Props> = ({ markdownFile, bookType }) => {
   const [loading, setLoading] = useState<boolean>(false);
-  const isFocused = useIsFocused();
   const { blankWebpage, navigateFromHttpsUrlToChapter } = useContentNavigator();
 
   useEffect(() => {
-    if (loading && !isFocused) {
+    if (loading) {
       setLoading(false);
     }
-  }, [loading, isFocused]);
+  }, [loading]);
 
   const onLinkPress = (url: string) => {
     if (url && url.search(blankWebpage) !== -1) {

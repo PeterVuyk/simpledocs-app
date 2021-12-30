@@ -45,9 +45,7 @@ const ScrollViewToggleBottomBar: FC<Props> = ({ children, pageHeight }) => {
     <ScrollView
       style={{ backgroundColor: globalStyle.color.white }}
       nestedScrollEnabled
-      onScroll={event => {
-        handleScroll(event.nativeEvent.contentOffset.y);
-      }}
+      onScroll={event => handleScroll(event.nativeEvent.contentOffset.y)}
       scrollEventThrottle={1}
       contentContainerStyle={getContentContainerStyle}
     >

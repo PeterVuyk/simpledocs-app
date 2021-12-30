@@ -2,7 +2,6 @@ import React, { createRef, FC, useEffect, useState } from 'react';
 import WebView, { WebViewMessageEvent } from 'react-native-webview';
 import { ShouldStartLoadRequest } from 'react-native-webview/lib/WebViewTypes';
 import { Linking, Platform, View } from 'react-native';
-import { useIsFocused } from '@react-navigation/native';
 import ScrollViewToggleBottomBar from '../ScrollViewToggleBottomBar';
 import useContentNavigator from '../hooks/useContentNavigator';
 import ContentViewLoader from './ContentViewLoader';
@@ -13,17 +12,16 @@ interface Props {
 }
 
 const HTMLViewer: FC<Props> = ({ htmlFile, bookType }) => {
-  const [webViewHeight, setWebViewHeight] = useState<number>(0);
+  const [webViewHeight, setWebViewHeight] = useState<number | undefined>();
   const [loading, setLoading] = useState<boolean>(false);
   const webview = createRef<WebView>();
-  const isFocused = useIsFocused();
   const { blankWebpage, navigateFromHttpsUrlToChapter } = useContentNavigator();
 
   useEffect(() => {
-    if (loading && !isFocused) {
+    if (loading) {
       setLoading(false);
     }
-  }, [loading, isFocused]);
+  }, [loading]);
 
   /**
    * WebView inside a flatlist works fine until you need to scroll horizontally, then the vertical
@@ -73,7 +71,7 @@ const HTMLViewer: FC<Props> = ({ htmlFile, bookType }) => {
   return (
     <View style={{ flex: 1 }}>
       {!loading && (
-        <ScrollViewToggleBottomBar pageHeight={webViewHeight ?? 0}>
+        <ScrollViewToggleBottomBar pageHeight={webViewHeight}>
           <WebView
             cacheEnabled
             cacheMode="LOAD_CACHE_ELSE_NETWORK"

@@ -21,9 +21,10 @@ const BookPageDetails: FC<Props> = ({
   bookType,
   windowWidth,
 }) => {
-  const [currentIndex, setCurrentIndex] = useState<number>();
+  const [currentIndex, setCurrentIndex] = useState<number>(
+    infoBookPages.map(value => value.chapter).indexOf(bookPageChapter),
+  );
   const { notify } = useNotification();
-  const isFocused = useIsFocused();
 
   const handleBookPageNavigation = useCallback(
     (chapter: string) => {
@@ -56,23 +57,19 @@ const BookPageDetails: FC<Props> = ({
 
   return (
     <View style={{ flex: 1 }}>
-      {isFocused && currentIndex !== undefined && (
-        <>
-          <BookmarkToggle infoBookPage={infoBookPages[currentIndex]} />
-          <BookChapterNavigator
-            onPageChange={onPageChange}
-            infoBookPages={infoBookPages}
-            currentChapter={infoBookPages[currentIndex].chapter}
-          />
-          <BookPageDetailsPage
-            currentChapter={infoBookPages[currentIndex].chapter}
-            bookType={bookType}
-            infoBookPages={infoBookPages}
-            windowWidth={windowWidth}
-            onPageChange={onPageChange}
-          />
-        </>
-      )}
+      <BookmarkToggle infoBookPage={infoBookPages[currentIndex]} />
+      <BookChapterNavigator
+        onPageChange={onPageChange}
+        infoBookPages={infoBookPages}
+        currentChapter={infoBookPages[currentIndex].chapter}
+      />
+      <BookPageDetailsPage
+        currentChapter={infoBookPages[currentIndex].chapter}
+        bookType={bookType}
+        infoBookPages={infoBookPages}
+        windowWidth={windowWidth}
+        onPageChange={onPageChange}
+      />
     </View>
   );
 };
