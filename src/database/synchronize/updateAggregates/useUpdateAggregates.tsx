@@ -17,6 +17,7 @@ import { AppConfigurations } from '../../../model/configurations/AppConfiguratio
 import bookPagesRepository from '../../repository/bookPagesRepository';
 import { ApiBookPage } from '../../../model/bookPages/BookPage';
 import { Bookmark } from '../../../model/bookPages/Bookmark';
+import promiseAllSettled from '../../../util/promiseAllSettled';
 
 function useUpdateAggregates() {
   const addBookmarksToPages = (
@@ -48,6 +49,8 @@ function useUpdateAggregates() {
         value => value.bookType,
       ),
     ];
+
+    const aggregates = [];
     for (const aggregate in appConfigurations!.versioning) {
       if (!appConfigurations!.versioning[aggregate].isBookType) {
         continue;
@@ -58,12 +61,17 @@ function useUpdateAggregates() {
       if (appInfoResponse[aggregate] === undefined) {
         continue;
       }
-      await synchronizeDatabase.updateBook(
-        aggregate,
-        appInfoResponse.appConfigurations.versioning[aggregate].version,
-        addBookmarksToPages(aggregate, appInfoResponse[aggregate], bookmarks),
-      );
+      aggregates.push(aggregate);
     }
+    await promiseAllSettled(
+      aggregates.map(aggregate =>
+        synchronizeDatabase.updateBook(
+          aggregate,
+          appInfoResponse.appConfigurations.versioning[aggregate].version,
+          addBookmarksToPages(aggregate, appInfoResponse[aggregate], bookmarks),
+        ),
+      ),
+    );
   };
 
   const updateBooksPreserveBookmarks = async (
@@ -148,9 +156,21 @@ function useUpdateAggregates() {
     }
 
     await configurationsHelper.updateConfigurations(appInfo.appConfigurations);
-    await updateDecisionTree(appInfo)
-      .then(() => updateCalculations(appInfo))
-      .then(() => updateBooksPreserveBookmarks(appInfo, preservedBookmarks))
+    promiseAllSettled([
+      updateDecisionTree(appInfo),
+      updateCalculations(appInfo),
+      updateBooksPreserveBookmarks(appInfo, preservedBookmarks),
+    ])
+      .then(result => {
+        const hasFailedUpdates =
+          result.filter(value => value.status === 'rejected').length !== 0;
+        if (hasFailedUpdates) {
+          logger.errorFromMessage(
+            `one or more update aggregates failed: ${JSON.stringify(result)}`,
+          );
+          debugHandler.dumpConfigToStorage();
+        }
+      })
       .then(configurationsHelper.createSessionConfiguration)
       .catch(reason => {
         logger.error(
