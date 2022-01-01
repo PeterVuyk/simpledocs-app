@@ -1,8 +1,9 @@
-import Firebase from '../firebase';
+import { getStorage, ref, uploadBytes } from 'firebase/storage';
 
 const putFile = (data: Blob, path: string) => {
-  const reference = Firebase.storage().ref(path);
-  return reference.put(data);
+  const reference = ref(getStorage(), path);
+  // TODO: Is dit de juiste?
+  return uploadBytes(reference, data);
 };
 
 const storageBucket = {

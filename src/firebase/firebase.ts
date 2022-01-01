@@ -1,8 +1,11 @@
-import firebase from 'firebase/compat/app';
-import 'firebase/compat/functions';
-import 'firebase/compat/auth';
-import 'firebase/compat/storage';
+import { initializeApp } from 'firebase/app';
 import { LogBox } from 'react-native';
+import { getFunctions, connectFunctionsEmulator } from 'firebase/functions';
+import { getAuth } from 'firebase/auth';
+
+/**
+ * Firebase documentation: https://docs.expo.dev/guides/using-firebase/
+ */
 
 LogBox.ignoreLogs(['Setting a timer']);
 
@@ -16,23 +19,16 @@ const firebaseConfig = {
   measurementId: process.env.FIREBASE_MEASUREMENT_ID ?? '',
 };
 
-const Firebase =
-  firebase.apps.length === 0
-    ? firebase.initializeApp(firebaseConfig)
-    : firebase.app();
+const Firebase = initializeApp(firebaseConfig);
 
-// Below works, but due to a bug it could break by a future update of firebase. In that case read: https://github.com/firebase/firebase-tools/issues/3519#issuecomment-865173539
+export const functions = getFunctions(Firebase, process.env.FIREBASE_REGION);
 if (
   process.env.NODE_ENV === 'development' &&
   process.env.DEVELOPMENT_USE_LOCAL_FUNCTIONS === 'true'
 ) {
-  firebase
-    .app()
-    .functions(process.env.FIREBASE_REGION)
-    .useEmulator('10.0.2.2', 5001);
+  connectFunctionsEmulator(functions, '10.0.2.2', 5001);
 }
 
-export const functions = firebase.app().functions(process.env.FIREBASE_REGION);
-export const auth = firebase.auth();
+export const auth = getAuth();
 
 export default Firebase;

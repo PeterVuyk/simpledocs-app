@@ -1,5 +1,6 @@
 import Constants from 'expo-constants';
 import { LogBox } from 'react-native';
+import { httpsCallable } from 'firebase/functions';
 import { AppInfoResponse, AppInfo } from '../../model/AppInfoResponse';
 import { Versions } from '../../model/configurations/AppConfigurations';
 import { functions } from '../firebase';
@@ -13,13 +14,14 @@ LogBox.ignoreLogs([
 ]);
 
 async function getAppInfo(versioning: Versions | undefined): Promise<AppInfo> {
-  const response = await functions
-    .httpsCallable('appApi-getAppInfo')({
-      environment: environment.getEnvironment().envName,
-      appVersion: Constants.manifest?.version,
-      versioning,
-    })
-    .then(value => value.data as AppInfoResponse);
+  const response = await httpsCallable(
+    functions,
+    'appApi-getAppInfo',
+  )({
+    environment: environment.getEnvironment().envName,
+    appVersion: Constants.manifest?.version,
+    versioning,
+  }).then(value => value.data as AppInfoResponse);
   if (!response.success) {
     throw new Error(
       `Failed collecting configurations from server, message server: ${response.message}`,
