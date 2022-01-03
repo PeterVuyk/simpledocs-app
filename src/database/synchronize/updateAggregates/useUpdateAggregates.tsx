@@ -156,7 +156,7 @@ function useUpdateAggregates() {
     }
 
     await configurationsHelper.updateConfigurations(appInfo.appConfigurations);
-    promiseAllSettled([
+    await promiseAllSettled([
       updateDecisionTree(appInfo),
       updateCalculations(appInfo),
       updateBooksPreserveBookmarks(appInfo, preservedBookmarks),

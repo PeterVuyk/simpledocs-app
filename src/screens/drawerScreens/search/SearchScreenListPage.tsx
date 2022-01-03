@@ -77,7 +77,7 @@ const SearchScreenListPage: FC<Props> = ({ searchText, searchTab }) => {
 
   if (pages) {
     return (
-      <FlatList<Page>
+      <FlatList
         data={pages}
         keyExtractor={item =>
           item.chapter.toString() + item.bookType.toString()

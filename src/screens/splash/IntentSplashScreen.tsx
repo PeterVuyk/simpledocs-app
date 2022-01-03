@@ -1,12 +1,13 @@
 import React, { FC } from 'react';
 import ContentLoader, { Rect } from 'react-content-loader/native';
 import { Platform, SafeAreaView, StyleSheet, View, Text } from 'react-native';
-import { Icon, Spinner } from 'native-base';
+import { Icon } from 'native-base';
 import HeaderLogo from '../../navigation/header/HeaderLogo';
 import DrawerButton from '../../navigation/header/DrawerButton';
 import SearchButton from '../../navigation/header/search/SearchButton';
 import { headerStyles } from '../../navigation/header/Header';
 import globalStyle from '../../styling/globalStyle';
+import LoadingSpinner from '../../components/LoadingSpinner';
 
 const styles = StyleSheet.create({
   bottomTabContainer: {
@@ -69,7 +70,7 @@ const IntentSplashScreen: FC<Props> = React.memo(({ firstStartupApp }) => {
         <Text style={styles.firstStartupText}>
           De app wordt voorbereid voor het eerste gebruik...
         </Text>
-        <Spinner color={globalStyle.color.primary.light} />
+        <LoadingSpinner />
       </View>
     );
   };

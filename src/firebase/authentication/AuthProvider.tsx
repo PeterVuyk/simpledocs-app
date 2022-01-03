@@ -27,6 +27,7 @@ const AuthProvider: FC<Props> = ({ children }) => {
   const signIn = useCallback(async () => {
     if (!(await internetConnectivity.hasInternetConnection())) {
       dispatch(updateStartupState(INTERNET_REQUIRED_STATE));
+      return;
     }
     await signInAnonymously(auth).catch(error => {
       logger.error('signing in user as anonymous failed', error.code);

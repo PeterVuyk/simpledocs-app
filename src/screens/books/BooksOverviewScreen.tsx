@@ -1,24 +1,19 @@
-import React, { FC, useCallback } from 'react';
+import React, { FC, Fragment, useCallback } from 'react';
 import { DrawerNavigationProp } from '@react-navigation/drawer/lib/typescript/src/types';
-import { FlatList, StyleSheet, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { RouteProp } from '@react-navigation/native';
+import { Content } from 'native-base';
 import { SECOND_BOOK_TAB } from '../../model/BottomTab';
 import TitleBar from '../../components/titleBar/TitleBar';
-import ListItem from '../../components/listItem/ListItem';
-import {
-  BookInfo,
-  BookTabInfo,
-} from '../../model/configurations/AppConfigurations';
+import { BookTabInfo } from '../../model/configurations/AppConfigurations';
 import globalStyle from '../../styling/globalStyle';
+import BooksOverviewCardItem from './BooksOverviewCardItem';
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: globalStyle.color.white,
-  },
-  flatListContainer: {
-    flex: 1,
     paddingBottom: 60,
+    backgroundColor: globalStyle.color.white,
   },
 });
 
@@ -38,7 +33,7 @@ interface Props {
 const BooksOverviewScreen: FC<Props> = ({ navigation, route }) => {
   const { bookTabInfo, currentTab } = route.params;
 
-  const navigate = useCallback(
+  const handleNavigation = useCallback(
     (bookType: string) => {
       if (currentTab === SECOND_BOOK_TAB) {
         navigation.navigate('SecondBookTabStack', {
@@ -55,38 +50,26 @@ const BooksOverviewScreen: FC<Props> = ({ navigation, route }) => {
     [currentTab, navigation, bookTabInfo],
   );
 
-  const renderItem = useCallback(
-    (item: BookInfo) => (
-      <ListItem
-        title={item.title ?? ''}
-        subTitle={item.subTitle}
-        iconFile={item.iconFile ?? ''}
-        bookmarked={false}
-        onSubmit={() => navigate(item.bookType)}
-      />
-    ),
-    [navigate],
-  );
-
-  const getHeader = () => {
-    return (
+  return (
+    <View style={styles.container}>
       <TitleBar
         title={bookTabInfo.title ?? ''}
         subTitle={bookTabInfo.subTitle ?? ''}
+        bottomDivider
       />
-    );
-  };
-
-  return (
-    <View style={styles.container}>
-      <View style={styles.flatListContainer}>
-        <FlatList
-          ListHeaderComponent={getHeader}
-          keyExtractor={item => item.bookType.toString()}
-          data={bookTabInfo.bookTypes.sort((a, b) => a.index - b.index)}
-          renderItem={({ item }) => renderItem(item)}
-        />
-      </View>
+      <Content padder>
+        {bookTabInfo.bookTypes
+          .sort((a, b) => a.index - b.index)
+          .map((book, index) => (
+            <Fragment key={book.bookType}>
+              <BooksOverviewCardItem
+                lastItem={index === bookTabInfo.bookTypes.length - 1}
+                bookInfo={book}
+                onNavigation={handleNavigation}
+              />
+            </Fragment>
+          ))}
+      </Content>
     </View>
   );
 };

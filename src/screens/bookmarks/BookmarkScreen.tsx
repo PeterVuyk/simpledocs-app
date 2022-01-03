@@ -92,7 +92,7 @@ const BookmarkScreen: FC = () => {
   );
 
   const getHeader = () => {
-    return <TitleBar title="Favorieten" />;
+    return <TitleBar title="Favorieten" bottomDivider />;
   };
 
   return (

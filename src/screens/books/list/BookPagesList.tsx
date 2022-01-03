@@ -6,14 +6,12 @@ import TitleBar from '../../../components/titleBar/TitleBar';
 import { BookTabInfo } from '../../../model/configurations/AppConfigurations';
 import globalStyle from '../../../styling/globalStyle';
 import BookPageListItem from './BookPageListItem';
+import LoadingSpinner from '../../../components/LoadingSpinner';
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: globalStyle.color.white,
-  },
-  flatListContainer: {
-    flex: 1,
     paddingBottom: 60,
   },
 });
@@ -57,7 +55,11 @@ const BookPagesList: FC<Props> = ({
       return <></>;
     }
     return (
-      <TitleBar title={bookInfo.title} subTitle={bookInfo.subTitle ?? ''} />
+      <TitleBar
+        title={bookInfo.title}
+        subTitle={bookInfo.subTitle ?? ''}
+        bottomDivider
+      />
     );
   };
 
@@ -81,15 +83,14 @@ const BookPagesList: FC<Props> = ({
 
   return (
     <View style={styles.container}>
-      <View style={styles.flatListContainer}>
-        <FlatList
-          ListHeaderComponent={getHeader}
-          keyExtractor={item => item.chapter.toString()}
-          extraData={getChapters()}
-          data={getChapters()}
-          renderItem={({ item }) => bookPageListItem(item)}
-        />
-      </View>
+      <FlatList
+        ListHeaderComponent={getHeader}
+        keyExtractor={item => item.chapter.toString()}
+        ListEmptyComponent={<LoadingSpinner />}
+        extraData={getChapters()}
+        data={getChapters()}
+        renderItem={({ item }) => bookPageListItem(item)}
+      />
     </View>
   );
 };

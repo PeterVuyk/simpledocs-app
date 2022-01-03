@@ -129,6 +129,7 @@ const DecisionsOverviewScreen: FC<Props> = ({ navigation, route }) => {
     return (
       <View style={{ backgroundColor: globalStyle.color.white }}>
         <TitleBar
+          bottomDivider
           title={decisionTabInfo.title}
           subTitle={decisionTabInfo.subTitle}
         />

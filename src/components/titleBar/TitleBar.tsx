@@ -5,7 +5,11 @@ import globalStyle from '../../styling/globalStyle';
 const styles = StyleSheet.create({
   container: {
     backgroundColor: globalStyle.color.white,
-    margin: 20,
+    padding: 20,
+  },
+  bottomDivider: {
+    borderBottomColor: globalStyle.color.default.light,
+    borderBottomWidth: 0.5,
   },
   headerTitle: {
     ...globalStyle.typography.h1,
@@ -23,11 +27,18 @@ const styles = StyleSheet.create({
 interface Props {
   title: string;
   subTitle?: string;
+  bottomDivider?: boolean;
 }
 
-const TitleBar: FC<Props> = ({ title, subTitle }) => {
+const TitleBar: FC<Props> = ({ title, subTitle, bottomDivider }) => {
   return (
-    <View onTouchStart={Keyboard.dismiss} style={styles.container}>
+    <View
+      onTouchStart={Keyboard.dismiss}
+      style={[
+        styles.container,
+        bottomDivider === true ? styles.bottomDivider : {},
+      ]}
+    >
       <Text style={styles.headerTitle}>{title}</Text>
       {subTitle !== undefined && (
         <Text style={styles.headerSubTitle}>{subTitle}</Text>
