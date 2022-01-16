@@ -32,6 +32,7 @@ const Drawer: FC = () => {
       <BackPressListener>
         <DrawerNavigator.Navigator
           screenOptions={{
+            swipeEnabled: false,
             headerShown: false,
             drawerType: 'slide',
             drawerStyle: { backgroundColor: globalStyle.color.white },

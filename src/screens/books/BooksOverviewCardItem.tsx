@@ -68,7 +68,13 @@ const BooksOverviewCardItem: FC<Props> = ({
           <Text style={styles.subTitle}>{bookInfo.subTitle}</Text>
         </Content>
       </TouchableOpacity>
-      {!lastItem && <Divider width={1} style={{ margin: 10 }} />}
+      {!lastItem && (
+        <Divider
+          color={globalStyle.color.default.light}
+          width={0.5}
+          style={{ margin: 5 }}
+        />
+      )}
     </>
   );
 };
