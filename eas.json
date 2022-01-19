@@ -1,0 +1,71 @@
+{
+  "cli": {
+    "version": ">= 0.42.4"
+  },
+  "build": {
+    "development": {
+      "developmentClient": true,
+      "distribution": "internal",
+      "android": {
+        "buildType": "apk"
+      },
+      "env": {
+        "CUSTOMER_NAME": "default",
+        "APP_JSON_NAME": "simpledocs",
+        "APP_JSON_SLUG": "simpledocs",
+        "APP_JSON_BUNDLE_IDENTIFIER": "eu.simpledocs.app",
+        "APP_JSON_SPLASH_BACKGROUNDCOLOR": "#fff",
+        "FIREBASE_API_KEY": "AIzaSyAqVAwKIN2hNIUxGKQEqg72NdfnpdNpquA",
+        "FIREBASE_AUTH_DOMAIN": "simpledocs-eu.firebaseapp.com",
+        "FIREBASE_PROJECT_ID": "simpledocs-eu",
+        "FIREBASE_STORAGE_BUCKET": "development-app-storage",
+        "FIREBASE_MESSAGING_SENDER_ID": "919380650126",
+        "FIREBASE_APP_ID": "1:919380650126:web:a8446bb9e0432a6b8401df",
+        "FIREBASE_MEASUREMENT_ID": "G-FHT4GFLNBN",
+        "FIREBASE_REGION": "europe-west3",
+        "DEVELOPMENT_USE_LOCAL_FUNCTIONS": "false"
+      }
+    },
+    "staging": {
+      "distribution": "internal",
+      "android": {
+        "buildType": "apk"
+      },
+      "env": {
+        "CUSTOMER_NAME": "academie-voor-ambulancezorg",
+        "APP_JSON_NAME": "academie-voor-ambulancezorg",
+        "APP_JSON_SLUG": "academie-voor-ambulancezorg",
+        "APP_JSON_BUNDLE_IDENTIFIER": "com.academievoorambulancezorg.app",
+        "APP_JSON_SPLASH_BACKGROUNDCOLOR": "#E5E5EA",
+        "FIREBASE_API_KEY": "AIzaSyBjfm5IDIyE6csbcZOQn_K8ewZvSECVWVM",
+        "FIREBASE_AUTH_DOMAIN": "academie-voor-ambulancezorg.firebaseapp.com",
+        "FIREBASE_PROJECT_ID": "academie-voor-ambulancezorg",
+        "FIREBASE_STORAGE_BUCKET": "academie-voor-ambulancezorg-app",
+        "FIREBASE_MESSAGING_SENDER_ID": "266397651281",
+        "FIREBASE_APP_ID": "1:266397651281:web:8ce3365022b910fa8d8370",
+        "FIREBASE_MEASUREMENT_ID": "G-5Y5ZQC2SP1",
+        "FIREBASE_REGION": "europe-west3"
+      }
+    },
+    "production": {
+      "env": {
+        "CUSTOMER_NAME": "academie-voor-ambulancezorg",
+        "APP_JSON_NAME": "academie-voor-ambulancezorg",
+        "APP_JSON_SLUG": "academie-voor-ambulancezorg",
+        "APP_JSON_BUNDLE_IDENTIFIER": "com.academievoorambulancezorg.app",
+        "APP_JSON_SPLASH_BACKGROUNDCOLOR": "#E5E5EA",
+        "FIREBASE_API_KEY": "AIzaSyBjfm5IDIyE6csbcZOQn_K8ewZvSECVWVM",
+        "FIREBASE_AUTH_DOMAIN": "academie-voor-ambulancezorg.firebaseapp.com",
+        "FIREBASE_PROJECT_ID": "academie-voor-ambulancezorg",
+        "FIREBASE_STORAGE_BUCKET": "academie-voor-ambulancezorg-app",
+        "FIREBASE_MESSAGING_SENDER_ID": "266397651281",
+        "FIREBASE_APP_ID": "1:266397651281:web:8ce3365022b910fa8d8370",
+        "FIREBASE_MEASUREMENT_ID": "G-5Y5ZQC2SP1",
+        "FIREBASE_REGION": "europe-west3"
+      }
+    }
+  },
+  "submit": {
+    "production": {}
+  }
+}

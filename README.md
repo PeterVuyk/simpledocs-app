@@ -44,13 +44,7 @@ The following channels are available:
 
 ## Build
 
-When you are done with the code changes you can run the following command to build an artifact.
+When you are done with the code changes you can run the following command to build an artifact. 
+Specify 'android', 'ios' or 'all' for platform, specify the platform for the profile (check also eas.json).
 
-    npx env-cmd -f .env.academie-voor-ambulancezorg expo build:android --release-channel staging | production
-    npx env-cmd -f .env.academie-voor-ambulancezorg expo build:ios --release-channel staging | production
-
-You can see everything that you’ve published or see a detailed view with:
-
-    expo publish:history
-    expo publish:details --publish-id=6d011971-dfff-406a-83fe-23323fcf8964
-
+    eas build --platform=android --profile=staging | production

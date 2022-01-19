@@ -1,8 +1,8 @@
+import * as Updates from 'expo-updates';
 import Bugsnag from '@bugsnag/expo';
 import React, { FC } from 'react';
 import { Provider } from 'react-redux';
 import { decode, encode } from 'base-64';
-import Constants from 'expo-constants';
 import { ThemeProvider } from 'react-native-elements';
 import { PortalProvider } from 'react-native-portal';
 import { LogBox } from 'react-native';
@@ -47,7 +47,7 @@ if (!global.atob) {
 
 Bugsnag.start({
   releaseStage: environment.getEnvironment().envName,
-  appVersion: Constants.manifest?.version ?? 'unknown-version',
+  appVersion: Updates.releaseChannel.toLowerCase(),
   metadata: { customer: environment.getEnvironment().customer },
 });
 

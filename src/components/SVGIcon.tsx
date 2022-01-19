@@ -12,14 +12,23 @@ interface Props {
 
 const SVGIcon: FC<Props> = ({ iconBlob, svgIconType }) => {
   const getIconFromBlob = (): string => {
-    const base64String = iconBlob.split('data:image/svg+xml;base64,')[1];
-    return atob(base64String);
+    const base64String = iconBlob.split('data:image/svg+xml;base64,');
+    if (base64String === null || base64String.length === 1) {
+      return '';
+    }
+    return atob(base64String[1]);
   };
 
   const svgWidth = svgIconType === SVG_ICON_TYPE_LIST_ITEM ? 60 : 100;
   const svgHeight = svgIconType === SVG_ICON_TYPE_LIST_ITEM ? 60 : 100;
 
-  return <SvgXml width={svgWidth} height={svgHeight} xml={getIconFromBlob()} />;
+  return (
+    <>
+      {getIconFromBlob() !== '' && (
+        <SvgXml width={svgWidth} height={svgHeight} xml={getIconFromBlob()} />
+      )}
+    </>
+  );
 };
 
 export default SVGIcon;
