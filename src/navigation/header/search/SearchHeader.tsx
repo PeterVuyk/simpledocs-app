@@ -10,7 +10,6 @@ const styles = StyleSheet.create({
   searchInputContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    paddingTop: 40,
     shadowOffset: { width: 1, height: 2 },
     shadowOpacity: 0.1,
     shadowRadius: 3,
