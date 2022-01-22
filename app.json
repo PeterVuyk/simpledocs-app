@@ -22,8 +22,8 @@
       "bundleIdentifier": "eu.simpledocs.app"
     },
     "android": {
-      "allowBackup": false,
-      "versionCode": 1,
+      "allowBackup": true,
+      "versionCode": 12,
       "package": "eu.simpledocs.app",
       "permissions": ["WRITE_EXTERNAL_STORAGE", "WRITE_EXTERNAL_STORAGE"],
       "adaptiveIcon": {

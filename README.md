@@ -48,3 +48,10 @@ When you are done with the code changes you can run the following command to bui
 Specify 'android', 'ios' or 'all' for platform, specify the platform for the profile (check also eas.json).
 
     eas build --platform=android --profile=staging | production
+
+When the build is successful, copy the build id and run:
+
+    eas submit -p android --id=<id>
+
+finally publish the changes, go to the [url](https://play.google.com/console/u/0/developers/4874062365169363132/app/4972026240016024530/tracks/internal-testing),
+click 'release bewerken', 'release controleren' and 'Uitrol naar interne tests starten'.
