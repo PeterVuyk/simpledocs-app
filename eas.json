@@ -23,7 +23,11 @@
         "FIREBASE_APP_ID": "1:919380650126:web:a8446bb9e0432a6b8401df",
         "FIREBASE_MEASUREMENT_ID": "G-FHT4GFLNBN",
         "FIREBASE_REGION": "europe-west3",
-        "DEVELOPMENT_USE_LOCAL_FUNCTIONS": "false"
+        "DEVELOPMENT_USE_LOCAL_FUNCTIONS": "false",
+        "SENTRY_ORG": "simpledocs",
+        "SENTRY_PROJECT": "simpledocs",
+        "SENTRY_DATA_SOURCE_NAME": "https://00a77f1318ec43dd9c2c554a414b59f3@o1097718.ingest.sentry.io/6119397",
+        "SENTRY_AUTH_TOKEN": "462779b2479246399ec8d40d9fe92b87089e17db3afe48238af5fe4d81330ff3"
       }
     },
     "staging": {
@@ -44,7 +48,11 @@
         "FIREBASE_MESSAGING_SENDER_ID": "266397651281",
         "FIREBASE_APP_ID": "1:266397651281:web:8ce3365022b910fa8d8370",
         "FIREBASE_MEASUREMENT_ID": "G-5Y5ZQC2SP1",
-        "FIREBASE_REGION": "europe-west3"
+        "FIREBASE_REGION": "europe-west3",
+        "SENTRY_ORG": "simpledocs",
+        "SENTRY_PROJECT": "academie-voor-ambulancezorg",
+        "SENTRY_DATA_SOURCE_NAME": "https://5c6517f52419449e8a338d654620b32d@o1097718.ingest.sentry.io/6162754",
+        "SENTRY_AUTH_TOKEN": "462779b2479246399ec8d40d9fe92b87089e17db3afe48238af5fe4d81330ff3"
       }
     },
     "production": {
@@ -61,7 +69,11 @@
         "FIREBASE_MESSAGING_SENDER_ID": "266397651281",
         "FIREBASE_APP_ID": "1:266397651281:web:8ce3365022b910fa8d8370",
         "FIREBASE_MEASUREMENT_ID": "G-5Y5ZQC2SP1",
-        "FIREBASE_REGION": "europe-west3"
+        "FIREBASE_REGION": "europe-west3",
+        "SENTRY_ORG": "simpledocs",
+        "SENTRY_PROJECT": "academie-voor-ambulancezorg",
+        "SENTRY_DATA_SOURCE_NAME": "https://5c6517f52419449e8a338d654620b32d@o1097718.ingest.sentry.io/6162754",
+        "SENTRY_AUTH_TOKEN": "462779b2479246399ec8d40d9fe92b87089e17db3afe48238af5fe4d81330ff3"
       }
     }
   },

@@ -10,6 +10,7 @@
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
+    "plugins": ["sentry-expo"],
     "updates": {
       "fallbackToCacheTimeout": 0
     },
@@ -23,7 +24,7 @@
     },
     "android": {
       "allowBackup": true,
-      "versionCode": 12,
+      "versionCode": 13,
       "package": "eu.simpledocs.app",
       "permissions": ["WRITE_EXTERNAL_STORAGE", "WRITE_EXTERNAL_STORAGE"],
       "adaptiveIcon": {
@@ -43,8 +44,7 @@
     "hooks": {
       "postPublish": [
         {
-          "file": "@bugsnag/expo/hooks/post-publish.js",
-          "config": {}
+          "file": "sentry-expo/upload-sourcemaps"
         }
       ]
     }

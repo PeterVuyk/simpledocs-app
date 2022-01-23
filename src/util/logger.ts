@@ -1,12 +1,14 @@
-import Bugsnag from '@bugsnag/expo';
+import * as Sentry from 'sentry-expo';
+import { Severity } from '@sentry/types';
 
 const error = (errorMessage: string, reason: string) => {
   if (__DEV__) {
     console.error('errorMessage', errorMessage, 'reason', reason);
     return;
   }
-  Bugsnag.notify(
-    new Error(`errorMessage: ${errorMessage} error reason: ${reason}`),
+  Sentry.Native.captureMessage(
+    `errorMessage: ${errorMessage} error reason: ${reason}`,
+    Severity.Error,
   );
 };
 
@@ -15,13 +17,15 @@ const errorFromMessage = (errorMessage: string) => {
     console.error('errorMessage', errorMessage);
     return;
   }
-  Bugsnag.notify(new Error(`errorMessage: ${errorMessage}`));
+  Sentry.Native.captureMessage(errorMessage, Severity.Error);
 };
 
 const debugMessage = (errorMessage: string) => {
   if (__DEV__) {
     console.debug('warningMessage', errorMessage);
+    return;
   }
+  Sentry.Native.captureMessage(errorMessage, Severity.Warning);
 };
 
 const logger = {
