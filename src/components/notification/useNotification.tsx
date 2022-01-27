@@ -38,7 +38,7 @@ const useNotification = () => {
   const showHorizontalScrollTip = useCallback(() => {
     Alert.alert(
       'Tip voor navigeren:',
-      'Swipe makkelijk horizontaal tussen de verschillende artikelen.',
+      "Swipe makkelijk horizontaal tussen de verschillende pagina's.",
       [
         {
           text: 'Niet meer melden',

@@ -57,18 +57,10 @@ const SearchScreen: FC<Props> = ({ navigation, appConfigurations }) => {
       .getBookTypes()
       .then(value => mapSearchItems(value))
       .then(tabs => {
-        const { defaultSearchChip } = appConfigurations;
-        if (defaultSearchChip === undefined) {
-          setCurrentIndex(0);
-          setSearchTabs(tabs);
-          return;
-        }
-        setCurrentIndex(
-          tabs.map(value => value.itemId).indexOf(defaultSearchChip) ?? 0,
-        );
+        setCurrentIndex(1);
         setSearchTabs(tabs);
       });
-  }, [appConfigurations, appConfigurations.defaultSearchChip, mapSearchItems]);
+  }, [appConfigurations, mapSearchItems]);
 
   const handleTabChange = (searchTab: SearchTab): void => {
     setCurrentIndex(searchTab.index);

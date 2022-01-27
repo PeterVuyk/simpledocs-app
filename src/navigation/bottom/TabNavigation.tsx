@@ -17,20 +17,6 @@ interface Props {
 }
 
 const TabNavigation: FC<Props> = ({ navigation, appConfigurations }) => {
-  const getInitialRoute = () => {
-    switch (appConfigurations.defaultInitialTab) {
-      case 'secondBookTab':
-        return 'SecondBookTabStack';
-      case 'decisionTab':
-        return 'DecisionsScreenStack';
-      case 'bookmarks':
-        return 'BookmarkTabStack';
-      case 'firstBookTab':
-      default:
-        return 'FirstBookTabStack';
-    }
-  };
-
   return (
     <ResizeScreenDrawer>
       <Header navigation={navigation} />
@@ -38,7 +24,7 @@ const TabNavigation: FC<Props> = ({ navigation, appConfigurations }) => {
         contentStyle={{
           height: 60,
         }}
-        initialRouteName={getInitialRoute()}
+        initialRouteName="FirstBookTabStack"
       >
         <Tab.Screen
           name="BookmarkTabStack"

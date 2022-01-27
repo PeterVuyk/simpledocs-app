@@ -57,7 +57,5 @@ export interface AppConfigurations {
   secondBookTab: BookTabInfo;
   decisionsTab: DecisionsTab;
   drawer: Drawer;
-  defaultSearchChip: string;
-  defaultInitialTab: string;
   versioning: Versions;
 }
