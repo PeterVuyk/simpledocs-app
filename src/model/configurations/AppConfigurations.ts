@@ -13,8 +13,7 @@ export interface BookInfo {
   chapterDivisionsInList: string[];
   chapterDivisionsInIntermediateList: string[];
   subTitle?: string;
-  iconFile?: string;
-  imageFile?: string;
+  imageFile: string;
 }
 
 export interface DecisionsTab {
