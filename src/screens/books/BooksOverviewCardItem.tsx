@@ -32,7 +32,7 @@ const BooksOverviewCardItem: FC<Props> = ({
         style={{
           width: 100,
           height: 100,
-          resizeMode: 'cover',
+          resizeMode: 'center',
         }}
         source={{
           uri: bookInfo.imageFile,
