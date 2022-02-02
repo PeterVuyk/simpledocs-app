@@ -22,7 +22,7 @@ const RestoreAppProvider: FC<Props> = ({ children }) => {
   const dispatch = useAppDispatch();
   const { currentState } = useAppSelector(state => state.startupState);
 
-  const preserveBookPagesBookmarks = useCallback(() => {
+  const preserveBookPagesBookmarks = useCallback((): Promise<void> => {
     return new Promise(resolve => {
       bookPagesRepository
         .getBookmarkedPages(async page => {

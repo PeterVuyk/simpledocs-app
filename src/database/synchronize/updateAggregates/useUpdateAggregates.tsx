@@ -10,7 +10,7 @@ import environment from '../../../util/environment';
 import configHelper from '../../../helper/configHelper';
 import { STAGING_ENVIRONMENT } from '../../../model/Environment';
 import debugHandler from '../../../debug/debugHandler';
-import getAppInfo from '../../../firebase/functions/getAppInfo';
+import getAppInfoOnStartup from '../../../firebase/functions/getAppInfoOnStartup';
 import configurationsStorage from '../../../storage/configurationsStorage';
 import { AppInfo } from '../../../model/AppInfoResponse';
 import { AppConfigurations } from '../../../model/configurations/AppConfigurations';
@@ -18,6 +18,8 @@ import bookPagesRepository from '../../repository/bookPagesRepository';
 import { ApiBookPage } from '../../../model/bookPages/BookPage';
 import { Bookmark } from '../../../model/bookPages/Bookmark';
 import promiseAllSettled from '../../../util/promiseAllSettled';
+import { UPDATE_ON_STARTUP, UpdateMoment } from '../../../model/UpdateMoment';
+import getAppInfoOnStartupReady from '../../../firebase/functions/getAppInfoOnStartupReady';
 
 function useUpdateAggregates() {
   const addBookmarksToPages = (
@@ -129,7 +131,7 @@ function useUpdateAggregates() {
     }
   };
 
-  const getAppInfoFromServer = async () => {
+  const getAppInfoFromServer = async (updateMoment: UpdateMoment) => {
     let versions = await configurationsStorage
       .getSystemConfiguration()
       .then(value => value?.versions);
@@ -140,22 +142,34 @@ function useUpdateAggregates() {
     ) {
       versions = configHelper.overWriteVersions(versions);
     }
-
-    return getAppInfo(versions).catch(reason =>
-      logger.error(
-        'Tried to get appConfigurations from the server api but failed, updateAggregates skipped',
-        reason,
-      ),
-    );
+    return Promise.resolve()
+      .then(() => {
+        if (updateMoment === UPDATE_ON_STARTUP) {
+          return getAppInfoOnStartup(versions);
+        }
+        return getAppInfoOnStartupReady(versions);
+      })
+      .catch(reason =>
+        logger.error(
+          `Tried to get appConfigurations from the server api but failed with updateMoment: ${updateMoment}, updateAggregates skipped`,
+          reason,
+        ),
+      );
   };
 
-  const updateAggregates = async (preservedBookmarks: Bookmark[]) => {
-    const appInfo = await getAppInfoFromServer();
+  const updateAggregates = async (
+    preservedBookmarks: Bookmark[],
+    updateMoment: UpdateMoment,
+  ) => {
+    const appInfo = await getAppInfoFromServer(updateMoment);
     if (!appInfo || !('appConfigurations' in appInfo)) {
       return;
     }
-
-    await configurationsHelper.updateConfigurations(appInfo.appConfigurations);
+    if (updateMoment === UPDATE_ON_STARTUP) {
+      await configurationsHelper.updateConfigurations(
+        appInfo.appConfigurations,
+      );
+    }
     await promiseAllSettled([
       updateDecisionTree(appInfo),
       updateCalculations(appInfo),
@@ -171,7 +185,11 @@ function useUpdateAggregates() {
           debugHandler.dumpConfigToStorage();
         }
       })
-      .then(configurationsHelper.createSessionConfiguration)
+      .then(() => {
+        if (updateMoment === UPDATE_ON_STARTUP) {
+          configurationsHelper.createSessionConfiguration();
+        }
+      })
       .catch(reason => {
         logger.error(
           'something when wrong by update aggregates, some or all updates may be skipped',

@@ -13,10 +13,12 @@ LogBox.ignoreLogs([
   "Constants.installationId has been deprecated in favor of generating and storing your own ID. Implement it using expo-application's androidId on Android and a storage API such as expo-secure-store on iOS and localStorage on the web. This API will be removed in SDK 44.",
 ]);
 
-async function getAppInfo(versioning: Versions | undefined): Promise<AppInfo> {
+async function getAppInfoOnStartup(
+  versioning: Versions | undefined,
+): Promise<AppInfo> {
   const response = await httpsCallable(
     functions,
-    'appApi-getAppInfo',
+    'appApi-getAppInfoOnStartup',
   )({
     environment: environment.getEnvironment().envName,
     appVersion: Constants.manifest?.version,
@@ -24,10 +26,10 @@ async function getAppInfo(versioning: Versions | undefined): Promise<AppInfo> {
   }).then(value => value.data as AppInfoResponse);
   if (!response.success) {
     throw new Error(
-      `Failed collecting configurations from server, message server: ${response.message}`,
+      `Failed collecting configurations from server onStartup, message server: ${response.message}`,
     );
   }
   return response.result!;
 }
 
-export default getAppInfo;
+export default getAppInfoOnStartup;

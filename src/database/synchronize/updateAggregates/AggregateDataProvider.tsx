@@ -8,6 +8,7 @@ import {
   updateStartupState,
 } from '../../../redux/slice/startupStateSlice';
 import configurationsHelper from '../../../helper/configurationsHelper';
+import { UPDATE_ON_STARTUP } from '../../../model/UpdateMoment';
 
 interface Props {
   children: ReactNode;
@@ -20,7 +21,7 @@ const AggregateDataProvider: FC<Props> = ({ children }) => {
   const { bookmarks } = useAppSelector(state => state.bookmarkState);
 
   const handleUpdateAggregates = useCallback(async () => {
-    await updateAggregates(bookmarks).then(async () => {
+    await updateAggregates(bookmarks, UPDATE_ON_STARTUP).then(async () => {
       const isStartupSuccessful =
         await configurationsHelper.isStartupSuccessful();
       if (isStartupSuccessful) {
