@@ -1,6 +1,5 @@
 import React, { FC, useCallback, useEffect, useState } from 'react';
 import { View, ScaledSize } from 'react-native';
-import { useIsFocused } from '@react-navigation/native';
 import { InfoBookPage } from '../../../model/bookPages/InfoBookPage';
 import { NOTIFICATION_TYPE_HORIZONTAL_SCROLL_TIP } from '../../../model/notifications/NotificationType';
 import BookChapterNavigator from '../BookChapterNavigator';

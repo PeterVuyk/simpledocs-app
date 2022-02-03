@@ -1,5 +1,5 @@
 import React, { FC, useEffect, useState } from 'react';
-import {RouteProp, useIsFocused} from '@react-navigation/native';
+import { RouteProp, useIsFocused } from '@react-navigation/native';
 import { DrawerNavigationHelpers } from '@react-navigation/drawer/lib/typescript/src/types';
 import bookPagesRepository from '../../../database/repository/bookPagesRepository';
 import { InfoBookPage } from '../../../model/bookPages/InfoBookPage';
@@ -20,6 +20,7 @@ interface Props {
 }
 
 const BookPageDetailsScreen: FC<Props> = ({ navigation, route }) => {
+  const [currentBookType, setCurrentBookType] = useState<string>('');
   const [chapters, setChapters] = useState<InfoBookPage[]>([]);
   const { bookPageChapter, bookType } = route.params;
   const isFocused = useIsFocused();
@@ -29,6 +30,7 @@ const BookPageDetailsScreen: FC<Props> = ({ navigation, route }) => {
     bookPagesRepository.getChapters(bookType, pages => {
       if (isMounted) {
         setChapters(pages);
+        setCurrentBookType(bookType);
       }
     });
     // trigger also on is focused to make sure that the chapters are reloaded.
@@ -37,6 +39,11 @@ const BookPageDetailsScreen: FC<Props> = ({ navigation, route }) => {
       isMounted = false;
     };
   }, [isFocused, bookType, navigation]);
+
+  // If the bookType changed because the user navigates from another book, then chapters need to be reset first.
+  if (currentBookType !== bookType) {
+    return null;
+  }
 
   return (
     <>
