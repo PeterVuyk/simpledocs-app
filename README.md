@@ -48,6 +48,7 @@ When you are done with the code changes you can run the following command to bui
 Specify 'android', 'ios' or 'all' for platform, specify the platform for the profile (check also eas.json).
 
     eas build --platform=android --profile=staging | production
+    eas build --platform=ios --profile=staging | production
 
 When the build is successful, copy the build id and run:
 

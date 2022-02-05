@@ -5,6 +5,7 @@ import { Linking, Platform, View } from 'react-native';
 import ScrollViewToggleBottomBar from '../ScrollViewToggleBottomBar';
 import useContentNavigator from '../hooks/useContentNavigator';
 import ContentViewLoader from './ContentViewLoader';
+import IntentContentPage from '../intent/IntentContentPage';
 
 interface Props {
   htmlFile: string;
@@ -13,6 +14,7 @@ interface Props {
 
 const HTMLViewer: FC<Props> = ({ htmlFile, bookType }) => {
   const [webViewHeight, setWebViewHeight] = useState<number | undefined>();
+  const [webviewLoading, setWebviewLoading] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
   const webview = createRef<WebView>();
   const { blankWebpage, navigateFromHttpsUrlToChapter } = useContentNavigator();
@@ -73,6 +75,7 @@ const HTMLViewer: FC<Props> = ({ htmlFile, bookType }) => {
       {!loading && (
         <ScrollViewToggleBottomBar pageHeight={webViewHeight}>
           <WebView
+            onLoad={() => setWebviewLoading(true)}
             cacheEnabled
             cacheMode="LOAD_CACHE_ELSE_NETWORK"
             ref={webview}
@@ -90,6 +93,7 @@ const HTMLViewer: FC<Props> = ({ htmlFile, bookType }) => {
           />
         </ScrollViewToggleBottomBar>
       )}
+      {!webviewLoading && <IntentContentPage />}
     </View>
   );
 };

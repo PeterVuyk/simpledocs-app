@@ -4,8 +4,8 @@ import { SearchTab } from '../../../model/SearchTab';
 import bookPagesRepository from '../../../database/repository/bookPagesRepository';
 import SearchScreenListPageItem from './SearchScreenListPageItem';
 import NoSearchResultView from './NoSearchResultView';
-import IntentSearchScreenListPage from './IntentSearchScreenListPage';
 import { BookPage } from '../../../model/bookPages/BookPage';
+import IntentShortList from '../../../components/intent/IntentShortList';
 
 const styles = StyleSheet.create({
   findPlaceholderImage: {
@@ -89,7 +89,7 @@ const SearchScreenListPage: FC<Props> = ({ searchText, searchTab }) => {
     );
   }
 
-  return <IntentSearchScreenListPage />;
+  return <IntentShortList />;
 };
 
 export default SearchScreenListPage;

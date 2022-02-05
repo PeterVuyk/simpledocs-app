@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import ContentLoader, { Rect } from 'react-content-loader/native';
 
-const IntentSearchScreenListPage: FC = React.memo(() => {
+const IntentShortList: FC = React.memo(() => {
   const ScreenLoader = () => {
     return (
       <ContentLoader
@@ -32,4 +32,4 @@ const IntentSearchScreenListPage: FC = React.memo(() => {
   );
 });
 
-export default IntentSearchScreenListPage;
+export default IntentShortList;
