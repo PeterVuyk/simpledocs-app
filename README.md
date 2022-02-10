@@ -44,7 +44,11 @@ The following channels are available:
 
 ## Build
 
-When you are done with the code changes you can run the following command to build an artifact. 
+For IOS, if you like to add a new test device, run:
+
+    eas device:create
+
+When you are done with the code changes you can run the following command to build an artifact.
 Specify 'android', 'ios' or 'all' for platform, specify the platform for the profile (check also eas.json).
 
     eas build --platform=android --profile=staging | production
@@ -52,7 +56,8 @@ Specify 'android', 'ios' or 'all' for platform, specify the platform for the pro
 
 When the build is successful, copy the build id and run:
 
-    eas submit -p android --id=<id>
+    npx env-cmd -f .env.academie-voor-ambulancezorg eas submit -p android --id=<id>
+    npx env-cmd -f .env.academie-voor-ambulancezorg eas submit --platform ios --id=<id>
 
 finally publish the changes, go to the [url](https://play.google.com/console/u/0/developers/4874062365169363132/app/4972026240016024530/tracks/internal-testing),
 click 'release bewerken', 'release controleren' and 'Uitrol naar interne tests starten'.

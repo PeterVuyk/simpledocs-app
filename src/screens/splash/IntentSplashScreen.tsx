@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 import ContentLoader, { Rect } from 'react-content-loader/native';
-import { Platform, SafeAreaView, StyleSheet, View, Text } from 'react-native';
+import { SafeAreaView, StyleSheet, View, Text } from 'react-native';
 import { Icon } from 'native-base';
 import HeaderLogo from '../../navigation/header/HeaderLogo';
 import DrawerButton from '../../navigation/header/DrawerButton';
@@ -36,18 +36,10 @@ const IntentSplashScreen: FC<Props> = React.memo(({ firstStartupApp }) => {
   const Header = () => {
     return (
       <SafeAreaView style={headerStyles.headerContainer}>
-        {Platform.OS !== 'ios' && (
-          <DrawerButton iconName="menu" iconType="MaterialCommunityIcons" />
-        )}
+        <DrawerButton iconName="menu" iconType="MaterialCommunityIcons" />
         <View style={{ width: 50 }} />
         <HeaderLogo />
         <View style={headerStyles.rightContainer}>
-          {Platform.OS === 'ios' && (
-            <DrawerButton
-              iconName="dots-vertical"
-              iconType="MaterialCommunityIcons"
-            />
-          )}
           <SearchButton />
           {/* The icon below is a placeholder and is added so the header logo doesn't jump if the bookmarkToggle is set */}
           <Icon

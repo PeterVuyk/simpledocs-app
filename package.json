@@ -25,10 +25,12 @@
     "base-64": "^1.0.0",
     "buffer": "^6.0.3",
     "expo": "^44.0.0",
+    "expo-application": "~4.0.1",
     "expo-asset": "~8.4.6",
     "expo-asset-utils": "^2.0.0",
     "expo-constants": "~13.0.0",
     "expo-dev-client": "~0.8.0",
+    "expo-device": "~4.1.0",
     "expo-font": "~10.0.4",
     "expo-navigation-bar": "~1.1.1",
     "expo-splash-screen": "~0.14.1",
@@ -60,10 +62,8 @@
     "react-navigation-header-buttons": "^6.2.1",
     "react-redux": "^7.2.3",
     "redux": "^4.0.5",
-    "string-pixel-width": "^1.10.0",
-    "expo-application": "~4.0.1",
-    "expo-device": "~4.1.0",
-    "sentry-expo": "^4.0.0"
+    "sentry-expo": "^4.0.0",
+    "string-pixel-width": "^1.10.0"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9",

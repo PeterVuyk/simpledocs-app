@@ -56,6 +56,7 @@
       }
     },
     "production": {
+      "distribution": "internal",
       "env": {
         "CUSTOMER_NAME": "academie-voor-ambulancezorg",
         "APP_JSON_NAME": "academie-voor-ambulancezorg",
@@ -83,6 +84,11 @@
         "serviceAccountKeyPath": "service-account.json",
         "track": "internal",
         "releaseStatus": "draft"
+      },
+      "ios": {
+        "appleId": "info@simpledocs.eu",
+        "appleTeamId": "Y4S77QQ359",
+        "ascAppId": "1608710203"
       }
     }
   }
