@@ -30,21 +30,27 @@ function useContentNavigator() {
   const navigateToChapter = async (
     navigationParams: NavigationParams,
     bookType: string,
-  ): Promise<void> => {
+  ) => {
     const currentTab = await configHelper.getTabByBookType(bookType);
     if (currentTab === SECOND_BOOK_TAB) {
-      navigation.navigate('SecondBookTabStack', {
+      return navigation.navigate('SecondBookTabStack', {
         screen: 'SecondBookTabDetailsScreen',
         params: navigationParams,
       });
-      return;
     }
     if (currentTab === FIRST_BOOK_TAB) {
-      navigation.navigate('FirstBookTabStack', {
+      return navigation.navigate('FirstBookTabStack', {
         screen: 'FirstBookTabDetailsScreen',
         params: navigationParams,
       });
     }
+    return Promise.reject(
+      new Error(
+        `Intended to navigateToChapter from useContentNavigator but failed because no tab available, given navigation params: ${JSON.stringify(
+          navigationParams,
+        )}`,
+      ),
+    );
   };
 
   const redirect = async (

@@ -9,6 +9,7 @@ import { setSearchText as setReduxSearchText } from '../../../redux/slice/search
 import BookmarkIndicator from '../../../components/listItem/BookmarkIndicator';
 import globalStyle from '../../../styling/globalStyle';
 import { BookPage } from '../../../model/bookPages/BookPage';
+import logger from '../../../util/logger';
 
 interface Props {
   searchText: string;
@@ -51,6 +52,8 @@ const SearchScreenListPageItem: FC<Props> = ({ searchText, bookPage }) => {
         searchText: { chapter: item.chapter, searchText },
       },
       item.bookType,
+    ).catch(reason =>
+      logger.error('navigationToChapter from search item failed', reason),
     );
   };
 
