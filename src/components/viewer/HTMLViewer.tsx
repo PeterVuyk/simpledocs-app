@@ -70,12 +70,20 @@ const HTMLViewer: FC<Props> = ({ htmlFile, bookType }) => {
     return false;
   };
 
+  const updateInjectedJavaScript = () => {
+    webview.current?.injectJavaScript(injectedJavaScript);
+  };
+
   return (
     <View style={{ flex: 1 }}>
       {!loading && (
         <ScrollViewToggleBottomBar pageHeight={webViewHeight}>
           <WebView
-            onLoad={() => setWebviewLoading(true)}
+            scrollEnabled={false}
+            onLoad={() => {
+              setWebviewLoading(true);
+              updateInjectedJavaScript();
+            }}
             cacheEnabled
             cacheMode="LOAD_CACHE_ELSE_NETWORK"
             ref={webview}
