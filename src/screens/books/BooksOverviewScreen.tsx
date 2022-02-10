@@ -51,26 +51,24 @@ const BooksOverviewScreen: FC<Props> = ({ navigation, route }) => {
   );
 
   return (
-    <View style={styles.container}>
+    <Content style={styles.container} padder>
       <TitleBar
         title={bookTabInfo.title ?? ''}
         subTitle={bookTabInfo.subTitle ?? ''}
         bottomDivider
       />
-      <Content padder>
-        {bookTabInfo.bookTypes
-          .sort((a, b) => a.index - b.index)
-          .map((book, index) => (
-            <Fragment key={book.bookType}>
-              <BooksOverviewCardItem
-                lastItem={index === bookTabInfo.bookTypes.length - 1}
-                bookInfo={book}
-                onNavigation={handleNavigation}
-              />
-            </Fragment>
-          ))}
-      </Content>
-    </View>
+      {bookTabInfo.bookTypes
+        .sort((a, b) => a.index - b.index)
+        .map((book, index) => (
+          <Fragment key={book.bookType}>
+            <BooksOverviewCardItem
+              lastItem={index === bookTabInfo.bookTypes.length - 1}
+              bookInfo={book}
+              onNavigation={handleNavigation}
+            />
+          </Fragment>
+        ))}
+    </Content>
   );
 };
 

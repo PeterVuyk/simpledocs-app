@@ -6,6 +6,7 @@ import configHelper from '../../../helper/configHelper';
 import { FIRST_BOOK_TAB } from '../../../model/BottomTab';
 import useContentNavigator from '../../../components/hooks/useContentNavigator';
 import SwipeableToggleBookmark from '../../../components/bookmarks/SwipeableToggleBookmark';
+import logger from '../../../util/logger';
 
 interface Props {
   showChapterDivisions?: string[];
@@ -46,6 +47,11 @@ const BookPageListItem: FC<Props> = ({
     navigateToChapter(
       { bookPageChapter: infoBookPage.chapter, bookType },
       bookType,
+    ).catch(reason =>
+      logger.error(
+        'Failed navigating from BookPageListItem to chapter',
+        reason,
+      ),
     );
   }, [infoBookPage.chapter, bookType, navigateToChapter]);
 
