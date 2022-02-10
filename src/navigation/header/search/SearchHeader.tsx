@@ -58,7 +58,7 @@ const SearchHeader: FC<Props> = ({
             }}
             platform={Platform.OS === 'ios' ? 'ios' : 'android'}
             placeholder="Zoek op titel of trefwoord..."
-            onCancel={() => (Platform.OS === 'ios' ? navigation.pop() : '')}
+            onCancel={() => (Platform.OS === 'ios' ? navigation.goBack() : '')}
             onChangeText={handleSearchTextChange}
             value={searchText}
           />
