@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { FC } from 'react';
 import { RouteProp } from '@react-navigation/native';
 import { ContentType } from '../../model/ContentType';
 import ContentViewer from '../../components/viewer/ContentViewer';
@@ -15,7 +15,7 @@ interface Props {
   >;
 }
 
-const DocumentationScreen: React.FC<Props> = ({ route }) => {
+const DocumentationScreen: FC<Props> = ({ route }) => {
   const { content, contentType } = route.params;
 
   return (

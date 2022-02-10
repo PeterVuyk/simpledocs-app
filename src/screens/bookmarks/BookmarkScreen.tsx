@@ -1,5 +1,5 @@
 import React, { FC, useCallback, useEffect, useState } from 'react';
-import { Image, SectionList, StyleSheet, View } from 'react-native';
+import { Image, SectionList, StyleSheet, View, Text } from 'react-native';
 import { useIsFocused } from '@react-navigation/native';
 import bookPagesRepository from '../../database/repository/bookPagesRepository';
 import { InfoBookPage } from '../../model/bookPages/InfoBookPage';
@@ -7,7 +7,6 @@ import ListItem from '../../components/listItem/ListItem';
 import configHelper from '../../helper/configHelper';
 import TitleBar from '../../components/titleBar/TitleBar';
 import useContentNavigator from '../../components/hooks/useContentNavigator';
-import SectionTitleBar from '../../components/titleBar/SectionTitleBar';
 import globalStyle from '../../styling/globalStyle';
 import SwipeableToggleBookmark from '../../components/bookmarks/SwipeableToggleBookmark';
 
@@ -16,6 +15,19 @@ const styles = StyleSheet.create({
     backgroundColor: globalStyle.color.white,
     marginBottom: 60,
     flex: 1,
+  },
+  chapterHeaderSection: {
+    ...globalStyle.typography.h4,
+    textAlign: 'center',
+  },
+  chapterHeaderSectionContainer: {
+    paddingBottom: 5,
+    paddingTop: 20,
+    paddingLeft: 20,
+    paddingRight: 20,
+    borderColor: globalStyle.color.default.light,
+    backgroundColor: globalStyle.color.white,
+    borderWidth: 0.5,
   },
   findPlaceholderImage: {
     marginTop: 120,
@@ -111,7 +123,9 @@ const BookmarkScreen: FC = () => {
           ListHeaderComponent={getHeader}
           sections={sections}
           renderSectionHeader={({ section: { bookTitle } }) => (
-            <SectionTitleBar title={bookTitle} />
+            <View style={styles.chapterHeaderSectionContainer}>
+              <Text style={styles.chapterHeaderSection}>{bookTitle}</Text>
+            </View>
           )}
           keyExtractor={({ bookType, chapter }) =>
             chapter.toString() + bookType.toString()
