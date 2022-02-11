@@ -6,7 +6,9 @@ const Stack = createStackNavigator();
 
 const BookmarksStackNavigator: FC = () => {
   return (
-    <Stack.Navigator screenOptions={{ headerMode: 'float' }}>
+    <Stack.Navigator
+      screenOptions={{ headerMode: 'float', gestureResponseDistance: 50 }}
+    >
       <Stack.Screen
         name="BookmarkScreen"
         component={BookmarkScreen}

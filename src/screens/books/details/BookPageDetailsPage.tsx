@@ -1,5 +1,5 @@
 import React, { FC, useCallback, useEffect, useRef } from 'react';
-import { View, FlatList, ScaledSize } from 'react-native';
+import { View, ScaledSize, FlatList } from 'react-native';
 import BookPageDetailItem from './BookPageDetailItem';
 import { InfoBookPage } from '../../../model/bookPages/InfoBookPage';
 
@@ -52,6 +52,7 @@ const BookPageDetailsPage: FC<Props> = ({
   return (
     <View style={{ flex: 1 }}>
       <FlatList
+        hitSlop={{ left: -50 }}
         ref={flatListRef}
         style={{ flex: 1 }}
         nestedScrollEnabled

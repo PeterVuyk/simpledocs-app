@@ -1,6 +1,6 @@
 import React, { FC, ReactNode, useCallback, useEffect } from 'react';
 import { Alert, BackHandler } from 'react-native';
-import { useNavigation, useNavigationState } from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 
 interface Props {

@@ -13,7 +13,9 @@ interface Props {
 
 const DecisionsStackNavigator: FC<Props> = ({ decisionTabInfo }) => {
   return (
-    <Stack.Navigator screenOptions={{ headerMode: 'float' }}>
+    <Stack.Navigator
+      screenOptions={{ headerMode: 'float', gestureResponseDistance: 50 }}
+    >
       <Stack.Screen
         name="DecisionsOverviewScreen"
         component={DecisionsOverviewScreen}

@@ -15,7 +15,13 @@ interface Props {
 
 const SecondBookTabStackNavigator: FC<Props> = ({ bookTabInfo }) => {
   return (
-    <Stack.Navigator screenOptions={{ headerMode: 'float' }}>
+    <Stack.Navigator
+      screenOptions={{
+        headerMode: 'float',
+        gestureResponseDistance: 50,
+        gestureVelocityImpact: 2,
+      }}
+    >
       {bookTabInfo.bookTypes.length !== 1 && (
         <Stack.Screen
           name="SecondBookTabOverviewScreen"
