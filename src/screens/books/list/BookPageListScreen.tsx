@@ -4,6 +4,7 @@ import BookPagesList from './BookPagesList';
 import bookPagesRepository from '../../../database/repository/bookPagesRepository';
 import { InfoBookPage } from '../../../model/bookPages/InfoBookPage';
 import { BookTabInfo } from '../../../model/configurations/AppConfigurations';
+import ScreenContainer from '../../../components/ScreenContainer';
 
 interface Props {
   navigation: any;
@@ -69,16 +70,19 @@ const BookPageListScreen: FC<Props> = ({ navigation, route }) => {
   if (!currentBookType || !infoBookPages) {
     return null;
   }
+
   return (
-    <BookPagesList
-      showHeader
-      bookTabInfo={bookTabInfo}
-      showChapterDivisions={getChapterDivisionsToShowInList()}
-      navigation={navigation}
-      InfoBookPages={infoBookPages}
-      onReloadPages={handleReloadPages}
-      bookType={currentBookType}
-    />
+    <ScreenContainer>
+      <BookPagesList
+        showHeader
+        bookTabInfo={bookTabInfo}
+        showChapterDivisions={getChapterDivisionsToShowInList()}
+        navigation={navigation}
+        InfoBookPages={infoBookPages}
+        onReloadPages={handleReloadPages}
+        bookType={currentBookType}
+      />
+    </ScreenContainer>
   );
 };
 

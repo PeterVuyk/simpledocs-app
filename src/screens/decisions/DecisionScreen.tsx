@@ -8,6 +8,7 @@ import {
 import { DecisionType } from '../../model/DecisionType';
 import CalculatorScreen from './calculator/CalculatorScreen';
 import DecisionTreeScreen from './decisionTree/DecisionTreeScreen';
+import ScreenContainer from '../../components/ScreenContainer';
 
 interface Props {
   navigation: DrawerNavigationProp<any>;
@@ -26,14 +27,14 @@ const DecisionScreen: FC<Props> = ({ navigation, route }) => {
   const { title, aggregate } = route.params;
 
   return (
-    <>
+    <ScreenContainer>
       {aggregate === AGGREGATE_DECISION_TREE && (
         <DecisionTreeScreen title={title} navigation={navigation} />
       )}
       {aggregate === AGGREGATE_CALCULATIONS && (
         <CalculatorScreen title={title} />
       )}
-    </>
+    </ScreenContainer>
   );
 };
 export default DecisionScreen;

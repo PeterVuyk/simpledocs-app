@@ -9,6 +9,7 @@ import TitleBar from '../../components/titleBar/TitleBar';
 import useContentNavigator from '../../components/hooks/useContentNavigator';
 import globalStyle from '../../styling/globalStyle';
 import SwipeableToggleBookmark from '../../components/bookmarks/SwipeableToggleBookmark';
+import ScreenContainer from '../../components/ScreenContainer';
 
 const styles = StyleSheet.create({
   container: {
@@ -108,32 +109,37 @@ const BookmarkScreen: FC = () => {
   };
 
   return (
-    <View style={styles.container}>
-      {sections.length === 0 && (
-        <>
-          <Image
-            style={styles.findPlaceholderImage}
-            source={require('../../../assets/bookmark.png')}
+    <ScreenContainer>
+      <View style={styles.container}>
+        {sections.length === 0 && (
+          <>
+            <Image
+              style={styles.findPlaceholderImage}
+              source={require('../../../assets/bookmark.png')}
+            />
+            <TitleBar
+              title="Favorieten"
+              subTitle="Geen favorieten toegevoegd"
+            />
+          </>
+        )}
+        {sections.length !== 0 && (
+          <SectionList
+            ListHeaderComponent={getHeader}
+            sections={sections}
+            renderSectionHeader={({ section: { bookTitle } }) => (
+              <View style={styles.chapterHeaderSectionContainer}>
+                <Text style={styles.chapterHeaderSection}>{bookTitle}</Text>
+              </View>
+            )}
+            keyExtractor={({ bookType, chapter }) =>
+              chapter.toString() + bookType.toString()
+            }
+            renderItem={({ item }) => renderItem(item)}
           />
-          <TitleBar title="Favorieten" subTitle="Geen favorieten toegevoegd" />
-        </>
-      )}
-      {sections.length !== 0 && (
-        <SectionList
-          ListHeaderComponent={getHeader}
-          sections={sections}
-          renderSectionHeader={({ section: { bookTitle } }) => (
-            <View style={styles.chapterHeaderSectionContainer}>
-              <Text style={styles.chapterHeaderSection}>{bookTitle}</Text>
-            </View>
-          )}
-          keyExtractor={({ bookType, chapter }) =>
-            chapter.toString() + bookType.toString()
-          }
-          renderItem={({ item }) => renderItem(item)}
-        />
-      )}
-    </View>
+        )}
+      </View>
+    </ScreenContainer>
   );
 };
 

@@ -4,6 +4,7 @@ import { Button, Icon } from 'react-native-elements';
 import decisionTreeRepository from '../../../database/repository/decisionTreeRepository';
 import { DecisionTreeStep } from '../../../model/decisionTree/DecisionTreeStep';
 import globalStyle from '../../../styling/globalStyle';
+import ScreenContainer from '../../../components/ScreenContainer';
 
 const styles = StyleSheet.create({
   questionLabel: {
@@ -107,72 +108,74 @@ const DecisionTreeScreen: FC<Props> = ({ title, navigation }) => {
   }
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.questionLabel}>
-        {currentStep !== undefined && currentStep.content
-          ? 'Antwoord:'
-          : 'Vraag:'}
-      </Text>
-      <View style={styles.contentContainerStyle}>
-        <Text style={styles.question}>{currentStep?.label}</Text>
-        {!isRootQuestion && (
-          <View
-            style={[
-              { bottom: 120, flexDirection: 'row' },
-              styles.buttonContainer,
-            ]}
-          >
-            <Icon
-              color={globalStyle.color.primary.main}
-              name="keyboard-backspace"
-              type="MaterialCommunityIcons"
-              disabled={getPreviousQuestion() === undefined}
-              onPress={() => setCurrentStep(getPreviousQuestion())}
-              reverse
-            />
-            <Icon
-              color={globalStyle.color.primary.main}
-              name="restore"
-              type="MaterialCommunityIcons"
-              disabled={getPreviousQuestion() === undefined}
-              onPress={() => setCurrentStep(undefined)}
-              reverse
-            />
-          </View>
-        )}
-        {currentStep !== undefined && currentStep.content && (
-          <View style={[{ bottom: 60 }, styles.buttonContainer]}>
-            <Button
-              buttonStyle={[styles.bookPageButtonsStyle]}
-              title="Open toelichting"
-              onPress={() => navigateToBookPage(currentStep)}
-            />
-          </View>
-        )}
-        {leftStep !== undefined && rightStep !== undefined && (
-          <View
-            style={[
-              {
-                bottom: 60,
-                flexDirection: 'row',
-              },
-              styles.buttonContainer,
-            ]}
-          >
-            <Button
-              buttonStyle={[styles.leftButtonStyle]}
-              onPress={() => setCurrentStep(leftStep)}
-              title="Nee"
-            />
-            <Button
-              buttonStyle={[styles.rightButtonStyle]}
-              onPress={() => setCurrentStep(rightStep)}
-              title="Ja"
-            />
-          </View>
-        )}
+    <ScreenContainer>
+      <View style={styles.container}>
+        <Text style={styles.questionLabel}>
+          {currentStep !== undefined && currentStep.content
+            ? 'Antwoord:'
+            : 'Vraag:'}
+        </Text>
+        <View style={styles.contentContainerStyle}>
+          <Text style={styles.question}>{currentStep?.label}</Text>
+          {!isRootQuestion && (
+            <View
+              style={[
+                { bottom: 120, flexDirection: 'row' },
+                styles.buttonContainer,
+              ]}
+            >
+              <Icon
+                color={globalStyle.color.primary.main}
+                name="keyboard-backspace"
+                type="MaterialCommunityIcons"
+                disabled={getPreviousQuestion() === undefined}
+                onPress={() => setCurrentStep(getPreviousQuestion())}
+                reverse
+              />
+              <Icon
+                color={globalStyle.color.primary.main}
+                name="restore"
+                type="MaterialCommunityIcons"
+                disabled={getPreviousQuestion() === undefined}
+                onPress={() => setCurrentStep(undefined)}
+                reverse
+              />
+            </View>
+          )}
+          {currentStep !== undefined && currentStep.content && (
+            <View style={[{ bottom: 60 }, styles.buttonContainer]}>
+              <Button
+                buttonStyle={[styles.bookPageButtonsStyle]}
+                title="Open toelichting"
+                onPress={() => navigateToBookPage(currentStep)}
+              />
+            </View>
+          )}
+          {leftStep !== undefined && rightStep !== undefined && (
+            <View
+              style={[
+                {
+                  bottom: 60,
+                  flexDirection: 'row',
+                },
+                styles.buttonContainer,
+              ]}
+            >
+              <Button
+                buttonStyle={[styles.leftButtonStyle]}
+                onPress={() => setCurrentStep(leftStep)}
+                title="Nee"
+              />
+              <Button
+                buttonStyle={[styles.rightButtonStyle]}
+                onPress={() => setCurrentStep(rightStep)}
+                title="Ja"
+              />
+            </View>
+          )}
+        </View>
       </View>
-    </View>
+    </ScreenContainer>
   );
 };
 

@@ -1,18 +1,21 @@
-import React, { FC, Fragment, useCallback } from 'react';
+import React, { FC, Fragment, useCallback, useEffect } from 'react';
 import { DrawerNavigationProp } from '@react-navigation/drawer/lib/typescript/src/types';
-import { StyleSheet, View } from 'react-native';
-import { RouteProp } from '@react-navigation/native';
+import { StyleSheet } from 'react-native';
+import { RouteProp, useIsFocused } from '@react-navigation/native';
 import { Content } from 'native-base';
 import { SECOND_BOOK_TAB } from '../../model/BottomTab';
 import TitleBar from '../../components/titleBar/TitleBar';
 import { BookTabInfo } from '../../model/configurations/AppConfigurations';
 import globalStyle from '../../styling/globalStyle';
 import BooksOverviewCardItem from './BooksOverviewCardItem';
+import { useAppDispatch } from '../../redux/hooks';
+import { scrollUp } from '../../redux/slice/scrollingSlice';
+import ScreenContainer from '../../components/ScreenContainer';
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingBottom: 60,
+    marginBottom: 60,
     backgroundColor: globalStyle.color.white,
   },
 });
@@ -51,24 +54,26 @@ const BooksOverviewScreen: FC<Props> = ({ navigation, route }) => {
   );
 
   return (
-    <Content style={styles.container} padder>
-      <TitleBar
-        title={bookTabInfo.title ?? ''}
-        subTitle={bookTabInfo.subTitle ?? ''}
-        bottomDivider
-      />
-      {bookTabInfo.bookTypes
-        .sort((a, b) => a.index - b.index)
-        .map((book, index) => (
-          <Fragment key={book.bookType}>
-            <BooksOverviewCardItem
-              lastItem={index === bookTabInfo.bookTypes.length - 1}
-              bookInfo={book}
-              onNavigation={handleNavigation}
-            />
-          </Fragment>
-        ))}
-    </Content>
+    <ScreenContainer>
+      <Content style={styles.container} padder>
+        <TitleBar
+          title={bookTabInfo.title ?? ''}
+          subTitle={bookTabInfo.subTitle ?? ''}
+          bottomDivider
+        />
+        {bookTabInfo.bookTypes
+          .sort((a, b) => a.index - b.index)
+          .map((book, index) => (
+            <Fragment key={book.bookType}>
+              <BooksOverviewCardItem
+                lastItem={index === bookTabInfo.bookTypes.length - 1}
+                bookInfo={book}
+                onNavigation={handleNavigation}
+              />
+            </Fragment>
+          ))}
+      </Content>
+    </ScreenContainer>
   );
 };
 

@@ -1,5 +1,5 @@
 import React, { FC, ReactNode } from 'react';
-import { View, Keyboard } from 'react-native';
+import { View, Keyboard, Text } from 'react-native';
 import { useAppSelector } from '../../redux/hooks';
 import globalStyle from '../../styling/globalStyle';
 

@@ -12,6 +12,7 @@ import {
 import StoppingDistanceCalculator from './StoppingDistanceCalculator';
 import ContentViewer from '../../../components/viewer/ContentViewer';
 import globalStyle from '../../../styling/globalStyle';
+import ScreenContainer from '../../../components/ScreenContainer';
 
 const styles = StyleSheet.create({
   container: {
@@ -36,25 +37,27 @@ const CalculatorScreen: FC<Props> = ({ title }) => {
     return null;
   }
   return (
-    <ScrollView style={styles.container}>
-      <KeyboardAwareView>
-        <TitleBar
-          title={calculationInfo.title}
-          subTitle={calculationInfo.explanation}
-        />
-        {calculationInfo.calculationType === OVERTAKING_DISTANCE && (
-          <OvertakingDistanceCalculator />
-        )}
-        {calculationInfo.calculationType === STOPPING_DISTANCE && (
-          <StoppingDistanceCalculator />
-        )}
-        <ContentViewer
-          content={calculationInfo.content}
-          contentType={calculationInfo.contentType}
-          bookType="calculations"
-        />
-      </KeyboardAwareView>
-    </ScrollView>
+    <ScreenContainer>
+      <ScrollView style={styles.container}>
+        <KeyboardAwareView>
+          <TitleBar
+            title={calculationInfo.title}
+            subTitle={calculationInfo.explanation}
+          />
+          {calculationInfo.calculationType === OVERTAKING_DISTANCE && (
+            <OvertakingDistanceCalculator />
+          )}
+          {calculationInfo.calculationType === STOPPING_DISTANCE && (
+            <StoppingDistanceCalculator />
+          )}
+          <ContentViewer
+            content={calculationInfo.content}
+            contentType={calculationInfo.contentType}
+            bookType="calculations"
+          />
+        </KeyboardAwareView>
+      </ScrollView>
+    </ScreenContainer>
   );
 };
 
