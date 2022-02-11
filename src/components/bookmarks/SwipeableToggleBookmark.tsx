@@ -23,6 +23,7 @@ const SwipeableToggleBookmark: FC<Props> = ({
 
   return (
     <Swipeable
+      hitSlop={{ left: -200 }}
       ref={swipeableRef}
       renderRightActions={() => (
         <ToggleBookmarkViewButton
