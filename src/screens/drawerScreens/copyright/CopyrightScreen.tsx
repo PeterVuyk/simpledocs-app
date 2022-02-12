@@ -5,6 +5,7 @@ import TitleBar from '../../../components/titleBar/TitleBar';
 import { AppConfigurations } from '../../../model/configurations/AppConfigurations';
 import DrawerScreen from '../DrawerScreen';
 import globalStyle from '../../../styling/globalStyle';
+import ScreenContainer from '../../../components/ScreenContainer';
 
 const styles = StyleSheet.create({
   container: {
@@ -21,23 +22,25 @@ interface Props {
 
 const CopyrightScreen: FC<Props> = ({ navigation, appConfigurations }) => {
   return (
-    <DrawerScreen
-      appConfigurations={appConfigurations}
-      navigation={navigation}
-      showHeader
-    >
-      <View style={styles.container}>
-        <TitleBar
-          title="Auteursrechten"
-          subTitle="Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur,
+    <ScreenContainer>
+      <DrawerScreen
+        appConfigurations={appConfigurations}
+        navigation={navigation}
+        showHeader
+      >
+        <View style={styles.container}>
+          <TitleBar
+            title="Auteursrechten"
+            subTitle="Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur,
          adipisci velit. Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur,
           adipisci velit. Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur,
            adipisci velit. Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur,
             adipisci velit. Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur,
              adipisci velit. "
-        />
-      </View>
-    </DrawerScreen>
+          />
+        </View>
+      </DrawerScreen>
+    </ScreenContainer>
   );
 };
 

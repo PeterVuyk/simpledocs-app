@@ -14,6 +14,7 @@ import SearchHeader from '../../../navigation/header/search/SearchHeader';
 import KeyboardAwareView from '../../../components/keyboard/KeyboardAwareView';
 import { SearchTab } from '../../../model/SearchTab';
 import SearchScreenList from './SearchScreenList';
+import ScreenContainer from '../../../components/ScreenContainer';
 
 interface Props {
   navigation: DrawerNavigationHelpers;
@@ -71,37 +72,42 @@ const SearchScreen: FC<Props> = ({ navigation, appConfigurations }) => {
   };
 
   return (
-    <DrawerScreen appConfigurations={appConfigurations} navigation={navigation}>
-      <SearchHeader
-        handleSearchTextChange={setSearchText}
-        searchText={searchText}
+    <ScreenContainer>
+      <DrawerScreen
+        appConfigurations={appConfigurations}
+        navigation={navigation}
       >
-        <View>
-          {searchTabs && getCurrentTab() !== null && (
-            <SearchScreenNavigator
-              searchTabs={searchTabs}
-              onTabChange={handleTabChange}
-              currentTab={getCurrentTab()!}
-            />
-          )}
-        </View>
-        <KeyboardAwareView>
-          {searchTabs && getCurrentTab() !== null && (
-            <DimensionsProvider
-              children={window => (
-                <SearchScreenList
-                  searchText={searchText}
-                  searchTabs={searchTabs}
-                  onTabChange={handleTabChange}
-                  currentTab={getCurrentTab()!}
-                  window={window}
-                />
-              )}
-            />
-          )}
-        </KeyboardAwareView>
-      </SearchHeader>
-    </DrawerScreen>
+        <SearchHeader
+          handleSearchTextChange={setSearchText}
+          searchText={searchText}
+        >
+          <View>
+            {searchTabs && getCurrentTab() !== null && (
+              <SearchScreenNavigator
+                searchTabs={searchTabs}
+                onTabChange={handleTabChange}
+                currentTab={getCurrentTab()!}
+              />
+            )}
+          </View>
+          <KeyboardAwareView>
+            {searchTabs && getCurrentTab() !== null && (
+              <DimensionsProvider
+                children={window => (
+                  <SearchScreenList
+                    searchText={searchText}
+                    searchTabs={searchTabs}
+                    onTabChange={handleTabChange}
+                    currentTab={getCurrentTab()!}
+                    window={window}
+                  />
+                )}
+              />
+            )}
+          </KeyboardAwareView>
+        </SearchHeader>
+      </DrawerScreen>
+    </ScreenContainer>
   );
 };
 

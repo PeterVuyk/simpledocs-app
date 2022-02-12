@@ -5,6 +5,7 @@ import TitleBar from '../../../components/titleBar/TitleBar';
 import { AppConfigurations } from '../../../model/configurations/AppConfigurations';
 import DrawerScreen from '../DrawerScreen';
 import globalStyle from '../../../styling/globalStyle';
+import ScreenContainer from '../../../components/ScreenContainer';
 
 const styles = StyleSheet.create({
   container: {
@@ -21,27 +22,29 @@ interface Props {
 
 const AboutUsScreen: FC<Props> = ({ navigation, appConfigurations }) => {
   return (
-    <DrawerScreen
-      showHeader
-      appConfigurations={appConfigurations}
-      navigation={navigation}
-    >
-      <View style={styles.container}>
-        <TitleBar
-          title="Wie zijn wij?"
-          subTitle="Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur,
+    <ScreenContainer>
+      <DrawerScreen
+        showHeader
+        appConfigurations={appConfigurations}
+        navigation={navigation}
+      >
+        <View style={styles.container}>
+          <TitleBar
+            title="Wie zijn wij?"
+            subTitle="Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur,
          adipisci velit. Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur,
           adipisci velit. Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur,
            adipisci velit. Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur,
             adipisci velit. Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur,
              adipisci velit. "
-        />
-        <TitleBar
-          title="Vragen? Ideeën? Neem contact op!"
-          subTitle="Stuur ons een email naar: email@email.nl"
-        />
-      </View>
-    </DrawerScreen>
+          />
+          <TitleBar
+            title="Vragen? Ideeën? Neem contact op!"
+            subTitle="Stuur ons een email naar: email@email.nl"
+          />
+        </View>
+      </DrawerScreen>
+    </ScreenContainer>
   );
 };
 

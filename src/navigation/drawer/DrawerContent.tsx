@@ -43,7 +43,7 @@ const DrawerContent: FC<Props> = ({ navigation, appConfigurations }) => {
         />
       ))}
       <DrawerItem
-        label="Over de maker"
+        label="Over Academie voor Ambulancezorg"
         onSubmit={() => {
           navigation.navigate('AboutUsScreen');
         }}

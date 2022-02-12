@@ -3,19 +3,23 @@ import { Platform, SafeAreaView, StyleSheet, View } from 'react-native';
 import { SearchBar } from 'react-native-elements';
 import { useIsFocused, useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
+import { WhitePortal } from 'react-native-portal';
 import globalStyle from '../../../styling/globalStyle';
 
 const styles = StyleSheet.create({
-  headerContainer: { flex: 1, backgroundColor: globalStyle.color.white },
-  searchInputContainer: {
+  headerContainer: {
+    display: 'flex',
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    height: 80,
     shadowOffset: { width: 1, height: 2 },
     shadowOpacity: 0.1,
     shadowRadius: 3,
     elevation: 2,
     backgroundColor: globalStyle.header.backgroundColor,
-    alignItems: 'center',
+  },
+  searchBar: {
+    backgroundColor: globalStyle.color.white,
+    height: 60,
   },
 });
 
@@ -42,14 +46,15 @@ const SearchHeader: FC<Props> = ({
   }, [isFocused, searchRef]);
 
   return (
-    <SafeAreaView style={styles.headerContainer}>
-      <View style={styles.searchInputContainer}>
+    <>
+      <SafeAreaView style={styles.headerContainer}>
+        <WhitePortal name="goBackButton" />
         <View style={{ flex: 1 }}>
           <SearchBar
             ref={search => {
               searchRef = search;
             }}
-            containerStyle={{ backgroundColor: globalStyle.color.white }}
+            containerStyle={styles.searchBar}
             inputContainerStyle={{
               backgroundColor:
                 Platform.OS === 'ios'
@@ -57,15 +62,15 @@ const SearchHeader: FC<Props> = ({
                   : globalStyle.color.white,
             }}
             platform={Platform.OS === 'ios' ? 'ios' : 'android'}
-            placeholder="Zoek op titel of trefwoord..."
+            placeholder="Zoek op trefwoord..."
             onCancel={() => (Platform.OS === 'ios' ? navigation.goBack() : '')}
             onChangeText={handleSearchTextChange}
             value={searchText}
           />
         </View>
-      </View>
+      </SafeAreaView>
       {children}
-    </SafeAreaView>
+    </>
   );
 };
 

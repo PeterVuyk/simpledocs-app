@@ -59,11 +59,7 @@ const Header: FC<Props> = ({ navigation }) => {
   return (
     <SafeAreaView style={headerStyles.container}>
       <View style={headerStyles.box}>
-        {Platform.OS === 'ios' && (
-          <WhitePortal name="goBackButton">
-            <View style={{ padding: 10 }} />
-          </WhitePortal>
-        )}
+        {Platform.OS === 'ios' && <WhitePortal name="goBackButton" />}
         {Platform.OS === 'android' && (
           <DrawerButton
             iconName="menu"

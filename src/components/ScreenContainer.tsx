@@ -25,7 +25,7 @@ const ScreenContainer: FC<Props> = ({ children }) => {
 
   return (
     <>
-      {Platform.OS === 'ios' && (
+      {Platform.OS === 'ios' && navigation.canGoBack() && (
         <BlackPortal name="goBackButton">
           <HeaderBackButton
             style={{
