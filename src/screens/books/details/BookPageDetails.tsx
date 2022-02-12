@@ -20,6 +20,7 @@ const BookPageDetails: FC<Props> = ({
   bookType,
   windowWidth,
 }) => {
+  // Make sure that the parent component won't reload, otherwise the users current page will be lost and set to the initial bookPageChapter.
   const [currentIndex, setCurrentIndex] = useState<number>(
     infoBookPages.map(value => value.chapter).indexOf(bookPageChapter),
   );

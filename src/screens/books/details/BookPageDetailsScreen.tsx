@@ -5,6 +5,7 @@ import bookPagesRepository from '../../../database/repository/bookPagesRepositor
 import { InfoBookPage } from '../../../model/bookPages/InfoBookPage';
 import BookPageDetails from './BookPageDetails';
 import DimensionsProvider from '../../../components/viewer/DimensionsProvider';
+import ScreenContainer from '../../../components/ScreenContainer';
 
 interface Props {
   navigation: DrawerNavigationHelpers;
@@ -27,6 +28,10 @@ const BookPageDetailsScreen: FC<Props> = ({ navigation, route }) => {
 
   useEffect(() => {
     let isMounted = true;
+    // If the currentBookType is the same as the requested bookType, then no further action needed.
+    if (currentBookType === bookType) {
+      return () => null;
+    }
     bookPagesRepository.getChapters(bookType, pages => {
       if (isMounted) {
         setChapters(pages);
@@ -38,15 +43,10 @@ const BookPageDetailsScreen: FC<Props> = ({ navigation, route }) => {
     return () => {
       isMounted = false;
     };
-  }, [isFocused, bookType, navigation]);
-
-  // If the bookType changed because the user navigates from another book, then chapters need to be reset first.
-  if (currentBookType !== bookType) {
-    return null;
-  }
+  }, [isFocused, bookType, navigation, currentBookType]);
 
   return (
-    <>
+    <ScreenContainer>
       {chapters.length !== 0 && (
         <DimensionsProvider
           children={window => (
@@ -59,7 +59,7 @@ const BookPageDetailsScreen: FC<Props> = ({ navigation, route }) => {
           )}
         />
       )}
-    </>
+    </ScreenContainer>
   );
 };
 
