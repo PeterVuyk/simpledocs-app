@@ -5,15 +5,15 @@ import environment from '../../util/environment';
 import globalStyle from '../../styling/globalStyle';
 
 const styles = StyleSheet.create({
+  container: { flex: 1, alignItems: 'center', justifyContent: 'center' },
   headerLogo: {
-    height: 45,
-    width: 'auto',
     resizeMode: 'contain',
+    width: '100%',
   },
   nonProductionIndicatorContainer: {
     position: 'absolute',
-    right: 0,
-    bottom: 0,
+    right: 20,
+    bottom: 20,
   },
   editIndicator: {
     color: globalStyle.color.default.dark,
@@ -23,7 +23,7 @@ const styles = StyleSheet.create({
 
 const HeaderLogo: FC = React.memo(() => {
   return (
-    <View style={{ flex: 1 }}>
+    <View style={styles.container}>
       <Image
         style={styles.headerLogo}
         source={require('../../../assets/company-logo.png')}

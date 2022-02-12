@@ -1,6 +1,5 @@
 import React, { FC, ReactNode, useEffect, useState } from 'react';
 import { Linking, View, Text, StyleSheet } from 'react-native';
-import { useIsFocused } from '@react-navigation/native';
 import Markdown from 'react-native-markdown-display';
 import ScrollViewToggleBottomBar from '../ScrollViewToggleBottomBar';
 import useContentNavigator from '../hooks/useContentNavigator';
