@@ -24,7 +24,7 @@
     },
     "android": {
       "allowBackup": true,
-      "versionCode": 16,
+      "versionCode": 19,
       "package": "eu.simpledocs.app",
       "permissions": ["WRITE_EXTERNAL_STORAGE", "WRITE_EXTERNAL_STORAGE"],
       "adaptiveIcon": {

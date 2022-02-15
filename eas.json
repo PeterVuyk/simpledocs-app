@@ -57,6 +57,9 @@
     },
     "production": {
       "distribution": "internal",
+      "android": {
+        "buildType": "app-bundle"
+      },
       "env": {
         "CUSTOMER_NAME": "academie-voor-ambulancezorg",
         "APP_JSON_NAME": "academie-voor-ambulancezorg",
