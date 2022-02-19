@@ -10,7 +10,12 @@
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
-    "plugins": ["sentry-expo"],
+    "plugins": [
+      "sentry-expo",
+      [
+        "expo-notifications"
+      ]
+    ],
     "updates": {
       "fallbackToCacheTimeout": 0
     },
@@ -20,13 +25,16 @@
     "ios": {
       "supportsTablet": true,
       "requireFullScreen": true,
-      "bundleIdentifier": "eu.simpledocs.app"
+      "bundleIdentifier": "eu.simpledocs.app",
+      "infoPlist": {
+        "UIBackgroundModes": ["remote-notification"]
+      }
     },
     "android": {
       "allowBackup": true,
       "versionCode": 19,
       "package": "eu.simpledocs.app",
-      "permissions": ["WRITE_EXTERNAL_STORAGE", "WRITE_EXTERNAL_STORAGE"],
+      "permissions": ["WRITE_EXTERNAL_STORAGE", "WRITE_EXTERNAL_STORAGE", "RECEIVE_BOOT_COMPLETED"],
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"

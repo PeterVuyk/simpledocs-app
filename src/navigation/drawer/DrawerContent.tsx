@@ -1,9 +1,10 @@
-import React, { FC } from 'react';
-import { Linking, Image, View, Platform, StyleSheet } from 'react-native';
+import React, { FC, useState } from 'react';
+import { Linking, Image, View, StyleSheet } from 'react-native';
 import { DrawerNavigationHelpers } from '@react-navigation/drawer/lib/typescript/src/types';
 import DrawerItem from './DrawerItem';
 import { IconFamilyType } from '../../model/style/IconFamilyType';
 import { AppConfigurations } from '../../model/configurations/AppConfigurations';
+import SettingsModal from './settings/SettingsModal';
 
 const styles = StyleSheet.create({
   drawerImageContainer: {
@@ -24,6 +25,9 @@ interface Props {
 }
 
 const DrawerContent: FC<Props> = ({ navigation, appConfigurations }) => {
+  const [settingsModalVisible, setSettingsModalVisible] =
+    useState<boolean>(false);
+
   return (
     <View style={{ flex: 1 }}>
       <View style={styles.drawerImageContainer}>
@@ -58,15 +62,17 @@ const DrawerContent: FC<Props> = ({ navigation, appConfigurations }) => {
         iconName="copyright"
         iconType="MaterialCommunityIcons"
       />
-      {Platform.OS !== 'ios' && (
-        <DrawerItem
-          label="Terug"
-          onSubmit={(): void => {
-            navigation.closeDrawer();
-          }}
-          iconName="arrow-back"
-          iconType="Ionicons"
-        />
+      <DrawerItem
+        label="Instellingen"
+        onSubmit={() => {
+          navigation.closeDrawer();
+          setSettingsModalVisible(true);
+        }}
+        iconName="app-settings-alt"
+        iconType="MaterialIcons"
+      />
+      {settingsModalVisible && (
+        <SettingsModal onCloseModal={() => setSettingsModalVisible(false)} />
       )}
     </View>
   );

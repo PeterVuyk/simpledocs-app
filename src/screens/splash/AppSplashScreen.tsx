@@ -16,6 +16,7 @@ import {
   updateStartupState,
 } from '../../redux/slice/startupStateSlice';
 import InternetSuggestedNotification from '../../components/notification/InternetSuggestedNotification';
+import Notification from '../../notification/Notification';
 
 const AppSplashScreen: FC = () => {
   const [appIsReady, setAppReady] = useState<boolean | null>(null);
@@ -87,7 +88,9 @@ const AppSplashScreen: FC = () => {
       {loading && <IntentSplashScreen firstStartupApp={firstStartupApp} />}
       {!loading && (
         <InternetSuggestedNotification>
-          <Drawer />
+          <Notification>
+            <Drawer />
+          </Notification>
         </InternetSuggestedNotification>
       )}
     </View>

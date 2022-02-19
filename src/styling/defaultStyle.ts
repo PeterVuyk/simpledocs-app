@@ -38,6 +38,10 @@ const defaultStyle = {
   titleLayout: {
     color: '#154594',
   },
+  toggle: {
+    selectedTrackColor: '#5bb5f6',
+    selectedThumbColor: '#154594',
+  },
   header: {
     backgroundColor: '#fff',
   },

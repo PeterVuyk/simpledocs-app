@@ -38,6 +38,10 @@ const academieVoorAmbulancezorgStyle = {
   titleLayout: {
     color: '#E50060',
   },
+  toggle: {
+    selectedTrackColor: '#283339',
+    selectedThumbColor: '#E50060',
+  },
   header: {
     backgroundColor: '#E5E5EA',
   },

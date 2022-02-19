@@ -1,7 +1,10 @@
 import Constants from 'expo-constants';
 import { LogBox } from 'react-native';
 import { httpsCallable } from 'firebase/functions';
-import { AppInfoResponse, AppInfo } from '../../model/AppInfoResponse';
+import {
+  AppInfoResponse,
+  AppInfo,
+} from '../../model/apiResponse/AppInfoResponse';
 import { Versions } from '../../model/configurations/AppConfigurations';
 import { functions } from '../firebase';
 import environment from '../../util/environment';

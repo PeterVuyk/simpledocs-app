@@ -2,7 +2,7 @@ import React, { FC } from 'react';
 import { Text, View, StyleSheet, Keyboard } from 'react-native';
 import globalStyle from '../../styling/globalStyle';
 
-const styles = StyleSheet.create({
+export const titleBarStyle = StyleSheet.create({
   container: {
     backgroundColor: globalStyle.color.white,
     padding: 20,
@@ -19,7 +19,6 @@ const styles = StyleSheet.create({
   },
   headerSubTitle: {
     ...globalStyle.typography.h4,
-    paddingTop: 20,
     textAlign: 'center',
   },
 });
@@ -35,13 +34,15 @@ const TitleBar: FC<Props> = ({ title, subTitle, bottomDivider }) => {
     <View
       onTouchStart={Keyboard.dismiss}
       style={[
-        styles.container,
-        bottomDivider === true ? styles.bottomDivider : {},
+        titleBarStyle.container,
+        bottomDivider === true ? titleBarStyle.bottomDivider : {},
       ]}
     >
-      <Text style={styles.headerTitle}>{title}</Text>
+      <Text style={titleBarStyle.headerTitle}>{title}</Text>
       {subTitle !== undefined && (
-        <Text style={styles.headerSubTitle}>{subTitle}</Text>
+        <Text style={[{ paddingTop: 20 }, titleBarStyle.headerSubTitle]}>
+          {subTitle}
+        </Text>
       )}
     </View>
   );
