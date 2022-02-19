@@ -6,6 +6,8 @@ import logger from '../util/logger';
 import internetConnectivity from '../helper/internetConnectivity';
 import hasExpoPushToken from './hasExpoPushToken';
 import toggleNotifications from '../firebase/functions/toggleNotifications';
+import isAppNotificationsDisabledFromSleep from './isAppNotificationsDisabledFromSleep';
+import enableDisabledNotificationsFromSleep from '../firebase/functions/enableDisabledNotificationsFromSleep';
 
 interface Props {
   children: ReactNode;
@@ -49,6 +51,14 @@ const Notification: FC<Props> = ({ children, firstStartupApp }) => {
       }
     }, []);
 
+  const enableNotificationsIfAppLongSleep = useCallback(
+    async () =>
+      (await isAppNotificationsDisabledFromSleep())
+        ? enableDisabledNotificationsFromSleep()
+        : Promise.resolve(),
+    [],
+  );
+
   useEffect(() => {
     if (firstStartupApp) {
       requestAllowNotification().catch(reason =>
@@ -58,6 +68,12 @@ const Notification: FC<Props> = ({ children, firstStartupApp }) => {
         ),
       );
     } else {
+      enableNotificationsIfAppLongSleep().catch(reason =>
+        logger.error(
+          'Tried to enable disabledNotification from sleep by startup app but an error has occurred',
+          reason,
+        ),
+      );
       removeExpoPushTokenIfNotificationIsRevoked().catch(reason =>
         logger.error(
           'Failed to remove expo push token if notification is revoked',
@@ -66,6 +82,7 @@ const Notification: FC<Props> = ({ children, firstStartupApp }) => {
       );
     }
   }, [
+    enableNotificationsIfAppLongSleep,
     firstStartupApp,
     removeExpoPushTokenIfNotificationIsRevoked,
     requestAllowNotification,
