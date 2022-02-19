@@ -88,7 +88,7 @@ const AppSplashScreen: FC = () => {
       {loading && <IntentSplashScreen firstStartupApp={firstStartupApp} />}
       {!loading && (
         <InternetSuggestedNotification>
-          <Notification>
+          <Notification firstStartupApp={firstStartupApp}>
             <Drawer />
           </Notification>
         </InternetSuggestedNotification>
