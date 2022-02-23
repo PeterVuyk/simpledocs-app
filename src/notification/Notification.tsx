@@ -1,4 +1,4 @@
-import React, { FC, ReactNode, useCallback, useEffect } from 'react';
+import React, { FC, ReactNode, useCallback, useEffect, useState } from 'react';
 import * as Notifications from 'expo-notifications';
 import usePushNotifications from './usePushNotifications';
 import notificationToggle from './notificationToggle';
@@ -8,15 +8,34 @@ import hasExpoPushToken from './hasExpoPushToken';
 import toggleNotifications from '../firebase/functions/toggleNotifications';
 import isAppNotificationsDisabledFromSleep from './isAppNotificationsDisabledFromSleep';
 import enableDisabledNotificationsFromSleep from '../firebase/functions/enableDisabledNotificationsFromSleep';
+import useContentNavigator from '../components/hooks/useContentNavigator';
+import { NotificationData } from '../model/notifications/NotificationData';
 
 interface Props {
   children: ReactNode;
   firstStartupApp: boolean;
 }
 const Notification: FC<Props> = ({ children, firstStartupApp }) => {
-  const { notification } = usePushNotifications(response =>
-    console.log('notification is pressed!', response),
-  );
+  const [notificationData, setNotificationData] =
+    useState<NotificationData | null>(null);
+  const { navigateFromId } = useContentNavigator();
+
+  usePushNotifications(response => {
+    setNotificationData(response.notification.request.content.data);
+  });
+
+  useEffect(() => {
+    const data = notificationData;
+    setNotificationData(null);
+    if (data?.navigate !== undefined) {
+      navigateFromId(data.navigate.id, 'notification').catch(reason =>
+        logger.error(
+          `Clicked on notification and tried to navigate to page ${data.navigate?.id} from aggregate ${data.navigate?.aggregate} but failed`,
+          reason,
+        ),
+      );
+    }
+  }, [navigateFromId, notificationData]);
 
   /**
    * For the first startup we need to check if we can send notifications,

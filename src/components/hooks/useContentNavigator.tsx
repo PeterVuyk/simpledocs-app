@@ -54,9 +54,9 @@ function useContentNavigator() {
   };
 
   const redirect = async (
-    currentBookType: string,
     targetBookType: string,
     chapter: string,
+    currentBookType: string,
   ): Promise<void> => {
     const currentTab = await configHelper.getTabByBookType(currentBookType);
     const targetTab = await configHelper.getTabByBookType(targetBookType);
@@ -66,7 +66,6 @@ function useContentNavigator() {
           bookPageChapter: chapter,
           bookType: targetBookType,
         });
-        return;
       }
       navigation.navigate('SecondBookTabStack', {
         screen: 'SecondBookTabDetailsScreen',
@@ -88,6 +87,14 @@ function useContentNavigator() {
     }
   };
 
+  const navigateFromId = (id: string, currentBookType: string) => {
+    return bookPagesRepository.getPageById(id, page => {
+      return new Promise(resolve => {
+        redirect(page.bookType, page.chapter, currentBookType).then(resolve);
+      });
+    });
+  };
+
   const navigateFromHttpsUrlToChapter = async (
     url: string,
     currentBookType: string,
@@ -99,16 +106,13 @@ function useContentNavigator() {
       );
       return;
     }
-    await bookPagesRepository.getPageById(id, page => {
-      return new Promise(resolve => {
-        redirect(currentBookType, page.bookType, page.chapter).then(resolve);
-      });
-    });
+    await navigateFromId(id, currentBookType);
   };
 
   return {
     blankWebpage: BLANK_WEBPAGE,
     navigateFromHttpsUrlToChapter,
+    navigateFromId,
     navigateToChapter,
   };
 }

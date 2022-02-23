@@ -45,6 +45,12 @@ const BookPageDetailsScreen: FC<Props> = ({ navigation, route }) => {
     };
   }, [isFocused, bookType, navigation, currentBookType]);
 
+  // This is a safe guard to make sure that we don't get 'undefined is not an object'
+  // when navigating between books from example links, notifications.
+  if (bookType !== currentBookType) {
+    return null;
+  }
+
   return (
     <ScreenContainer>
       {chapters.length !== 0 && (

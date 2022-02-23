@@ -3,6 +3,7 @@ import { View } from 'react-native';
 import * as SplashScreen from 'expo-splash-screen';
 import * as Font from 'expo-font';
 import { Ionicons } from '@expo/vector-icons';
+import { NavigationContainer } from '@react-navigation/native';
 import Drawer from '../../navigation/drawer/Drawer';
 import NoInternetConnectionOverlay from './NoInternetConnectionOverlay';
 import InitializationAppFailureOverlay from './InitializationAppFailureOverlay';
@@ -88,9 +89,11 @@ const AppSplashScreen: FC = () => {
       {loading && <IntentSplashScreen firstStartupApp={firstStartupApp} />}
       {!loading && (
         <InternetSuggestedNotification>
-          <Notification firstStartupApp={firstStartupApp}>
-            <Drawer />
-          </Notification>
+          <NavigationContainer>
+            <Notification firstStartupApp={firstStartupApp}>
+              <Drawer />
+            </Notification>
+          </NavigationContainer>
         </InternetSuggestedNotification>
       )}
     </View>

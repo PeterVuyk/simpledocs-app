@@ -47,17 +47,11 @@ const usePushNotifications = (
       });
     }
 
-    // TODO: verwijder console.log na het getest te hebben
     return () => {
       if (notificationListener.current) {
-        console.log(
-          'notificationListener.current',
-          notificationListener.current,
-        );
         removeNotificationSubscription(notificationListener.current);
       }
       if (responseListener.current) {
-        console.log('responseListener.current', responseListener.current);
         removeNotificationSubscription(responseListener.current);
       }
     };
