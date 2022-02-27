@@ -1,6 +1,7 @@
 import React, { FC, useEffect, useState } from 'react';
 import { Alert, Modal, StyleSheet, Text, Switch, View } from 'react-native';
 import { Button } from 'react-native-elements';
+import { useIsFocused } from '@react-navigation/native';
 import TitleBar from '../../../components/titleBar/TitleBar';
 import globalStyle from '../../../styling/globalStyle';
 import logger from '../../../util/logger';
@@ -58,11 +59,14 @@ const SettingsModal: FC<Props> = ({ onCloseModal }) => {
   const [allowNotifications, setAllowNotifications] = useState<boolean | null>(
     null,
   );
+  const isFocused = useIsFocused();
 
+  // On isFocused is required to make sure to check for internet connection
+  // if the user locked and unlocked while the settings modal was open.
   useEffect(() => {
     internetConnectivity.hasInternetConnection().then(setHasInternet);
     hasExpoPushToken().then(setAllowNotifications);
-  }, []);
+  }, [isFocused]);
 
   /**
    * submit should take at least 3 seconds, otherwise the changes are not applied
