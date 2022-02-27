@@ -13,6 +13,7 @@ export default ({ config }) => {
     },
     android: {
       ...config.android,
+      googleServicesFile: process.env.APP_JSON_GOOGLE_SERVICES_JSON_PATH,
       package: process.env.APP_JSON_BUNDLE_IDENTIFIER,
     },
   };

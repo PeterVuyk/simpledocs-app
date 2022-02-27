@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "919380650126",
+    "project_id": "simpledocs-eu",
+    "storage_bucket": "simpledocs-eu.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:919380650126:android:58b59a7bef34f7f28401df",
+        "android_client_info": {
+          "package_name": "eu.simpledocs.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "919380650126-16gh62p85431c43fbuujdk232dn6q7rr.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+            "current_key": "AIzaSyAqVAwKIN2hNIUxGKQEqg72NdfnpdNpquA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "919380650126-16gh62p85431c43fbuujdk232dn6q7rr.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
