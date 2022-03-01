@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "266397651281",
+    "project_id": "academie-voor-ambulancezorg",
+    "storage_bucket": "academie-voor-ambulancezorg-app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:266397651281:android:941ff7749e520e428d8370",
+        "android_client_info": {
+          "package_name": "com.academievoorambulancezorg.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "266397651281-uevhvc4fugjb1vu80mpmjcrtbtfr7kol.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBjfm5IDIyE6csbcZOQn_K8ewZvSECVWVM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "266397651281-uevhvc4fugjb1vu80mpmjcrtbtfr7kol.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
