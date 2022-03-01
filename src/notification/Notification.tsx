@@ -1,41 +1,20 @@
-import React, { FC, ReactNode, useCallback, useEffect, useState } from 'react';
+import React, { FC, ReactNode, useCallback, useEffect } from 'react';
 import * as Notifications from 'expo-notifications';
-import usePushNotifications from './usePushNotifications';
+import useHandlePushNotifications from './useHandlePushNotifications';
 import notificationToggle from './notificationToggle';
 import logger from '../util/logger';
 import internetConnectivity from '../helper/internetConnectivity';
-import hasExpoPushToken from './hasExpoPushToken';
 import toggleNotifications from '../firebase/functions/toggleNotifications';
 import isAppNotificationsDisabledFromSleep from './isAppNotificationsDisabledFromSleep';
 import enableDisabledNotificationsFromSleep from '../firebase/functions/enableDisabledNotificationsFromSleep';
-import useContentNavigator from '../components/hooks/useContentNavigator';
-import { NotificationData } from '../model/notifications/NotificationData';
+import notificationToken from './notificationToken';
 
 interface Props {
   children: ReactNode;
   firstStartupApp: boolean;
 }
 const Notification: FC<Props> = ({ children, firstStartupApp }) => {
-  const [notificationData, setNotificationData] =
-    useState<NotificationData | null>(null);
-  const { navigateFromId } = useContentNavigator();
-
-  usePushNotifications(response => {
-    setNotificationData(response.notification.request.content.data);
-  });
-
-  useEffect(() => {
-    const data = notificationData;
-    setNotificationData(null);
-    if (data?.navigate !== undefined) {
-      navigateFromId(data.navigate.id, 'notification').catch(reason =>
-        logger.error(
-          `Clicked on notification and tried to navigate to page ${data.navigate?.id} from aggregate ${data.navigate?.aggregate} but failed`,
-          reason,
-        ),
-      );
-    }
-  }, [navigateFromId, notificationData]);
+  useHandlePushNotifications();
 
   /**
    * For the first startup we need to check if we can send notifications,
@@ -45,7 +24,7 @@ const Notification: FC<Props> = ({ children, firstStartupApp }) => {
    */
   const requestAllowNotification = useCallback(async () => {
     const hasInternet = await internetConnectivity.hasInternetConnection();
-    if (!hasInternet || (await hasExpoPushToken())) {
+    if (!hasInternet || (await notificationToken.hasExpoPushToken())) {
       return Promise.resolve();
     }
     return notificationToggle(true);
@@ -65,7 +44,10 @@ const Notification: FC<Props> = ({ children, firstStartupApp }) => {
 
       const { status: existingStatus } =
         await Notifications.getPermissionsAsync();
-      if (existingStatus !== 'granted' && (await hasExpoPushToken())) {
+      if (
+        existingStatus !== 'granted' &&
+        (await notificationToken.hasExpoPushToken())
+      ) {
         await toggleNotifications(null);
       }
     }, []);
@@ -78,8 +60,8 @@ const Notification: FC<Props> = ({ children, firstStartupApp }) => {
     [],
   );
 
-  useEffect(() => {
-    if (firstStartupApp) {
+  const setExpoPushToken = useCallback(async () => {
+    if (!(await notificationToken.hasExpoPushTokenProperty())) {
       requestAllowNotification().catch(reason =>
         logger.error(
           'Failed by setting or checking if notification is allowed by startup',
@@ -101,6 +83,15 @@ const Notification: FC<Props> = ({ children, firstStartupApp }) => {
       );
     }
   }, [
+    enableNotificationsIfAppLongSleep,
+    removeExpoPushTokenIfNotificationIsRevoked,
+    requestAllowNotification,
+  ]);
+
+  useEffect(() => {
+    setExpoPushToken();
+  }, [
+    setExpoPushToken,
     enableNotificationsIfAppLongSleep,
     firstStartupApp,
     removeExpoPushTokenIfNotificationIsRevoked,

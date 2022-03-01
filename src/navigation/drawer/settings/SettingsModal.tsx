@@ -8,8 +8,8 @@ import logger from '../../../util/logger';
 import internetConnectivity from '../../../helper/internetConnectivity';
 import LoadingSpinner from '../../../components/LoadingSpinner';
 import notificationToggle from '../../../notification/notificationToggle';
-import hasExpoPushToken from '../../../notification/hasExpoPushToken';
 import AlertBox from '../../../components/AlertBox';
+import notificationToken from '../../../notification/notificationToken';
 
 const styles = StyleSheet.create({
   centeredView: {
@@ -65,7 +65,7 @@ const SettingsModal: FC<Props> = ({ onCloseModal }) => {
   // if the user locked and unlocked while the settings modal was open.
   useEffect(() => {
     internetConnectivity.hasInternetConnection().then(setHasInternet);
-    hasExpoPushToken().then(setAllowNotifications);
+    notificationToken.hasExpoPushToken().then(setAllowNotifications);
   }, [isFocused]);
 
   /**
