@@ -10,6 +10,10 @@
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
+    "androidStatusBar": {
+      "backgroundColor": "#ffffff",
+      "barStyle": "dark-content"
+    },
     "plugins": [
       "sentry-expo",
       [
@@ -45,6 +49,7 @@
       "barStyle": "light-content",
       "backgroundColor": "#000000"
     },
+    "backgroundColor": "#FFFFFF",
     "extra": {
       "bugsnag": {
         "apiKey": "f497cc85f47c5f022b288a650c793c7b"

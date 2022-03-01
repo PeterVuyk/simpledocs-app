@@ -5,7 +5,7 @@ export default ({ config }) => {
     slug: process.env.APP_JSON_SLUG,
     splash: {
       ...config.splash,
-      backgroundColor: process.env.APP_JSON_SPLASH_BACKGROUNDCOLOR,
+      backgroundColor: process.env.APP_JSON_SPLASH_BACKGROUND_COLOR,
     },
     ios: {
       ...config.ios,
@@ -15,6 +15,11 @@ export default ({ config }) => {
       ...config.android,
       googleServicesFile: process.env.APP_JSON_GOOGLE_SERVICES_JSON_PATH,
       package: process.env.APP_JSON_BUNDLE_IDENTIFIER,
+    },
+    androidStatusBar: {
+      ...config.androidStatusBar,
+      backgroundColor: process.env.APP_JSON_STATUS_BAR_BACKGROUND_COLOR,
+      barStyle: process.env.APP_JSON_STATUS_BAR_STYLE,
     },
   };
 };
