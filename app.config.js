@@ -7,6 +7,9 @@ export default ({ config }) => {
       ...config.splash,
       backgroundColor: process.env.APP_JSON_SPLASH_BACKGROUND_COLOR,
     },
+    notification: {
+      ...config.notification,
+    },
     ios: {
       ...config.ios,
       bundleIdentifier: process.env.APP_JSON_BUNDLE_IDENTIFIER,

@@ -26,6 +26,9 @@
     "assetBundlePatterns": [
       "**/*"
     ],
+    "notification": {
+      "iosDisplayInForeground": true
+    },
     "ios": {
       "supportsTablet": true,
       "requireFullScreen": true,

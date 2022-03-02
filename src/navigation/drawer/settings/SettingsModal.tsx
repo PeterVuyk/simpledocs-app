@@ -130,8 +130,21 @@ const SettingsModal: FC<Props> = ({ onCloseModal }) => {
             {errorMessage !== '' && (
               <AlertBox message={errorMessage} severity="warning" />
             )}
-            <View style={{ flexDirection: 'row', marginBottom: 20 }}>
-              <Text style={{ textAlignVertical: 'center' }}>Meldingen:</Text>
+            <View
+              style={{
+                flexDirection: 'row',
+                alignItems: 'center',
+                marginBottom: 20,
+              }}
+            >
+              <Text
+                style={{
+                  textAlignVertical: 'center',
+                  paddingRight: 10,
+                }}
+              >
+                Meldingen:
+              </Text>
               <Switch
                 disabled={submitting || !hasInternet}
                 trackColor={{
