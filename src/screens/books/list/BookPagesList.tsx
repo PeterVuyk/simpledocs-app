@@ -86,7 +86,11 @@ const BookPagesList: FC<Props> = ({
       <FlatList
         ListHeaderComponent={getHeader}
         keyExtractor={item => item.chapter.toString()}
-        ListEmptyComponent={<LoadingSpinner />}
+        ListEmptyComponent={
+          <View style={{ margin: 20 }}>
+            <LoadingSpinner />
+          </View>
+        }
         extraData={getChapters()}
         data={getChapters()}
         renderItem={({ item }) => bookPageListItem(item)}

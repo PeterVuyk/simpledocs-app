@@ -1,6 +1,5 @@
 import React, { FC } from 'react';
 import { Spinner } from 'native-base';
-import { View } from 'react-native';
 import globalStyle from '../styling/globalStyle';
 
 interface Props {
@@ -9,7 +8,6 @@ interface Props {
 
 const LoadingSpinner: FC<Props> = ({ hidden }) => {
   return (
-    // <View style={{ flex: 1 }}>
     <Spinner
       style={{
         height: 40,
@@ -19,7 +17,6 @@ const LoadingSpinner: FC<Props> = ({ hidden }) => {
       }}
       color={globalStyle.color.primary.light}
     />
-    // </View>
   );
 };
 

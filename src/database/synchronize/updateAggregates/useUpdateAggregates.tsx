@@ -12,7 +12,7 @@ import { STAGING_ENVIRONMENT } from '../../../model/Environment';
 import debugHandler from '../../../debug/debugHandler';
 import getAppInfoOnStartup from '../../../firebase/functions/getAppInfoOnStartup';
 import configurationsStorage from '../../../storage/configurationsStorage';
-import { AppInfo } from '../../../model/AppInfoResponse';
+import { AppInfo } from '../../../model/apiResponse/AppInfoResponse';
 import { AppConfigurations } from '../../../model/configurations/AppConfigurations';
 import bookPagesRepository from '../../repository/bookPagesRepository';
 import { ApiBookPage } from '../../../model/bookPages/BookPage';
