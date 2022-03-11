@@ -9,7 +9,7 @@ It makes use of a local database (SQLite) and is connected to the application se
 
 ## Local development
 
-Make sure you are using node 12, we recommend you to use node version manager (nvm).
+Make sure you are using node 14, we recommend you to use node version manager (nvm).
 Make sure 'expo cli' is installed.
 
 First decide what customer and thereby what related assets you would like to use, 

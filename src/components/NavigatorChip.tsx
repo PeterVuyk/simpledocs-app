@@ -8,7 +8,7 @@ interface Props {
   title: string;
   isSelected: boolean;
   onPress: (title: string) => void;
-  width: number;
+  width?: number;
 }
 
 const NavigatorChip: FC<Props> = ({
@@ -29,7 +29,10 @@ const NavigatorChip: FC<Props> = ({
         ]}
         type={isSelected ? 'solid' : 'outline'}
         onPress={() => onPress(id)}
-        buttonStyle={{ width }}
+        buttonStyle={{
+          width: width || undefined,
+          minWidth: width ? undefined : 50,
+        }}
       />
     </View>
   );

@@ -1,6 +1,5 @@
 import React, { FC, useCallback, useEffect, useMemo, useRef } from 'react';
-import { FlatList, StyleSheet, View } from 'react-native';
-import getWidth from 'string-pixel-width';
+import { FlatList, LayoutChangeEvent, StyleSheet, View } from 'react-native';
 import { InfoBookPage } from '../../model/bookPages/InfoBookPage';
 import NavigatorChip from '../../components/NavigatorChip';
 import globalStyle from '../../styling/globalStyle';
@@ -23,6 +22,12 @@ const styles = StyleSheet.create({
   },
 });
 
+interface Dimension {
+  chapter: string;
+  width: number;
+  pageIndex: number;
+}
+
 const BookChapterNavigator: FC<Props> = ({
   onPageChange,
   currentChapter,
@@ -30,17 +35,7 @@ const BookChapterNavigator: FC<Props> = ({
 }) => {
   const flatListRef = useRef<FlatList<InfoBookPage> | null>(null);
   const didMountRef = useRef(false);
-
-  const chipWidth = useMemo(() => {
-    const maxCharacters = Math.max(
-      ...infoBookPages.map(value => value.chapter.length),
-    );
-
-    return (
-      getWidth('W'.repeat(maxCharacters), { bold: true, size: 16 }) +
-      (maxCharacters < 5 ? 10 : 0)
-    );
-  }, [infoBookPages]);
+  const dimensionRef = useRef<Dimension[]>([]);
 
   useEffect(() => {
     if (!didMountRef.current) {
@@ -56,21 +51,44 @@ const BookChapterNavigator: FC<Props> = ({
     });
   }, [infoBookPages, currentChapter]);
 
+  const measureView = (event: LayoutChangeEvent, item: InfoBookPage) => {
+    if (!dimensionRef.current.find(value => value.chapter === item.chapter)) {
+      dimensionRef.current.push({
+        chapter: item.chapter,
+        pageIndex: item.pageIndex,
+        width: event.nativeEvent.layout.width,
+      });
+    }
+  };
+
+  // TODO: Works for now, but is there a more efficient way?
+  const getOffset = useMemo(() => {
+    let result = 0;
+    for (const dimension of dimensionRef.current.sort(
+      (a, b) => a.pageIndex - b.pageIndex,
+    )) {
+      if (dimension.chapter === currentChapter) {
+        return result;
+      }
+      result += dimension.width;
+    }
+    return result;
+  }, [currentChapter]);
+
   const renderItem = useCallback(
     (item: InfoBookPage) => {
       return (
-        <View key={item.id}>
+        <View onLayout={event => measureView(event, item)} key={item.id}>
           <NavigatorChip
             id={item.chapter}
             title={item.chapter}
             isSelected={item.chapter === currentChapter}
             onPress={onPageChange}
-            width={chipWidth}
           />
         </View>
       );
     },
-    [chipWidth, currentChapter, onPageChange],
+    [currentChapter, onPageChange],
   );
 
   return (
@@ -87,11 +105,14 @@ const BookChapterNavigator: FC<Props> = ({
         showsHorizontalScrollIndicator={false}
         extraData={infoBookPages}
         data={infoBookPages}
+        initialNumToRender={infoBookPages.length}
         getItemLayout={(data, index) => {
+          const length =
+            dimensionRef.current.find(value => value.chapter === currentChapter)
+              ?.width ?? 0;
           return {
-            length: chipWidth + 4,
-            // offset is width item times the index, then we want to show the previous chapter also in the list. Finally we add the padding around the Chips
-            offset: chipWidth * index - chipWidth + index * 4 - 2,
+            length,
+            offset: getOffset,
             index,
           };
         }}

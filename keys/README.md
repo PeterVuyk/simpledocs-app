@@ -30,7 +30,9 @@ In the selector, choose 'android', the desired profile and then 'Push notificati
 
 ### Make notifications work with Expo for ios
 
-Generate a push notification by expo. Run eas credentials and follow the
+A push notification needs to be added for every eas profile.
+
+Generate a push notification by expo. Run `eas credentials` and follow the
 [documentation](https://docs.expo.dev/app-signing/managed-credentials/#ios)
 
 Important: When sending a notification, check the error log from the cloud functions
