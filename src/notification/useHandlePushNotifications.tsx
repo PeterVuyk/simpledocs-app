@@ -30,7 +30,6 @@ const useHandlePushNotifications = () => {
   const setExpoPushTokenUserOnNotificationReceival = async () => {
     if (!(await notificationToken.hasExpoPushTokenProperty())) {
       notificationToggle(true).then(isSuccessful => {
-        console.log('isSuccessful', isSuccessful);
         if (!isSuccessful) {
           throw new Error('Tried to toggle notification on but unsuccessful');
         }

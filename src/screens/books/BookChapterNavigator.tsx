@@ -1,4 +1,4 @@
-import React, { FC, useCallback, useEffect, useMemo, useRef } from 'react';
+import React, { FC, useCallback, useEffect, useRef } from 'react';
 import { FlatList, LayoutChangeEvent, StyleSheet, View } from 'react-native';
 import { InfoBookPage } from '../../model/bookPages/InfoBookPage';
 import NavigatorChip from '../../components/NavigatorChip';
@@ -61,8 +61,8 @@ const BookChapterNavigator: FC<Props> = ({
     }
   };
 
-  // TODO: Works for now, but is there a more efficient way?
-  const getOffset = useMemo(() => {
+  // TODO: Works for now, but is there a more efficient way? Every time this gets rendered
+  const getOffset = useCallback(() => {
     let result = 0;
     for (const dimension of dimensionRef.current.sort(
       (a, b) => a.pageIndex - b.pageIndex,
@@ -97,6 +97,7 @@ const BookChapterNavigator: FC<Props> = ({
         style={[styles.navigationContainer, styles.navigationBorder]}
         ref={flatListRef}
         keyExtractor={item => item.id.toString()}
+        // TODO: initialScrollIndex Dit werkt nu niet meer als je een pagina opent vanuit de zoekpagina
         initialScrollIndex={infoBookPages
           .map(chapter => chapter.chapter)
           .indexOf(currentChapter)}
@@ -110,9 +111,11 @@ const BookChapterNavigator: FC<Props> = ({
           const length =
             dimensionRef.current.find(value => value.chapter === currentChapter)
               ?.width ?? 0;
+          const offset = getOffset();
           return {
             length,
-            offset: getOffset,
+            offset,
+            // offset: index === 0 ? offset : offset - length - 4,
             index,
           };
         }}
