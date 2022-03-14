@@ -16,6 +16,7 @@ export interface BookInfo {
   imageFile: string;
 }
 
+// TODO: remove
 export interface DecisionsTab {
   bottomTab: BottomTab;
   title: string;
@@ -54,7 +55,7 @@ export interface Versions {
 export interface AppConfigurations {
   firstBookTab: BookTabInfo;
   secondBookTab: BookTabInfo;
-  decisionsTab: DecisionsTab;
+  thirdBookTab: BookTabInfo;
   drawer: Drawer;
   versioning: Versions;
 }

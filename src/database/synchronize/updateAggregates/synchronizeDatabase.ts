@@ -1,14 +1,6 @@
-import updateDecisionTreeTable from './updateDecisionTreeTable';
 import logger from '../../../util/logger';
-import updateCalculationsTable from './updateCalculationsTable';
-import {
-  AGGREGATE_CALCULATIONS,
-  AGGREGATE_DECISION_TREE,
-} from '../../../model/aggregate';
 import updateBookPageTable from './updateBookPageTable';
 import configurationsHelper from '../../../helper/configurationsHelper';
-import { DecisionTreeStep } from '../../../model/decisionTree/DecisionTreeStep';
-import { CalculationInfo } from '../../../model/calculations/CalculationInfo';
 import { ApiBookPage } from '../../../model/bookPages/BookPage';
 
 const updateBook = async (
@@ -32,50 +24,8 @@ const updateBook = async (
     );
 };
 
-const updateDecisionTree = async (
-  serverVersion: string,
-  decisionTreeSteps: DecisionTreeStep[],
-): Promise<void> => {
-  return updateDecisionTreeTable
-    .updateDecisionTreeSteps(decisionTreeSteps)
-    .then(() => {
-      configurationsHelper.updateVersioning(AGGREGATE_DECISION_TREE, {
-        version: serverVersion,
-        isBookType: false,
-      });
-    })
-    .catch(reason =>
-      logger.error(
-        'Update version for decisionTree failed. By the next startup the decisionTree will be fetched again, the update version will be tried to store again',
-        reason,
-      ),
-    );
-};
-
-const updateCalculations = async (
-  serverVersion: string,
-  calculationInfo: CalculationInfo[],
-): Promise<void> => {
-  return updateCalculationsTable
-    .updateCalculation(calculationInfo)
-    .then(() => {
-      configurationsHelper.updateVersioning(AGGREGATE_CALCULATIONS, {
-        version: serverVersion,
-        isBookType: false,
-      });
-    })
-    .catch(reason =>
-      logger.error(
-        'Update version for calculations failed. By the next startup the calculations will be fetched again, the update version will be tried to store again',
-        reason,
-      ),
-    );
-};
-
 const synchronizeDatabase = {
-  updateDecisionTree,
   updateBook,
-  updateCalculations,
 };
 
 export default synchronizeDatabase;

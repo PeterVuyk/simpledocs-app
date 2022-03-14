@@ -1,15 +1,13 @@
-import React, { FC, Fragment, useCallback, useEffect } from 'react';
+import React, { FC, Fragment, useCallback } from 'react';
 import { DrawerNavigationProp } from '@react-navigation/drawer/lib/typescript/src/types';
 import { StyleSheet } from 'react-native';
-import { RouteProp, useIsFocused } from '@react-navigation/native';
+import { RouteProp } from '@react-navigation/native';
 import { Content } from 'native-base';
 import { SECOND_BOOK_TAB } from '../../model/BottomTab';
 import TitleBar from '../../components/titleBar/TitleBar';
 import { BookTabInfo } from '../../model/configurations/AppConfigurations';
 import globalStyle from '../../styling/globalStyle';
 import BooksOverviewCardItem from './BooksOverviewCardItem';
-import { useAppDispatch } from '../../redux/hooks';
-import { scrollUp } from '../../redux/slice/scrollingSlice';
 import ScreenContainer from '../../components/ScreenContainer';
 
 const styles = StyleSheet.create({

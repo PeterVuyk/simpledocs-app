@@ -1,9 +1,5 @@
 import React from 'react';
 import synchronizeDatabase from './synchronizeDatabase';
-import {
-  AGGREGATE_CALCULATIONS,
-  AGGREGATE_DECISION_TREE,
-} from '../../../model/aggregate';
 import logger from '../../../util/logger';
 import configurationsHelper from '../../../helper/configurationsHelper';
 import environment from '../../../util/environment';
@@ -50,6 +46,7 @@ function useUpdateAggregates() {
       ...appConfigurations!.secondBookTab.bookTypes.map(
         value => value.bookType,
       ),
+      ...appConfigurations!.thirdBookTab.bookTypes.map(value => value.bookType),
     ];
 
     const aggregates = [];
@@ -101,36 +98,6 @@ function useUpdateAggregates() {
     });
   };
 
-  const updateCalculations = async (
-    appInfoResponse: AppInfo,
-  ): Promise<void> => {
-    if (
-      AGGREGATE_CALCULATIONS in appInfoResponse &&
-      appInfoResponse[AGGREGATE_CALCULATIONS] !== undefined
-    ) {
-      await synchronizeDatabase.updateCalculations(
-        appInfoResponse.appConfigurations.versioning[AGGREGATE_CALCULATIONS]
-          .version,
-        appInfoResponse[AGGREGATE_CALCULATIONS],
-      );
-    }
-  };
-
-  const updateDecisionTree = async (
-    appInfoResponse: AppInfo,
-  ): Promise<void> => {
-    if (
-      AGGREGATE_DECISION_TREE in appInfoResponse &&
-      appInfoResponse[AGGREGATE_DECISION_TREE] !== undefined
-    ) {
-      await synchronizeDatabase.updateDecisionTree(
-        appInfoResponse.appConfigurations.versioning[AGGREGATE_DECISION_TREE]
-          .version,
-        appInfoResponse[AGGREGATE_DECISION_TREE],
-      );
-    }
-  };
-
   const getAppInfoFromServer = async (updateMoment: UpdateMoment) => {
     let versions = await configurationsStorage
       .getSystemConfiguration()
@@ -171,9 +138,8 @@ function useUpdateAggregates() {
       );
     }
     await promiseAllSettled([
-      updateDecisionTree(appInfo),
-      updateCalculations(appInfo),
       updateBooksPreserveBookmarks(appInfo, preservedBookmarks),
+      // Here we can later add more resources when needed
     ])
       .then(result => {
         const hasFailedUpdates =

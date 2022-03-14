@@ -1,12 +1,6 @@
 import * as SQLite from 'expo-sqlite';
 import logger from '../../util/logger';
-import {
-  BOOK_PAGES,
-  CALCULATIONS,
-  DECISION_TREE,
-  MIGRATION_CHANGELOG,
-  NOTIFICATION,
-} from '../tableNames';
+import { BOOK_PAGES, MIGRATION_CHANGELOG, NOTIFICATION } from '../tableNames';
 
 /**
  * Unfortunately it is not possible to access the database with expo.
@@ -26,8 +20,6 @@ function resetDatabase(): Promise<void> {
         );
         sqlTransaction.executeSql('drop table if exists notification;');
         sqlTransaction.executeSql('drop table if exists bookPages;');
-        sqlTransaction.executeSql('drop table if exists calculations;');
-        sqlTransaction.executeSql('drop table if exists decisionTrees;');
         sqlTransaction.executeSql('drop table if exists migrationChangelog;');
       },
       error => {
@@ -75,8 +67,6 @@ async function describeTables(
 ): Promise<void> {
   await describeTable(BOOK_PAGES, callback)
     .then(() => describeTable(NOTIFICATION, callback))
-    .then(() => describeTable(CALCULATIONS, callback))
-    .then(() => describeTable(DECISION_TREE, callback))
     .then(() => describeTable(MIGRATION_CHANGELOG, callback));
 }
 

@@ -3,15 +3,11 @@ import configurationsStorage from '../storage/configurationsStorage';
 import logger from '../util/logger';
 import debugRepository from '../database/repository/debugRepository';
 import bookPagesRepository from '../database/repository/bookPagesRepository';
-import decisionTreeRepository from '../database/repository/decisionTreeRepository';
-import calculationsRepository from '../database/repository/calculationsRepository';
 import migrationChangelogRepository from '../database/repository/migrationChangelogRepository';
 import notificationRepository from '../database/repository/notificationRepository';
 import environment from '../util/environment';
 import {
   BOOK_PAGES,
-  CALCULATIONS,
-  DECISION_TREE,
   MIGRATION_CHANGELOG,
   NOTIFICATION,
 } from '../database/tableNames';
@@ -41,12 +37,6 @@ const storageTableContentDump = (tableName: string) => {
   switch (tableName) {
     case BOOK_PAGES:
       bookPagesRepository.getPages(tableContentStorageCallback);
-      break;
-    case DECISION_TREE:
-      decisionTreeRepository.getDecisionTrees(tableContentStorageCallback);
-      break;
-    case CALCULATIONS:
-      calculationsRepository.getCalculationsInfo(tableContentStorageCallback);
       break;
     case MIGRATION_CHANGELOG:
       migrationChangelogRepository.getMigrationChangelog(

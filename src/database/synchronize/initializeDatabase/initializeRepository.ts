@@ -46,12 +46,6 @@ function initializeInitialTables(): Promise<void> {
           'create table if not exists bookPages (id varchar not null constraint bookPages_pk primary key, chapter varchar not null, pageIndex integer not null, title text not null, bookType text not null, subTitle text, content blob not null, contentType varchar not null, searchText text not null, chapterDivision varchar not null, iconFile blob, bookmarked integer default 0 not null);',
         );
         sqlTransaction.executeSql(
-          'create table if not exists calculations (calculationType text not null constraint calculations_pk primary key, listIndex integer not null, title text not null, explanation text not null, content blob not null, contentType varchar not null, iconFile blob not null);',
-        );
-        sqlTransaction.executeSql(
-          'create table if not exists decisionTrees (id int not null, title text, label text not null, lineLabel varchar, parentId int, content blob, contentType varchar, iconFile blob);',
-        );
-        sqlTransaction.executeSql(
           "INSERT or ignore INTO notification (notificationType) VALUES ('noInternetConnection');",
         );
         sqlTransaction.executeSql(

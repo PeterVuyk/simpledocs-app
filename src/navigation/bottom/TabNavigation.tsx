@@ -1,13 +1,13 @@
 import React, { FC } from 'react';
 import { DrawerNavigationHelpers } from '@react-navigation/drawer/lib/typescript/src/types';
 import TabNavigator from './TabNavigator';
-import DecisionsStackNavigator from '../StackNavigator/DecisionsStackNavigator';
 import { AppConfigurations } from '../../model/configurations/AppConfigurations';
 import SecondBookTabStackNavigator from '../StackNavigator/SecondBookTabStackNavigator';
 import FirstBookTabStackNavigator from '../StackNavigator/FirstBookTabStackNavigator';
 import ResizeScreenDrawer from '../drawer/ResizeScreenDrawer';
 import BookmarksStackNavigator from '../StackNavigator/BookmarksStackNavigator';
 import Header from '../header/Header';
+import ThirdBookTabStackNavigator from '../StackNavigator/ThirdBookTabStackNavigator';
 
 const Tab = TabNavigator();
 
@@ -67,19 +67,19 @@ const TabNavigation: FC<Props> = ({ navigation, appConfigurations }) => {
             }}
           />
         )}
-        {appConfigurations.decisionsTab.indexDecisionType.length !== 0 && (
+        {appConfigurations.thirdBookTab.bookTypes.length !== 0 && (
           <Tab.Screen
-            name="DecisionsScreenStack"
+            name="ThirdBookTabStack"
             children={() => (
-              <DecisionsStackNavigator
-                decisionTabInfo={appConfigurations.decisionsTab}
+              <ThirdBookTabStackNavigator
+                bookTabInfo={appConfigurations.thirdBookTab}
               />
             )}
             options={{
-              title: appConfigurations.decisionsTab.bottomTab.title,
-              icon: appConfigurations.decisionsTab.bottomTab.icon,
+              title: appConfigurations.thirdBookTab.bottomTab.title,
+              icon: appConfigurations.thirdBookTab.bottomTab.icon,
               iconFamilyType:
-                appConfigurations.decisionsTab.bottomTab.familyType,
+                appConfigurations.thirdBookTab.bottomTab.familyType,
             }}
           />
         )}

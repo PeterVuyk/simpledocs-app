@@ -60,9 +60,9 @@ const createSessionConfiguration = async () => {
     systemConfig!.appConfigurations!.secondBookTab.bookTypes.filter(value =>
       validateConfigPredicate(value.bookType),
     );
-  systemConfig!.appConfigurations!.decisionsTab.indexDecisionType =
-    systemConfig!.appConfigurations!.decisionsTab.indexDecisionType.filter(
-      value => validateConfigPredicate(value),
+  systemConfig!.appConfigurations!.thirdBookTab.bookTypes =
+    systemConfig!.appConfigurations!.thirdBookTab.bookTypes.filter(value =>
+      validateConfigPredicate(value.bookType),
     );
   await configurationsStorage.storeSystemConfiguration(systemConfig!);
 };
@@ -84,15 +84,15 @@ const isStartupSuccessful = async (): Promise<boolean> => {
     systemConfig.appConfigurations.firstBookTab.bookTypes.length;
   const numberOfAggregatesSecondBookTab =
     systemConfig.appConfigurations.secondBookTab.bookTypes.length;
-  const numberOfAggregatesDecisionTab =
-    systemConfig.appConfigurations.decisionsTab.indexDecisionType.length;
+  const numberOfAggregatesThirdBookTab =
+    systemConfig.appConfigurations.thirdBookTab.bookTypes.length;
   if (
     numberOfAggregatesFirstBookTab === 0 &&
     numberOfAggregatesSecondBookTab === 0 &&
-    numberOfAggregatesDecisionTab === 0
+    numberOfAggregatesThirdBookTab === 0
   ) {
     logger.errorFromMessage(
-      `isStartupSuccessful called but returned 'failed' because all tabs are empty. numberOfAggregatesFirstBookTab: ${numberOfAggregatesFirstBookTab}, numberOfAggregatesSecondBookTab: ${numberOfAggregatesSecondBookTab}, numberOfAggregatesDecisionTab: ${numberOfAggregatesDecisionTab}`,
+      `isStartupSuccessful called but returned 'failed' because all tabs are empty. numberOfAggregatesFirstBookTab: ${numberOfAggregatesFirstBookTab}, numberOfAggregatesSecondBookTab: ${numberOfAggregatesSecondBookTab}, numberOfAggregatesThirdBookTab: ${numberOfAggregatesThirdBookTab}`,
     );
     return false;
   }

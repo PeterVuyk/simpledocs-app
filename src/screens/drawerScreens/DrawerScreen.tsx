@@ -59,16 +59,16 @@ const DrawerScreen: FC<Props> = ({
           }),
       });
     }
-    if (appConfigurations.decisionsTab.indexDecisionType.length !== 0) {
+    if (appConfigurations.thirdBookTab.bookTypes.length !== 0) {
       tabs.push({
-        index: 3,
-        title: appConfigurations.decisionsTab.bottomTab.title,
-        icon: appConfigurations.decisionsTab.bottomTab.icon,
-        iconFamilyType: appConfigurations.decisionsTab.bottomTab.familyType,
+        index: 2,
+        title: appConfigurations.thirdBookTab.bottomTab.title,
+        icon: appConfigurations.thirdBookTab.bottomTab.icon,
+        iconFamilyType: appConfigurations.thirdBookTab.bottomTab.familyType,
         isSelected: false,
         onPress: () =>
-          navigation.navigate('DecisionsScreenStack', {
-            screen: 'DecisionsOverviewScreen',
+          navigation.navigate('ThirdBookTabStack', {
+            screen: 'ThirdBookTabOverviewScreen',
           }),
       });
     }

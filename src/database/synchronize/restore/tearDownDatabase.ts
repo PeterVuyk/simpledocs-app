@@ -10,8 +10,6 @@ function down(): Promise<void> {
         sqlTransaction.executeSql('drop table if exists migrationChangelog');
         sqlTransaction.executeSql('drop table if exists notification');
         sqlTransaction.executeSql('drop table if exists bookPages;');
-        sqlTransaction.executeSql('drop table if exists calculations;');
-        sqlTransaction.executeSql('drop table if exists decisionTrees;');
       },
       error => {
         logger.error('tearing down database has failed', error.message);
