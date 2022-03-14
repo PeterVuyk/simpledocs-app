@@ -3,7 +3,7 @@ import { DrawerNavigationProp } from '@react-navigation/drawer/lib/typescript/sr
 import { StyleSheet } from 'react-native';
 import { RouteProp } from '@react-navigation/native';
 import { Content } from 'native-base';
-import { SECOND_BOOK_TAB } from '../../model/BottomTab';
+import { FIRST_BOOK_TAB, SECOND_BOOK_TAB } from '../../model/BottomTab';
 import TitleBar from '../../components/titleBar/TitleBar';
 import { BookTabInfo } from '../../model/configurations/AppConfigurations';
 import globalStyle from '../../styling/globalStyle';
@@ -36,6 +36,13 @@ const BooksOverviewScreen: FC<Props> = ({ navigation, route }) => {
 
   const handleNavigation = useCallback(
     (bookType: string) => {
+      if (currentTab === FIRST_BOOK_TAB) {
+        navigation.navigate('FirstBookTabStack', {
+          screen: 'FirstBookTabPageScreen',
+          params: { bookType, bookTabInfo },
+        });
+        return;
+      }
       if (currentTab === SECOND_BOOK_TAB) {
         navigation.navigate('SecondBookTabStack', {
           screen: 'SecondBookTabPageScreen',
@@ -43,8 +50,8 @@ const BooksOverviewScreen: FC<Props> = ({ navigation, route }) => {
         });
         return;
       }
-      navigation.navigate('FirstBookTabStack', {
-        screen: 'FirstBookTabPageScreen',
+      navigation.navigate('ThirdBookTabStack', {
+        screen: 'ThirdBookTabPageScreen',
         params: { bookType, bookTabInfo },
       });
     },

@@ -3,7 +3,7 @@ import { DrawerNavigationProp } from '@react-navigation/drawer/lib/typescript/sr
 import ListItem from '../../../components/listItem/ListItem';
 import { InfoBookPage } from '../../../model/bookPages/InfoBookPage';
 import configHelper from '../../../helper/configHelper';
-import { FIRST_BOOK_TAB } from '../../../model/BottomTab';
+import { FIRST_BOOK_TAB, SECOND_BOOK_TAB } from '../../../model/BottomTab';
 import useContentNavigator from '../../../components/hooks/useContentNavigator';
 import SwipeableToggleBookmark from '../../../components/bookmarks/SwipeableToggleBookmark';
 import logger from '../../../util/logger';
@@ -35,8 +35,15 @@ const BookPageListItem: FC<Props> = ({
         });
         return;
       }
-      navigation.navigate('SecondBookTabStack', {
-        screen: 'SecondBookTabIntermediateScreen',
+      if ((await configHelper.getTabByBookType(bookType)) === SECOND_BOOK_TAB) {
+        navigation.navigate('SecondBookTabStack', {
+          screen: 'SecondBookTabIntermediateScreen',
+          params: { bookType, chapters },
+        });
+        return;
+      }
+      navigation.navigate('ThirdBookTabStack', {
+        screen: 'ThirdBookTabIntermediateScreen',
         params: { bookType, chapters },
       });
     },

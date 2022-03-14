@@ -34,7 +34,6 @@ const getConfigByBookType = async (
   return bookTypes.find(value => value.bookType === bookType);
 };
 
-// TODO: Check if all navigations still works
 const getTabByBookType = async (bookType: string): Promise<string | null> => {
   const config = await configurationsStorage.getSystemConfiguration();
   if (

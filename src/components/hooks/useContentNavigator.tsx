@@ -1,7 +1,11 @@
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import configHelper from '../../helper/configHelper';
-import { FIRST_BOOK_TAB, SECOND_BOOK_TAB } from '../../model/BottomTab';
+import {
+  FIRST_BOOK_TAB,
+  SECOND_BOOK_TAB,
+  THIRD_BOOK_TAB,
+} from '../../model/BottomTab';
 import logger from '../../util/logger';
 import bookPagesRepository from '../../database/repository/bookPagesRepository';
 
@@ -44,6 +48,12 @@ function useContentNavigator() {
         params: navigationParams,
       });
     }
+    if (currentTab === THIRD_BOOK_TAB) {
+      return navigation.navigate('ThirdBookTabStack', {
+        screen: 'ThirdBookTabDetailsScreen',
+        params: navigationParams,
+      });
+    }
     return Promise.reject(
       new Error(
         `Intended to navigateToChapter from useContentNavigator but failed because no tab available, given navigation params: ${JSON.stringify(
@@ -60,6 +70,19 @@ function useContentNavigator() {
   ): Promise<void> => {
     const currentTab = await configHelper.getTabByBookType(currentBookType);
     const targetTab = await configHelper.getTabByBookType(targetBookType);
+    if (targetTab === FIRST_BOOK_TAB) {
+      if (currentTab === FIRST_BOOK_TAB) {
+        navigation.push('FirstBookTabDetailsScreen', {
+          bookPageChapter: chapter,
+          bookType: targetBookType,
+        });
+        return;
+      }
+      navigation.navigate('FirstBookTabStack', {
+        screen: 'FirstBookTabDetailsScreen',
+        params: { bookPageChapter: chapter, bookType: targetBookType },
+      });
+    }
     if (targetTab === SECOND_BOOK_TAB) {
       if (currentTab === SECOND_BOOK_TAB) {
         navigation.push('SecondBookTabDetailsScreen', {
@@ -72,16 +95,15 @@ function useContentNavigator() {
         params: { bookPageChapter: chapter, bookType: targetBookType },
       });
     }
-    if (targetTab === FIRST_BOOK_TAB) {
-      if (currentTab === FIRST_BOOK_TAB) {
-        navigation.push('FirstBookTabDetailsScreen', {
+    if (targetTab === THIRD_BOOK_TAB) {
+      if (currentTab === THIRD_BOOK_TAB) {
+        navigation.push('ThirdBookTabDetailsScreen', {
           bookPageChapter: chapter,
           bookType: targetBookType,
         });
-        return;
       }
-      navigation.navigate('FirstBookTabStack', {
-        screen: 'FirstBookTabDetailsScreen',
+      navigation.navigate('ThirdBookTabStack', {
+        screen: 'ThirdBookTabDetailsScreen',
         params: { bookPageChapter: chapter, bookType: targetBookType },
       });
     }
