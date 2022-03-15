@@ -3,7 +3,7 @@ import { View } from 'react-native';
 import { BookPage } from '../../../model/bookPages/BookPage';
 import bookPagesRepository from '../../../database/repository/bookPagesRepository';
 import ScrollAwareBottomButton from '../../../components/ScrollAwareBottomButton';
-import ContentViewer from '../../../components/viewer/ContentViewer';
+import ContentViewer from '../../../components/viewer/content/ContentViewer';
 import {
   CONTENT_TYPE_HTML,
   CONTENT_TYPE_MARKDOWN,

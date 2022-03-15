@@ -1,7 +1,7 @@
 import React, { FC, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { TextInput } from 'react-native-paper';
-import globalStyle from '../../../styling/globalStyle';
+import globalStyle from '../../../../styling/globalStyle';
 
 const styles = StyleSheet.create({
   container: {

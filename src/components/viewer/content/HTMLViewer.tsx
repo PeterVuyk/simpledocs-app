@@ -2,10 +2,10 @@ import React, { createRef, FC, useEffect, useState } from 'react';
 import WebView, { WebViewMessageEvent } from 'react-native-webview';
 import { ShouldStartLoadRequest } from 'react-native-webview/lib/WebViewTypes';
 import { Linking, Platform, View } from 'react-native';
-import ScrollViewToggleBottomBar from '../ScrollViewToggleBottomBar';
-import useContentNavigator from '../hooks/useContentNavigator';
-import ContentViewLoader from './ContentViewLoader';
-import IntentContentPage from '../intent/IntentContentPage';
+import ScrollViewToggleBottomBar from '../../ScrollViewToggleBottomBar';
+import useContentNavigator from '../../hooks/useContentNavigator';
+import ContentViewLoader from '../../intent/ContentViewLoader';
+import IntentContentPage from '../../intent/IntentContentPage';
 
 interface Props {
   htmlFile: string;

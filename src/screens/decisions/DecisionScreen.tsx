@@ -1,12 +1,8 @@
 import React, { FC } from 'react';
 import { DrawerNavigationProp } from '@react-navigation/drawer/lib/typescript/src/types';
 import { RouteProp } from '@react-navigation/native';
-import {
-  AGGREGATE_CALCULATIONS,
-  AGGREGATE_DECISION_TREE,
-} from '../../model/aggregate';
+import { AGGREGATE_DECISION_TREE } from '../../model/aggregate';
 import { DecisionType } from '../../model/DecisionType';
-import CalculatorScreen from './calculator/CalculatorScreen';
 import DecisionTreeScreen from './decisionTree/DecisionTreeScreen';
 import ScreenContainer from '../../components/ScreenContainer';
 
@@ -30,9 +26,6 @@ const DecisionScreen: FC<Props> = ({ navigation, route }) => {
     <ScreenContainer>
       {aggregate === AGGREGATE_DECISION_TREE && (
         <DecisionTreeScreen title={title} navigation={navigation} />
-      )}
-      {aggregate === AGGREGATE_CALCULATIONS && (
-        <CalculatorScreen title={title} />
       )}
     </ScreenContainer>
   );

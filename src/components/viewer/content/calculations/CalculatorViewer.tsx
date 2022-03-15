@@ -1,18 +1,19 @@
 import React, { FC, useEffect, useState } from 'react';
 import { ScrollView, StyleSheet } from 'react-native';
-import calculationsRepository from '../../../database/repository/calculationsRepository';
-import TitleBar from '../../../components/titleBar/TitleBar';
+import { useIsFocused } from '@react-navigation/native';
+import TitleBar from '../../../../components/titleBar/TitleBar';
 import OvertakingDistanceCalculator from './OvertakingDistanceCalculator';
-import KeyboardAwareView from '../../../components/keyboard/KeyboardAwareView';
-import { CalculationInfo } from '../../../model/calculations/CalculationInfo';
+import KeyboardAwareView from '../../../../components/keyboard/KeyboardAwareView';
+import { CalculationInfo } from '../../../../model/calculations/CalculationInfo';
 import {
   OVERTAKING_DISTANCE,
   STOPPING_DISTANCE,
-} from '../../../model/calculations/CalculationType';
+} from '../../../../model/calculations/CalculationType';
 import StoppingDistanceCalculator from './StoppingDistanceCalculator';
-import ContentViewer from '../../../components/viewer/ContentViewer';
-import globalStyle from '../../../styling/globalStyle';
-import ScreenContainer from '../../../components/ScreenContainer';
+import ContentViewer from '../../../../components/viewer/content/ContentViewer';
+import globalStyle from '../../../../styling/globalStyle';
+import ScreenContainer from '../../../../components/ScreenContainer';
+import IntentContentPage from '../../../intent/IntentContentPage';
 
 const styles = StyleSheet.create({
   container: {
@@ -22,19 +23,26 @@ const styles = StyleSheet.create({
 });
 
 interface Props {
-  title: string;
+  content: string;
+  bookType: string;
 }
 
-const CalculatorScreen: FC<Props> = ({ title }) => {
+const CalculatorViewer: FC<Props> = ({ content, bookType }) => {
   const [calculationInfo, setCalculationInfo] =
     useState<CalculationInfo | null>(null);
+  const isFocused = useIsFocused();
 
   useEffect(() => {
-    calculationsRepository.getCalculationInfoByTitle(title, setCalculationInfo);
-  }, [title]);
+    // For now just to be sure we only want to set the calculations when the user first time opens the page.
+    // If the user has a slow phone and a book contains a lot of calculations, decision trees and other heavy
+    // components then the user experience could slow down.
+    if (isFocused && !calculationInfo) {
+      setCalculationInfo(JSON.parse(content));
+    }
+  }, [isFocused, calculationInfo, content]);
 
   if (!calculationInfo) {
-    return null;
+    return <IntentContentPage />;
   }
   return (
     <ScreenContainer>
@@ -53,7 +61,7 @@ const CalculatorScreen: FC<Props> = ({ title }) => {
           <ContentViewer
             content={calculationInfo.content}
             contentType={calculationInfo.contentType}
-            bookType="calculations"
+            bookType={bookType}
           />
         </KeyboardAwareView>
       </ScrollView>
@@ -61,4 +69,4 @@ const CalculatorScreen: FC<Props> = ({ title }) => {
   );
 };
 
-export default CalculatorScreen;
+export default CalculatorViewer;

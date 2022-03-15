@@ -4,13 +4,8 @@ import { DrawerNavigationProp } from '@react-navigation/drawer/lib/typescript/sr
 import { RouteProp } from '@react-navigation/native';
 import decisionTreeRepository from '../../database/repository/decisionTreeRepository';
 import ListItem from '../../components/listItem/ListItem';
-import calculationsRepository from '../../database/repository/calculationsRepository';
 import TitleBar from '../../components/titleBar/TitleBar';
-import { CalculationInfo } from '../../model/calculations/CalculationInfo';
-import {
-  AGGREGATE_CALCULATIONS,
-  AGGREGATE_DECISION_TREE,
-} from '../../model/aggregate';
+import { AGGREGATE_DECISION_TREE } from '../../model/aggregate';
 import { DecisionTreeTitle } from '../../model/decisionTree/DecisionTreeTitle';
 import {
   DecisionsTab,
@@ -42,9 +37,6 @@ const DecisionsOverviewScreen: FC<Props> = ({ navigation, route }) => {
   const [decisionTreeTitles, setDecisionTreeTitles] = useState<
     DecisionTreeTitle[] | null
   >(null);
-  const [calculationTitles, setCalculationTitles] = useState<
-    CalculationInfo[] | null
-  >(null);
   const [decisionItems, setDecisionItems] = useState<DecisionItem[]>([]);
   const { decisionTabInfo } = route.params;
 
@@ -55,16 +47,10 @@ const DecisionsOverviewScreen: FC<Props> = ({ navigation, route }) => {
     } else {
       setDecisionTreeTitles([]);
     }
-    // Only add calculations if enabled
-    if (decisionTabInfo.indexDecisionType.includes(AGGREGATE_DECISION_TREE)) {
-      calculationsRepository.getCalculationsInfo(setCalculationTitles);
-    } else {
-      setCalculationTitles([]);
-    }
   }, [decisionTabInfo.indexDecisionType]);
 
   useEffect(() => {
-    if (decisionTreeTitles === null || calculationTitles === null) {
+    if (decisionTreeTitles === null) {
       return;
     }
     let result: DecisionItem[] = [];
@@ -82,20 +68,6 @@ const DecisionsOverviewScreen: FC<Props> = ({ navigation, route }) => {
           }),
         );
       }
-      if (
-        shiftKey === AGGREGATE_CALCULATIONS &&
-        calculationTitles.length !== 0
-      ) {
-        result = result.concat(
-          calculationTitles.map(calculation => {
-            return {
-              title: calculation.title,
-              iconFile: calculation.iconFile,
-              aggregate: AGGREGATE_CALCULATIONS,
-            } as DecisionItem;
-          }),
-        );
-      }
     }
     if (result.length === 0) {
       logger.errorFromMessage(
@@ -105,12 +77,7 @@ const DecisionsOverviewScreen: FC<Props> = ({ navigation, route }) => {
       );
     }
     setDecisionItems(result);
-  }, [
-    decisionTreeTitles,
-    calculationTitles,
-    decisionTabInfo.indexDecisionType,
-    decisionTabInfo,
-  ]);
+  }, [decisionTreeTitles, decisionTabInfo.indexDecisionType, decisionTabInfo]);
 
   const navigateDecisionItem = useCallback(
     (decisionItem: DecisionItem) => {
@@ -141,8 +108,6 @@ const DecisionsOverviewScreen: FC<Props> = ({ navigation, route }) => {
     switch (category) {
       case AGGREGATE_DECISION_TREE:
         return 'Beslisboom';
-      case AGGREGATE_CALCULATIONS:
-        return 'Berekeningen';
       default:
         return '';
     }

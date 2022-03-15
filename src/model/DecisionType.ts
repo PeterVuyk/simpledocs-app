@@ -1,1 +1,1 @@
-export type DecisionType = 'decisionTree' | 'calculations';
+export type DecisionType = 'decisionTree';
