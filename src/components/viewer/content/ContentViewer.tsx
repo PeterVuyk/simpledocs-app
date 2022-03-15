@@ -1,14 +1,19 @@
 import React, { FC } from 'react';
-import { View } from 'react-native';
+import { LogBox, View } from 'react-native';
 import {
-  CONTENT_TYPE_CALCULATIONS,
   CONTENT_TYPE_HTML,
   CONTENT_TYPE_MARKDOWN,
   ContentType,
 } from '../../../model/ContentType';
 import HTMLViewer from './HTMLViewer';
 import MarkdownViewer from './MarkdownViewer';
-import CalculatorViewer from './calculations/CalculatorViewer';
+
+/**
+ * We ignore the import cycle for ContentViewer because a calculator cna have a markdown or html page
+ */
+LogBox.ignoreLogs([
+  'Require cycles are allowed, but can result in uninitialized values. Consider refactoring to remove the need for a cycle.',
+]);
 
 interface Props {
   content: string;
@@ -24,9 +29,6 @@ const ContentViewer: FC<Props> = ({ content, contentType, bookType }) => {
       )}
       {contentType === CONTENT_TYPE_MARKDOWN && (
         <MarkdownViewer markdownFile={content} bookType={bookType} />
-      )}
-      {contentType === CONTENT_TYPE_CALCULATIONS && (
-        <CalculatorViewer content={content} bookType={bookType} />
       )}
     </View>
   );

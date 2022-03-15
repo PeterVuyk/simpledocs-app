@@ -5,6 +5,7 @@ import globalStyle from '../../../../styling/globalStyle';
 
 const styles = StyleSheet.create({
   container: {
+    flex: 1,
     margin: 10,
   },
   headerSubTitle: {

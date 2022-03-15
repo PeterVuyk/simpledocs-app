@@ -1,5 +1,5 @@
 import React, { FC, useEffect, useState } from 'react';
-import { ScrollView, StyleSheet } from 'react-native';
+import { LogBox, ScrollView, StyleSheet } from 'react-native';
 import { useIsFocused } from '@react-navigation/native';
 import TitleBar from '../../../../components/titleBar/TitleBar';
 import OvertakingDistanceCalculator from './OvertakingDistanceCalculator';
@@ -12,7 +12,6 @@ import {
 import StoppingDistanceCalculator from './StoppingDistanceCalculator';
 import ContentViewer from '../../../../components/viewer/content/ContentViewer';
 import globalStyle from '../../../../styling/globalStyle';
-import ScreenContainer from '../../../../components/ScreenContainer';
 import IntentContentPage from '../../../intent/IntentContentPage';
 
 const styles = StyleSheet.create({
@@ -45,27 +44,25 @@ const CalculatorViewer: FC<Props> = ({ content, bookType }) => {
     return <IntentContentPage />;
   }
   return (
-    <ScreenContainer>
-      <ScrollView style={styles.container}>
-        <KeyboardAwareView>
-          <TitleBar
-            title={calculationInfo.title}
-            subTitle={calculationInfo.explanation}
-          />
-          {calculationInfo.calculationType === OVERTAKING_DISTANCE && (
-            <OvertakingDistanceCalculator />
-          )}
-          {calculationInfo.calculationType === STOPPING_DISTANCE && (
-            <StoppingDistanceCalculator />
-          )}
-          <ContentViewer
-            content={calculationInfo.content}
-            contentType={calculationInfo.contentType}
-            bookType={bookType}
-          />
-        </KeyboardAwareView>
-      </ScrollView>
-    </ScreenContainer>
+    <ScrollView style={styles.container}>
+      <KeyboardAwareView>
+        <TitleBar
+          title={calculationInfo.title}
+          subTitle={calculationInfo.explanation}
+        />
+        {calculationInfo.calculationType === OVERTAKING_DISTANCE && (
+          <OvertakingDistanceCalculator />
+        )}
+        {calculationInfo.calculationType === STOPPING_DISTANCE && (
+          <StoppingDistanceCalculator />
+        )}
+        <ContentViewer
+          content={calculationInfo.content}
+          contentType={calculationInfo.contentType}
+          bookType={bookType}
+        />
+      </KeyboardAwareView>
+    </ScrollView>
   );
 };
 

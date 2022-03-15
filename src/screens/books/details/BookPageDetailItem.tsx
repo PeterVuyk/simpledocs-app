@@ -5,6 +5,8 @@ import bookPagesRepository from '../../../database/repository/bookPagesRepositor
 import ScrollAwareBottomButton from '../../../components/ScrollAwareBottomButton';
 import ContentViewer from '../../../components/viewer/content/ContentViewer';
 import {
+  CONTENT_TYPE_CALCULATIONS,
+  CONTENT_TYPE_DECISION_TREE,
   CONTENT_TYPE_HTML,
   CONTENT_TYPE_MARKDOWN,
 } from '../../../model/ContentType';
@@ -12,6 +14,8 @@ import highlightWordsInMarkdownFile from '../../../helper/highlightWordsInMarkdo
 import highlightWordsInHTMLFile from '../../../helper/highlightWordsInHTMLFile';
 import { useAppSelector, useAppDispatch } from '../../../redux/hooks';
 import { setSearchText } from '../../../redux/slice/searchTextSlice';
+import CalculatorViewer from '../../../components/viewer/content/calculations/CalculatorViewer';
+import DecisionTreeViewer from '../../../components/viewer/content/decisionTree/DecisionTreeViewer';
 
 interface Props {
   bookPageChapter: string;
@@ -82,11 +86,20 @@ const BookPageDetailItem: FC<Props> = ({ bookPageChapter, bookType }) => {
 
   return (
     <View style={{ flex: 1 }}>
-      <ContentViewer
-        content={contentView.content}
-        contentType={bookPage.contentType}
-        bookType={bookType}
-      />
+      {bookPage.contentType === CONTENT_TYPE_CALCULATIONS && (
+        <CalculatorViewer content={contentView.content} bookType={bookType} />
+      )}
+      {bookPage.contentType === CONTENT_TYPE_DECISION_TREE && (
+        <DecisionTreeViewer content={contentView.content} bookType={bookType} />
+      )}
+      {(bookPage.contentType === CONTENT_TYPE_HTML ||
+        bookPage.contentType === CONTENT_TYPE_MARKDOWN) && (
+        <ContentViewer
+          content={contentView.content}
+          contentType={bookPage.contentType}
+          bookType={bookType}
+        />
+      )}
       {contentView.hasHighlightedText && getSearchText() !== '' && (
         <ScrollAwareBottomButton
           title="Verwijder markering"
