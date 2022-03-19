@@ -25,8 +25,7 @@ const styles = StyleSheet.create({
     ...globalStyle.typography.h3,
     textAlign: 'center',
     color: globalStyle.color.primary.main,
-    // TODO: Here we say 'height 300' but above we decide a font style. This could conflict if the question is long. How to fix?
-    height: 300,
+    height: 200,
   },
   buttonContainer: {
     justifyContent: 'space-between',

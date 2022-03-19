@@ -6,7 +6,7 @@ const registerAndGeneratePushNotificationsToken = async (): Promise<
   string | undefined
 > => {
   if (!isDevice) {
-    alert('Sorry, Push Notifications are only supported on physical devices.');
+    // Push Notifications are only supported on physical devices, return.
     return;
   }
 

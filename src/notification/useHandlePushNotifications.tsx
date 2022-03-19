@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import { setNotificationHandler } from 'expo-notifications';
 import * as Notifications from 'expo-notifications';
+import { isDevice } from 'expo-device';
 import logger from '../util/logger';
 import useContentNavigator from '../components/hooks/useContentNavigator';
 import { NotificationData } from '../model/notifications/NotificationData';
@@ -30,7 +31,7 @@ const useHandlePushNotifications = () => {
   const setExpoPushTokenUserOnNotificationReceival = async () => {
     if (!(await notificationToken.hasExpoPushTokenProperty())) {
       notificationToggle(true).then(isSuccessful => {
-        if (!isSuccessful) {
+        if (!isSuccessful && isDevice) {
           throw new Error('Tried to toggle notification on but unsuccessful');
         }
       });

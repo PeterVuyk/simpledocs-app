@@ -16,14 +16,6 @@ export interface BookInfo {
   imageFile: string;
 }
 
-// TODO: remove
-export interface DecisionsTab {
-  bottomTab: BottomTab;
-  title: string;
-  subTitle: string;
-  indexDecisionType: string[];
-}
-
 export interface BookTabInfo {
   bottomTab: BottomTab;
   bookTypes: BookInfo[];
