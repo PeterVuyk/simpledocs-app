@@ -16,6 +16,8 @@ import { Bookmark } from '../../../model/bookPages/Bookmark';
 import promiseAllSettled from '../../../util/promiseAllSettled';
 import { UPDATE_ON_STARTUP, UpdateMoment } from '../../../model/UpdateMoment';
 import getAppInfoOnStartupReady from '../../../firebase/functions/getAppInfoOnStartupReady';
+import { AGGREGATE_STANDALONE_PAGES } from '../../../model/aggregate';
+import synchronizeStorage from './synchronizeStorage';
 
 function useUpdateAggregates() {
   const addBookmarksToPages = (
@@ -71,6 +73,21 @@ function useUpdateAggregates() {
         ),
       ),
     );
+  };
+
+  const updateStandalonePages = async (
+    appInfoResponse: AppInfo,
+  ): Promise<void> => {
+    if (
+      AGGREGATE_STANDALONE_PAGES in appInfoResponse &&
+      appInfoResponse[AGGREGATE_STANDALONE_PAGES] !== undefined
+    ) {
+      await synchronizeStorage.updateStandalonePages(
+        appInfoResponse.appConfigurations.versioning[AGGREGATE_STANDALONE_PAGES]
+          .version,
+        appInfoResponse[AGGREGATE_STANDALONE_PAGES],
+      );
+    }
   };
 
   const updateBooksPreserveBookmarks = async (
@@ -139,6 +156,7 @@ function useUpdateAggregates() {
     }
     await promiseAllSettled([
       updateBooksPreserveBookmarks(appInfo, preservedBookmarks),
+      updateStandalonePages(appInfo),
       // Here we can later add more resources when needed
     ])
       .then(result => {
