@@ -4,12 +4,11 @@ import DrawerContent from './DrawerContent';
 import TabNavigation from '../bottom/TabNavigation';
 import { AppConfigurations } from '../../model/configurations/AppConfigurations';
 import configurationsStorage from '../../storage/configurationsStorage';
-import CopyrightScreen from '../../screens/drawerScreens/copyright/CopyrightScreen';
-import AboutUsScreen from '../../screens/drawerScreens/about/AboutUsScreen';
 import globalStyle from '../../styling/globalStyle';
 import SearchScreen from '../../screens/drawerScreens/search/SearchScreen';
 import BackPressListener from '../BackPressListener';
 import AggregateDataOnReadyProvider from '../../database/synchronize/updateAggregates/AggregateDataOnReadyProvider';
+import DisclaimerScreen from '../../screens/drawerScreens/disclaimer/DisclaimerScreen';
 
 const DrawerNavigator = createDrawerNavigator();
 
@@ -59,9 +58,9 @@ const Drawer: FC = () => {
               />
             )}
           </DrawerNavigator.Screen>
-          <DrawerNavigator.Screen name="CopyrightScreen">
+          <DrawerNavigator.Screen name="DisclaimerScreen">
             {props => (
-              <CopyrightScreen
+              <DisclaimerScreen
                 appConfigurations={appConfigurations}
                 navigation={props.navigation}
               />
@@ -70,14 +69,6 @@ const Drawer: FC = () => {
           <DrawerNavigator.Screen name="SearchScreen">
             {props => (
               <SearchScreen
-                navigation={props.navigation}
-                appConfigurations={appConfigurations}
-              />
-            )}
-          </DrawerNavigator.Screen>
-          <DrawerNavigator.Screen name="AboutUsScreen">
-            {props => (
-              <AboutUsScreen
                 navigation={props.navigation}
                 appConfigurations={appConfigurations}
               />

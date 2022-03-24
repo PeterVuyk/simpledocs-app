@@ -7,5 +7,4 @@ export interface StandalonePage {
   title: string;
   content: string;
   contentType: ContentType;
-  isDisabled: boolean;
 }

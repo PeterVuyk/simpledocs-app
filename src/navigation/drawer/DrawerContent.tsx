@@ -5,6 +5,7 @@ import DrawerItem from './DrawerItem';
 import { IconFamilyType } from '../../model/style/IconFamilyType';
 import { AppConfigurations } from '../../model/configurations/AppConfigurations';
 import SettingsModal from './settings/SettingsModal';
+import { STANDALONE_PAGE_TYPE_DISCLAIMER } from '../../model/standalonePages/StandalonePageType';
 
 const styles = StyleSheet.create({
   drawerImageContainer: {
@@ -46,22 +47,18 @@ const DrawerContent: FC<Props> = ({ navigation, appConfigurations }) => {
           iconType={link.iconType as IconFamilyType}
         />
       ))}
-      <DrawerItem
-        label="Over Academie voor Ambulancezorg"
-        onSubmit={() => {
-          navigation.navigate('AboutUsScreen');
-        }}
-        iconName="information-outline"
-        iconType="MaterialCommunityIcons"
-      />
-      <DrawerItem
-        label="Auteursrechten"
-        onSubmit={() => {
-          navigation.navigate('CopyrightScreen');
-        }}
-        iconName="copyright"
-        iconType="MaterialCommunityIcons"
-      />
+      {appConfigurations.drawer.enabledStandalonePagesTypes[
+        STANDALONE_PAGE_TYPE_DISCLAIMER
+      ] && (
+        <DrawerItem
+          label="Disclaimer"
+          onSubmit={() => {
+            navigation.navigate('DisclaimerScreen');
+          }}
+          iconName="scale-balance"
+          iconType="MaterialCommunityIcons"
+        />
+      )}
       <DrawerItem
         label="Instellingen"
         onSubmit={() => {
