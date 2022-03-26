@@ -4,7 +4,6 @@ import { AppConfigurations } from '../../model/configurations/AppConfigurations'
 import BottomTabs from '../../navigation/bottom/BottomTabs';
 import Header from '../../navigation/header/Header';
 import BottomTab from '../../model/BottomTab';
-import ResizeScreenDrawer from '../../navigation/drawer/ResizeScreenDrawer';
 import { IconFamilyType } from '../../model/style/IconFamilyType';
 
 interface Props {
@@ -61,7 +60,7 @@ const DrawerScreen: FC<Props> = ({
     }
     if (appConfigurations.thirdBookTab.bookTypes.length !== 0) {
       tabs.push({
-        index: 2,
+        index: 3,
         title: appConfigurations.thirdBookTab.bottomTab.title,
         icon: appConfigurations.thirdBookTab.bottomTab.icon,
         iconFamilyType: appConfigurations.thirdBookTab.bottomTab.familyType,
@@ -76,11 +75,13 @@ const DrawerScreen: FC<Props> = ({
   };
 
   return (
-    <ResizeScreenDrawer>
+    <>
+      {/* <ResizeScreenDrawer> */}
       {showHeader && <Header navigation={navigation} />}
       {children}
       <BottomTabs tabs={getBottomTab()} />
-    </ResizeScreenDrawer>
+      {/* </ResizeScreenDrawer> */}
+    </>
   );
 };
 

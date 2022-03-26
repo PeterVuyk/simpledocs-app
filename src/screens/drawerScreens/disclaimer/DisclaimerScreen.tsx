@@ -9,9 +9,9 @@ import globalStyle from '../../../styling/globalStyle';
 import ScreenContainer from '../../../components/ScreenContainer';
 import standalonePagesStorage from '../../../storage/standalonePagesStorage';
 import { StandalonePage } from '../../../model/standalonePages/StandalonePage';
-import { STANDALONE_PAGE_TYPE_DISCLAIMER } from '../../../model/standalonePages/StandalonePageType';
 import ContentViewer from '../../../components/viewer/content/ContentViewer';
 import logger from '../../../util/logger';
+import { STANDALONE_PAGE_TYPE_DISCLAIMER } from '../../../model/standalonePages/StandalonePageType';
 
 const styles = StyleSheet.create({
   container: {

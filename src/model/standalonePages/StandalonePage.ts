@@ -1,9 +1,7 @@
 import { ContentType } from '../ContentType';
-import { StandalonePageType } from './StandalonePageType';
 
 export interface StandalonePage {
-  standalonePageType: StandalonePageType;
-  id: string;
+  standalonePageType: string;
   title: string;
   content: string;
   contentType: ContentType;

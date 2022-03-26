@@ -37,16 +37,18 @@ const DrawerContent: FC<Props> = ({ navigation, appConfigurations }) => {
           style={styles.drawerImage}
         />
       </View>
-      {appConfigurations.drawer.links?.map(link => (
-        <DrawerItem
-          isExternalLink
-          key={link.title}
-          label={link.title}
-          onSubmit={() => Linking.openURL(link.url)}
-          iconName={link.iconName}
-          iconType={link.iconType as IconFamilyType}
-        />
-      ))}
+      {appConfigurations.drawer.links
+        ?.sort((a, b) => a.index.localeCompare(b.index))
+        .map(link => (
+          <DrawerItem
+            isExternalLink
+            key={link.title}
+            label={link.title}
+            onSubmit={() => Linking.openURL(link.url)}
+            iconName={link.iconName}
+            iconType={link.iconType as IconFamilyType}
+          />
+        ))}
       {appConfigurations.drawer.enabledStandalonePagesTypes[
         STANDALONE_PAGE_TYPE_DISCLAIMER
       ] && (

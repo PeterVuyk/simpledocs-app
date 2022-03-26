@@ -31,7 +31,7 @@ export interface VersionInfo {
 export interface LinkItem {
   title: string;
   url: string;
-  index: 0;
+  index: string;
   iconName: string;
   iconType: string;
 }

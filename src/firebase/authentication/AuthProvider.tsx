@@ -44,7 +44,7 @@ const AuthProvider: FC<Props> = ({ children }) => {
         dispatch(updateStartupState(INIT_DATABASE_STATE));
         return;
       }
-      if (!(await configurationsStorage.getSystemConfiguration())) {
+      if ((await configurationsStorage.getSystemConfiguration()) === null) {
         dispatch(setIsFirstStartup(true));
       }
       signIn();

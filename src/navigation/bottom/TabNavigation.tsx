@@ -4,7 +4,6 @@ import TabNavigator from './TabNavigator';
 import { AppConfigurations } from '../../model/configurations/AppConfigurations';
 import SecondBookTabStackNavigator from '../StackNavigator/SecondBookTabStackNavigator';
 import FirstBookTabStackNavigator from '../StackNavigator/FirstBookTabStackNavigator';
-import ResizeScreenDrawer from '../drawer/ResizeScreenDrawer';
 import BookmarksStackNavigator from '../StackNavigator/BookmarksStackNavigator';
 import Header from '../header/Header';
 import ThirdBookTabStackNavigator from '../StackNavigator/ThirdBookTabStackNavigator';
@@ -18,7 +17,8 @@ interface Props {
 
 const TabNavigation: FC<Props> = ({ navigation, appConfigurations }) => {
   return (
-    <ResizeScreenDrawer>
+    <>
+      {/* <ResizeScreenDrawer> */}
       <Header navigation={navigation} />
       <Tab.Navigator
         contentStyle={{
@@ -84,7 +84,8 @@ const TabNavigation: FC<Props> = ({ navigation, appConfigurations }) => {
           />
         )}
       </Tab.Navigator>
-    </ResizeScreenDrawer>
+      {/* </ResizeScreenDrawer> */}
+    </>
   );
 };
 
