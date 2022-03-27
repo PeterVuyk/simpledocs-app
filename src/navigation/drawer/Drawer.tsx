@@ -34,7 +34,9 @@ const Drawer: FC = () => {
             swipeEnabled: false,
             headerShown: false,
             drawerType: 'slide',
-            drawerStyle: { backgroundColor: globalStyle.color.white },
+            drawerStyle: {
+              backgroundColor: globalStyle.header.backgroundColor,
+            },
             overlayColor: 'transparant',
             lazy: true,
             drawerActiveBackgroundColor: globalStyle.color.white,

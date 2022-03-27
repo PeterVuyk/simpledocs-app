@@ -45,6 +45,9 @@ const defaultStyle = {
   header: {
     backgroundColor: '#fff',
   },
+  drawer: {
+    backgroundColor: '#fff',
+  },
 };
 
 export default defaultStyle;

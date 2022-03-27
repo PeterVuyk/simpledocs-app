@@ -45,6 +45,9 @@ const academieVoorAmbulancezorgStyle = {
   header: {
     backgroundColor: '#E5E5EA',
   },
+  drawer: {
+    backgroundColor: '#E5E5EA',
+  },
 };
 
 export default academieVoorAmbulancezorgStyle;

@@ -99,9 +99,9 @@ const DecisionTreeViewer: FC<Props> = ({ content, bookType }) => {
     <ScrollView style={styles.container}>
       <TitleBar title={decisionTree?.title ?? ''} />
       <Text style={styles.questionLabel}>
-        {currentStep !== undefined && currentStep.content
-          ? 'Antwoord:'
-          : 'Vraag:'}
+        {decisionTree?.steps.find(value => value.parentId === currentStep?.id)
+          ? 'Vraag:'
+          : 'Antwoord:'}
       </Text>
       <View style={styles.contentContainerStyle}>
         <Text style={styles.question}>{currentStep?.label}</Text>

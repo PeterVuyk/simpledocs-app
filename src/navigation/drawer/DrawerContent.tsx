@@ -6,6 +6,7 @@ import { IconFamilyType } from '../../model/style/IconFamilyType';
 import { AppConfigurations } from '../../model/configurations/AppConfigurations';
 import SettingsModal from './settings/SettingsModal';
 import { STANDALONE_PAGE_TYPE_DISCLAIMER } from '../../model/standalonePages/StandalonePageType';
+import globalStyle from '../../styling/globalStyle';
 
 const styles = StyleSheet.create({
   drawerImageContainer: {
@@ -17,6 +18,14 @@ const styles = StyleSheet.create({
     resizeMode: 'contain',
     width: 200,
     marginBottom: 20,
+  },
+  drawerBottomContainer: {
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
+    height: 60,
+    backgroundColor: globalStyle.color.primary.main,
   },
 });
 
@@ -30,50 +39,53 @@ const DrawerContent: FC<Props> = ({ navigation, appConfigurations }) => {
     useState<boolean>(false);
 
   return (
-    <View style={{ flex: 1 }}>
-      <View style={styles.drawerImageContainer}>
-        <Image
-          source={require('../../../assets/company-logo.png')}
-          style={styles.drawerImage}
-        />
-      </View>
-      {appConfigurations.drawer.links
-        ?.sort((a, b) => a.index.localeCompare(b.index))
-        .map(link => (
-          <DrawerItem
-            isExternalLink
-            key={link.title}
-            label={link.title}
-            onSubmit={() => Linking.openURL(link.url)}
-            iconName={link.iconName}
-            iconType={link.iconType as IconFamilyType}
+    <>
+      <View style={{ flex: 1, marginBottom: 60 }}>
+        <View style={styles.drawerImageContainer}>
+          <Image
+            source={require('../../../assets/company-logo.png')}
+            style={styles.drawerImage}
           />
-        ))}
-      {appConfigurations.drawer.enabledStandalonePagesTypes[
-        STANDALONE_PAGE_TYPE_DISCLAIMER
-      ] && (
+        </View>
+        {appConfigurations.drawer.links
+          ?.sort((a, b) => a.index.localeCompare(b.index))
+          .map(link => (
+            <DrawerItem
+              isExternalLink
+              key={link.title}
+              label={link.title}
+              onSubmit={() => Linking.openURL(link.url)}
+              iconName={link.iconName}
+              iconType={link.iconType as IconFamilyType}
+            />
+          ))}
+        {appConfigurations.drawer.enabledStandalonePagesTypes[
+          STANDALONE_PAGE_TYPE_DISCLAIMER
+        ] && (
+          <DrawerItem
+            label="Disclaimer"
+            onSubmit={() => {
+              navigation.navigate('DisclaimerScreen');
+            }}
+            iconName="scale-balance"
+            iconType="MaterialCommunityIcons"
+          />
+        )}
         <DrawerItem
-          label="Disclaimer"
+          label="Instellingen"
           onSubmit={() => {
-            navigation.navigate('DisclaimerScreen');
+            navigation.closeDrawer();
+            setSettingsModalVisible(true);
           }}
-          iconName="scale-balance"
-          iconType="MaterialCommunityIcons"
+          iconName="app-settings-alt"
+          iconType="MaterialIcons"
         />
-      )}
-      <DrawerItem
-        label="Instellingen"
-        onSubmit={() => {
-          navigation.closeDrawer();
-          setSettingsModalVisible(true);
-        }}
-        iconName="app-settings-alt"
-        iconType="MaterialIcons"
-      />
-      {settingsModalVisible && (
-        <SettingsModal onCloseModal={() => setSettingsModalVisible(false)} />
-      )}
-    </View>
+        {settingsModalVisible && (
+          <SettingsModal onCloseModal={() => setSettingsModalVisible(false)} />
+        )}
+      </View>
+      <View style={styles.drawerBottomContainer} />
+    </>
   );
 };
 
