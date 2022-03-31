@@ -13,18 +13,21 @@ LogBox.ignoreLogs([
 ]);
 
 async function enableDisabledNotificationsFromSleep(): Promise<void> {
-  const response = await httpsCallable(
+  return httpsCallable(
     functions,
     'appApi-enableDisabledNotificationsFromSleep',
   )({
     environment: environment.getEnvironment().envName,
     appVersion: Constants.manifest?.version,
-  }).then(value => value.data as DefaultResponse);
-  if (!response.success) {
-    throw new Error(
-      `Failed enabling disabled notifications from sleep on startup, message server: ${response.message}`,
-    );
-  }
+  })
+    .then(value => value.data as DefaultResponse)
+    .then(response => {
+      if (!response.success) {
+        throw new Error(
+          `Failed enabling disabled notifications from sleep on startup, message server: ${response.message}`,
+        );
+      }
+    });
 }
 
 export default enableDisabledNotificationsFromSleep;

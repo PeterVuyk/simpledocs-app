@@ -19,20 +19,23 @@ LogBox.ignoreLogs([
 async function getAppInfoOnStartup(
   versioning: Versions | undefined,
 ): Promise<AppInfo> {
-  const response = await httpsCallable(
+  return httpsCallable(
     functions,
     'appApi-getAppInfoOnStartup',
   )({
     environment: environment.getEnvironment().envName,
     appVersion: Constants.manifest?.version,
     versioning,
-  }).then(value => value.data as AppInfoResponse);
-  if (!response.success) {
-    throw new Error(
-      `Failed collecting configurations from server onStartup, message server: ${response.message}`,
-    );
-  }
-  return response.result!;
+  })
+    .then(value => value.data as AppInfoResponse)
+    .then(response => {
+      if (!response.success) {
+        throw new Error(
+          `Failed collecting configurations from server onStartup, message server: ${response.message}`,
+        );
+      }
+      return response.result!;
+    });
 }
 
 export default getAppInfoOnStartup;

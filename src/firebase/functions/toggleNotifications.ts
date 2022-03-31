@@ -15,19 +15,22 @@ LogBox.ignoreLogs([
 async function toggleNotifications(
   expoPushToken: string | null,
 ): Promise<void> {
-  const response = await httpsCallable(
+  return httpsCallable(
     functions,
     'appApi-toggleNotifications',
   )({
     environment: environment.getEnvironment().envName,
     appVersion: Constants.manifest?.version,
     expoPushToken,
-  }).then(value => value.data as DefaultResponse);
-  if (!response.success) {
-    throw new Error(
-      `Failed toggling notifications from server onStartup, message server: ${response.message}`,
-    );
-  }
+  })
+    .then(value => value.data as DefaultResponse)
+    .then(response => {
+      if (!response.success) {
+        throw new Error(
+          `Failed toggling notifications from server onStartup, message server: ${response.message}`,
+        );
+      }
+    });
 }
 
 export default toggleNotifications;
