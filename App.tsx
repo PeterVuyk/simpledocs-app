@@ -5,6 +5,7 @@ import { ThemeProvider } from 'react-native-elements';
 import { PortalProvider } from 'react-native-portal';
 import { LogBox } from 'react-native';
 import * as Sentry from 'sentry-expo';
+import { NativeBaseProvider } from 'native-base';
 import AppSplashScreen from './src/screens/splash/AppSplashScreen';
 import AuthProvider from './src/firebase/authentication/AuthProvider';
 import environment from './src/util/environment';
@@ -12,8 +13,9 @@ import { store } from './src/redux/store';
 import InitDatabaseProvider from './src/database/synchronize/initializeDatabase/InitDatabaseProvider';
 import AggregateDataProvider from './src/database/synchronize/updateAggregates/AggregateDataProvider';
 import RestoreAppProvider from './src/database/synchronize/restore/RestoreAppProvider';
-import globalStyle from './src/styling/globalStyle';
 import UncaughtErrorHandler from './src/components/UncaughtErrorHandler';
+import nativeBaseTheme from './src/styling/nativeBaseTheme';
+import reactNativeElementsTheme from './src/styling/reactNativeElementsTheme';
 
 /**
  * We disable the warning below because it originate from the node modules dependency 'react-native-portal'.
@@ -25,12 +27,6 @@ LogBox.ignoreLogs([
   'Warning: componentWillReceiveProps has been renamed, and is not recommended for use. See https://reactjs.org/link/unsafe-component-lifecycles for details.',
   "Constants.deviceYearClass has been deprecated in favor of expo-device's Device.deviceYearClass property. This API will be removed in SDK 45.",
 ]);
-
-const theme = {
-  Chip: {
-    theme: { colors: { primary: globalStyle.color.primary.main } },
-  },
-};
 
 /**
  * Due to a bug in a third party library a global import for 'base-64'
@@ -60,19 +56,21 @@ const App: FC = () => {
   return (
     <PortalProvider>
       <Provider store={store}>
-        <ThemeProvider theme={theme}>
-          <UncaughtErrorHandler>
-            <AuthProvider>
-              <RestoreAppProvider>
-                <InitDatabaseProvider>
-                  <AggregateDataProvider>
-                    <AppSplashScreen />
-                  </AggregateDataProvider>
-                </InitDatabaseProvider>
-              </RestoreAppProvider>
-            </AuthProvider>
-          </UncaughtErrorHandler>
-        </ThemeProvider>
+        <NativeBaseProvider theme={nativeBaseTheme}>
+          <ThemeProvider theme={reactNativeElementsTheme}>
+            <UncaughtErrorHandler>
+              <AuthProvider>
+                <RestoreAppProvider>
+                  <InitDatabaseProvider>
+                    <AggregateDataProvider>
+                      <AppSplashScreen />
+                    </AggregateDataProvider>
+                  </InitDatabaseProvider>
+                </RestoreAppProvider>
+              </AuthProvider>
+            </UncaughtErrorHandler>
+          </ThemeProvider>
+        </NativeBaseProvider>
       </Provider>
     </PortalProvider>
   );

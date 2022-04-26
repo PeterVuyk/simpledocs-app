@@ -74,31 +74,28 @@ const SearchScreenNavigator: FC<Props> = ({
   };
 
   return (
-    <>
-      <FlatList
-        ref={flatListRef}
-        style={[styles.navigationContainer, styles.navigationBorder]}
-        keyExtractor={item => item.title.toString()}
-        data={searchTabs}
-        horizontal
-        initialScrollIndex={
-          searchTabs.find(value => value.itemId === currentTab.itemId)?.index ??
-          0
-        }
-        getItemLayout={(data, index) => {
-          const width = getIndexItem(index);
-          return {
-            length:
-              searchTabs.find(value => value.index === index)?.chipWidth ?? 0,
-            offset: width + index * 4 - 40,
-            index,
-          };
-        }}
-        bounces={false}
-        showsHorizontalScrollIndicator={false}
-        renderItem={({ item }) => getItem(item)}
-      />
-    </>
+    <FlatList
+      ref={flatListRef}
+      style={[styles.navigationContainer, styles.navigationBorder]}
+      keyExtractor={item => item.title.toString()}
+      data={searchTabs}
+      horizontal
+      initialScrollIndex={
+        searchTabs.find(value => value.itemId === currentTab.itemId)?.index ?? 0
+      }
+      getItemLayout={(data, index) => {
+        const width = getIndexItem(index);
+        return {
+          length:
+            searchTabs.find(value => value.index === index)?.chipWidth ?? 0,
+          offset: width + index * 4 - 40,
+          index,
+        };
+      }}
+      bounces={false}
+      showsHorizontalScrollIndicator={false}
+      renderItem={({ item }) => getItem(item)}
+    />
   );
 };
 

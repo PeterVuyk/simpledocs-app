@@ -1,8 +1,6 @@
 import React, { FC, useCallback, useEffect, useState } from 'react';
 import { View } from 'react-native';
 import * as SplashScreen from 'expo-splash-screen';
-import * as Font from 'expo-font';
-import { Ionicons } from '@expo/vector-icons';
 import { NavigationContainer } from '@react-navigation/native';
 import Drawer from '../../navigation/drawer/Drawer';
 import NoInternetConnectionOverlay from './NoInternetConnectionOverlay';
@@ -27,20 +25,10 @@ const AppSplashScreen: FC = () => {
   );
   const dispatch = useAppDispatch();
 
-  const loadFonts = async () => {
-    await Font.loadAsync({
-      Roboto: require('native-base/Fonts/Roboto.ttf'),
-      Roboto_medium: require('native-base/Fonts/Roboto_medium.ttf'),
-      ...Ionicons.font,
-    });
-  };
-
   useEffect(() => {
-    SplashScreen.preventAutoHideAsync()
-      .then(loadFonts)
-      .finally(() => {
-        setAppReady(true);
-      });
+    SplashScreen.preventAutoHideAsync().finally(() => {
+      setAppReady(true);
+    });
   }, []);
 
   useEffect(() => {

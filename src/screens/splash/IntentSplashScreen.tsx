@@ -9,6 +9,7 @@ import SearchButton from '../../navigation/header/search/SearchButton';
 import { headerStyles } from '../../navigation/header/Header';
 import globalStyle from '../../styling/globalStyle';
 import LoadingSpinner from '../../components/LoadingSpinner';
+import getFamilyIcon from '../../components/getFamilyIcon';
 
 const styles = StyleSheet.create({
   bottomTabContainer: {
@@ -34,7 +35,7 @@ interface Props {
 }
 
 const IntentSplashScreen: FC<Props> = React.memo(({ firstStartupApp }) => {
-  const Header = () => {
+  function Header() {
     return (
       <SafeAreaView style={headerStyles.container}>
         <View style={headerStyles.box}>
@@ -56,20 +57,23 @@ const IntentSplashScreen: FC<Props> = React.memo(({ firstStartupApp }) => {
           <SearchButton />
           {/* The icon below is a placeholder and is added so the header logo doesn't jump if the bookmarkToggle is set */}
           <Icon
+            size="7"
+            color={globalStyle.color.white}
             style={{
-              color: globalStyle.color.white,
-              padding: 10,
+              margin: 10,
               opacity: 0.0,
             }}
-            name="bookmark-plus-outline"
-            type="MaterialCommunityIcons"
+            as={getFamilyIcon(
+              'MaterialCommunityIcons',
+              'bookmark-plus-outline',
+            )}
           />
         </View>
       </SafeAreaView>
     );
-  };
+  }
 
-  const FirstStartupLoader = () => {
+  function FirstStartupLoader() {
     return (
       <View>
         <Text style={styles.firstStartupText}>
@@ -78,9 +82,9 @@ const IntentSplashScreen: FC<Props> = React.memo(({ firstStartupApp }) => {
         <LoadingSpinner />
       </View>
     );
-  };
+  }
 
-  const ScreenLoader = () => {
+  function ScreenLoader() {
     return (
       <ContentLoader
         backgroundColor="#dadada"
@@ -115,7 +119,7 @@ const IntentSplashScreen: FC<Props> = React.memo(({ firstStartupApp }) => {
         <Rect x="20" y="597" rx="0" ry="0" width="50" height="50" />
       </ContentLoader>
     );
-  };
+  }
 
   return (
     <>

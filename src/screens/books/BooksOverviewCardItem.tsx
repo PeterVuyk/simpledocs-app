@@ -1,6 +1,5 @@
 import React, { FC } from 'react';
-import { StyleSheet, TouchableOpacity, Text, Image } from 'react-native';
-import { Content } from 'native-base';
+import { StyleSheet, TouchableOpacity, Text, Image, View } from 'react-native';
 import { Divider } from 'react-native-elements';
 import { BookInfo } from '../../model/configurations/AppConfigurations';
 import globalStyle from '../../styling/globalStyle';
@@ -11,8 +10,13 @@ const styles = StyleSheet.create({
     margin: 5,
     flexDirection: 'row',
   },
-  title: { ...globalStyle.typography.h4, marginBottom: 5 },
-  subTitle: { color: globalStyle.color.default.dark },
+  title: {
+    ...globalStyle.typography.h4,
+    marginBottom: 5,
+  },
+  subTitle: {
+    color: globalStyle.color.default.dark,
+  },
 });
 
 interface Props {
@@ -48,10 +52,15 @@ const BooksOverviewCardItem: FC<Props> = ({
         onPress={() => onNavigation(bookInfo.bookType)}
       >
         {getImage()}
-        <Content style={{ paddingLeft: 10 }}>
+        <View
+          style={{
+            paddingLeft: 10,
+            flex: 1,
+          }}
+        >
           <Text style={styles.title}>{bookInfo.title}</Text>
           <Text style={styles.subTitle}>{bookInfo.subTitle}</Text>
-        </Content>
+        </View>
       </TouchableOpacity>
       {!lastItem && (
         <Divider

@@ -4,6 +4,7 @@ import { Icon } from 'native-base';
 import { StyleSheet, View } from 'react-native';
 import { IconFamilyType } from '../../model/style/IconFamilyType';
 import globalStyle from '../../styling/globalStyle';
+import getFamilyIcon from '../../components/getFamilyIcon';
 
 const styles = StyleSheet.create({
   drawerDivider: {
@@ -13,7 +14,6 @@ const styles = StyleSheet.create({
   },
   relativeContainer: { position: 'relative' },
   externalLinkContainer: { position: 'absolute', right: 18, top: 13 },
-  externalLinkColor: { color: globalStyle.color.default.rgbDark },
 });
 
 interface Props {
@@ -37,9 +37,9 @@ const DrawerItem: FC<Props> = ({
         {isExternalLink && (
           <View style={styles.externalLinkContainer}>
             <Icon
-              name="exit-to-app"
-              style={styles.externalLinkColor}
-              type="MaterialCommunityIcons"
+              size="7"
+              color={globalStyle.color.default.rgbDark}
+              as={getFamilyIcon('MaterialCommunityIcons', 'exit-to-app')}
             />
           </View>
         )}
@@ -48,7 +48,11 @@ const DrawerItem: FC<Props> = ({
           label={label}
           onPress={onSubmit}
           icon={({ color }) => (
-            <Icon name={iconName} style={{ color }} type={iconType} />
+            <Icon
+              size="7"
+              color={color}
+              as={getFamilyIcon(iconType, iconName)}
+            />
           )}
         />
       </View>

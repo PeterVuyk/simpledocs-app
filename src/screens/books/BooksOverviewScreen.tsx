@@ -2,7 +2,7 @@ import React, { FC, Fragment, useCallback } from 'react';
 import { DrawerNavigationProp } from '@react-navigation/drawer/lib/typescript/src/types';
 import { StyleSheet } from 'react-native';
 import { RouteProp } from '@react-navigation/native';
-import { Content } from 'native-base';
+import { Box } from 'native-base';
 import { FIRST_BOOK_TAB, SECOND_BOOK_TAB } from '../../model/BottomTab';
 import TitleBar from '../../components/titleBar/TitleBar';
 import { BookTabInfo } from '../../model/configurations/AppConfigurations';
@@ -60,7 +60,7 @@ const BooksOverviewScreen: FC<Props> = ({ navigation, route }) => {
 
   return (
     <ScreenContainer>
-      <Content style={styles.container} padder>
+      <Box style={styles.container}>
         <TitleBar
           title={bookTabInfo.title ?? ''}
           subTitle={bookTabInfo.subTitle ?? ''}
@@ -77,7 +77,7 @@ const BooksOverviewScreen: FC<Props> = ({ navigation, route }) => {
               />
             </Fragment>
           ))}
-      </Content>
+      </Box>
     </ScreenContainer>
   );
 };

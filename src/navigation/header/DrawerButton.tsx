@@ -1,20 +1,9 @@
 import React, { FC } from 'react';
 import { Icon } from 'native-base';
 import { DrawerNavigationHelpers } from '@react-navigation/drawer/lib/typescript/src/types';
-import { StyleSheet } from 'react-native';
 import { IconFamilyType } from '../../model/style/IconFamilyType';
 import globalStyle from '../../styling/globalStyle';
-
-const styles = StyleSheet.create({
-  buttonColor: {
-    color: globalStyle.color.primary.main,
-    padding: 10,
-  },
-  buttonColorDisabled: {
-    color: globalStyle.color.default.main,
-    padding: 10,
-  },
-});
+import getFamilyIcon from '../../components/getFamilyIcon';
 
 interface Props {
   navigation?: DrawerNavigationHelpers;
@@ -25,9 +14,14 @@ interface Props {
 const DrawerButton: FC<Props> = ({ navigation, iconType, iconName }) => {
   return (
     <Icon
-      style={[navigation ? styles.buttonColor : styles.buttonColorDisabled]}
-      name={iconName}
-      type={iconType}
+      size="7"
+      color={
+        navigation
+          ? globalStyle.color.primary.main
+          : globalStyle.color.default.main
+      }
+      style={{ margin: 10 }}
+      as={getFamilyIcon(iconType, iconName)}
       onPress={() => {
         if (navigation) {
           navigation.openDrawer();

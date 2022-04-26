@@ -1,18 +1,11 @@
 import React, { FC, useCallback, useEffect, useState } from 'react';
-import { StyleSheet } from 'react-native';
 import { Icon } from 'native-base';
 import { BlackPortal } from 'react-native-portal';
 import { useIsFocused } from '@react-navigation/native';
 import { InfoBookPage } from '../../model/bookPages/InfoBookPage';
 import bookPagesRepository from '../../database/repository/bookPagesRepository';
 import globalStyle from '../../styling/globalStyle';
-
-const styles = StyleSheet.create({
-  buttonColor: {
-    color: globalStyle.color.primary.main,
-    padding: 10,
-  },
-});
+import getFamilyIcon from '../getFamilyIcon';
 
 interface Props {
   infoBookPage: InfoBookPage;
@@ -41,9 +34,13 @@ const BookmarkToggle: FC<Props> = ({ infoBookPage }) => {
   return (
     <BlackPortal name="bookmarkToggle">
       <Icon
-        style={styles.buttonColor}
-        name={isBookmarked ? 'bookmark-check' : 'bookmark-plus-outline'}
-        type="MaterialCommunityIcons"
+        size="7"
+        color={globalStyle.color.primary.main}
+        style={{ margin: 10 }}
+        as={getFamilyIcon(
+          'MaterialCommunityIcons',
+          isBookmarked ? 'bookmark-check' : 'bookmark-plus-outline',
+        )}
         onPress={handleBookmarkChapter}
       />
     </BlackPortal>

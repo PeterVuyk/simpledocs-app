@@ -7,6 +7,7 @@ import DrawerButton from './DrawerButton';
 import SearchButton from './search/SearchButton';
 import globalStyle from '../../styling/globalStyle';
 import HeaderLogo from './HeaderLogo';
+import getFamilyIcon from '../../components/getFamilyIcon';
 
 export const headerStyles = StyleSheet.create({
   container: {
@@ -44,13 +45,13 @@ const Header: FC<Props> = ({ navigation }) => {
         {/* The icon below is a placeholder and is only rendered if the bookmarkToggle isn't set.
           Added this so the header logo stay fixed independent if bookmarkToggle is set */}
         <Icon
+          size="7"
+          color={globalStyle.color.white}
           style={{
-            color: globalStyle.color.white,
-            padding: 10,
+            margin: 10,
             opacity: 0.0,
           }}
-          name="bookmark-plus-outline"
-          type="MaterialCommunityIcons"
+          as={getFamilyIcon('MaterialCommunityIcons', 'bookmark-plus-outline')}
         />
       </WhitePortal>
     );

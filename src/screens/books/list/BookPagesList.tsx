@@ -85,7 +85,7 @@ const BookPagesList: FC<Props> = ({
     <View style={styles.container}>
       <FlatList
         ListHeaderComponent={getHeader}
-        keyExtractor={item => item.chapter.toString()}
+        keyExtractor={item => item.id.toString()}
         ListEmptyComponent={
           <View style={{ margin: 20 }}>
             <LoadingSpinner />

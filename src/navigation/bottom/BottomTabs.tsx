@@ -1,10 +1,11 @@
 import React, { FC } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import { Icon } from 'native-base';
+import { Center, Icon } from 'native-base';
 import HideWithKeyboardView from '../../components/keyboard/HideWithKeyboardView';
 import ToggleBottomNavigator from './ToggleBottomNavigator';
 import BottomTab from '../../model/BottomTab';
 import globalStyle from '../../styling/globalStyle';
+import getFamilyIcon from '../../components/getFamilyIcon';
 
 const styles = StyleSheet.create({
   container: {
@@ -45,16 +46,17 @@ const BottomTabs: FC<Props> = ({ tabs }) => {
                     flex: 1,
                   }}
                 >
-                  <Icon
-                    style={{
-                      textAlign: 'center',
-                      color: tab.isSelected
-                        ? globalStyle.bottomTabLayout.tabSelection
-                        : globalStyle.color.primary.light,
-                    }}
-                    name={tab.icon}
-                    type={tab.iconFamilyType}
-                  />
+                  <Center>
+                    <Icon
+                      size="7"
+                      color={
+                        tab.isSelected
+                          ? globalStyle.bottomTabLayout.tabSelection
+                          : globalStyle.color.primary.light
+                      }
+                      as={getFamilyIcon(tab.iconFamilyType as string, tab.icon)}
+                    />
+                  </Center>
                   <Text
                     style={[
                       {

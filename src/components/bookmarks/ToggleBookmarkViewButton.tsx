@@ -4,15 +4,12 @@ import { Icon } from 'native-base';
 import globalStyle from '../../styling/globalStyle';
 import bookPagesRepository from '../../database/repository/bookPagesRepository';
 import { InfoBookPage } from '../../model/bookPages/InfoBookPage';
+import getFamilyIcon from '../getFamilyIcon';
 
 const styles = StyleSheet.create({
   container: {
     alignItems: 'center',
     padding: 10,
-  },
-  iconStyle: {
-    color: globalStyle.color.white,
-    paddingBottom: 10,
   },
   tabTitle: {
     ...globalStyle.typography.h4,
@@ -39,13 +36,15 @@ const ToggleBookmarkViewButton: FC<Props> = ({ infoBookPage, onClick }) => {
       onPress={handleClick}
     >
       <Icon
-        name={
+        size="7"
+        color={globalStyle.color.white}
+        style={{ marginBottom: 10 }}
+        as={getFamilyIcon(
+          'MaterialCommunityIcons',
           infoBookPage.bookmarked
             ? 'bookmark-off-outline'
-            : 'bookmark-plus-outline'
-        }
-        style={[styles.iconStyle]}
-        type="MaterialCommunityIcons"
+            : 'bookmark-plus-outline',
+        )}
       />
       <Text style={styles.tabTitle}>
         {infoBookPage.bookmarked ? 'Verwijderen' : 'Toevoegen'}

@@ -2,11 +2,11 @@ import React, { FC } from 'react';
 import { Icon } from 'native-base';
 import { StyleSheet } from 'react-native';
 import globalStyle from '../../styling/globalStyle';
+import getFamilyIcon from '../getFamilyIcon';
 
 const styles = StyleSheet.create({
   iconStyle: {
     zIndex: 100,
-    color: globalStyle.color.primary.light,
     position: 'absolute',
     right: 50,
     top: 0,
@@ -16,9 +16,10 @@ const styles = StyleSheet.create({
 const BookmarkIndicator: FC = () => {
   return (
     <Icon
+      size="7"
       style={styles.iconStyle}
-      name="bookmark-check"
-      type="MaterialCommunityIcons"
+      color={globalStyle.color.primary.light}
+      as={getFamilyIcon('MaterialCommunityIcons', 'bookmark-check')}
     />
   );
 };
