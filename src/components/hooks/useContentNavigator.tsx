@@ -9,11 +9,12 @@ import {
 import logger from '../../util/logger';
 import bookPagesRepository from '../../database/repository/bookPagesRepository';
 
-export const BLANK_WEBPAGE = 'https://linkpage.web.app/';
+export const NAVIGATION_URL_LINK = 'https://linkpage.web.app/navigation/';
 
 const getIdFromUrl = (url: string): string | null => {
   const path = url.split('/');
   if (path.length < 4) {
+    // TODO: For now we support <4. later it should be <5.
     return null;
   }
   return path[path.length - 1];
@@ -132,7 +133,7 @@ function useContentNavigator() {
   };
 
   return {
-    blankWebpage: BLANK_WEBPAGE,
+    navigationUrlLink: NAVIGATION_URL_LINK,
     navigateFromHttpsUrlToChapter,
     navigateFromId,
     navigateToChapter,

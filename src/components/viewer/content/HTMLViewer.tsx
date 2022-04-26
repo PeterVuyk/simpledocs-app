@@ -17,7 +17,8 @@ const HTMLViewer: FC<Props> = ({ htmlFile, bookType }) => {
   const [webviewLoading, setWebviewLoading] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
   const webview = createRef<WebView>();
-  const { blankWebpage, navigateFromHttpsUrlToChapter } = useContentNavigator();
+  const { navigationUrlLink, navigateFromHttpsUrlToChapter } =
+    useContentNavigator();
 
   useEffect(() => {
     if (loading) {
@@ -58,7 +59,7 @@ const HTMLViewer: FC<Props> = ({ htmlFile, bookType }) => {
     }
 
     webview?.current?.stopLoading();
-    if (request.url.search(blankWebpage) !== -1) {
+    if (request.url.search(navigationUrlLink) !== -1) {
       setLoading(true);
       navigateFromHttpsUrlToChapter(request.url, bookType);
       return false;

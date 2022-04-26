@@ -21,7 +21,8 @@ interface Props {
 
 const MarkdownViewer: FC<Props> = ({ markdownFile, bookType }) => {
   const [loading, setLoading] = useState<boolean>(false);
-  const { blankWebpage, navigateFromHttpsUrlToChapter } = useContentNavigator();
+  const { navigationUrlLink, navigateFromHttpsUrlToChapter } =
+    useContentNavigator();
 
   useEffect(() => {
     if (loading) {
@@ -30,7 +31,7 @@ const MarkdownViewer: FC<Props> = ({ markdownFile, bookType }) => {
   }, [loading]);
 
   const onLinkPress = (url: string) => {
-    if (url && url.search(blankWebpage) !== -1) {
+    if (url && url.search(navigationUrlLink) !== -1) {
       setLoading(true);
       navigateFromHttpsUrlToChapter(url, bookType);
       return false;

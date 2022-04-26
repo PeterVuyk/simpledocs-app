@@ -39,7 +39,7 @@
     },
     "android": {
       "allowBackup": true,
-      "versionCode": 23,
+      "versionCode": 25,
       "googleServicesFile": "./keys/development-google-services.json",
       "package": "eu.simpledocs.app",
       "permissions": ["WRITE_EXTERNAL_STORAGE", "WRITE_EXTERNAL_STORAGE", "RECEIVE_BOOT_COMPLETED"],
