@@ -74,7 +74,7 @@ const BookPageDetailsPage: FC<Props> = ({
           offset: windowWidth.width * index,
           index,
         })}
-        keyExtractor={item => item.id.toString()}
+        keyExtractor={item => item.id?.toString() ?? ''}
         renderItem={({ item }) => renderItem(item)}
       />
     </View>

@@ -67,7 +67,7 @@ const SearchScreenList: FC<Props> = ({
         offset: window.width * index,
         index,
       })}
-      keyExtractor={item => item.itemId.toString()}
+      keyExtractor={item => item.itemId?.toString() ?? ''}
       renderItem={({ item }) => renderItem(item)}
     />
   );

@@ -79,7 +79,7 @@ const SearchScreenListPage: FC<Props> = ({ searchText, searchTab }) => {
     return (
       <FlatList
         data={pages}
-        keyExtractor={item => item.id.toString()}
+        keyExtractor={item => item.id?.toString() ?? ''}
         renderItem={({ item }) => (
           <SearchScreenListPageItem searchText={searchText} bookPage={item} />
         )}
