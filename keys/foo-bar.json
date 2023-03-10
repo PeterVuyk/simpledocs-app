@@ -1,15 +1,15 @@
 {
   "project_info": {
     "project_number": "266397651281",
-    "project_id": "academie-voor-ambulancezorg",
-    "storage_bucket": "academie-voor-ambulancezorg-app"
+    "project_id": "foo-bar",
+    "storage_bucket": "foo-bar-app"
   },
   "client": [
     {
       "client_info": {
         "mobilesdk_app_id": "1:266397651281:android:941ff7749e520e428d8370",
         "android_client_info": {
-          "package_name": "com.academievoorambulancezorg.app"
+          "package_name": "com.foobar.app"
         }
       },
       "oauth_client": [

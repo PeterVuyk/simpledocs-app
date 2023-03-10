@@ -1,6 +1,6 @@
 import { FontWeight } from '../model/style/FontWeight';
 
-const academieVoorAmbulancezorgStyle = {
+const fooBarStyle = {
   color: {
     white: '#fff',
     primary: {
@@ -50,4 +50,4 @@ const academieVoorAmbulancezorgStyle = {
   },
 };
 
-export default academieVoorAmbulancezorgStyle;
+export default fooBarStyle;

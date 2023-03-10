@@ -24,7 +24,7 @@ Then start the project, in the project directory, you can run:
     npx env-cmd -f .env.development expo start -c
 
     # customer specific:
-    npx env-cmd -f .env.academie-voor-ambulancezorg expo start -c
+    npx env-cmd -f .env.foo-bar expo start -c
     
     # default:
     npx env-cmd -f .env expo start -c
@@ -57,8 +57,8 @@ Specify 'android', 'ios' or 'all' for platform, specify the platform for the pro
 
 When the build is successful, copy the build id and run:
 
-    npx env-cmd -f .env.academie-voor-ambulancezorg eas submit -p android --id=<id>
-    npx env-cmd -f .env.academie-voor-ambulancezorg eas submit --platform ios --id=<id>
+    npx env-cmd -f .env.foo-bar eas submit -p android --id=<id>
+    npx env-cmd -f .env.foo-bar eas submit --platform ios --id=<id>
 
 finally publish the changes, go to the [url](https://play.google.com/console/u/0/developers/4874062365169363132/app/4972026240016024530/tracks/internal-testing),
 click 'release bewerken', 'release controleren' and 'Uitrol naar interne tests starten'.

@@ -3,7 +3,7 @@ export const STAGING_ENVIRONMENT = 'staging';
 export const PRODUCTION_ENVIRONMENT = 'production';
 
 export const CUSTOMER_DEFAULT = 'default';
-export const CUSTOMER_ACADEMIE_AMBULANCEZORG = 'academie-voor-ambulancezorg';
+export const CUSTOMER_FOO_BAR = 'foo-bar';
 
 export interface Environment {
   customer: string;

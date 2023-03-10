@@ -1,7 +1,7 @@
 #!/bin/bash
 
 printf "The assets in the assets-directory is taken over by the customer specific directories, with help of this script you can copy the customer assets into the public assets directory \n\n"
-echo "Please provide the customer to copy the assets (Options: academie-voor-ambulancezorg | default):"
+echo "Please provide the customer to copy the assets (Options: foo-bar | default):"
 read customer
 
 # Validate that the provided customer is set:
@@ -12,7 +12,7 @@ fi
 
 # List of customers:
 declare -a customers=(
-  "academie-voor-ambulancezorg"
+  "foo-bar"
   "default"
 )
 
